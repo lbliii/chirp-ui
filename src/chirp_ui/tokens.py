@@ -474,6 +474,8 @@ _TOKEN_DATA: tuple[tuple[str, str, str], ...] = (
     ("--chirpui-z-modal", "layout", "global"),
     ("--chirpui-z-popover", "layout", "global"),
     ("--chirpui-z-sticky", "layout", "global"),
+    ("--chirpui-z-sticky-col", "layout", "global"),
+    ("--chirpui-z-sticky-corner", "layout", "global"),
     ("--chirpui-z-toast", "layout", "global"),
     ("--chirpui-z-tray", "layout", "global"),
 )

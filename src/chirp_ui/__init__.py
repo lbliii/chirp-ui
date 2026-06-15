@@ -30,6 +30,17 @@ from chirp_ui.alpine import (
 )
 from chirp_ui.components import DesignSystemReport, DesignSystemStats, design_system_report
 from chirp_ui.filters import TemplateFilterApp, register_colors, reset_colors
+from chirp_ui.grid_state import (
+    Column,
+    ColumnSort,
+    GridSort,
+    SelectionState,
+    column_aria_sort,
+    parse_sort,
+    selection_state,
+    sort_columns,
+    sort_query,
+)
 from chirp_ui.library import LIBRARY_CONTRACT, LibraryAsset, LibraryContract, get_library_contract
 from chirp_ui.theme_packs import THEME_PACKS, ThemePack, get_theme_pack, list_theme_packs
 from chirp_ui.validation import (
@@ -55,12 +66,17 @@ __all__ = [
     "ChirpUIDeprecationWarning",
     "ChirpUIValidationWarning",
     "ChirpUIWarning",
+    "Column",
+    "ColumnSort",
     "DesignSystemReport",
     "DesignSystemStats",
+    "GridSort",
     "LibraryAsset",
     "LibraryContract",
+    "SelectionState",
     "ThemePack",
     "check_alpine_runtime",
+    "column_aria_sort",
     "design_system_report",
     "get_library_contract",
     "get_loader",
@@ -68,10 +84,14 @@ __all__ = [
     "is_strict",
     "list_theme_packs",
     "load_manifest",
+    "parse_sort",
     "register_colors",
     "register_filters",
     "reset_colors",
+    "selection_state",
     "set_strict",
+    "sort_columns",
+    "sort_query",
     "static_path",
 ]
 

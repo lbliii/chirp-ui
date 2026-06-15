@@ -1,0 +1,4 @@
+{#- Load-more / OOB fragment for the data-grid gauntlet (#200). Renders the bare
+    <tr> rows (and is appended via hx-swap="beforeend" to the grid <tbody>). -#}
+{% from "chirpui/data_grid.html" import data_grid_rows %}
+{{ data_grid_rows(columns, rows, row_ids=row_ids, row_labels=row_labels, selectable=true, select_name="ids", selection=selection) }}

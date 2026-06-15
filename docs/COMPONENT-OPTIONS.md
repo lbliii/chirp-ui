@@ -264,6 +264,28 @@ Slot-based tables (alignment auto-inherited by `row()` via `provide`/`consume`):
 
 > **Deprecated:** `aligned_row(cells, align)` still works but is no longer needed — `row()` inside `table(align=...)` inherits alignment automatically. `aligned_row` will be removed in 0.3.0.
 
+`table()` also accepts additive selection/sticky params (defaults off, byte-identical render): `selectable`, `select_name`, `selection` (a `chirp_ui.grid_state.SelectionState`), `row_id` (column index for the checkbox value), and `sticky_first_col`. The legacy `sortable=`/`sort_url=` `header|lower` sort path is unchanged and documented as legacy — for interactive grids, reach for `data_grid` below.
+
+---
+
+## Data Grid (server-driven)
+
+`data_grid` (`chirpui/data_grid.html`) is the citable, drop-in composite for an interactive grid: sortable columns with `aria-sort` + **server** sort state, row selection bound to a `selection_bar`, sticky header + opt-in sticky first column, and HTMX load-more. All sort/selection state is projected from the typed Python helper **`chirp_ui.grid_state`** (`Column`, `GridSort`, `ColumnSort`, `SelectionState`, `parse_sort`, `sort_columns`, `selection_state`, `column_aria_sort`, `sort_query`) — the macro renders `aria_sort` and the toggle `next_url` it never computes, so the server's `ORDER BY` and the rendered headers cannot drift.
+
+| Param | Description |
+|-------|-------------|
+| `columns` | `list[ColumnSort]` (from `sort_columns`) or `list[Column]`/`list[dict]` + `sort` (projected internally). |
+| `rows` / `row_ids` | Cell rows and the parallel stable row ids (checkbox values). |
+| `sort` / `sort_url` | The current `GridSort` and the base sort URL (used to build header `next_url`s when raw columns are passed). |
+| `hx_target` | Swap target for sort clicks (defaults to the grid section). |
+| `selectable` / `select_name` / `selection` | Enable the page-scoped select column; `selection` is a `SelectionState` that seeds checked/indeterminate server-side. |
+| `selection_id` | Namespaces the grid id, body id, and per-sort-button ids. |
+| `sticky_header` / `sticky_first_col` | Pure-CSS sticky zones (real `<thead>`/cells; token-driven z-index). |
+| `load_more_url` / `has_more` / `load_more_swap` | HTMX load-more `<button>` (appends the `data_grid_rows` fragment, `beforeend`). |
+| `total` / `url_pattern` | Classic paged navigation as an alternative to load-more. |
+
+The default slot forwards bulk-action buttons into the controlled `selection_bar`; the named `toolbar` slot forwards filter controls into a `filter_row`. Selection is page-scoped (select-all selects the visible page, not the whole result set); cross-page "select all N matching" is out of scope for v1. Full guide, route example, and the `data_table` vs `data_grid` decision lens: [`docs/patterns/data-grid.md`](patterns/data-grid.md).
+
 ---
 
 ## Card
@@ -5509,6 +5531,58 @@ CTA Band
 | `width` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `data-grid`
+
+Data Grid
+
+- **Template:** `chirpui/data_grid.html`
+- **Macro:** `data_grid`
+- **Category:** `data-display`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`, `htmx`
+- **Slots:** `(default)`, `caption`, `toolbar`
+- **Composes:** `filter-row`, `pagination`, `selection-bar`, `table`
+- **Modifiers:** `compact`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `title` | no | (has default) |
+| `description` | no | (has default) |
+| `columns` | no | (has default) |
+| `rows` | no | (has default) |
+| `row_ids` | no | (has default) |
+| `sort` | no | (has default) |
+| `sort_url` | no | (has default) |
+| `hx_target` | no | (has default) |
+| `selectable` | no | (has default) |
+| `selection_id` | no | (has default) |
+| `select_name` | no | (has default) |
+| `selection` | no | (has default) |
+| `sticky_header` | no | (has default) |
+| `sticky_first_col` | no | (has default) |
+| `load_more_url` | no | (has default) |
+| `load_more_label` | no | (has default) |
+| `load_more_trigger` | no | (has default) |
+| `load_more_swap` | no | (has default) |
+| `has_more` | no | (has default) |
+| `current` | no | (has default) |
+| `total` | no | (has default) |
+| `url_pattern` | no | (has default) |
+| `filter_action` | no | (has default) |
+| `filter_method` | no | (has default) |
+| `empty_message` | no | (has default) |
+| `compact` | no | (has default) |
+| `striped` | no | (has default) |
+| `cls` | no | (has default) |
+| `attrs_map` | no | (has default) |
+
+| Slot | Target | Target slot |
+|------|--------|-------------|
+| `(default)` | `selection-bar` | `(default)` |
+| `toolbar` | `filter-row` | `(default)` |
+
 ### `data-table`
 
 Data Table
@@ -5516,7 +5590,7 @@ Data Table
 - **Template:** `chirpui/data_table.html`
 - **Macro:** `data_table`
 - **Category:** `data-display`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Composes:** `filter-row`, `pagination`, `table`
@@ -8248,6 +8322,7 @@ Selection Bar
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
+- **Requires:** `alpine`
 - **Slots:** `(default)`
 
 | Param | Required | Default |
@@ -8256,6 +8331,7 @@ Selection Bar
 | `label` | no | (has default) |
 | `live_region` | no | (has default) |
 | `aria_label` | no | (has default) |
+| `controlled` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `separator`
@@ -9034,7 +9110,7 @@ Table component
 - **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `(default)`, `caption`
-- **Modifiers:** `compact`, `striped`
+- **Modifiers:** `compact`, `sticky-col`, `striped`
 - **Provides:** `_table_align`
 
 | Param | Required | Default |
@@ -9050,6 +9126,11 @@ Table component
 | `align` | no | (has default) |
 | `widths` | no | (has default) |
 | `compact` | no | (has default) |
+| `selectable` | no | (has default) |
+| `select_name` | no | (has default) |
+| `selection` | no | (has default) |
+| `row_id` | no | (has default) |
+| `sticky_first_col` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `table-wrap`
@@ -9080,6 +9161,11 @@ Table component
 | `align` | no | (has default) |
 | `widths` | no | (has default) |
 | `compact` | no | (has default) |
+| `selectable` | no | (has default) |
+| `select_name` | no | (has default) |
+| `selection` | no | (has default) |
+| `row_id` | no | (has default) |
+| `sticky_first_col` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `tabs`

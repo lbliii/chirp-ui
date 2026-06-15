@@ -1,0 +1,220 @@
+{#- chirp-ui: Data Grid
+    Server-driven interactive data grid — the citable, drop-in composite for
+    sortable columns (with aria-sort + server sort state), row selection bound
+    to a selection bar, sticky header + sticky first column, and HTMX
+    load-more. All state is projected from the typed `chirp_ui.grid_state`
+    helper: the macro renders the `aria_sort` and toggle `next_url` it never
+    computes, so the server's ORDER BY and the rendered headers cannot drift.
+
+    Selection is the only client concern — one idempotent `chirpuiGridSelection`
+    Alpine factory (in chirpui-alpine.js) owns live in-page toggling. The server
+    seeds checked/indeterminate from `SelectionState` so selection is correct
+    with JavaScript off.
+
+    Works without Chirp (render the macro with precomputed ColumnSort rows),
+    better with Chirp (template globals + use_chirp_ui Alpine injection).
+
+    Route + template usage:
+        from chirp_ui import Column, parse_sort, sort_columns, selection_state
+
+        COLS = [Column("name","Name",sortable=True),
+                Column("status","Status",sortable=True,align="center"),
+                Column("seats","Seats",sortable=True,align="right")]
+
+        @app.get("/users")
+        def users(req):
+            sort = parse_sort(req.query.get("sort"), default_key="name",
+                              allowed=tuple(c.key for c in COLS))
+            rows = query_users(order_by=sort.key, desc=(sort.direction=="desc"))
+            cols = sort_columns(COLS, sort, base_url="/users",
+                                extra_params={"q": req.query.get("q","")})
+            sel = selection_state(req.query.getlist("ids"),
+                                  page_ids=[u.id for u in rows], total=count_users())
+            ctx = dict(columns=cols, rows=[[u.name,u.status,u.seats] for u in rows],
+                       row_ids=[u.id for u in rows], row_labels=[u.name for u in rows],
+                       selection=sel)
+            if req.headers.get("HX-Target") == "users-grid-body":
+                return Response(render_fragment("data_grid_rows", **ctx))
+            return Template("users.html", **ctx)
+
+        (template)
+        from "chirpui/data_grid.html" import data_grid
+
+        call data_grid(title="Users", columns=columns, rows=rows, row_ids=row_ids,
+                       row_labels=row_labels, sort_url="/users", hx_target="#users-grid",
+                       selection_id="users", selectable=true, sticky_first_col=true,
+                       selection=selection, load_more_url="/users", has_more=has_more)
+          btn("Export", hx={"post":"/users/export","include":"#users-grid"})
+        end
+
+    Caveat: select-all is page-scoped (selects the visible page, not the entire
+    result set). Cross-page "select all N matching" is out of scope for v1.
+-#}
+{% from "chirpui/filter_bar.html" import filter_row %}
+{% from "chirpui/selection_bar.html" import selection_bar %}
+{% from "chirpui/pagination.html" import pagination %}
+
+{#- One sortable/static header cell. `col` is a grid_state.ColumnSort. The
+    sortable variant nests a real <button class="chirpui-table__sort"> (the
+    click target — keyboard-focusable, native Enter/Space) carrying the
+    precomputed toggle URL; aria-sort is the sole SR signal and the caret is
+    aria-hidden. Non-sortable columns render a plain <th> with no button. -#}
+{% def grid_head_cell(col, hx_target=none, selection_id="") %}
+{% set _align = col.align %}
+{% if col.sortable %}
+<th class="chirpui-table__th{{ " chirpui-table__th--" ~ _align if _align else "" }}" scope="col" aria-sort="{{ col.aria_sort }}">
+    <button type="button" class="chirpui-table__sort"
+            {% if selection_id %}id="{{ selection_id }}-sort-{{ col.key }}"{% end %}
+            {#- Boost-safe sort: select the grid's OWN region from the response
+                (hx-select = the swap target = the grid id) and stop inheriting the
+                shell's hx-select="#page-content". Without this, inside a boosted
+                app_shell the sort inherits #page-content and outerHTML-swaps the
+                entire page (chrome + heading) into the grid, nesting a fresh copy
+                on every click. Works whether the route returns the grid fragment
+                or a full page (mirrors the safe-by-default form pattern). -#}
+            {{ build_hx_attrs(hx_get=col.next_url, hx_target=hx_target, hx_swap="outerHTML", hx_select=hx_target, hx_disinherit="hx-select") | html_attrs }}>
+        <span class="chirpui-table__sort-label">{{ col.label }}</span>
+        <span class="chirpui-table__sort-indicator" aria-hidden="true"></span>
+    </button>
+</th>
+{% else %}
+<th class="chirpui-table__th{{ " chirpui-table__th--" ~ _align if _align else "" }}" scope="col">{{ col.label }}</th>
+{% end %}
+{% end %}
+
+{#- Body rows + optional refreshed load-more sentinel. The load-more route
+    renders THIS fragment (just <tr> rows, and the sentinel when has_more) and
+    htmx appends it (hx-swap="beforeend") to the same <tbody>.
+
+    `row_labels` (optional, parallel to `row_ids`) supplies a clean, plain-text
+    accessible name per row for the select checkbox. The first cell is NOT used
+    for the label: it is frequently rich HTML (avatar + link + badge) — which a
+    screen reader would announce as literal "less-than b greater-than" markup —
+    or an empty spacer cell, which degrades the label to a non-distinguishing
+    bare "Select". When no clean label is given we fall back to the stable row
+    id, never the rendered cell, so every checkbox is distinct and unpolluted. -#}
+{% def data_grid_rows(columns, rows, row_ids=none, row_labels=none, selectable=false, select_name="ids", selection=none) %}
+{% for row_data in rows %}
+{% set _rid = (row_ids[loop.index0] | string) if row_ids is not none and loop.index0 < (row_ids | length) else (loop.index0 | string) %}
+{% set _rlabel = (row_labels[loop.index0] | string) if row_labels is not none and loop.index0 < (row_labels | length) and row_labels[loop.index0] else _rid %}
+<tr class="chirpui-table__row" :class="{ 'chirpui-table__row--selected': selected.has('{{ _rid }}') }">
+    {% if selectable %}
+    <td class="chirpui-table__td chirpui-table__td--select">
+        <input type="checkbox" class="chirpui-table__select-row" name="{{ select_name }}" value="{{ _rid }}"
+               aria-label="Select {{ _rlabel }}"
+               :checked="selected.has('{{ _rid }}')"
+               @change="toggle('{{ _rid }}', $event.target.checked)"
+               {% if selection and selection.is_selected(_rid) %}checked{% end %}>
+    </td>
+    {% end %}
+    {% for cell in row_data %}
+        {% set _col = columns[loop.index0] if loop.index0 < (columns | length) else none %}
+        <td class="chirpui-table__td{{ " chirpui-table__td--" ~ _col.align if _col and _col.align else "" }}">{{ cell }}</td>
+    {% end %}
+</tr>
+{% end %}
+{% end %}
+
+{% def data_grid(title=none, description=none, columns=none, rows=none, row_ids=none,
+                 row_labels=none,
+                 sort=none, sort_url=none, hx_target=none, selectable=false,
+                 selection_id="grid", select_name="ids", selection=none,
+                 sticky_header=true, sticky_first_col=false, load_more_url=none,
+                 load_more_label="Load more", load_more_trigger="click",
+                 load_more_swap="beforeend", has_more=false,
+                 current=1, total=1, url_pattern="", filter_action=none, filter_method="get",
+                 empty_message="No records found", compact=false, striped=false,
+                 cls="", attrs_map=none) %}
+{# Resolve columns: ColumnSort rows render directly; Column/dict + GridSort are
+   projected here via sort_columns so callers can pass raw declarations. #}
+{% set _columns = sort_columns(columns, sort, sort_url) if (columns and sort is not none and sort_url) else (columns or []) %}
+{% set _grid_id = selection_id ~ "-grid" %}
+{% set _body_id = selection_id ~ "-grid-body" %}
+{% set _total_rows = (selection.total if selection and selection.total is not none else (rows | length if rows else 0)) %}
+<section id="{{ _grid_id }}"
+         class="chirpui-data-grid{{ " chirpui-data-grid--compact" if compact else "" }}{{ " " ~ cls if cls else "" }}"
+         x-data="chirpuiGridSelection()"
+         data-selection-id="{{ selection_id }}"
+         data-total-rows="{{ _total_rows }}"
+         {#- Select-island boundary: the grid owns its own swaps (sort replaces the
+             section; load-more appends bare <tr> rows to the tbody), so nothing
+             inside it should inherit the shell's hx-select="#page-content". Without
+             this, a load-more append into the tbody inherits #page-content from the
+             boosted #main and trips a (false-positive) "blank swap" dev warning,
+             since the <tr> fragment has no #page-content. -#}
+         hx-disinherit="hx-select"
+         {{ attrs_map | html_attrs }}>
+    {% if title or description %}
+    <div class="chirpui-data-grid__header">
+        {% if title %}<h2 class="chirpui-data-grid__title">{{ title }}</h2>{% end %}
+        {% if description %}<p class="chirpui-data-grid__description">{{ description }}</p>{% end %}
+    </div>
+    {% end %}
+
+    {% if filter_action %}
+    <div class="chirpui-data-grid__filters">
+        {% call filter_row(action=filter_action, method=filter_method) %}{% slot toolbar %}{% end %}{% end %}
+    </div>
+    {% end %}
+
+    {% if selectable %}
+    {% call selection_bar(live_region=true, controlled=true, cls="chirpui-data-grid__selection") %}
+        <button type="button" class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm" @click="clear()">Clear</button>
+        {# Forward the data_grid default slot (caller bulk-action buttons) into the
+           selection bar. kida shadows a bare {% slot %} inside a nested {% call %},
+           so capture the caller explicitly. #}
+        {{ caller() if caller is defined else "" }}
+    {% end %}
+    {% end %}
+
+    <div class="chirpui-table-wrap{{ " chirpui-table-wrap--sticky" if sticky_header else "" }} chirpui-data-grid__body">
+        <table class="chirpui-table chirpui-data-grid__table{{ " chirpui-table--striped" if striped else "" }}{{ " chirpui-table--compact" if compact else "" }}{{ " chirpui-table--sticky-col" if sticky_first_col else "" }}">
+            <caption class="chirpui-table__caption">{% slot caption %}</caption>
+            <thead class="chirpui-table__head">
+                <tr>
+                    {% if selectable %}
+                    <th class="chirpui-table__th chirpui-table__th--select" scope="col">
+                        <input type="checkbox" class="chirpui-table__select-all"
+                               aria-label="Select all rows on this page"
+                               :checked="allSelected"
+                               x-effect="$el.indeterminate = someSelected"
+                               @change="toggleAll($event)"
+                               {% if selection and selection.all_selected %}checked{% end %}>
+                    </th>
+                    {% end %}
+                    {% for col in _columns %}
+                        {{ grid_head_cell(col, hx_target=(hx_target or ("#" ~ _grid_id)), selection_id=selection_id) }}
+                    {% end %}
+                </tr>
+            </thead>
+            <tbody id="{{ _body_id }}" class="chirpui-table__body">
+                {% if rows %}
+                    {{ data_grid_rows(_columns, rows, row_ids=row_ids, row_labels=row_labels, selectable=selectable, select_name=select_name, selection=selection) }}
+                {% else %}
+                    <tr>
+                        <td class="chirpui-table__empty" colspan="100">
+                            <span aria-hidden="true">◇</span> {{ empty_message }}
+                        </td>
+                    </tr>
+                {% end %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if load_more_url and has_more %}
+    <div class="chirpui-data-grid__load-more">
+        {# hx-select="unset" + hx-disinherit defends against an inherited boost
+           hx-select that would otherwise strip the bare <tr> fragment. #}
+        <button type="button" class="chirpui-btn chirpui-btn--secondary chirpui-data-grid__load-more-btn"
+                hx-boost="false"
+                {{ build_hx_attrs(hx_get=load_more_url, hx_target="#" ~ _body_id, hx_swap=load_more_swap, hx_trigger=load_more_trigger, hx_select="unset", hx_disinherit="hx-select") | html_attrs }}>
+            {{ load_more_label }}
+        </button>
+    </div>
+    {% elif total > 1 and url_pattern %}
+    <div class="chirpui-data-grid__footer">
+        {{ pagination(current=current, total=total, url_pattern=url_pattern, hx_target=("#" ~ _body_id)) }}
+    </div>
+    {% end %}
+</section>
+{% end %}

@@ -1,0 +1,71 @@
+/* ==========================================================================
+   Data Grid (#200) — server-driven interactive grid composite
+   ========================================================================== */
+@layer chirpui.component {
+    @scope (.chirpui-data-grid) to (.chirpui-data-grid .chirpui-data-grid) {
+        :scope {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing-sm);
+            box-sizing: border-box;
+            min-inline-size: 0;
+            max-inline-size: 100%;
+        }
+
+        .chirpui-data-grid__header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing-2xs);
+        }
+
+        .chirpui-data-grid__title {
+            margin: 0;
+            font-size: var(--chirpui-font-lg);
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+            line-height: var(--chirpui-line-height-tight);
+            overflow-wrap: anywhere;
+        }
+
+        .chirpui-data-grid__description {
+            margin: 0;
+            font-size: var(--chirpui-font-sm);
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-data-grid__filters {
+            min-inline-size: 0;
+        }
+
+        .chirpui-data-grid__selection {
+            min-inline-size: 0;
+        }
+
+        .chirpui-data-grid__body {
+            min-inline-size: 0;
+            max-inline-size: 100%;
+        }
+
+        .chirpui-data-grid__table {
+            min-inline-size: 100%;
+        }
+
+        .chirpui-data-grid__load-more {
+            display: flex;
+            justify-content: center;
+            padding-block-start: var(--chirpui-spacing-sm);
+        }
+
+        .chirpui-data-grid__load-more-btn {
+            min-inline-size: 12rem;
+        }
+
+        .chirpui-data-grid__footer {
+            display: flex;
+            justify-content: center;
+        }
+
+        &.chirpui-data-grid--compact {
+            gap: var(--chirpui-spacing-xs);
+        }
+    }
+}

@@ -15,6 +15,7 @@ from chirp.http.response import Response
 from chirp.pages.shell_actions import ShellMenuItem
 from chirp.templating.returns import Template
 
+from chirp_ui import Column, parse_sort, selection_state, sort_columns
 from chirp_ui.theme_packs import get_theme_pack
 
 GAUNTLET_NAV_ITEMS = [
@@ -96,6 +97,70 @@ GAUNTLET_TABLE_ROWS = [
         "unbroken-token-0123456789abcdefghijklmnopqrstuvwxyz",
     ),
 ]
+
+# Data grid gauntlet (#200) — sortable + selectable + sticky + load-more.
+DATA_GRID_COLUMNS = [
+    Column("name", "Name", sortable=True),
+    Column("status", "Status", sortable=True, align="center"),
+    Column("seats", "Seats", sortable=True, align="right"),
+    Column("notes", "Notes", sortable=False),
+]
+
+# (id, name, status, seats, notes) — id is the stable selection value.
+DATA_GRID_RECORDS = [
+    ("u-1", "Alpha Corridor", "Active", 42, "Stable short cell"),
+    ("u-2", "Beta Intake", "Paused", 7, "Some wrapped metadata"),
+    ("u-3", "Gamma Archive", "Needs review", 128, "Longer note here"),
+    ("u-4", "Delta Relay", "Active", 19, "Relay note"),
+    ("u-5", "Epsilon Vault", "Paused", 64, "Vault note"),
+    ("u-6", "Zeta Mesh", "Active", 3, "Mesh note"),
+]
+
+_DATA_GRID_PAGE_SIZE = 3
+_DATA_GRID_ALLOWED = tuple(c.key for c in DATA_GRID_COLUMNS if c.sortable)
+
+
+def _data_grid_sorted_records(sort) -> list[tuple]:
+    if not sort.key:
+        return list(DATA_GRID_RECORDS)
+    key_index = {"name": 1, "status": 2, "seats": 3}.get(sort.key)
+    if key_index is None:
+        return list(DATA_GRID_RECORDS)
+    return sorted(
+        DATA_GRID_RECORDS,
+        key=lambda rec: rec[key_index],
+        reverse=(sort.direction == "desc"),
+    )
+
+
+def _data_grid_context(request: Request, *, offset: int = 0) -> dict[str, object]:
+    sort = parse_sort(
+        _hx_header(request, "HX-Sort") or request.query.get("sort"),
+        default_key="name",
+        allowed=_DATA_GRID_ALLOWED,
+    )
+    ordered = _data_grid_sorted_records(sort)
+    page = ordered[offset : offset + _DATA_GRID_PAGE_SIZE]
+    has_more = (offset + _DATA_GRID_PAGE_SIZE) < len(ordered)
+    next_offset = offset + _DATA_GRID_PAGE_SIZE
+    columns = sort_columns(DATA_GRID_COLUMNS, sort, base_url="/data-grid")
+    selected = request.query.getlist("ids") if hasattr(request.query, "getlist") else []
+    selection = selection_state(
+        selected,
+        page_ids=[rec[0] for rec in page],
+        total=len(DATA_GRID_RECORDS),
+    )
+    return {
+        "page_title": "Data Grid",
+        "columns": columns,
+        "rows": [[rec[1], rec[2], str(rec[3]), rec[4]] for rec in page],
+        "row_ids": [rec[0] for rec in page],
+        "row_labels": [rec[1] for rec in page],
+        "selection": selection,
+        "has_more": has_more,
+        "load_more_url": f"/data-grid/rows?offset={next_offset}&sort={sort.key if sort.direction == 'asc' else '-' + sort.key}",
+    }
+
 
 CONSUMER_WORKSPACE_TABS = [
     {"label": "Overview", "href": "/consumer-workspace", "match": "exact", "badge": 4},
@@ -863,6 +928,29 @@ def create_app() -> App:
                 "/consumer-admin/audit",
                 include_shell_actions_oob=_include_shell_actions_oob(request),
             ),
+        )
+
+    # Data grid gauntlet (#200): full load renders data_grid; the load-more
+    # hx-get returns the data_grid_rows fragment (sort + offset preserved in the
+    # sentinel URL the macro emitted on the previous render).
+    @app.route("/data-grid")
+    async def data_grid_page(request: Request):
+        return Template("data_grid_page.html", **_data_grid_context(request))
+
+    @app.route("/data-grid/rows")
+    async def data_grid_rows_route(request: Request):
+        try:
+            offset = int(request.query.get("offset", "0"))
+        except TypeError, ValueError:
+            offset = 0
+        ctx = _data_grid_context(request, offset=offset)
+        return Template(
+            "data_grid_rows_fragment.html",
+            columns=ctx["columns"],
+            rows=ctx["rows"],
+            row_ids=ctx["row_ids"],
+            row_labels=ctx["row_labels"],
+            selection=ctx["selection"],
         )
 
     @app.route("/application-chrome-gauntlet")

@@ -649,5 +649,124 @@
         };
     });
 
+    register("chirpuiGridSelection", function () {
+        return {
+            selected: new Set(),
+            count: 0,
+            total: 0,
+            allSelected: false,
+            someSelected: false,
+            // Cache the component root in init(). Alpine's `this.$el` is the
+            // element the *current* expression is bound to — inside a method
+            // invoked from a child checkbox's @change it is that checkbox, not
+            // the grid root, so querying it for row boxes would find nothing.
+            // `this.$root` is the nearest x-data root and is stable across
+            // every handler, so all row queries go through it.
+            root: function () {
+                return this.$root;
+            },
+            init: function () {
+                this.total = parseInteger(this.$root.dataset.totalRows, 0);
+                this.reseed();
+                // The load-more control uses hx-swap="beforeend" into this grid's
+                // <tbody> — it appends rows WITHOUT replacing the x-data <section>,
+                // so init() does not re-fire. Without this listener reseed() would
+                // never run after a load-more append: the select-all checkbox would
+                // report a stale "all selected" (instead of indeterminate) and any
+                // server-checked appended row would be silently dropped. The sort
+                // control swaps outerHTML (re-inits the component), so it is already
+                // covered by init() -> reseed(); we deliberately only re-scan when
+                // the settled target is THIS grid's own body to stay idempotent and
+                // not cross-talk with other grids on the page.
+                var self = this;
+                var bodyId = this.$root.id ? this.$root.id + "-body" : "";
+                this._onAfterSettle = function (event) {
+                    var target = event && event.detail ? event.detail.target : null;
+                    if (!target || !bodyId) {
+                        return;
+                    }
+                    // Re-scan when the body itself settled, or any element inside
+                    // this grid's body did (htmx reports the swap target). Look the
+                    // body up by id (no CSS.escape dependency; the id is a slug).
+                    var body = document.getElementById(bodyId);
+                    if (body && (target === body || body.contains(target) || target.contains(body))) {
+                        self.reseed();
+                    }
+                };
+                document.body.addEventListener("htmx:afterSettle", this._onAfterSettle);
+            },
+            destroy: function () {
+                if (this._onAfterSettle) {
+                    document.body.removeEventListener("htmx:afterSettle", this._onAfterSettle);
+                    this._onAfterSettle = null;
+                }
+            },
+            // Re-scan server-rendered checked row checkboxes and recompute
+            // derived state. Called on init and after htmx swaps (load-more /
+            // sort) re-render the body so newly appended rows participate and
+            // stale checked state never leaks.
+            reseed: function () {
+                var checked = this.$root.querySelectorAll(
+                    ".chirpui-table__select-row:checked"
+                );
+                var seeded = new Set(this.selected);
+                Array.prototype.forEach.call(checked, function (box) {
+                    if (box.value) {
+                        seeded.add(box.value);
+                    }
+                });
+                this.selected = seeded;
+                this.recompute();
+            },
+            rowBoxes: function () {
+                return this.$root.querySelectorAll(".chirpui-table__select-row");
+            },
+            recompute: function () {
+                this.count = this.selected.size;
+                var boxes = this.rowBoxes();
+                var n = boxes.length;
+                var sel = 0;
+                for (var i = 0; i < n; i++) {
+                    if (this.selected.has(boxes[i].value)) {
+                        sel++;
+                    }
+                }
+                this.allSelected = n > 0 && sel === n;
+                this.someSelected = sel > 0 && sel < n;
+            },
+            toggle: function (id, checked) {
+                if (checked) {
+                    this.selected.add(String(id));
+                } else {
+                    this.selected.delete(String(id));
+                }
+                // Reassign so Alpine's reactivity observes the Set change.
+                this.selected = new Set(this.selected);
+                this.recompute();
+            },
+            toggleAll: function (event) {
+                var check = event && event.target ? event.target.checked : !this.allSelected;
+                var boxes = this.rowBoxes();
+                var next = new Set(this.selected);
+                Array.prototype.forEach.call(boxes, function (box) {
+                    if (!box.value) {
+                        return;
+                    }
+                    if (check) {
+                        next.add(box.value);
+                    } else {
+                        next.delete(box.value);
+                    }
+                });
+                this.selected = next;
+                this.recompute();
+            },
+            clear: function () {
+                this.selected = new Set();
+                this.recompute();
+            },
+        };
+    });
+
     scheduleAlpineHealthCheck();
 })();

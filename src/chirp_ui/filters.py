@@ -937,6 +937,13 @@ def register_filters(app: TemplateFilterApp) -> None:
     app.template_filter("resolve_status_variant")(resolve_status_variant)
     app.template_filter("shell_action_btn_variant")(shell_action_btn_variant)
     if hasattr(app, "template_global"):
+        from chirp_ui.grid_state import (
+            column_aria_sort,
+            parse_sort,
+            selection_state,
+            sort_columns,
+            sort_query,
+        )
         from chirp_ui.route_tabs import tab_is_active
 
         tg = cast(
@@ -948,6 +955,14 @@ def register_filters(app: TemplateFilterApp) -> None:
         tg("check_required_id")(check_required_id)
         tg("chirpui_asset_path")(chirpui_asset_path)
         tg("route_link_attrs")(make_route_link_attrs())
+        # Data-grid server-state projections (#200) — registered beside
+        # tab_is_active so data_grid can render aria_sort/next_url it never
+        # derives. See chirp_ui.grid_state.
+        tg("parse_sort")(parse_sort)
+        tg("sort_columns")(sort_columns)
+        tg("selection_state")(selection_state)
+        tg("column_aria_sort")(column_aria_sort)
+        tg("sort_query")(sort_query)
     else:
         warnings.warn(
             "chirp-ui: app has no template_global(); "

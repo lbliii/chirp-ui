@@ -36,6 +36,8 @@ env/
 
 # Testing
 .pytest_cache/
+# Browser gauntlet screenshot artifacts (transient; regenerated on failing runs)
+tests/browser/artifacts/
 .coverage
 .coverage.*
 htmlcov/

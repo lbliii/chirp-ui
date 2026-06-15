@@ -107,6 +107,11 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
         macros=("sidebar",),
         conditional='cls includes "chirpui-sidebar--responsive-dropdowns"',
     ),
+    "chirpuiGridSelection": AlpineRequirement(
+        factory="chirpuiGridSelection",
+        macros=("data_grid",),
+        conditional="selectable=true (the data_grid root always carries it)",
+    ),
 }
 
 

@@ -7361,6 +7361,238 @@
       "trim_emits": [],
       "variants": []
     },
+    "data-grid": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "data-grid",
+      "category": "data-display",
+      "composes": [
+        "filter-row",
+        "pagination",
+        "selection-bar",
+        "table"
+      ],
+      "consumes": [],
+      "description": "Data Grid\n    Server-driven interactive data grid — the citable, drop-in composite for\n    sortable columns (with aria-sort + server sort state), row selection bound\n    to a selection bar, sticky header + sticky first column, and HTMX\n    load-more. All state is projected from the typed `chirp_ui.grid_state`\n    helper: the macro renders the `aria_sort` and toggle `next_url` it never\n    computes, so the server's ORDER BY and the rendered headers cannot drift.\n\n    Selection is the only client concern — one idempotent `chirpuiGridSelection`\n    Alpine factory (in chirpui-alpine.js) owns live in-page toggling. The server\n    seeds checked/indeterminate from `SelectionState` so selection is correct\n    with JavaScript off.\n\n    Works without Chirp (render the macro with precomputed ColumnSort rows),\n    better with Chirp (template globals + use_chirp_ui Alpine injection).\n\n    Route + template usage:\n        from chirp_ui import Column, parse_sort, sort_columns, selection_state\n\n        COLS = [Column(\"name\",\"Name\",sortable=True),\n                Column(\"status\",\"Status\",sortable=True,align=\"center\"),\n                Column(\"seats\",\"Seats\",sortable=True,align=\"right\")]\n\n        @app.get(\"/users\")\n        def users(req):\n            sort = parse_sort(req.query.get(\"sort\"), default_key=\"name\",\n                              allowed=tuple(c.key for c in COLS))\n            rows = query_users(order_by=sort.key, desc=(sort.direction==\"desc\"))\n            cols = sort_columns(COLS, sort, base_url=\"/users\",\n                                extra_params={\"q\": req.query.get(\"q\",\"\")})\n            sel = selection_state(req.query.getlist(\"ids\"),\n                                  page_ids=[u.id for u in rows], total=count_users())\n            ctx = dict(columns=cols, rows=[[u.name,u.status,u.seats] for u in rows],\n                       row_ids=[u.id for u in rows], row_labels=[u.name for u in rows],\n                       selection=sel)\n            if req.headers.get(\"HX-Target\") == \"users-grid-body\":\n                return Response(render_fragment(\"data_grid_rows\", **ctx))\n            return Template(\"users.html\", **ctx)\n\n        (template)\n        from \"chirpui/data_grid.html\" import data_grid\n\n        call data_grid(title=\"Users\", columns=columns, rows=rows, row_ids=row_ids,\n                       row_labels=row_labels, sort_url=\"/users\", hx_target=\"#users-grid\",\n                       selection_id=\"users\", selectable=true, sticky_first_col=true,\n                       selection=selection, load_more_url=\"/users\", has_more=has_more)\n          btn(\"Export\", hx={\"post\":\"/users/export\",\"include\":\"#users-grid\"})\n        end\n\n    Caveat: select-all is page-scoped (selects the visible page, not the entire\n    result set). Cross-page \"select all N matching\" is out of scope for v1.",
+      "elements": [
+        "body",
+        "description",
+        "filters",
+        "footer",
+        "header",
+        "load-more",
+        "load-more-btn",
+        "selection",
+        "table",
+        "title"
+      ],
+      "emits": [
+        "chirpui-data-grid",
+        "chirpui-data-grid--compact",
+        "chirpui-data-grid__body",
+        "chirpui-data-grid__description",
+        "chirpui-data-grid__filters",
+        "chirpui-data-grid__footer",
+        "chirpui-data-grid__header",
+        "chirpui-data-grid__load-more",
+        "chirpui-data-grid__load-more-btn",
+        "chirpui-data-grid__selection",
+        "chirpui-data-grid__table",
+        "chirpui-data-grid__title"
+      ],
+      "extra_emits": [],
+      "lineno": 111,
+      "macro": "data_grid",
+      "maturity": "experimental",
+      "modifiers": [
+        "compact"
+      ],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "title"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "description"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "columns"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "rows"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "row_ids"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "row_labels"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sort"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sort_url"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_target"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "selectable"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "selection_id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "select_name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "selection"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sticky_header"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sticky_first_col"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "load_more_url"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "load_more_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "load_more_trigger"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "load_more_swap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "has_more"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "current"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "total"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "url_pattern"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "filter_action"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "filter_method"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "empty_message"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "compact"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "striped"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attrs_map"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine",
+        "htmx"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [
+        {
+          "slot": "",
+          "target": "selection-bar",
+          "target_slot": ""
+        },
+        {
+          "slot": "toolbar",
+          "target": "filter-row",
+          "target_slot": ""
+        }
+      ],
+      "slots": [
+        "",
+        "caption",
+        "toolbar"
+      ],
+      "slots_extracted": [
+        "caption"
+      ],
+      "slots_yielded": [],
+      "template": "data_grid.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "data-table": {
       "appearances": [],
       "authoring": "available",
@@ -7396,7 +7628,7 @@
       "extra_emits": [],
       "lineno": 21,
       "macro": "data_table",
-      "maturity": "stable",
+      "maturity": "experimental",
       "modifiers": [
         "compact"
       ],
@@ -17805,7 +18037,7 @@
       "category": "control",
       "composes": [],
       "consumes": [],
-      "description": "Selection Bar\n    Stateful bulk-action container shown when list/table rows are selected.\n    If count <= 0, renders nothing.\n\n    Usage:\n        from \"chirpui/selection_bar.html\" import selection_bar\n\n        call selection_bar(count=3)\n            <a class=\"chirpui-btn chirpui-btn--sm chirpui-btn--secondary\">Export selected</a>\n            <a class=\"chirpui-btn chirpui-btn--sm chirpui-btn--secondary\">Clear</a>\n        end",
+      "description": "Selection Bar\n    Stateful bulk-action container shown when list/table rows are selected.\n    If count <= 0, renders nothing (default, server-gated mode).\n\n    Usage:\n        from \"chirpui/selection_bar.html\" import selection_bar\n\n        call selection_bar(count=3)\n            <a class=\"chirpui-btn chirpui-btn--sm chirpui-btn--secondary\">Export selected</a>\n            <a class=\"chirpui-btn chirpui-btn--sm chirpui-btn--secondary\">Clear</a>\n        end\n\n    Controlled mode (controlled=true): the bar is always in the DOM (no server\n    count>0 gate) and uses Alpine `x-show`/`x-text` hooks so an enclosing\n    `chirpuiGridSelection` scope can show/hide it and update the count with zero\n    server roundtrip. Used by data_grid. Default `controlled=false` is\n    byte-identical to the historical server-gated render.",
       "elements": [
         "actions",
         "count"
@@ -17816,7 +18048,7 @@
         "chirpui-selection-bar__count"
       ],
       "extra_emits": [],
-      "lineno": 14,
+      "lineno": 20,
       "macro": "selection_bar",
       "maturity": "stable",
       "modifiers": [],
@@ -17844,11 +18076,18 @@
         {
           "has_default": true,
           "is_required": false,
+          "name": "controlled"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
           "name": "cls"
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -20845,7 +21084,7 @@
       "category": "data-display",
       "composes": [],
       "consumes": [],
-      "description": "Table component\n    Responsive table with header configuration and row helper.\n\n    Usage:\n        from \"chirpui/table.html\" import table, row\n\n        Slot-based (complex rows):\n        call table(headers=[\"Name\", \"Email\", \"Role\"])\n            row(\"Alice\", \"alice@example.com\", \"Admin\")\n            row(\"Bob\", \"bob@example.com\", \"User\")\n        end\n\n        Data-driven (alignment flows to all cells automatically):\n        table(headers=[\"Name\", \"Status\", \"Count\"],\n              rows=[(\"Alice\", \"Active\", \"42\"), (\"Bob\", \"Idle\", \"7\")],\n              align=[\"left\", \"center\", \"right\"])\n\n        Per-column alignment (slot-based, auto-inherited):\n        call table(headers=[\"Name\", \"Status\", \"Count\"],\n                   align=[\"left\", \"center\", \"right\"])\n            row(\"Alice\", \"Active\", \"42\")\n        end\n\n        Column widths (CSS values or proportions):\n        call table(headers=[\"Name\", \"Status\"],\n                   widths=[\"2fr\", \"1fr\"])\n\n        Slots: caption (table caption), row_actions (header cell for actions column).\n        Sortable headers:\n        call table(headers=[\"Name\", \"Email\"], sortable=true,\n                   sort_url=\"/users\", hx_target=\"#user-table\")\n            row(user.name, user.email)\n        end\n        Row with actions: pass row_actions(...) as last cell when actions_header=true\n        Sticky header:\n        call table(headers=[...], sticky_header=true)",
+      "description": "Table component\n    Responsive table with header configuration and row helper.\n\n    Usage:\n        from \"chirpui/table.html\" import table, row\n\n        Slot-based (complex rows):\n        call table(headers=[\"Name\", \"Email\", \"Role\"])\n            row(\"Alice\", \"alice@example.com\", \"Admin\")\n            row(\"Bob\", \"bob@example.com\", \"User\")\n        end\n\n        Data-driven (alignment flows to all cells automatically):\n        table(headers=[\"Name\", \"Status\", \"Count\"],\n              rows=[(\"Alice\", \"Active\", \"42\"), (\"Bob\", \"Idle\", \"7\")],\n              align=[\"left\", \"center\", \"right\"])\n\n        Per-column alignment (slot-based, auto-inherited):\n        call table(headers=[\"Name\", \"Status\", \"Count\"],\n                   align=[\"left\", \"center\", \"right\"])\n            row(\"Alice\", \"Active\", \"42\")\n        end\n\n        Column widths (CSS values or proportions):\n        call table(headers=[\"Name\", \"Status\"],\n                   widths=[\"2fr\", \"1fr\"])\n\n        Slots: caption (table caption), row_actions (header cell for actions column).\n        Sortable headers:\n        call table(headers=[\"Name\", \"Email\"], sortable=true,\n                   sort_url=\"/users\", hx_target=\"#user-table\")\n            row(user.name, user.email)\n        end\n        Row with actions: pass row_actions(...) as last cell when actions_header=true\n        Sticky header:\n        call table(headers=[...], sticky_header=true)\n\n    Sorting note (legacy): table(sortable=true, sort_url=...) emits a plain\n    `hx-get`-on-`<th>` sort using `header|lower` as the sort key — kept\n    byte-identical for backward compatibility. For interactive grids with\n    aria-sort, stable sort keys, server sort state, row selection, sticky first\n    column, and HTMX load-more, use `data_grid` (chirpui/data_grid.html), which\n    is backed by the typed `chirp_ui.grid_state` helper.\n\n    Additive selection/sticky params (additive; default off = byte-identical):\n        table(rows=..., selectable=true, row_id=\"id\", selection=selection_state,\n              sticky_first_col=true)\n    `selection` is a chirp_ui.grid_state.SelectionState; `row_id` is the dict\n    key (or index) used to resolve each row's stable id for the checkbox value.",
       "elements": [
         "avatar",
         "body",
@@ -20853,13 +21092,18 @@
         "empty",
         "head",
         "row",
+        "select-all",
+        "select-row",
         "sort",
+        "sort-indicator",
+        "sort-label",
         "td",
         "th"
       ],
       "emits": [
         "chirpui-table",
         "chirpui-table--compact",
+        "chirpui-table--sticky-col",
         "chirpui-table--striped",
         "chirpui-table__avatar",
         "chirpui-table__body",
@@ -20867,37 +21111,48 @@
         "chirpui-table__empty",
         "chirpui-table__head",
         "chirpui-table__row",
+        "chirpui-table__row--selected",
+        "chirpui-table__select-all",
+        "chirpui-table__select-row",
         "chirpui-table__sort",
+        "chirpui-table__sort-indicator",
+        "chirpui-table__sort-label",
         "chirpui-table__td",
         "chirpui-table__td--actions",
         "chirpui-table__td--center",
         "chirpui-table__td--left",
         "chirpui-table__td--mono",
         "chirpui-table__td--right",
+        "chirpui-table__td--select",
         "chirpui-table__td--truncate",
         "chirpui-table__th",
         "chirpui-table__th--actions",
         "chirpui-table__th--center",
         "chirpui-table__th--left",
-        "chirpui-table__th--right"
+        "chirpui-table__th--right",
+        "chirpui-table__th--select"
       ],
       "extra_emits": [
+        "chirpui-table__row--selected",
         "chirpui-table__td--actions",
         "chirpui-table__td--center",
         "chirpui-table__td--left",
         "chirpui-table__td--mono",
         "chirpui-table__td--right",
+        "chirpui-table__td--select",
         "chirpui-table__td--truncate",
         "chirpui-table__th--actions",
         "chirpui-table__th--center",
         "chirpui-table__th--left",
-        "chirpui-table__th--right"
+        "chirpui-table__th--right",
+        "chirpui-table__th--select"
       ],
-      "lineno": 39,
+      "lineno": 52,
       "macro": "table",
       "maturity": "stable",
       "modifiers": [
         "compact",
+        "sticky-col",
         "striped"
       ],
       "params": [
@@ -20959,6 +21214,31 @@
         {
           "has_default": true,
           "is_required": false,
+          "name": "selectable"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "select_name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "selection"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "row_id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sticky_first_col"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
           "name": "cls"
         }
       ],
@@ -20993,14 +21273,14 @@
       "category": "data-display",
       "composes": [],
       "consumes": [],
-      "description": "Table component\n    Responsive table with header configuration and row helper.\n\n    Usage:\n        from \"chirpui/table.html\" import table, row\n\n        Slot-based (complex rows):\n        call table(headers=[\"Name\", \"Email\", \"Role\"])\n            row(\"Alice\", \"alice@example.com\", \"Admin\")\n            row(\"Bob\", \"bob@example.com\", \"User\")\n        end\n\n        Data-driven (alignment flows to all cells automatically):\n        table(headers=[\"Name\", \"Status\", \"Count\"],\n              rows=[(\"Alice\", \"Active\", \"42\"), (\"Bob\", \"Idle\", \"7\")],\n              align=[\"left\", \"center\", \"right\"])\n\n        Per-column alignment (slot-based, auto-inherited):\n        call table(headers=[\"Name\", \"Status\", \"Count\"],\n                   align=[\"left\", \"center\", \"right\"])\n            row(\"Alice\", \"Active\", \"42\")\n        end\n\n        Column widths (CSS values or proportions):\n        call table(headers=[\"Name\", \"Status\"],\n                   widths=[\"2fr\", \"1fr\"])\n\n        Slots: caption (table caption), row_actions (header cell for actions column).\n        Sortable headers:\n        call table(headers=[\"Name\", \"Email\"], sortable=true,\n                   sort_url=\"/users\", hx_target=\"#user-table\")\n            row(user.name, user.email)\n        end\n        Row with actions: pass row_actions(...) as last cell when actions_header=true\n        Sticky header:\n        call table(headers=[...], sticky_header=true)",
+      "description": "Table component\n    Responsive table with header configuration and row helper.\n\n    Usage:\n        from \"chirpui/table.html\" import table, row\n\n        Slot-based (complex rows):\n        call table(headers=[\"Name\", \"Email\", \"Role\"])\n            row(\"Alice\", \"alice@example.com\", \"Admin\")\n            row(\"Bob\", \"bob@example.com\", \"User\")\n        end\n\n        Data-driven (alignment flows to all cells automatically):\n        table(headers=[\"Name\", \"Status\", \"Count\"],\n              rows=[(\"Alice\", \"Active\", \"42\"), (\"Bob\", \"Idle\", \"7\")],\n              align=[\"left\", \"center\", \"right\"])\n\n        Per-column alignment (slot-based, auto-inherited):\n        call table(headers=[\"Name\", \"Status\", \"Count\"],\n                   align=[\"left\", \"center\", \"right\"])\n            row(\"Alice\", \"Active\", \"42\")\n        end\n\n        Column widths (CSS values or proportions):\n        call table(headers=[\"Name\", \"Status\"],\n                   widths=[\"2fr\", \"1fr\"])\n\n        Slots: caption (table caption), row_actions (header cell for actions column).\n        Sortable headers:\n        call table(headers=[\"Name\", \"Email\"], sortable=true,\n                   sort_url=\"/users\", hx_target=\"#user-table\")\n            row(user.name, user.email)\n        end\n        Row with actions: pass row_actions(...) as last cell when actions_header=true\n        Sticky header:\n        call table(headers=[...], sticky_header=true)\n\n    Sorting note (legacy): table(sortable=true, sort_url=...) emits a plain\n    `hx-get`-on-`<th>` sort using `header|lower` as the sort key — kept\n    byte-identical for backward compatibility. For interactive grids with\n    aria-sort, stable sort keys, server sort state, row selection, sticky first\n    column, and HTMX load-more, use `data_grid` (chirpui/data_grid.html), which\n    is backed by the typed `chirp_ui.grid_state` helper.\n\n    Additive selection/sticky params (additive; default off = byte-identical):\n        table(rows=..., selectable=true, row_id=\"id\", selection=selection_state,\n              sticky_first_col=true)\n    `selection` is a chirp_ui.grid_state.SelectionState; `row_id` is the dict\n    key (or index) used to resolve each row's stable id for the checkbox value.",
       "elements": [],
       "emits": [
         "chirpui-table-wrap",
         "chirpui-table-wrap--sticky"
       ],
       "extra_emits": [],
-      "lineno": 39,
+      "lineno": 52,
       "macro": "table",
       "maturity": "stable",
       "modifiers": [
@@ -21061,6 +21341,31 @@
           "has_default": true,
           "is_required": false,
           "name": "compact"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "selectable"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "select_name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "selection"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "row_id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sticky_first_col"
         },
         {
           "has_default": true,
@@ -23812,7 +24117,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 301,
+      "available": 302,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -23823,7 +24128,7 @@
       "container": 9,
       "content": 11,
       "control": 23,
-      "data-display": 37,
+      "data-display": 38,
       "effect": 46,
       "feedback": 25,
       "form": 19,
@@ -23838,25 +24143,25 @@
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 99,
+      "experimental": 101,
       "internal": 2,
       "legacy": 39,
-      "stable": 212
+      "stable": 211
     },
     "component_requirements": {
-      "alpine": 24,
-      "htmx": 25
+      "alpine": 26,
+      "htmx": 26
     },
     "component_roles": {
-      "component": 187,
+      "component": 188,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 22,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 249,
-    "components_with_params": 249,
+    "components_with_description": 250,
+    "components_with_params": 250,
     "components_with_provides": 12,
     "manifest_quality": {
       "missing_description": 0,
@@ -23864,7 +24169,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 247
+      "public_templated_components": 248
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -23873,7 +24178,7 @@
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
       "explicit_extra_blocks": 126,
-      "explicit_extra_classes": 535,
+      "explicit_extra_classes": 538,
       "explicit_trim_blocks": 68,
       "explicit_trim_classes": 95
     },
@@ -23881,15 +24186,15 @@
       "color": 142,
       "component": 134,
       "elevation": 7,
-      "layout": 44,
+      "layout": 46,
       "motion": 24,
       "radius": 7,
       "spacing": 30,
       "typography": 45
     },
-    "total_components": 352,
+    "total_components": 353,
     "total_theme_packs": 3,
-    "total_tokens": 433
+    "total_tokens": 435
   },
   "theme_packs": [
     {
@@ -25651,6 +25956,14 @@
       "scope": "global"
     },
     "--chirpui-z-sticky": {
+      "category": "layout",
+      "scope": "global"
+    },
+    "--chirpui-z-sticky-col": {
+      "category": "layout",
+      "scope": "global"
+    },
+    "--chirpui-z-sticky-corner": {
       "category": "layout",
       "scope": "global"
     },

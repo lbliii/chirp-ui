@@ -109,7 +109,7 @@ The envelope convention is the default for new components and for any partial mo
 grep -lE '^@layer chirpui\.component' src/chirp_ui/templates/css/partials/*.css
 ```
 
-**Current converted count:** 20 partials as of 2026-05-28.
+**Current converted count:** 21 partials as of 2026-06-15.
 
 Converted partials currently include:
 
@@ -133,6 +133,7 @@ Converted partials currently include:
 - `166_dense-navigation-primitives.css`
 - `167_workspace-primitives.css`
 - `168_maturity-primitives.css`
+- `169_data-grid.css`
 
 **Legacy (flat, opportunistic conversion):** all other partials in
 `src/chirp_ui/templates/css/partials/`. No global checklist is maintained —

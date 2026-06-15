@@ -93,6 +93,30 @@ def test_alert_signature_resolves() -> None:
     assert "variant" in names
 
 
+def test_data_grid_signature_and_requires() -> None:
+    """``data-grid`` (#200): macro maps, surfaces its server-state params, and
+    the manifest projects the alpine+htmx runtime requirement."""
+    entry = build_manifest()["components"]["data-grid"]
+    assert entry["macro"] == "data_grid"
+    assert entry["template"] == "data_grid.html"
+    assert entry["lineno"] > 0
+    names = [p["name"] for p in entry["params"]]
+    for expected in ("columns", "rows", "sort_url", "selectable", "selection", "load_more_url"):
+        assert expected in names, f"data_grid missing param {expected!r}"
+    assert "alpine" in entry["requires"]
+    assert "htmx" in entry["requires"]
+    assert entry["maturity"] == "experimental"
+
+
+def test_data_table_demoted_to_experimental() -> None:
+    """#200 acceptance: data-table is no longer a thin wrapper labeled stable."""
+    m = build_manifest()["components"]
+    assert m["data-table"]["maturity"] == "experimental"
+    # table / table-wrap remain stable (genuinely complete primitives).
+    assert m["table"]["maturity"] == "stable"
+    assert m["table-wrap"]["maturity"] == "stable"
+
+
 def test_components_with_no_template_emit_empty_params() -> None:
     """``category=auto`` descriptors (CSS-only, no macro) must not error."""
     m = build_manifest()

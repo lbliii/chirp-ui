@@ -23,6 +23,13 @@ from chirp_ui.filters import (
     shell_action_btn_variant,
     value_type,
 )
+from chirp_ui.grid_state import (
+    column_aria_sort,
+    parse_sort,
+    selection_state,
+    sort_columns,
+    sort_query,
+)
 from chirp_ui.icons import icon as icon_filter
 from chirp_ui.validation import ChirpUIValidationWarning, _warn, set_strict
 
@@ -306,6 +313,11 @@ def env() -> Environment:
     e.add_global("route_link_attrs", make_route_link_attrs())
     e.add_global("island_attrs", _island_attrs_stub)
     e.add_global("primitive_attrs", _primitive_attrs_stub)
+    e.add_global("parse_sort", parse_sort)
+    e.add_global("sort_columns", sort_columns)
+    e.add_global("selection_state", selection_state)
+    e.add_global("column_aria_sort", column_aria_sort)
+    e.add_global("sort_query", sort_query)
     e.add_global(
         "csrf_field",
         lambda: Markup('<input type="hidden" name="_csrf_token" value="test-csrf">'),
@@ -353,6 +365,11 @@ def theme_env() -> Environment:
     e.add_global("route_link_attrs", make_route_link_attrs())
     e.add_global("island_attrs", _island_attrs_stub)
     e.add_global("primitive_attrs", _primitive_attrs_stub)
+    e.add_global("parse_sort", parse_sort)
+    e.add_global("sort_columns", sort_columns)
+    e.add_global("selection_state", selection_state)
+    e.add_global("column_aria_sort", column_aria_sort)
+    e.add_global("sort_query", sort_query)
     e.add_global(
         "csrf_field",
         lambda: Markup('<input type="hidden" name="_csrf_token" value="test-csrf">'),

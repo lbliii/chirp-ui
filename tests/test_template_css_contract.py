@@ -38,6 +38,7 @@ TARGET_PREFIXES = (
     "chirpui-band",
     "chirpui-feature-section",
     "chirpui-feature-stack",
+    "chirpui-data-grid",
 )
 
 SHOWCASE_TEMPLATE_PACKS = {
