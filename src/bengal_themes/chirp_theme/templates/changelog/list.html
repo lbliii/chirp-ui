@@ -1,28 +1,40 @@
 {% extends "base.html" %}
 
 {% from "chirpui/badge.html" import badge %}
-{% from "chirpui/layout.html" import container %}
-{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/layout.html" import container, stack %}
 {% from "chirpui/timeline.html" import timeline, timeline_item %}
 {% from "partials/learning-pages.html" import rendered_body %}
 {% from "partials/taxonomy-pages.html" import count_label %}
+{% from "partials/empty-state.html" import empty_state %}
 
 {% block content %}
 {% let title = page?.title ?? section?.title ?? "Changelog" %}
 {% let description = page?.description ?? section?.description ?? "Release notes and project updates." %}
 {% let raw_items = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
-{% let items = raw_items | sort(attribute="metadata.date,title", reverse=true) %}
+{#- Sort newest-first on the FLAT `date` attribute. kida's attribute resolver
+    does not descend dotted paths, so the old "metadata.date,title" silently
+    fell back to title-alpha — every entry's date key resolved to None. The
+    flat `date` is present on every changelog page. -#}
+{% let items = raw_items | sort(attribute="date", reverse=true) %}
+{% let _count = count_label(items | length, "update") %}
 
+<div data-chirp-theme-surface="changelog">
 {% call container(cls="chirp-theme-learning-page chirp-theme-changelog-page") %}
-  {% call resource_index(title, page?.href ?? section?.href ?? "/changelog/", subtitle=description, search_placeholder="Filter releases...", button_icon="magnifying-glass", results_title="Release history", results_subtitle=count_label(items | length, "release"), has_results=items | length > 0, empty_title="No releases yet", empty_message="Release notes appear here when published.", cls="chirp-theme-learning-index") %}
+  {% call stack(gap="lg") %}
+    {% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-learning-hero") %}
+      {% slot eyebrow %}{{ badge("Changelog", variant="primary") }}{% end %}
+      {% slot metadata %}{{ _count }}{% end %}
+    {% end %}
     {{ rendered_body(content) }}
+    {% if items | length > 0 %}
     {% call timeline(cls="chirp-theme-changelog-timeline") %}
       {% for item in items %}
       {% let entry_title = item?.metadata?.version ?? item?.title ?? "Release" %}
       {% let entry_href = item?.href ?? item?.url ?? "#" %}
       {% let entry_date = item?.metadata?.date ?? item?.date %}
       {% let entry_desc = item?.description ?? item?.summary ?? item?.metadata?.summary ?? none %}
-      {% let is_latest = loop.index == 1 %}
+      {% let is_latest = loop.first %}
       {% call timeline_item(entry_title, entry_date | dateformat("%B %d, %Y") if entry_date else "", href=entry_href, link_mode="title", variant=("success" if is_latest else ""), cls="chirp-theme-changelog-entry" ~ (" chirp-theme-changelog-entry--latest" if is_latest else "")) %}
         {% slot content %}
         {% if is_latest %}{{ badge("Latest", variant="success") }}{% end %}
@@ -31,6 +43,10 @@
       {% end %}
       {% end %}
     {% end %}
+    {% else %}
+    {{ empty_state("No updates yet", "Changelog entries appear here when published.", icon_name="git-commit") }}
+    {% end %}
   {% end %}
 {% end %}
+</div>
 {% end %}

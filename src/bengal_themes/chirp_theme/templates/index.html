@@ -14,7 +14,7 @@
 {% let resources = items + subsections %}
 {% let section_href = page?.href ?? section?.href ?? "/" %}
 {% let is_releases_index = section_href == "/releases/" or section_href == "releases/" or title == "Releases" %}
-{% let display_resources = resources | sort(attribute="metadata.date,title", reverse=true) if is_releases_index else resources %}
+{% let display_resources = resources | sort(attribute="date", reverse=true) if is_releases_index else resources %}
 {% let results_title = "Release history" if is_releases_index else "In this section" %}
 {% let search_placeholder = "Filter releases..." if is_releases_index else "Filter this section..." %}
 

@@ -136,6 +136,12 @@
 
 .chirp-theme-track-layout__article {
   min-width: 0;
+  /* The track article carries `.prose`, not a type-identity consumption class,
+   * so it is not centered by the shared rule. Clamp it to the docs reading
+   * measure and center it within the (wide) center column — matching the
+   * footer and fixing the "content floats left" complaint on track pages. */
+  max-inline-size: var(--type-measure-docs);
+  margin-inline: auto;
 }
 
 /* Distinct surface accent so the track shell never reads as the doc shell.

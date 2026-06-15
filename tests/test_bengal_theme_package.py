@@ -1040,7 +1040,9 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "{% if is_branch_active %} open{% end %}" not in docs_nav
     assert "{{ item_kind_label }}" not in docs_nav
     assert "chirp-theme-release-index" in section_index
-    assert 'sort(attribute="metadata.date,title", reverse=true)' in section_index
+    # Sort on the flat `date` attribute: kida's attribute resolver does not descend
+    # dotted paths, so "metadata.date,title" silently fell back to title-alpha.
+    assert 'sort(attribute="date", reverse=true)' in section_index
     assert "chirp-theme-release-card" in section_index
     assert "grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr))" in css
     assert ".chirp-theme-release-card {\n  display: grid;" in css
@@ -1344,11 +1346,16 @@ def test_chirp_theme_learning_templates_use_chirpui_patterns() -> None:
         for template_name in learning_templates
     )
 
-    assert "chirpui/resource_index.html" in combined
+    # List pages compose page_hero + grid/timeline directly. The resource_index
+    # search shell was removed: its GET form is inert on a static build and
+    # duplicates the global Cmd+K search (see partials/learning-index.html).
+    assert "chirpui/hero.html" in combined
+    assert "chirpui/timeline.html" in combined
     assert "chirpui/stepper.html" in combined
     assert "chirpui/rendered_content.html" in combined
     assert "partials/components/post-card.html" in combined
-    assert "chirp-theme-learning-index" in combined
+    assert "chirp-theme-learning-hero" in combined
+    assert "chirpui/resource_index.html" not in combined
     assert "<script" not in combined
     # Forbid the legacy un-namespaced `track-card` class while allowing the
     # flagship `chirp-theme-track-card` BEM block (#140 Tracks flagship).
@@ -1512,7 +1519,9 @@ nested_resource_grid_re = re.compile(
 )
 release_titles = [
     item
-    for item in re.findall(r'<span class="chirpui-card__title">([^<]+)</span>', releases_html)
+    for item in re.findall(
+        r'class="chirpui-timeline__title[^"]*"[^>]*>([^<]+)<', releases_html
+    )
     if item.startswith("chirp-ui ")
 ]
 result_path.write_text(
@@ -1545,9 +1554,11 @@ result_path.write_text(
             "home_has_legacy_hero_inner": "chirp-theme-home__hero-inner" in home_html,
             "has_legacy_card_grid": 'class="card-grid"' in docs_html,
             "has_legacy_card": 'class="card"' in docs_html,
-            "has_chirpui_resource_card": "chirpui-resource-card" in releases_html,
+            "releases_has_timeline": "chirp-theme-release-timeline" in releases_html,
             "release_titles": release_titles,
-            "release_has_custom_cards": "chirp-theme-release-card" in releases_html,
+            "release_has_custom_entries": "chirp-theme-release-entry" in releases_html,
+            "releases_has_install_snippet": "uv add chirp-ui==" in releases_html,
+            "releases_no_dead_filter": "chirpui-resource-index" not in releases_html,
             "release_has_nested_resource_grid": bool(nested_resource_grid_re.search(releases_html)),
             "has_legacy_content_tile": bool(legacy_content_tile_re.search(releases_html)),
             "tags_has_resource_index": "chirpui-resource-index" in tags_html,
@@ -1600,8 +1611,12 @@ result_path.write_text(
     assert not result["home_has_legacy_hero_inner"]
     assert not result["has_legacy_card_grid"]
     assert not result["has_legacy_card"]
-    assert result["has_chirpui_resource_card"]
-    assert result["release_has_custom_cards"]
+    # /releases/ now renders the bespoke releases/list.html timeline (install
+    # snippets + Latest/Feature/Patch tiers), not the generic index.html card grid.
+    assert result["releases_has_timeline"]
+    assert result["release_has_custom_entries"]
+    assert result["releases_has_install_snippet"]
+    assert result["releases_no_dead_filter"]
     assert result["release_titles"][:5] == [
         "chirp-ui 0.9.0",
         "chirp-ui 0.8.0",
