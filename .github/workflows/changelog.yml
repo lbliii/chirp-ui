@@ -18,22 +18,28 @@ jobs:
           BASE="${{ github.event.pull_request.base.sha }}"
           HEAD="${{ github.event.pull_request.head.sha }}"
 
+          # Use the three-dot (merge-base) diff — the PR's OWN changes — not a
+          # two-dot diff against the moving base tip. With two-dot, any commit
+          # that lands on main after the PR is branched gets mis-attributed to
+          # this PR (e.g. another PR's src/ files), producing false changelog
+          # failures. Three-dot ("$BASE...$HEAD") matches GitHub's Files-changed.
+
           # Only enforce when src/ is modified
-          if ! git diff --name-only "$BASE" "$HEAD" | grep -q '^src/'; then
+          if ! git diff --name-only "$BASE...$HEAD" | grep -q '^src/'; then
             echo "No src/ changes — changelog fragment not required."
             exit 0
           fi
 
           # Look for new fragments in changelog.d/
-          if git diff --name-only --diff-filter=A "$BASE" "$HEAD" | grep -q '^changelog\.d/.*\.md$'; then
+          if git diff --name-only --diff-filter=A "$BASE...$HEAD" | grep -q '^changelog\.d/.*\.md$'; then
             echo "Changelog fragment found."
             exit 0
           fi
 
           # Release-prep PRs consume fragments into CHANGELOG.md instead of adding
           # a new fragment.
-          if git diff --name-only "$BASE" "$HEAD" | grep -q '^CHANGELOG\.md$' \
-            && git diff --name-only --diff-filter=D "$BASE" "$HEAD" | grep -q '^changelog\.d/.*\.md$'; then
+          if git diff --name-only "$BASE...$HEAD" | grep -q '^CHANGELOG\.md$' \
+            && git diff --name-only --diff-filter=D "$BASE...$HEAD" | grep -q '^changelog\.d/.*\.md$'; then
             echo "Release changelog update found."
             exit 0
           fi
