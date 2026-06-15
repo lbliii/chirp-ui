@@ -556,8 +556,14 @@ input[type="date"].chirpui-field__input {
     font-size: var(--chirpui-prose-3xl);
 }
 
-/* Segmented control — connected button-group radio selector */
-.chirpui-segmented {
+/* Segmented control — connected button-group radio selector (form field).
+   Scoped to the legacy form-field structure (direct-child radio + label) so the
+   bordered container styling does NOT leak onto the newer `segmented_control()`
+   pill component (segmented_control.html), which wraps options in
+   `.chirpui-segmented__option` and shares the `.chirpui-segmented` block class.
+   Without this scope the 1px border below pushed the pill control to 42px,
+   breaking the 40px shared control-height contract (#230). */
+.chirpui-segmented:has(> .chirpui-segmented__input) {
     display: inline-flex;
     flex-wrap: wrap;
     align-items: stretch;
