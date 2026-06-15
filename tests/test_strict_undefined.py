@@ -131,6 +131,14 @@ def test_context_menu_minimal_item(env: Environment) -> None:
     assert "chirpui-context-menu__item" in out
 
 
+def test_combobox_minimal_option(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/combobox.html" import combobox %}{{ combobox(name="t", options=[{}]) }}',
+    )
+    assert "chirpui-combobox__option" in out
+
+
 def test_toggle_group_minimal_item(env: Environment) -> None:
     out = _render(
         env,

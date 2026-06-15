@@ -8772,6 +8772,52 @@ class TestIconBtn:
         assert 'aria-disabled="true"' in html
 
 
+class TestCombobox:
+    _OPTS = (
+        '[{"label": "Canada", "value": "ca"},'
+        ' {"label": "United States", "value": "us"},'
+        ' {"label": "Mexico", "value": "mx"}]'
+    )
+
+    def _render(self, env: Environment, *, extra: str = "") -> str:
+        return env.from_string(
+            '{% from "chirpui/combobox.html" import combobox %}'
+            '{{ combobox(name="country", label="Country", options=' + self._OPTS + extra + ") }}"
+        ).render()
+
+    def test_combobox_contract_and_aria(self, env: Environment) -> None:
+        html = self._render(env)
+        assert 'class="chirpui-combobox"' in html
+        assert 'x-data="chirpuiCombobox()"' in html
+        # Input declares the WAI-ARIA combobox contract.
+        assert 'role="combobox"' in html
+        assert 'aria-autocomplete="list"' in html
+        assert 'aria-controls="chirpui-combobox-country-list"' in html
+        assert ':aria-activedescendant="activeId"' in html
+        # Listbox of options.
+        assert 'role="listbox"' in html
+        assert html.count('role="option"') == 3
+        assert 'data-value="us"' in html
+        assert 'data-label="United States"' in html
+        # Hidden input submits the selected value under `name`.
+        assert 'type="hidden"' in html
+        assert 'name="country"' in html
+        # Label is associated with the input.
+        assert 'for="chirpui-combobox-country-input"' in html
+
+    def test_combobox_initial_value_fills_display_label(self, env: Environment) -> None:
+        html = self._render(env, extra=', value="us"')
+        # The visible input shows the selected option's label; the hidden input
+        # carries the value.
+        assert 'value="United States"' in html
+        assert 'value="us"' in html
+
+    def test_combobox_option_ids_are_stable_and_unique(self, env: Environment) -> None:
+        html = self._render(env)
+        for i in range(3):
+            assert f'id="chirpui-combobox-country-opt-{i}"' in html
+
+
 class TestContextMenu:
     def _render(self, env: Environment, *, items: str, label: str = "Row actions") -> str:
         return env.from_string(

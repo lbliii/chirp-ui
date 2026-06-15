@@ -5251,6 +5251,28 @@ Collapse component
 | `open` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `combobox`
+
+Combobox / autocomplete
+
+- **Template:** `chirpui/combobox.html`
+- **Macro:** `combobox`
+- **Category:** `form`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `options` | yes | — |
+| `label` | no | (has default) |
+| `value` | no | (has default) |
+| `placeholder` | no | (has default) |
+| `id` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `command-bar`
 
 - **Category:** `control`

@@ -1,0 +1,88 @@
+/* ==========================================================================
+   Combobox / autocomplete — role="combobox" input over a filtered listbox.
+   @layer + @scope envelope (see docs/plans/PLAN-css-scope-and-layer.md).
+
+   The list is absolutely anchored under the input (the root is positioned);
+   filtering/roving is owned by the chirpuiCombobox Alpine factory.
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-combobox) to (.chirpui-combobox .chirpui-combobox) {
+        :scope {
+            position: relative;
+            display: block;
+            min-inline-size: 0;
+            max-inline-size: 100%;
+        }
+
+        & .chirpui-combobox__label {
+            display: block;
+            margin-block-end: var(--chirpui-spacing-2xs);
+            font-size: var(--chirpui-ui-sm);
+            font-weight: var(--chirpui-ui-font-weight-medium);
+            color: var(--chirpui-text);
+        }
+
+        & .chirpui-combobox__input {
+            display: block;
+            inline-size: 100%;
+            max-inline-size: 100%;
+            min-inline-size: 0;
+            box-sizing: border-box;
+            min-block-size: var(--chirpui-control-block-size);
+            padding: var(--chirpui-spacing-sm);
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius-sm);
+            font: inherit;
+            line-height: var(--chirpui-line-height-normal);
+            background: var(--chirpui-surface);
+            color: var(--chirpui-text);
+            transition:
+                border-color var(--chirpui-transition),
+                box-shadow var(--chirpui-transition);
+        }
+
+        & .chirpui-combobox__input:focus-visible {
+            outline: var(--chirpui-state-focus-outline);
+            outline-offset: var(--chirpui-state-focus-offset);
+        }
+
+        & .chirpui-combobox__list {
+            position: absolute;
+            inset-inline: 0;
+            z-index: var(--chirpui-z-popover);
+            margin-block-start: var(--chirpui-spacing-2xs);
+            padding: var(--chirpui-spacing-2xs);
+            list-style: none;
+            max-block-size: 16rem;
+            overflow-y: auto;
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius-sm);
+            background: var(--chirpui-surface);
+            box-shadow: var(--chirpui-elevation-floating);
+        }
+
+        & .chirpui-combobox__option {
+            display: block;
+            padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+            border-radius: var(--chirpui-radius-sm);
+            color: var(--chirpui-text);
+            font-size: var(--chirpui-font-sm);
+            line-height: var(--chirpui-line-height-tight);
+            cursor: pointer;
+            min-inline-size: 0;
+            overflow-wrap: anywhere;
+        }
+
+        & .chirpui-combobox__option--active,
+        & .chirpui-combobox__option:hover {
+            background: var(--chirpui-muted-bg);
+        }
+
+        & .chirpui-combobox__empty {
+            padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+            color: var(--chirpui-text-muted);
+            font-size: var(--chirpui-font-sm);
+        }
+    }
+}
