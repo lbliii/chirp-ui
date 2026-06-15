@@ -26,7 +26,10 @@
     gap: var(--chirpui-spacing-2xs);
     min-inline-size: 0;
     max-inline-size: 100%;
-    min-block-size: calc(var(--_chirpui-segmented-block-size) - var(--chirpui-spacing-xs));
+    /* Option fills the wrapper's content box: block-size token minus the
+       wrapper's 2xs block padding on both sides, so option + padding == the
+       control-height token exactly (the segmented control has no border). */
+    min-block-size: calc(var(--_chirpui-segmented-block-size) - 2 * var(--chirpui-spacing-2xs));
     padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
     font-size: var(--chirpui-ui-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
