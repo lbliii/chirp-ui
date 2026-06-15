@@ -159,6 +159,33 @@ repositioned as a slide-over — there is no second copy of the nav, so
 Above 48rem the triggers are hidden and the regions are normal grid columns —
 **unset `nav_drawer` and nothing changes**, so it is safe to adopt per shell.
 
+**Leading affordance (`topbar_leading`).** Both shell entry points expose an
+always-available, **non-anchor** leading zone before the brand: a
+`topbar_leading` slot in the `app_shell()` macro and a `{% block topbar_leading %}`
+in `app_shell_layout.html` (macros use slots, `{% extends %}` layouts use blocks).
+Put a hamburger / back / menu affordance there. **Do not** put interactive
+content in the `brand` slot/block — it nests inside the brand `<a>` (invalid HTML,
+and the anchor hijacks the click). The built-in `nav_drawer` hamburger (and the
+layout's collapsible `sidebar_toggle`) render in the same wrapper.
+
+```jinja
+{# macro #}
+{% slot topbar_leading %}{{ icon_btn("list", aria_label="Open menu") }}{% end %}
+
+{# inheritance layout #}
+{% block topbar_leading %}{{ icon_btn("list", aria_label="Open menu") }}{% end %}
+```
+
+**Active-link sync.** The canonical active-link sync ships in
+`shell_runtime_script()` (emitted by both entry points), so the macro path now
+gets client active-sync it never had and the layout path no longer carries a
+divergent inline copy. The JS **mirrors the server's per-item `match=`**:
+`sidebar_link` / `navbar_link` emit `data-chirpui-shell-match="exact"|"prefix"`
+only when `match=` is set, and the JS toggles `--active` + `aria-current` using
+the same exact/prefix rules as the server-side `_active`. Links with **no**
+`data-chirpui-shell-match` (explicit `active=` or no match) are
+**server-authoritative** — the JS leaves them untouched.
+
 **Behavior (no framework dependency).** The open/close logic is vanilla JS in
 `shell_runtime_script()` (emitted by both shell entry points) — it does **not**
 require Alpine, so it satisfies "works without Chirp, better with Chirp." Each

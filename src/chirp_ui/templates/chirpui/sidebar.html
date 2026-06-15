@@ -75,6 +75,7 @@
 <a class="chirpui-sidebar__link{{ " chirpui-sidebar__link--active" if _active else "" }}{{ " " ~ cls if cls else "" }}"
    href="{{ href }}" title="{{ label }}"
    {% if _active %}aria-current="page"{% end %}
+   {% if match %} data-chirpui-shell-match="{{ match }}"{% end %}
    {% if boost %}{{ shell_outlet_attrs() }}{% end %}>{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% end %}<span class="chirpui-sidebar__label">{{ label }}</span>{% if badge is not none or _badge_expected %}<span class="chirpui-sidebar__badge{% if badge is none %} chirpui-sidebar__badge--reserved{% end %}{% if badge_loading %} chirpui-sidebar__badge--loading{% end %}"{% if badge_label and badge is not none %} aria-label="{{ badge_label }}"{% elif badge is none %} aria-hidden="true"{% end %}>{% if badge is not none %}{{ badge }}{% end %}</span>{% end %}</a>
 {% end %}
 

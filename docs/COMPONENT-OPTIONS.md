@@ -357,6 +357,22 @@ or another stable id that matches `shell_actions.target`.
 The renderer expects a resolved action object with `primary`, `controls`, and
 `overflow` zones. `overflow` items render as a compact dropdown in the top bar.
 
+When composing the bar in **two regions** (e.g. the topbar plus a mobile drawer
+copy), pass a distinct `id_suffix` (such as `id_suffix="-drawer"`) to the second
+instance so the overflow dropdown id (`<target>-overflow` → `<target>-overflow-drawer`)
+and each per-action menu id (`chirpui-shell-action-<id>` → `chirpui-shell-action-<id>-drawer`)
+stay unique. Default `""` keeps the canonical ids for single-instance shells, so
+every single-region render is byte-identical.
+
+### app_shell leading slot (topbar_leading)
+
+`app_shell()` and `app_shell_layout.html` expose a `topbar_leading` slot (macro)
+/ `{% block topbar_leading %}` (layout) — an always-available **non-anchor**
+leading zone rendered before the brand `<a>`, alongside `brand`, `topbar`, and
+`topbar_end`. Put a hamburger / back / menu affordance there. Never place
+interactive content in the `brand` slot/block: it nests inside the brand anchor
+(invalid HTML, and the anchor hijacks the click). See `docs/patterns/navigation.md`.
+
 ### container
 
 Responsive page-width wrapper. `padding=true` keeps the standard container gutter; set `padding=false` only when a nested surface or blade owns the edge spacing.
@@ -3894,7 +3910,7 @@ App Shell component
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `alpine`, `htmx`
-- **Slots:** `(default)`, `brand`, `context_rail`, `sidebar`, `topbar`, `topbar_end`
+- **Slots:** `(default)`, `brand`, `context_rail`, `sidebar`, `topbar`, `topbar_end`, `topbar_leading`
 - **Modifiers:** `has-context-rail`, `nav-drawer`, `sidebar-collapsed`, `sidebar-collapsible`
 
 | Param | Required | Default |
@@ -8324,6 +8340,7 @@ Shell actions renderer
 |-------|----------|---------|
 | `shell_actions` | yes | — |
 | `cls` | no | (has default) |
+| `id_suffix` | no | (has default) |
 
 ### `shell-section`
 

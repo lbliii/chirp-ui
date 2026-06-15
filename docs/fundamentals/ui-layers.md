@@ -43,6 +43,19 @@ The server then wraps the page with the full shell (including `#page-content` fo
 | `#page-content` | `flex-direction: column; gap: spacing-md` | Swapped on boosted nav (`hx-select`). Direct child of `#main`; not the primary page scrollport in default shell mode. |
 | `#page-content-inner` | `flex-direction: column; gap: spacing-md` | Optional inner wrapper below route-tabs. |
 
+### Region announcer wrappers vs OOB-live regions
+
+`#chirpui-topbar-breadcrumbs` (wraps topbar-center) and `#chirpui-sidebar-nav`
+(wraps the sidebar content) are **aria-live announcer wrappers**
+(`aria-live="polite" aria-atomic="true"`). As of #197 they exist on **both**
+shell entry points — the `app_shell()` macro and `app_shell_layout.html` — so the
+`chirpui-transitions.css` VT/outline-flash suppression rule applies on both paths
+(previously the layout path dangled the rule). They are **not** in
+`SHELL_REGION_IDS`, have **no OOB consumer**, and are **not reset on boosted
+nav** — distinct from the OOB-live route-scoped regions `#chirp-shell-actions`
+and `#chirpui-context-rail`, which the shared `shell_runtime_script()` clears
+before each boosted `#main` swap.
+
 ## Surface chrome (dashboards & data tiles)
 
 Use this vocabulary when building analytics-style UIs inside `#page-content`:

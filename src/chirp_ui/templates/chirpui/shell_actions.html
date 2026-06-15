@@ -7,18 +7,24 @@
 
     kind="form" — POST form with optional HTMX (set hx_post, hx_target, … on ShellAction).
     CSRF: {{ csrf_field() }} when include_csrf is true (Chirp provides csrf_field in globals).
+
+    id_suffix="" — append a per-instance suffix (e.g. "-drawer") to namespace the
+    overflow dropdown id and each menu action id when rendering the bar in two
+    regions (e.g. a topbar copy plus a mobile drawer copy). Default "" preserves
+    the canonical ids, keeping every single-instance render byte-identical.
+    Threaded by shell_actions_bar into shell_action.
 -#}
 {% from "chirpui/button.html" import btn %}
 {% from "chirpui/dropdown_menu.html" import dropdown_menu %}
 {% from "chirpui/shimmer_button.html" import shimmer_button %}
 {% from "chirpui/pulsing_button.html" import pulsing_button %}
 
-{% def shell_action(action) %}
+{% def shell_action(action, id_suffix="") %}
 {% if action.kind == "menu" %}
 {{ dropdown_menu(
     btn(action.label, variant=action.variant | shell_action_btn_variant, size=action.size, type="button", icon=action.icon, disabled=action.disabled),
     items=action.menu_items,
-    id="chirpui-shell-action-" ~ action.id
+    id="chirpui-shell-action-" ~ action.id ~ id_suffix
 ) }}
 {% elif action.kind == "form" %}
 <form method="{{ action.form_method }}" action="{{ action.form_action }}" class="chirpui-shell-action-form"
@@ -50,20 +56,20 @@
 {% end %}
 {% end %}
 
-{% def shell_actions_bar(shell_actions, cls="") %}
+{% def shell_actions_bar(shell_actions, cls="", id_suffix="") %}
 {% if shell_actions and shell_actions.has_items %}
 <div class="chirpui-shell-actions{{ " " ~ cls if cls else "" }}">
     {% if shell_actions.primary.items %}
     <div class="chirpui-shell-actions__group chirpui-shell-actions__group--primary">
         {% for action in shell_actions.primary.items %}
-        {{ shell_action(action) }}
+        {{ shell_action(action, id_suffix=id_suffix) }}
         {% end %}
     </div>
     {% end %}
     {% if shell_actions.controls.items %}
     <div class="chirpui-shell-actions__group chirpui-shell-actions__group--controls">
         {% for action in shell_actions.controls.items %}
-        {{ shell_action(action) }}
+        {{ shell_action(action, id_suffix=id_suffix) }}
         {% end %}
     </div>
     {% end %}
@@ -72,7 +78,7 @@
         {{ dropdown_menu(
             btn("More", variant="ghost", size="sm", type="button", icon="chevron-down"),
             items=shell_actions.overflow.overflow_items,
-            id=shell_actions.target ~ "-overflow"
+            id=shell_actions.target ~ "-overflow" ~ id_suffix
         ) }}
     </div>
     {% end %}

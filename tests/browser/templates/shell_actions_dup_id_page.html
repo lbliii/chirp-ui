@@ -1,0 +1,29 @@
+{#- Gauntlet fixture for shell_actions_bar duplicate-id namespacing (#224).
+
+    A CONSUMER renders the bar in two regions: once via the layout's canonical
+    topbar shell_actions context (default id_suffix="") and a SECOND time in the
+    content block as a simulated mobile-drawer copy with id_suffix="-drawer". The
+    shell_actions stub carries an overflow zone (drives <target>-overflow) AND a
+    kind="menu" action (drives chirpui-shell-action-<id>) so BOTH fixed ids appear
+    in both instances — exactly the duplicate-id condition #224 fixes. With the
+    suffix applied the document has zero duplicate ids. -#}
+{% extends "base.html" %}
+{% block brand %}Shell Actions Dup Id{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path=current_path) %}
+  {% call sidebar_section("Demo") %}
+    {{ sidebar_link("/shell-actions-dup", "Dup Id", match="exact") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/shell_actions.html" import shell_actions_bar %}
+<div id="page-root">
+  <h1 data-testid="main-content">Shell actions dup id</h1>
+  <p>The topbar renders the canonical bar; this is the simulated drawer copy.</p>
+  <div data-testid="drawer-actions">
+    {{ shell_actions_bar(shell_actions, id_suffix="-drawer") }}
+  </div>
+</div>
+{% end %}

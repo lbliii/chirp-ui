@@ -2391,7 +2391,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-app-shell__drawer--open",
             "chirpui-app-shell__drawer-close--floating",
         ),
-        slots=("", "brand", "topbar", "topbar_end", "sidebar", "context_rail"),
+        slots=("", "topbar_leading", "brand", "topbar", "topbar_end", "sidebar", "context_rail"),
         tokens=(
             "--chirpui-sidebar-width",
             "--chirpui-sidebar-collapsed-width",

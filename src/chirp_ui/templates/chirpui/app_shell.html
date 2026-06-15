@@ -6,8 +6,10 @@
     Chirp domain metadata plus an outlet of main so route-aware links and
     boosted responses resolve to this shell consistently.
 
-    Named slots: brand (when brand_slot=true), topbar, topbar_end, sidebar,
-    context_rail (when context_rail=true), default (main content).
+    Named slots: topbar_leading (always — non-anchor leading zone left of the
+    brand, for a hamburger/back/menu affordance), brand (when brand_slot=true),
+    topbar, topbar_end, sidebar, context_rail (when context_rail=true),
+    default (main content).
     For routed apps, wrap the main slot with shell_outlet() so custom shells
     use the same #page-content contract as app_shell_layout.html.
 
@@ -33,6 +35,9 @@
     Usage:
         import app_shell plus shell_outlet
         provide brand / topbar / topbar_end / sidebar slots
+        fill topbar_leading for a non-anchor leading affordance (hamburger/back/
+        menu) — it escapes the brand-anchor trap, so put interactive controls
+        there, never inside the brand slot (which nests inside the brand <a>)
         wrap the main slot with shell_outlet() for routed shells
         enable sidebar_collapsible=true for the resizable shell variant
         enable context_rail=true and fill the context_rail slot for the rail
@@ -62,17 +67,27 @@
 <div class="chirpui-app-shell{{ rail_shell_class }}{{ nav_drawer_class }}{{ " " ~ cls if cls else "" }}">
 {% end %}
     <header class="chirpui-app-shell__topbar{{ topbar_class }}" data-chirpui-shell-topbar>
-        {% if nav_drawer %}
-        {#- Mobile nav affordance: opens the sidebar as an off-canvas slide-over
-            below the breakpoint. Hidden on desktop via CSS; wired by
-            shell_runtime_script(). aria-controls points at the sidebar region. -#}
-        <button type="button" class="chirpui-app-shell__nav-toggle"
-                data-chirpui-shell-drawer-toggle="sidebar"
-                aria-controls="chirpui-app-shell-sidebar" aria-expanded="false"
-                aria-label="Open {{ nav_drawer_label }}">
-            <span class="chirpui-app-shell__nav-toggle-bars" aria-hidden="true"></span>
-        </button>
-        {% end %}
+        {#- Always-available non-anchor leading zone (left of the brand <a>).
+            Authors put a hamburger/back/menu affordance in topbar_leading so
+            interactive content is NOT illegally nested inside the brand anchor
+            (#220). The built-in nav_drawer hamburger renders inside the SAME
+            wrapper so order/spacing stay consistent. The wrapper is always
+            rendered (an empty .chirpui-app-shell__topbar-start is flex-shrink:0
+            and visually inert) for layout-contract parity with the layout. -#}
+        <div class="chirpui-app-shell__topbar-start">
+            {% slot topbar_leading %}
+            {% if nav_drawer %}
+            {#- Mobile nav affordance: opens the sidebar as an off-canvas slide-over
+                below the breakpoint. Hidden on desktop via CSS; wired by
+                shell_runtime_script(). aria-controls points at the sidebar region. -#}
+            <button type="button" class="chirpui-app-shell__nav-toggle"
+                    data-chirpui-shell-drawer-toggle="sidebar"
+                    aria-controls="chirpui-app-shell-sidebar" aria-expanded="false"
+                    aria-label="Open {{ nav_drawer_label }}">
+                <span class="chirpui-app-shell__nav-toggle-bars" aria-hidden="true"></span>
+            </button>
+            {% end %}
+        </div>
         <a href="{{ brand_url }}" class="chirpui-app-shell__brand"{{ route_link_attrs(
             brand_url,
             boost=brand_boost,
