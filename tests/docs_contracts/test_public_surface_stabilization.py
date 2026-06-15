@@ -8,6 +8,45 @@ SHOWCASE = REPO_ROOT / "examples" / "design-system-gap-showcase" / "index.html"
 COMPONENT_TESTS = REPO_ROOT / "tests" / "test_components.py"
 ASCII_TESTS = REPO_ROOT / "tests" / "test_ascii_components.py"
 
+# #203 maturity honesty — proof corpus the stable-composition-wrapper rule reads.
+# Concatenated source of every test we accept as "more than a class-string"
+# proof (a11y attribute / slot-forward render / browser gauntlet). Hygiene
+# assertion (4c) below fails if a named proof test goes missing from this corpus.
+PROOF_TEST_CORPUS_FILES = (
+    REPO_ROOT / "tests" / "test_components.py",
+    REPO_ROOT / "tests" / "test_elbysodic_primitives.py",
+    REPO_ROOT / "tests" / "test_manifest_signatures.py",
+    REPO_ROOT / "tests" / "browser" / "test_gauntlet.py",
+    REPO_ROOT / "tests" / "browser" / "test_compact_header_candidate.py",
+)
+
+# #203 maturity honesty — the justified-allowlist escape (path B) for the
+# structural composes-rule. A `stable` component that composes other registry
+# components (non-empty ``composes``) is a composition wrapper and must carry the
+# same proof collateral as any stable promotion. Each entry names the asserting
+# proof test (a11y attribute / slot-forward render) that defends it. ``cta-band``
+# is intentionally ABSENT — it is a documented "Promote to stable" doc row
+# (path A) whose collateral the existing
+# ``test_promoted_public_surface_rows_have_manifest_test_and_showcase_proof``
+# already enforces. See docs/safety/public-surface-stabilization.md
+# § Stable Composition Wrappers.
+STABLE_COMPOSERS_WITH_PROOF: dict[str, str] = {
+    "document-header": "test_document_header_yielded_actions_slot",
+    "empty-panel-state": "test_empty_panel_state_actions_slot",
+    "file-tree": "test_file_tree_forwards_branch_mode_to_nav_tree",
+    "saved-view-strip": "test_saved_view_strip_renders_selected_views",
+    "scope-switcher": "test_scope_switcher_renders_dropdown_scope_control",
+}
+
+
+def _promoted_to_stable_rows(text: str) -> list[str]:
+    """Component names from the doc's ``| Promote to stable |`` rows."""
+    return [
+        line.split("|")[1].strip().strip("`")
+        for line in text.splitlines()
+        if "| Promote to stable |" in line and line.startswith("| `")
+    ]
+
 
 def test_public_surface_stabilization_doc_records_current_slice() -> None:
     text = DOC.read_text(encoding="utf-8")
@@ -159,11 +198,7 @@ def test_promoted_public_surface_rows_have_manifest_test_and_showcase_proof() ->
     tests = COMPONENT_TESTS.read_text(encoding="utf-8") + ASCII_TESTS.read_text(encoding="utf-8")
     showcase = SHOWCASE.read_text(encoding="utf-8")
     manifest = build_manifest()["components"]
-    promoted = [
-        line.split("|")[1].strip().strip("`")
-        for line in text.splitlines()
-        if "| Promote to stable |" in line and line.startswith("| `")
-    ]
+    promoted = _promoted_to_stable_rows(text)
 
     assert promoted
     for name in promoted:
@@ -233,3 +268,79 @@ def test_public_surface_closure_batches_cover_open_decision_families() -> None:
         "pattern-role and non-preferred",
     ]:
         assert proof in section
+
+
+def test_no_thin_composition_wrapper_is_stable_without_proof() -> None:
+    """#203 maturity honesty — a stable composition wrapper must carry proof.
+
+    The objective "thin composition-wrapper" signal is the first-class
+    ``composes`` descriptor field (manifest-projected, round-trip-pinned by
+    ``test_manifest.py``). Any component that ships ``maturity=stable`` while
+    composing other registry components must be proof-backed via EITHER:
+
+    * (A) a documented ``| Promote to stable |`` row in this doc — whose
+      manifest+render+showcase collateral
+      ``test_promoted_public_surface_rows_have_manifest_test_and_showcase_proof``
+      already enforces; OR
+    * (B) a ``STABLE_COMPOSERS_WITH_PROOF`` allowlist entry naming an asserting
+      proof test (a11y attribute / slot-forward render / browser gauntlet).
+
+    This catches the CLASS: ``data_table`` shipped ``stable`` with
+    ``composes=("filter-row","table","pagination")`` and neither (A) nor (B)
+    before #200 demoted it — this test would have flagged it as a violator. It
+    provably does NOT fire on complete/low-feature primitives
+    (``table``/``table-wrap``/``calendar``/``bar_chart``/``donut``) or the ASCII
+    set, all of which have empty ``composes``.
+    """
+    text = DOC.read_text(encoding="utf-8")
+    components = build_manifest()["components"]
+    promoted = set(_promoted_to_stable_rows(text))
+
+    stable_composers = sorted(
+        name
+        for name, entry in components.items()
+        if entry["maturity"] == "stable" and entry["composes"]
+    )
+
+    # (1)-(3): every stable composer is path A (doc row) OR path B (allowlist).
+    violators = [
+        name
+        for name in stable_composers
+        if name not in promoted and name not in STABLE_COMPOSERS_WITH_PROOF
+    ]
+    assert not violators, (
+        "stable component(s) compose other registry components but carry no "
+        "promotion proof: "
+        + ", ".join(violators)
+        + ". Fix each by adding a `Promote to stable` doc row with proof, adding "
+        "a STABLE_COMPOSERS_WITH_PROOF allowlist entry naming its proof test, or "
+        "demoting it to experimental."
+    )
+
+    # (4a) no stale allowlist keys — every entry is still stable-with-composes.
+    stale_keys = [name for name in STABLE_COMPOSERS_WITH_PROOF if name not in stable_composers]
+    assert not stale_keys, (
+        "STABLE_COMPOSERS_WITH_PROOF has stale entries no longer stable-with-composes: "
+        + ", ".join(stale_keys)
+    )
+
+    # (4b) no overlap — a stable composer has exactly one canonical proof source.
+    overlap = sorted(set(STABLE_COMPOSERS_WITH_PROOF) & promoted)
+    assert not overlap, (
+        "stable composer(s) are BOTH a `Promote to stable` doc row and an "
+        "allowlist entry; keep exactly one proof source per component: " + ", ".join(overlap)
+    )
+
+    # (4c) each named proof-test identifier still exists in the proof corpus, so
+    # deleting the proof breaks this gate (the allowlist cannot rot into a hollow
+    # justification).
+    corpus = "".join(path.read_text(encoding="utf-8") for path in PROOF_TEST_CORPUS_FILES)
+    missing_proof = [
+        f"{name} -> {test_id}"
+        for name, test_id in STABLE_COMPOSERS_WITH_PROOF.items()
+        if test_id not in corpus
+    ]
+    assert not missing_proof, (
+        "STABLE_COMPOSERS_WITH_PROOF names proof test(s) absent from the proof corpus: "
+        + ", ".join(missing_proof)
+    )
