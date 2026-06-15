@@ -5262,6 +5262,7 @@ Combobox / autocomplete
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `alpine`
+- **Modifiers:** `multiple`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5270,6 +5271,7 @@ Combobox / autocomplete
 | `label` | no | (has default) |
 | `value` | no | (has default) |
 | `placeholder` | no | (has default) |
+| `multiple` | no | (has default) |
 | `id` | no | (has default) |
 | `cls` | no | (has default) |
 

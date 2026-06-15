@@ -25,5 +25,13 @@
         {"label": "Mango", "value": "mango"},
     ]) }}
   </div>
+  <div data-testid="combobox-multi-container">
+    {{ combobox(name="tags", label="Tags", multiple=true, placeholder="Add tags…", options=[
+        {"label": "Design", "value": "design"},
+        {"label": "Docs", "value": "docs"},
+        {"label": "Backend", "value": "backend"},
+        {"label": "Frontend", "value": "frontend"},
+    ]) }}
+  </div>
 </div>
 {% end %}
