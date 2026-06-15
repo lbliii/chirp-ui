@@ -8852,6 +8852,17 @@ class TestCombobox:
         for i in range(3):
             assert f'id="chirpui-combobox-country-opt-{i}"' in html
 
+    def test_combobox_multiple_renders_token_scaffold(self, env: Environment) -> None:
+        html = self._render(env, extra=", multiple=true")
+        assert "chirpui-combobox--multiple" in html
+        assert 'data-multiple="true"' in html
+        assert "chirpui-combobox__control" in html
+        assert "chirpui-combobox__tokens" in html
+        assert 'x-for="t in selected"' in html
+        assert "chirpui-combobox__token-remove" in html
+        # Multi-select submits repeated hidden inputs, not the single-value input.
+        assert 'x-ref="value"' not in html
+
 
 class TestContextMenu:
     def _render(self, env: Environment, *, items: str, label: str = "Row actions") -> str:

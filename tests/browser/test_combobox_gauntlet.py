@@ -201,3 +201,97 @@ async def test_axe_no_serious_or_critical_violations(page, base_url):
         for v in serious
     )
     assert not serious, "axe serious/critical violations: " + detail
+
+
+# ── Multi-select (token-pill) mode (#201) ───────────────────────────
+
+M_CT = "[data-testid='combobox-multi-container']"
+M_INPUT = M_CT + " .chirpui-combobox__input"
+M_LIST = M_CT + " .chirpui-combobox__list"
+M_OPTION = M_CT + " .chirpui-combobox__option"
+M_TOKEN = M_CT + " .chirpui-combobox__token"
+M_HIDDEN = M_CT + " input[type=hidden][name=tags]"
+
+
+async def _open_multi(page):
+    await page.locator(M_INPUT).click()
+    await expect(page.locator(M_LIST)).to_be_visible()
+    await page.wait_for_function(
+        '() => { const l = document.querySelector("' + M_LIST + '");'
+        " return !!l && parseFloat(getComputedStyle(l).opacity) >= 0.99; }",
+        timeout=5000,
+    )
+
+
+async def _multi_visible_values(page):
+    return await page.eval_on_selector_all(
+        M_OPTION,
+        "els => els.filter(e => e.offsetParent !== null).map(e => e.dataset.value)",
+    )
+
+
+async def test_multi_select_adds_pills_and_hidden_inputs(page, base_url):
+    await _open_page(page, base_url)
+    await _open_multi(page)
+    await page.locator(M_OPTION, has_text="Design").click()
+    await page.locator(M_OPTION, has_text="Docs").click()
+    await expect(page.locator(M_TOKEN)).to_have_count(2)
+    # Each selected value submits as a repeated hidden `tags` input.
+    vals = await page.eval_on_selector_all(M_HIDDEN, "els => els.map(e => e.value)")
+    assert sorted(vals) == ["design", "docs"]
+    # Selected options drop out of the list.
+    visible = await _multi_visible_values(page)
+    assert "design" not in visible
+    assert "docs" not in visible
+
+
+async def test_multi_remove_pill_restores_option(page, base_url):
+    await _open_page(page, base_url)
+    await _open_multi(page)
+    await page.locator(M_OPTION, has_text="Design").click()
+    await page.locator(M_OPTION, has_text="Docs").click()
+    await expect(page.locator(M_TOKEN)).to_have_count(2)
+    # Remove the Design pill via its remove button.
+    await (
+        page.locator(M_TOKEN, has_text="Design").locator(".chirpui-combobox__token-remove").click()
+    )
+    await expect(page.locator(M_TOKEN)).to_have_count(1)
+    vals = await page.eval_on_selector_all(M_HIDDEN, "els => els.map(e => e.value)")
+    assert vals == ["docs"]
+    # Design returns to the list.
+    await page.locator(M_INPUT).click()
+    assert "design" in await _multi_visible_values(page)
+
+
+async def test_multi_backspace_removes_last_pill(page, base_url):
+    await _open_page(page, base_url)
+    await _open_multi(page)
+    await page.locator(M_OPTION, has_text="Design").click()
+    await expect(page.locator(M_TOKEN)).to_have_count(1)
+    inp = page.locator(M_INPUT)
+    await inp.click()  # focus the (empty) input
+    await inp.press("Backspace")
+    await expect(page.locator(M_TOKEN)).to_have_count(0)
+
+
+async def test_multi_axe_no_serious_or_critical_violations(page, base_url):
+    await _open_page(page, base_url)
+    await _open_multi(page)
+    await page.locator(M_OPTION, has_text="Design").click()  # render a pill
+    await expect(page.locator(M_TOKEN)).to_have_count(1)
+    try:
+        await page.add_script_tag(url=AXE_CDN)
+    except Exception:
+        pytest.skip("axe-core CDN unreachable in this harness")
+    await page.wait_for_function("() => window.axe", timeout=5000)
+    results = await page.evaluate(
+        "async () => await window.axe.run("
+        "\"[data-testid='combobox-multi-container']\", "
+        "{ runOnly: ['wcag2a','wcag2aa','wcag21a','wcag21aa'] })"
+    )
+    serious = [v for v in results["violations"] if v["impact"] in ("serious", "critical")]
+    detail = "; ".join(
+        v["id"] + " -> " + ", ".join(n.get("target", [""])[0] for n in v.get("nodes", []))
+        for v in serious
+    )
+    assert not serious, "axe serious/critical violations: " + detail

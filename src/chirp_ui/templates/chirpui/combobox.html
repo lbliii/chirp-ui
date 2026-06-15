@@ -2,15 +2,21 @@
     Typeahead text input over a filtered role="listbox" of suggestions — the
     WAI-ARIA combobox pattern with aria-activedescendant. Typing filters the
     options client-side; ArrowDown/ArrowUp rove the visible options, Enter selects
-    the active one, Escape closes, click-outside closes. Selecting fills the
-    visible input with the option label, writes the option value to a hidden input
-    (submitted under `name`), and dispatches `chirpui:combobox-selected`
-    {value, label}.
+    the active one, Escape closes, click-outside closes.
 
-    Requires Alpine.js. Options are server-rendered, so with JavaScript off the
-    field degrades to a plain text input (the hidden value still submits the
-    server-selected `value`). Suggestions are a fixed in-DOM list filtered on the
-    client — pair with a server round-trip for large/remote result sets later.
+    Single-select (default): selecting fills the visible input with the option
+    label, writes the option value to a hidden input (submitted under `name`), and
+    dispatches `chirpui:combobox-selected` {value, label}.
+
+    Multi-select (`multiple=true`): selecting adds a removable pill, keeps the list
+    open, and clears the query; each selected value submits as a repeated hidden
+    `name` input. Backspace on the empty input removes the last pill; the remove
+    button removes a specific one; already-selected options drop out of the list.
+    Multi-select requires JavaScript (the pills/values are Alpine-managed); v1
+    starts empty (no pre-selected values).
+
+    Requires Alpine.js. In single-select, options are server-rendered so the field
+    degrades to a plain text input with JS off (the hidden value still submits).
 
     Options: list of {label, value?} dicts (value defaults to label).
 
@@ -21,18 +27,33 @@
                     placeholder="Search countries…", value="us",
                     options=[{"label": "Canada", "value": "ca"},
                              {"label": "United States", "value": "us"}]) }}
+
+        {{ combobox(name="tags", label="Tags", multiple=true,
+                    placeholder="Add tags…", options=[...]) }}
 -#}
 
-{% def combobox(name, options, label=none, value="", placeholder="", id=none, cls="") %}
+{% def combobox(name, options, label=none, value="", placeholder="", multiple=false, id=none, cls="") %}
 {% set _cid = id or ("chirpui-combobox-" ~ name) %}
-{% set _sel = [o.get("label", o.get("value", "")) for o in options if value and (o.get("value", o.get("label", "")) | string) == (value | string)] %}
+{% set _sel = [o.get("label", o.get("value", "")) for o in options if not multiple and value and (o.get("value", o.get("label", "")) | string) == (value | string)] %}
 {% set _selected_label = (_sel[0] if _sel else "") %}
-<div class="chirpui-combobox{{ " " ~ cls if cls else "" }}" id="{{ _cid }}"
+<div class="chirpui-combobox{{ " chirpui-combobox--multiple" if multiple else "" }}{{ " " ~ cls if cls else "" }}"
+     id="{{ _cid }}"
      x-data="chirpuiCombobox()"
+     data-multiple="{{ "true" if multiple else "false" }}"
      @click.outside="close()">
     {% if label %}
     <label class="chirpui-combobox__label" for="{{ _cid }}-input">{{ label }}</label>
     {% end %}
+    {% if multiple %}<div class="chirpui-combobox__control">
+        <div class="chirpui-combobox__tokens" x-show="selected.length" x-cloak>
+            <template x-for="t in selected" :key="t.value">
+                <span class="chirpui-combobox__token">
+                    <span class="chirpui-combobox__token-label" x-text="t.label"></span>
+                    <button type="button" class="chirpui-combobox__token-remove"
+                            :aria-label="'Remove ' + t.label" @click="removeToken(t.value)">&times;</button>
+                </span>
+            </template>
+        </div>{% end %}
     <input type="text" class="chirpui-combobox__input" id="{{ _cid }}-input"
            x-ref="input"
            role="combobox" aria-autocomplete="list" autocomplete="off"
@@ -46,8 +67,15 @@
            @keydown.down.prevent="move(1)"
            @keydown.up.prevent="move(-1)"
            @keydown.enter.prevent="selectActive()"
+           @keydown.backspace="onBackspace()"
            @keydown.escape.prevent.stop="close()">
+    {% if multiple %}</div>
+    <template x-for="t in selected" :key="'h-' + t.value">
+        <input type="hidden" name="{{ name }}" :value="t.value">
+    </template>
+    {% else %}
     <input type="hidden" name="{{ name }}" x-ref="value" value="{{ value }}">
+    {% end %}
     <ul class="chirpui-combobox__list" id="{{ _cid }}-list" role="listbox"
         aria-label="{{ label or name }}"
         x-show="open" x-cloak x-transition>
@@ -56,7 +84,7 @@
         {% set _ol = opt.get("label", _ov) %}
         <li class="chirpui-combobox__option" id="{{ _cid }}-opt-{{ loop.index0 }}"
             role="option" data-value="{{ _ov }}" data-label="{{ _ol }}"
-            x-show="matches($el.dataset.label)"
+            x-show="matches($el.dataset.label, $el.dataset.value)"
             :aria-selected="activeId === $el.id ? 'true' : 'false'"
             :class="{ 'chirpui-combobox__option--active': activeId === $el.id }"
             @click="choose($el)"

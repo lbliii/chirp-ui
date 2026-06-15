@@ -439,8 +439,11 @@
             open: false,
             query: "",
             activeId: "",
+            multiple: false,
+            selected: [],
             _suppressOpen: false,
             init: function () {
+                this.multiple = this.$root.dataset.multiple === "true";
                 this.query = this.$refs.input.value || "";
             },
             _options: function () {
@@ -448,14 +451,30 @@
                     this.$root.querySelectorAll(".chirpui-combobox__option")
                 );
             },
+            _isSelected: function (value) {
+                for (var i = 0; i < this.selected.length; i++) {
+                    if (this.selected[i].value === value) {
+                        return true;
+                    }
+                }
+                return false;
+            },
             _visible: function () {
                 var q = this.query.trim().toLowerCase();
+                var self = this;
                 return this._options().filter(function (o) {
+                    if (self.multiple && self._isSelected(o.dataset.value || "")) {
+                        return false;
+                    }
                     var label = (o.dataset.label || "").toLowerCase();
                     return !q || label.indexOf(q) !== -1;
                 });
             },
-            matches: function (label) {
+            matches: function (label, value) {
+                // Already-selected options drop out of the multi-select list.
+                if (this.multiple && this._isSelected(value)) {
+                    return false;
+                }
                 var q = this.query.trim().toLowerCase();
                 return !q || (label || "").toLowerCase().indexOf(q) !== -1;
             },
@@ -527,10 +546,26 @@
                     return;
                 }
                 var label = el.dataset.label || "";
+                var value = el.dataset.value || "";
+                if (this.multiple) {
+                    this.addToken({ value: value, label: label });
+                    // Clear the query and keep the list open for the next pick;
+                    // the chosen option drops out of the list (now selected).
+                    this.$refs.input.value = "";
+                    this.query = "";
+                    this.activeId = "";
+                    this.open = true;
+                    this.$refs.input.focus();
+                    this.$dispatch("chirpui:combobox-selected", {
+                        value: value,
+                        label: label,
+                    });
+                    return;
+                }
                 this.$refs.input.value = label;
                 this.query = label;
                 if (this.$refs.value) {
-                    this.$refs.value.value = el.dataset.value || "";
+                    this.$refs.value.value = value;
                 }
                 this.open = false;
                 this.activeId = "";
@@ -545,9 +580,31 @@
                     }.bind(this)
                 );
                 this.$dispatch("chirpui:combobox-selected", {
-                    value: el.dataset.value || "",
+                    value: value,
                     label: label,
                 });
+            },
+            addToken: function (token) {
+                if (!this._isSelected(token.value)) {
+                    this.selected.push(token);
+                }
+            },
+            removeToken: function (value) {
+                this.selected = this.selected.filter(function (t) {
+                    return t.value !== value;
+                });
+                this.$refs.input.focus();
+            },
+            removeLast: function () {
+                if (this.selected.length) {
+                    this.selected.pop();
+                }
+            },
+            onBackspace: function () {
+                // Backspace on the empty input removes the last pill (multi only).
+                if (this.multiple && !this.$refs.input.value && this.selected.length) {
+                    this.removeLast();
+                }
             },
         };
     });
