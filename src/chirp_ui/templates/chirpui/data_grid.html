@@ -65,7 +65,14 @@
 <th class="chirpui-table__th{{ " chirpui-table__th--" ~ _align if _align else "" }}" scope="col" aria-sort="{{ col.aria_sort }}">
     <button type="button" class="chirpui-table__sort"
             {% if selection_id %}id="{{ selection_id }}-sort-{{ col.key }}"{% end %}
-            {{ build_hx_attrs(hx_get=col.next_url, hx_target=hx_target, hx_swap="outerHTML") | html_attrs }}>
+            {#- Boost-safe sort: select the grid's OWN region from the response
+                (hx-select = the swap target = the grid id) and stop inheriting the
+                shell's hx-select="#page-content". Without this, inside a boosted
+                app_shell the sort inherits #page-content and outerHTML-swaps the
+                entire page (chrome + heading) into the grid, nesting a fresh copy
+                on every click. Works whether the route returns the grid fragment
+                or a full page (mirrors the safe-by-default form pattern). -#}
+            {{ build_hx_attrs(hx_get=col.next_url, hx_target=hx_target, hx_swap="outerHTML", hx_select=hx_target, hx_disinherit="hx-select") | html_attrs }}>
         <span class="chirpui-table__sort-label">{{ col.label }}</span>
         <span class="chirpui-table__sort-indicator" aria-hidden="true"></span>
     </button>

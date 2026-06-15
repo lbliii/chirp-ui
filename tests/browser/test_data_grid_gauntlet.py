@@ -107,6 +107,38 @@ async def test_sort_a_fresh_column_resets_previous_to_none(page, base_url):
     assert len(active) == 1
 
 
+async def test_sort_does_not_duplicate_page_chrome(page, base_url):
+    """A boost-inherited hx-select="#page-content" makes the sort outerHTML-swap
+    the whole page into the grid, nesting a fresh #page-content/#page-root/heading
+    on every click. The sort button must select its OWN grid region and disinherit.
+    aria-sort alone (the prior assertions) survives the nesting, so it cannot
+    catch this — assert single-instance structure + zero duplicate ids instead.
+    """
+    await _open(page, base_url)
+    for col in ("members-sort-name", "members-sort-status", "members-sort-name"):
+        await page.locator(f"#{col}").click()
+        await wait_for_htmx(page)
+    counts = await page.evaluate(
+        "() => ({"
+        "  grids: document.querySelectorAll('#members-grid').length,"
+        "  bodies: document.querySelectorAll('#members-grid-body').length,"
+        "  pageContent: document.querySelectorAll('#page-content').length,"
+        "  heading: document.querySelectorAll('[data-testid=\"main-content\"]').length"
+        "})"
+    )
+    assert counts["grids"] == 1, counts
+    assert counts["bodies"] == 1, counts
+    assert counts["heading"] == 1, counts
+    assert counts["pageContent"] <= 1, counts
+    duplicate_ids = await page.evaluate(
+        "() => { const ids = [...document.querySelectorAll('[id]')].map(e => e.id).filter(Boolean);"
+        " const seen = new Set(), dup = new Set();"
+        " ids.forEach(i => { if (seen.has(i)) dup.add(i); seen.add(i); });"
+        " return [...dup]; }"
+    )
+    assert duplicate_ids == [], f"duplicate ids after sorting: {duplicate_ids}"
+
+
 async def test_focus_retained_on_sort_button_after_swap(page, base_url):
     await _open(page, base_url)
     btn = page.locator("#members-sort-status")
