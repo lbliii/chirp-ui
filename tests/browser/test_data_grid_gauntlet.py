@@ -11,6 +11,7 @@ Proves the a11y acceptance criteria against a real use_chirp_ui app:
 - sticky header pinned on vertical scroll; sticky first column pinned on
   horizontal scroll (real thead, solid pinned background, corner stacks top)
 - load-more appends real <tr> rows with no duplicate ids; selection preserved
+- load-more to exhaustion refreshes/removes the button via OOB sentinel (#231)
 - no document horizontal overflow at phone + desktop
 - axe scan: no serious/critical violations
 """
@@ -311,6 +312,36 @@ async def test_select_all_then_load_more_recomputes_to_indeterminate(page, base_
     assert await select_all.evaluate("el => el.indeterminate") is True
     count_text = await page.locator("#members-grid .chirpui-selection-bar__count").inner_text()
     assert str(rows_before) in count_text
+
+
+async def test_load_more_to_exhaustion_removes_button(page, base_url):
+    # #231: the load-more sentinel must refresh/remove, not linger. With 6 records
+    # and page size 3, the initial page shows 3 rows + the button; the load-more
+    # fetch appends rows 4-6 and — because the server now reports has_more=false —
+    # the OOB sentinel empties the #members-load-more container, removing the
+    # button. Clicking load-more to exhaustion must end with NO button and all 6
+    # rows present (the bare load-more without OOB lied: the button persisted and
+    # re-clicking it was a silent no-op fetching past the end).
+    await _open(page, base_url)
+    load_more = page.locator("#members-grid .chirpui-data-grid__load-more-btn")
+    await expect(load_more).to_be_visible()
+    clicks = 0
+    while await load_more.count() > 0:
+        await load_more.click()
+        await wait_for_htmx(page)
+        await page.wait_for_timeout(50)
+        clicks += 1
+        assert clicks <= 5, "load-more never exhausted (button never removed) — #231 regression"
+    # Button is gone (the OOB sentinel emptied its container).
+    assert await load_more.count() == 0
+    # Every record is present exactly once — no missing tail, no duplicate ids.
+    rows = await page.locator("#members-grid tbody tr").count()
+    assert rows == 6, f"expected all 6 records after exhausting load-more, got {rows}"
+    values = await page.eval_on_selector_all(
+        "#members-grid .chirpui-table__select-row",
+        "els => els.map(e => e.value)",
+    )
+    assert len(values) == len(set(values)) == 6
 
 
 async def test_axe_no_serious_or_critical_violations(page, base_url):

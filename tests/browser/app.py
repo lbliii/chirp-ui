@@ -951,6 +951,8 @@ def create_app() -> App:
             row_ids=ctx["row_ids"],
             row_labels=ctx["row_labels"],
             selection=ctx["selection"],
+            has_more=ctx["has_more"],
+            load_more_url=ctx["load_more_url"],
         )
 
     @app.route("/application-chrome-gauntlet")
