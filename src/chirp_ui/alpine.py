@@ -124,6 +124,10 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
         factory="chirpuiCommandPalette",
         macros=("command_palette",),
     ),
+    "chirpuiDatePicker": AlpineRequirement(
+        factory="chirpuiDatePicker",
+        macros=("date_picker",),
+    ),
 }
 
 

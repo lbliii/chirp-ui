@@ -5678,6 +5678,33 @@ Data Table
 | `cls` | no | (has default) |
 | `attrs_map` | no | (has default) |
 
+### `date-picker`
+
+Date / range picker
+
+- **Template:** `chirpui/date_picker.html`
+- **Macro:** `date_picker`
+- **Category:** `form`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+- **Modifiers:** `range`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `label` | no | (has default) |
+| `value` | no | (has default) |
+| `range` | no | (has default) |
+| `end_name` | no | (has default) |
+| `end_value` | no | (has default) |
+| `min` | no | (has default) |
+| `max` | no | (has default) |
+| `placeholder` | no | (has default) |
+| `id` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `description_list`
 
 Description list component

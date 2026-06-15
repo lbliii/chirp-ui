@@ -1,0 +1,101 @@
+{#- chirp-ui: Date / range picker
+    A form control: a readonly display input that opens a calendar popover for
+    picking a single date or a date range, fully client-rendered (month nav has no
+    server round-trip). The canonical value is an ISO `YYYY-MM-DD` string in a
+    hidden input submitted under `name` (range adds a second hidden input under
+    `end_name`, defaulting to `{name}_end`).
+
+    Keyboard: the popover is a `role="dialog"`; the grid is a `role="grid"` of
+    `role="gridcell"` day buttons with roving tabindex — Arrow keys move a day
+    (Left/Right ±1, Up/Down ±7), Home/End jump to week start/end, PageUp/PageDown
+    change month, Enter/Space pick, Escape closes and returns focus to the input.
+    `min`/`max` (ISO) disable out-of-range days. Requires Alpine.js; v1 is
+    Sunday-first, English labels (localization/first-day config is a follow-up).
+
+    Usage:
+        from "chirpui/date_picker.html" import date_picker
+
+        {{ date_picker(name="due", label="Due date", value="2025-01-15") }}
+        {{ date_picker(name="span", label="Date range", range=true,
+                       min="2025-01-01", max="2025-12-31") }}
+-#}
+
+{% def date_picker(name, label=none, value="", range=false, end_name=none, end_value="",
+                   min="", max="", placeholder="Select a date", id=none, cls="") %}
+{% set _pid = id or ("chirpui-date-picker-" ~ name) %}
+{% set _end_name = end_name or (name ~ "_end") %}
+<div class="chirpui-date-picker{{ " chirpui-date-picker--range" if range else "" }}{{ " " ~ cls if cls else "" }}"
+     id="{{ _pid }}"
+     x-data="chirpuiDatePicker()"
+     data-range="{{ "true" if range else "false" }}"
+     data-value="{{ value }}" data-end-value="{{ end_value }}"
+     data-min="{{ min }}" data-max="{{ max }}"
+     @keydown.escape.prevent.stop="close()"
+     @click.outside="close()"
+     @focusin.window="$refs.popover && !$root.contains($event.target) && close()">
+    {% if label %}
+    <label class="chirpui-date-picker__label" for="{{ _pid }}-input">{{ label }}</label>
+    {% end %}
+    <div class="chirpui-date-picker__control">
+        <span class="chirpui-date-picker__icon" aria-hidden="true">▦</span>
+        <input type="text" class="chirpui-date-picker__input" id="{{ _pid }}-input"
+               x-ref="input" readonly
+               role="combobox" aria-haspopup="dialog" :aria-expanded="open ? 'true' : 'false'"
+               aria-controls="{{ _pid }}-popover"
+               :value="displayValue" placeholder="{{ placeholder }}"
+               @click="toggle()"
+               @keydown.enter.prevent="show()"
+               @keydown.down.prevent="show()">
+    </div>
+    <input type="hidden" name="{{ name }}" x-ref="value" value="{{ value }}">
+    {% if range %}<input type="hidden" name="{{ _end_name }}" x-ref="endValueInput" value="{{ end_value }}">{% end %}
+    <div class="chirpui-date-picker__popover" id="{{ _pid }}-popover" x-ref="popover"
+         role="dialog" aria-modal="false" :aria-label="dialogLabel"
+         x-show="open" x-cloak x-transition>
+        <div class="chirpui-date-picker__header">
+            <button type="button" class="chirpui-date-picker__nav" aria-label="Previous month"
+                    @click="prevMonth()">‹</button>
+            <span class="chirpui-date-picker__month" aria-live="polite" x-text="monthLabel"></span>
+            <button type="button" class="chirpui-date-picker__nav" aria-label="Next month"
+                    @click="nextMonth()">›</button>
+        </div>
+        <div class="chirpui-date-picker__grid" role="grid" aria-label="Calendar"
+             {% if range %}aria-multiselectable="true"{% end %}
+             @keydown="onGridKey($event)">
+            <div class="chirpui-date-picker__weekdays" role="row">
+                <template x-for="wd in weekdays" :key="wd.short">
+                    <span class="chirpui-date-picker__weekday" role="columnheader"
+                          :aria-label="wd.long" x-text="wd.short"></span>
+                </template>
+            </div>
+            <template x-for="(week, wi) in weeks" :key="wi">
+                <div class="chirpui-date-picker__week" role="row">
+                    <template x-for="d in week" :key="d.iso">
+                        <button type="button" class="chirpui-date-picker__day" role="gridcell"
+                                :data-iso="d.iso"
+                                :class="{
+                                    'chirpui-date-picker__day--outside': d.outside,
+                                    'chirpui-date-picker__day--today': d.today,
+                                    'chirpui-date-picker__day--selected': d.selected,
+                                    'chirpui-date-picker__day--in-range': d.inRange,
+                                    'chirpui-date-picker__day--range-end': d.rangeEnd
+                                }"
+                                :aria-selected="d.selected ? 'true' : 'false'"
+                                :aria-current="d.today ? 'date' : false"
+                                :aria-label="d.label"
+                                :tabindex="d.iso === focusIso ? 0 : -1"
+                                :disabled="d.disabled"
+                                @click="pick(d)">
+                            <span x-text="d.day"></span>
+                        </button>
+                    </template>
+                </div>
+            </template>
+        </div>
+        <div class="chirpui-date-picker__footer">
+            <button type="button" class="chirpui-date-picker__today" @click="goToday()">Today</button>
+            <button type="button" class="chirpui-date-picker__clear" @click="clear()">Clear</button>
+        </div>
+    </div>
+</div>
+{% end %}

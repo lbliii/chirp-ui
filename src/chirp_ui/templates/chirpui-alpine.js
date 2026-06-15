@@ -701,6 +701,407 @@
         };
     });
 
+    // Date / range picker. Fully client-rendered calendar popover over a readonly
+    // display input; the canonical value is an ISO YYYY-MM-DD string in a hidden
+    // input. ISO strings compare lexicographically == chronologically, which is
+    // used throughout for bounds and range tests. All dates are built local
+    // (new Date(y, m, d)) and formatted to ISO by local parts to avoid the UTC
+    // shift of toISOString().
+    register("chirpuiDatePicker", function () {
+        function pad(n) {
+            return (n < 10 ? "0" : "") + n;
+        }
+        return {
+            open: false,
+            range: false,
+            min: "",
+            max: "",
+            value: "",
+            endValue: "",
+            viewYear: 1970,
+            viewMonth: 0,
+            focusIso: "",
+            weekdays: [],
+            init: function () {
+                var ds = this.$root.dataset;
+                this.range = ds.range === "true";
+                this.min = ds.min || "";
+                this.max = ds.max || "";
+                if (this.min && this.max && this.min > this.max) {
+                    console.warn(
+                        "chirp-ui date_picker: min (" +
+                            this.min +
+                            ") is after max (" +
+                            this.max +
+                            "); ignoring both bounds."
+                    );
+                    this.min = "";
+                    this.max = "";
+                }
+                this.value = ds.value || "";
+                this.endValue = ds.endValue || "";
+                this.weekdays = this._buildWeekdays();
+                // Open to the selected month, else to today clamped into [min,max]
+                // (never to a month where every day is disabled).
+                var startIso = this.value || this._clampIso(this._iso(this._today()));
+                var anchor = this._parse(startIso);
+                this.viewYear = anchor.getFullYear();
+                this.viewMonth = anchor.getMonth();
+                this.focusIso = startIso;
+            },
+            _clampIso: function (iso) {
+                if (this.min && iso < this.min) {
+                    return this.min;
+                }
+                if (this.max && iso > this.max) {
+                    return this.max;
+                }
+                return iso;
+            },
+            _today: function () {
+                return new Date();
+            },
+            _iso: function (date) {
+                // Zero-pad the year too, so ISO strings stay lexicographically
+                // == chronologically ordered (used for bounds/range compares).
+                return (
+                    String(date.getFullYear()).padStart(4, "0") +
+                    "-" +
+                    pad(date.getMonth() + 1) +
+                    "-" +
+                    pad(date.getDate())
+                );
+            },
+            _parse: function (iso) {
+                if (!iso) {
+                    return null;
+                }
+                var parts = String(iso).split("-");
+                if (parts.length !== 3) {
+                    return null;
+                }
+                var y = Number(parts[0]);
+                var m = Number(parts[1]);
+                var d = Number(parts[2]);
+                if (!y || !m || !d) {
+                    return null;
+                }
+                var dt = new Date(y, m - 1, d);
+                // new Date(y,…) maps years 0–99 to 1900–1999; undo that.
+                if (y >= 0 && y < 100) {
+                    dt.setFullYear(y);
+                }
+                return dt;
+            },
+            _dow: function (iso) {
+                var d = this._parse(iso);
+                return d ? d.getDay() : 0;
+            },
+            _addDays: function (iso, n) {
+                var d = this._parse(iso) || this._today();
+                return this._iso(new Date(d.getFullYear(), d.getMonth(), d.getDate() + n));
+            },
+            _addMonths: function (iso, n) {
+                var d = this._parse(iso) || this._today();
+                var target = new Date(d.getFullYear(), d.getMonth() + n, 1);
+                var lastDay = new Date(
+                    target.getFullYear(),
+                    target.getMonth() + 1,
+                    0
+                ).getDate();
+                return this._iso(
+                    new Date(
+                        target.getFullYear(),
+                        target.getMonth(),
+                        Math.min(d.getDate(), lastDay)
+                    )
+                );
+            },
+            _inBounds: function (iso) {
+                if (this.min && iso < this.min) {
+                    return false;
+                }
+                if (this.max && iso > this.max) {
+                    return false;
+                }
+                return true;
+            },
+            _buildWeekdays: function () {
+                var out = [];
+                // 2023-01-01 is a Sunday — walk a week for stable short/long labels.
+                for (var i = 0; i < 7; i++) {
+                    var d = new Date(2023, 0, 1 + i);
+                    out.push({
+                        short: d.toLocaleDateString(undefined, { weekday: "short" }),
+                        long: d.toLocaleDateString(undefined, { weekday: "long" }),
+                    });
+                }
+                return out;
+            },
+            get monthLabel() {
+                return new Date(this.viewYear, this.viewMonth, 1).toLocaleDateString(
+                    undefined,
+                    { month: "long", year: "numeric" }
+                );
+            },
+            get dialogLabel() {
+                return this.range ? "Choose date range" : "Choose date";
+            },
+            get displayValue() {
+                var self = this;
+                var fmt = function (iso) {
+                    var d = self._parse(iso);
+                    return d
+                        ? d.toLocaleDateString(undefined, {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                          })
+                        : "";
+                };
+                if (!this.value) {
+                    return "";
+                }
+                if (this.range) {
+                    if (this.value && this.endValue) {
+                        return fmt(this.value) + " – " + fmt(this.endValue);
+                    }
+                    // Start picked, awaiting the end — distinguish from a single date.
+                    return fmt(this.value) + " – …";
+                }
+                return fmt(this.value);
+            },
+            get weeks() {
+                var first = new Date(this.viewYear, this.viewMonth, 1);
+                var gridStart = new Date(
+                    this.viewYear,
+                    this.viewMonth,
+                    1 - first.getDay()
+                );
+                var todayIso = this._iso(this._today());
+                var weeks = [];
+                for (var w = 0; w < 6; w++) {
+                    var week = [];
+                    for (var dow = 0; dow < 7; dow++) {
+                        var date = new Date(
+                            gridStart.getFullYear(),
+                            gridStart.getMonth(),
+                            gridStart.getDate() + (w * 7 + dow)
+                        );
+                        var iso = this._iso(date);
+                        var selected = iso === this.value;
+                        var inRange = false;
+                        var rangeEnd = false;
+                        if (this.range) {
+                            selected = iso === this.value || iso === this.endValue;
+                            rangeEnd = !!this.endValue && iso === this.endValue;
+                            if (this.value && this.endValue) {
+                                inRange = iso > this.value && iso < this.endValue;
+                            }
+                        }
+                        var label = date.toLocaleDateString(undefined, {
+                            weekday: "long",
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                        });
+                        // Announce selection/range/today state in the name, since
+                        // those are otherwise conveyed only visually.
+                        var states = [];
+                        if (this.range) {
+                            if (iso === this.value) {
+                                states.push("range start");
+                            } else if (iso === this.endValue) {
+                                states.push("range end");
+                            } else if (inRange) {
+                                states.push("in selected range");
+                            }
+                        } else if (selected) {
+                            states.push("selected");
+                        }
+                        if (iso === todayIso) {
+                            states.push("today");
+                        }
+                        if (states.length) {
+                            label += " (" + states.join(", ") + ")";
+                        }
+                        week.push({
+                            iso: iso,
+                            day: date.getDate(),
+                            outside: date.getMonth() !== this.viewMonth,
+                            disabled: !this._inBounds(iso),
+                            today: iso === todayIso,
+                            selected: selected,
+                            inRange: inRange,
+                            rangeEnd: rangeEnd,
+                            label: label,
+                        });
+                    }
+                    weeks.push(week);
+                }
+                return weeks;
+            },
+            toggle: function () {
+                if (this.open) {
+                    this.close();
+                } else {
+                    this.show();
+                }
+            },
+            show: function () {
+                if (this.open) {
+                    return;
+                }
+                this.open = true;
+                if (!this.focusIso) {
+                    this.focusIso = this.value || this._clampIso(this._iso(this._today()));
+                }
+                var d = this._parse(this.focusIso) || this._today();
+                this.viewYear = d.getFullYear();
+                this.viewMonth = d.getMonth();
+                this._focusDay(this.focusIso);
+            },
+            close: function () {
+                if (!this.open) {
+                    return;
+                }
+                this.open = false;
+                focusElement(this.$refs.input);
+            },
+            prevMonth: function () {
+                var d = new Date(this.viewYear, this.viewMonth - 1, 1);
+                this.viewYear = d.getFullYear();
+                this.viewMonth = d.getMonth();
+            },
+            nextMonth: function () {
+                var d = new Date(this.viewYear, this.viewMonth + 1, 1);
+                this.viewYear = d.getFullYear();
+                this.viewMonth = d.getMonth();
+            },
+            goToday: function () {
+                this.moveFocusTo(this._iso(this._today()));
+            },
+            _focusDay: function (iso) {
+                this.$nextTick(
+                    function () {
+                        if (!this.$refs.popover) {
+                            return;
+                        }
+                        focusElement(
+                            this.$refs.popover.querySelector('[data-iso="' + iso + '"]')
+                        );
+                    }.bind(this)
+                );
+            },
+            moveFocusTo: function (iso) {
+                // Clamp into [min,max] so roving focus never lands on a disabled
+                // (unfocusable) day — which would strand focus on <body> and kill
+                // the grid's keydown handler.
+                iso = this._clampIso(iso);
+                this.focusIso = iso;
+                var d = this._parse(iso);
+                if (
+                    d &&
+                    (d.getFullYear() !== this.viewYear || d.getMonth() !== this.viewMonth)
+                ) {
+                    this.viewYear = d.getFullYear();
+                    this.viewMonth = d.getMonth();
+                }
+                this._focusDay(iso);
+            },
+            onGridKey: function (e) {
+                var k = e.key;
+                var handled = true;
+                if (k === "ArrowLeft") {
+                    this.moveFocusTo(this._addDays(this.focusIso, -1));
+                } else if (k === "ArrowRight") {
+                    this.moveFocusTo(this._addDays(this.focusIso, 1));
+                } else if (k === "ArrowUp") {
+                    this.moveFocusTo(this._addDays(this.focusIso, -7));
+                } else if (k === "ArrowDown") {
+                    this.moveFocusTo(this._addDays(this.focusIso, 7));
+                } else if (k === "Home") {
+                    this.moveFocusTo(this._addDays(this.focusIso, -this._dow(this.focusIso)));
+                } else if (k === "End") {
+                    this.moveFocusTo(
+                        this._addDays(this.focusIso, 6 - this._dow(this.focusIso))
+                    );
+                } else if (k === "PageUp") {
+                    this.moveFocusTo(this._addMonths(this.focusIso, -1));
+                } else if (k === "PageDown") {
+                    this.moveFocusTo(this._addMonths(this.focusIso, 1));
+                } else if (k === "Enter" || k === " " || k === "Spacebar") {
+                    this.pickIso(this.focusIso);
+                } else {
+                    handled = false;
+                }
+                if (handled) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            },
+            pick: function (d) {
+                if (!d || d.disabled) {
+                    return;
+                }
+                this.pickIso(d.iso);
+            },
+            pickIso: function (iso) {
+                if (!this._inBounds(iso)) {
+                    return;
+                }
+                if (this.range) {
+                    if (!this.value || (this.value && this.endValue)) {
+                        // Start a fresh range.
+                        this.value = iso;
+                        this.endValue = "";
+                        this._sync();
+                        this.$dispatch("chirpui:date-selected", {
+                            value: this.value,
+                            end: this.endValue,
+                        });
+                        return;
+                    }
+                    // Second pick completes the range (ordered).
+                    if (iso < this.value) {
+                        this.endValue = this.value;
+                        this.value = iso;
+                    } else {
+                        this.endValue = iso;
+                    }
+                    this._sync();
+                    this.$dispatch("chirpui:date-selected", {
+                        value: this.value,
+                        end: this.endValue,
+                    });
+                    this.close();
+                    return;
+                }
+                this.value = iso;
+                this._sync();
+                this.$dispatch("chirpui:date-selected", { value: this.value, end: "" });
+                this.close();
+            },
+            clear: function () {
+                this.value = "";
+                this.endValue = "";
+                this._sync();
+                this.$dispatch(
+                    "chirpui:date-selected",
+                    this.range ? { value: "", end: "" } : { value: "" }
+                );
+            },
+            _sync: function () {
+                if (this.$refs.value) {
+                    this.$refs.value.value = this.value;
+                }
+                if (this.range && this.$refs.endValueInput) {
+                    this.$refs.endValueInput.value = this.endValue;
+                }
+            },
+        };
+    });
+
     register("chirpuiTabs", function () {
         return {
             active: "",

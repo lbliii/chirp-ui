@@ -22573,3 +22573,223 @@ a.chirpui-chip:focus-visible {
         }
     }
 }
+
+/* === partials/172_date-picker.css === */
+/* ==========================================================================
+   Date / range picker — readonly display input + client-rendered calendar popover.
+   @layer + @scope envelope (see docs/plans/PLAN-css-scope-and-layer.md).
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-date-picker) to (.chirpui-date-picker .chirpui-date-picker) {
+        :scope {
+            position: relative;
+            display: block;
+            min-inline-size: 0;
+            max-inline-size: 100%;
+        }
+
+        & .chirpui-date-picker__label {
+            display: block;
+            margin-block-end: var(--chirpui-spacing-2xs);
+            font-size: var(--chirpui-ui-sm);
+            font-weight: var(--chirpui-ui-font-weight-medium);
+            color: var(--chirpui-text);
+        }
+
+        & .chirpui-date-picker__control {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        & .chirpui-date-picker__icon {
+            position: absolute;
+            inset-inline-start: var(--chirpui-spacing-sm);
+            color: var(--chirpui-text-muted);
+            pointer-events: none;
+        }
+
+        & .chirpui-date-picker__input {
+            display: block;
+            inline-size: 100%;
+            max-inline-size: 100%;
+            min-inline-size: 0;
+            box-sizing: border-box;
+            min-block-size: var(--chirpui-control-block-size);
+            padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-sm) var(--chirpui-spacing-sm)
+                calc(var(--chirpui-spacing-lg) + var(--chirpui-spacing-xs));
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius-sm);
+            font: inherit;
+            line-height: var(--chirpui-line-height-normal);
+            background: var(--chirpui-surface);
+            color: var(--chirpui-text);
+            cursor: pointer;
+        }
+
+        & .chirpui-date-picker__input:focus-visible {
+            outline: var(--chirpui-state-focus-outline);
+            outline-offset: var(--chirpui-state-focus-offset);
+        }
+
+        /* Range mode shows "start – end", so give the field room. */
+        :scope.chirpui-date-picker--range .chirpui-date-picker__input {
+            min-inline-size: 14rem;
+        }
+
+        & .chirpui-date-picker__popover {
+            position: absolute;
+            inset-inline-start: 0;
+            z-index: var(--chirpui-z-popover);
+            margin-block-start: var(--chirpui-spacing-2xs);
+            padding: var(--chirpui-spacing-sm);
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius-sm);
+            background: var(--chirpui-surface);
+            box-shadow: var(--chirpui-elevation-floating);
+        }
+
+        & .chirpui-date-picker__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--chirpui-spacing-sm);
+            margin-block-end: var(--chirpui-spacing-xs);
+        }
+
+        & .chirpui-date-picker__nav {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            inline-size: var(--chirpui-control-block-size-sm);
+            block-size: var(--chirpui-control-block-size-sm);
+            border: none;
+            border-radius: var(--chirpui-radius-sm);
+            background: none;
+            color: var(--chirpui-text);
+            font-size: var(--chirpui-ui-base);
+            cursor: pointer;
+        }
+
+        & .chirpui-date-picker__nav:hover {
+            background: var(--chirpui-muted-bg);
+        }
+
+        & .chirpui-date-picker__nav:focus-visible {
+            outline: var(--chirpui-state-focus-outline);
+            outline-offset: var(--chirpui-state-focus-offset);
+        }
+
+        & .chirpui-date-picker__month {
+            font-size: var(--chirpui-ui-sm);
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+            color: var(--chirpui-text);
+        }
+
+        & .chirpui-date-picker__grid {
+            display: block;
+            min-inline-size: 16rem;
+        }
+
+        & .chirpui-date-picker__weekdays,
+        & .chirpui-date-picker__week {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+        & .chirpui-date-picker__weekday {
+            padding-block: var(--chirpui-spacing-2xs);
+            color: var(--chirpui-text-muted);
+            font-size: var(--chirpui-ui-xs);
+            font-weight: var(--chirpui-ui-font-weight-medium);
+            text-align: center;
+        }
+
+        & .chirpui-date-picker__day {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-block-size: 2.25rem;
+            border: none;
+            border-radius: var(--chirpui-radius-sm);
+            background: none;
+            color: var(--chirpui-text);
+            font: inherit;
+            font-size: var(--chirpui-font-sm);
+            cursor: pointer;
+        }
+
+        & .chirpui-date-picker__day:hover {
+            background: var(--chirpui-muted-bg);
+        }
+
+        & .chirpui-date-picker__day:focus-visible {
+            outline: var(--chirpui-state-focus-outline);
+            outline-offset: -2px;
+        }
+
+        & .chirpui-date-picker__day--outside {
+            color: var(--chirpui-text-muted);
+        }
+
+        & .chirpui-date-picker__day--today {
+            font-weight: var(--chirpui-ui-font-weight-semibold);
+            box-shadow: inset 0 0 0 1px var(--chirpui-border);
+        }
+
+        & .chirpui-date-picker__day--in-range {
+            background: var(--chirpui-muted-bg);
+            border-radius: 0;
+        }
+
+        /* Darken the accent so white (--chirpui-on-accent) clears WCAG AA on the
+           selected day in both themes; raw --chirpui-accent is too light. */
+        & .chirpui-date-picker__day--selected,
+        & .chirpui-date-picker__day--range-end {
+            background: color-mix(in oklab, var(--chirpui-accent), black 22%);
+            color: var(--chirpui-on-accent);
+        }
+
+        & .chirpui-date-picker__day:disabled {
+            color: var(--chirpui-text-muted);
+            opacity: 0.4;
+            cursor: default;
+        }
+
+        & .chirpui-date-picker__day:disabled:hover {
+            background: none;
+        }
+
+        & .chirpui-date-picker__footer {
+            display: flex;
+            justify-content: space-between;
+            gap: var(--chirpui-spacing-sm);
+            margin-block-start: var(--chirpui-spacing-xs);
+        }
+
+        & .chirpui-date-picker__today,
+        & .chirpui-date-picker__clear {
+            border: none;
+            background: none;
+            /* Accent text mixed toward the foreground so it clears AA on surface. */
+            color: color-mix(in oklab, var(--chirpui-accent), var(--chirpui-text) 28%);
+            font-size: var(--chirpui-ui-sm);
+            font-weight: var(--chirpui-ui-font-weight-medium);
+            cursor: pointer;
+            padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-xs);
+            border-radius: var(--chirpui-radius-sm);
+        }
+
+        & .chirpui-date-picker__today:hover,
+        & .chirpui-date-picker__clear:hover {
+            background: var(--chirpui-muted-bg);
+        }
+
+        & .chirpui-date-picker__today:focus-visible,
+        & .chirpui-date-picker__clear:focus-visible {
+            outline: var(--chirpui-state-focus-outline);
+            outline-offset: var(--chirpui-state-focus-offset);
+        }
+    }
+}

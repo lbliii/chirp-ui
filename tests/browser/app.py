@@ -972,6 +972,10 @@ def create_app() -> App:
     async def combobox_page(request: Request):
         return Template("combobox_page.html", page_title="Combobox")
 
+    @app.route("/date-picker")
+    async def date_picker_page(request: Request):
+        return Template("date_picker_page.html", page_title="Date Picker")
+
     @app.route("/application-chrome-gauntlet")
     async def application_chrome_gauntlet_page(request: Request):
         return Template(

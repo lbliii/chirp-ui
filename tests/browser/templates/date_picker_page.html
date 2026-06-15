@@ -1,0 +1,27 @@
+{#- Gauntlet fixture for the date/range picker (#201). A single picker preselected
+    to 2025-06-15 (deterministic — independent of "today") and a range picker
+    bounded to 2025-06-05..2025-06-25 so single-select, keyboard grid nav, month
+    nav, min/max disabling, range selection, and axe are all exercisable. -#}
+{% extends "base.html" %}
+{% block brand %}Date Picker{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path="/date-picker", aria_label="Primary") %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/date-picker", "Date Picker", match="exact") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/date_picker.html" import date_picker %}
+<div id="page-root">
+  <h1 data-testid="main-content">Date Picker</h1>
+  <div data-testid="date-picker-single">
+    {{ date_picker(name="due", label="Due date", value="2025-06-15") }}
+  </div>
+  <div data-testid="date-picker-range">
+    {{ date_picker(name="span", label="Date range", range=true,
+                   min="2025-06-05", max="2025-06-25") }}
+  </div>
+</div>
+{% end %}

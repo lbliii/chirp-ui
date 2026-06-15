@@ -7951,6 +7951,143 @@
       "trim_emits": [],
       "variants": []
     },
+    "date-picker": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "date-picker",
+      "category": "form",
+      "composes": [],
+      "consumes": [],
+      "description": "Date / range picker\n    A form control: a readonly display input that opens a calendar popover for\n    picking a single date or a date range, fully client-rendered (month nav has no\n    server round-trip). The canonical value is an ISO `YYYY-MM-DD` string in a\n    hidden input submitted under `name` (range adds a second hidden input under\n    `end_name`, defaulting to `{name}_end`).\n\n    Keyboard: the popover is a `role=\"dialog\"`; the grid is a `role=\"grid\"` of\n    `role=\"gridcell\"` day buttons with roving tabindex — Arrow keys move a day\n    (Left/Right ±1, Up/Down ±7), Home/End jump to week start/end, PageUp/PageDown\n    change month, Enter/Space pick, Escape closes and returns focus to the input.\n    `min`/`max` (ISO) disable out-of-range days. Requires Alpine.js; v1 is\n    Sunday-first, English labels (localization/first-day config is a follow-up).\n\n    Usage:\n        from \"chirpui/date_picker.html\" import date_picker\n\n        {{ date_picker(name=\"due\", label=\"Due date\", value=\"2025-01-15\") }}\n        {{ date_picker(name=\"span\", label=\"Date range\", range=true,\n                       min=\"2025-01-01\", max=\"2025-12-31\") }}",
+      "elements": [
+        "clear",
+        "control",
+        "day",
+        "footer",
+        "grid",
+        "header",
+        "icon",
+        "input",
+        "label",
+        "month",
+        "nav",
+        "popover",
+        "today",
+        "week",
+        "weekday",
+        "weekdays"
+      ],
+      "emits": [
+        "chirpui-date-picker",
+        "chirpui-date-picker--range",
+        "chirpui-date-picker__clear",
+        "chirpui-date-picker__control",
+        "chirpui-date-picker__day",
+        "chirpui-date-picker__day--in-range",
+        "chirpui-date-picker__day--outside",
+        "chirpui-date-picker__day--range-end",
+        "chirpui-date-picker__day--selected",
+        "chirpui-date-picker__day--today",
+        "chirpui-date-picker__footer",
+        "chirpui-date-picker__grid",
+        "chirpui-date-picker__header",
+        "chirpui-date-picker__icon",
+        "chirpui-date-picker__input",
+        "chirpui-date-picker__label",
+        "chirpui-date-picker__month",
+        "chirpui-date-picker__nav",
+        "chirpui-date-picker__popover",
+        "chirpui-date-picker__today",
+        "chirpui-date-picker__week",
+        "chirpui-date-picker__weekday",
+        "chirpui-date-picker__weekdays"
+      ],
+      "extra_emits": [
+        "chirpui-date-picker__day--in-range",
+        "chirpui-date-picker__day--outside",
+        "chirpui-date-picker__day--range-end",
+        "chirpui-date-picker__day--selected",
+        "chirpui-date-picker__day--today"
+      ],
+      "lineno": 23,
+      "macro": "date_picker",
+      "maturity": "experimental",
+      "modifiers": [
+        "range"
+      ],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "value"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "range"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "end_name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "end_value"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "min"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "max"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "placeholder"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "date_picker.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "description_list": {
       "appearances": [],
       "authoring": "available",
@@ -24345,7 +24482,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 305,
+      "available": 306,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -24359,7 +24496,7 @@
       "data-display": 38,
       "effect": 46,
       "feedback": 25,
-      "form": 20,
+      "form": 21,
       "infrastructure": 2,
       "interactive": 9,
       "layout": 50,
@@ -24371,25 +24508,25 @@
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 104,
+      "experimental": 105,
       "internal": 2,
       "legacy": 39,
       "stable": 211
     },
     "component_requirements": {
-      "alpine": 29,
+      "alpine": 30,
       "htmx": 26
     },
     "component_roles": {
-      "component": 191,
+      "component": 192,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 22,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 253,
-    "components_with_params": 253,
+    "components_with_description": 254,
+    "components_with_params": 254,
     "components_with_provides": 12,
     "manifest_quality": {
       "missing_description": 0,
@@ -24397,7 +24534,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 251
+      "public_templated_components": 252
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -24405,8 +24542,8 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 128,
-      "explicit_extra_classes": 541,
+      "explicit_extra_blocks": 129,
+      "explicit_extra_classes": 546,
       "explicit_trim_blocks": 69,
       "explicit_trim_classes": 96
     },
@@ -24420,7 +24557,7 @@
       "spacing": 30,
       "typography": 45
     },
-    "total_components": 356,
+    "total_components": 357,
     "total_theme_packs": 3,
     "total_tokens": 435
   },

@@ -8864,6 +8864,46 @@ class TestCombobox:
         assert 'x-ref="value"' not in html
 
 
+class TestDatePicker:
+    def test_single_date_picker_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/date_picker.html" import date_picker %}'
+            '{{ date_picker(name="due", label="Due date", value="2025-06-15") }}'
+        ).render()
+        assert 'x-data="chirpuiDatePicker()"' in html
+        assert 'data-range="false"' in html
+        assert 'data-value="2025-06-15"' in html
+        # Readonly trigger input + a hidden value input submitted under `name`.
+        assert 'aria-haspopup="dialog"' in html
+        assert 'name="due"' in html
+        assert 'value="2025-06-15"' in html
+        # Popover dialog + accessible grid.
+        assert 'role="dialog"' in html
+        assert 'role="grid"' in html
+        assert 'role="gridcell"' in html
+        assert 'role="columnheader"' in html
+
+    def test_range_date_picker_emits_two_hidden_inputs(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/date_picker.html" import date_picker %}'
+            '{{ date_picker(name="span", range=true, min="2025-06-01", max="2025-06-30") }}'
+        ).render()
+        assert "chirpui-date-picker--range" in html
+        assert 'data-range="true"' in html
+        assert 'data-min="2025-06-01"' in html
+        assert 'data-max="2025-06-30"' in html
+        # Start under `name`, end under the default `{name}_end`.
+        assert 'name="span"' in html
+        assert 'name="span_end"' in html
+
+    def test_range_custom_end_name(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/date_picker.html" import date_picker %}'
+            '{{ date_picker(name="start", range=true, end_name="finish") }}'
+        ).render()
+        assert 'name="finish"' in html
+
+
 class TestContextMenu:
     def _render(self, env: Environment, *, items: str, label: str = "Row actions") -> str:
         return env.from_string(
