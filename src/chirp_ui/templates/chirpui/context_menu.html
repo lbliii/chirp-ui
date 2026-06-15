@@ -1,0 +1,86 @@
+{#- chirp-ui: Context Menu
+    Right-click (or keyboard) menu anchored at the pointer. Wrap any
+    non-interactive region in `context_menu(items=[...])`; right-clicking inside
+    it opens a `role="menu"` panel at the cursor with full keyboard support:
+    ArrowUp/Down/Home/End move focus via roving tabindex, Enter/Space activate,
+    Escape closes and returns focus to the region. When the region itself is
+    focused, Enter/Space/ArrowDown, the ContextMenu key, or Shift+F10 open the
+    menu. The native browser menu is suppressed inside the region. Requires
+    Alpine.js.
+
+    Items: list of dicts — {label, action?|href?, icon?, variant?, disabled?}.
+    `variant` is one of default/danger/muted. Selecting an item dispatches
+    `chirpui:context-menu-selected` with {label, action?, href?} (mirrors
+    dropdown_menu). Dividers are not supported in v1 (flat item list).
+
+    Accessibility: the region is a `role="button"` trigger with
+    `aria-haspopup="menu"`; the menu panel is a SIBLING of the trigger (never
+    nested inside it). Give the region a `label` that matches any visible
+    call-to-action text, and keep the slotted target content non-interactive
+    (no nested links/buttons), so the trigger button has no nested controls.
+
+    Usage:
+        from "chirpui/context_menu.html" import context_menu
+
+        {% call context_menu(items=[
+            {"label": "Open", "action": "open", "icon": "↗"},
+            {"label": "Rename", "action": "rename"},
+            {"label": "Delete", "action": "delete", "variant": "danger"},
+        ], label="Right-click for actions") %}
+            <div class="chirpui-surface">Right-click for actions</div>
+        {% end %}
+-#}
+
+{% def context_menu(items, label="Context menu", id="chirpui-context-menu") %}
+<div class="chirpui-context-menu" id="{{ id }}" x-id="['context-menu-panel']"
+     x-data="chirpuiContextMenu()"
+     data-item-count="{{ items | length }}"
+     @keydown.escape.prevent.stop="close()"
+     @click.outside="close()"
+     @focusin.window="$refs.panel && !$refs.panel.contains($event.target) && close()">
+    <div class="chirpui-context-menu__target" x-ref="trigger"
+         role="button" tabindex="0" aria-haspopup="menu" :aria-expanded="open"
+         :aria-controls="$id('context-menu-panel')" aria-label="{{ label }}"
+         @contextmenu.prevent="openAt($event)"
+         @keydown="onTriggerKeydown($event)">
+        {% slot %}
+    </div>
+    <div class="chirpui-context-menu__panel" x-ref="panel" :id="$id('context-menu-panel')"
+         role="menu" aria-orientation="vertical" aria-label="{{ label }}"
+         x-show="open" x-cloak x-transition
+         :style="`left: ${x}px; top: ${y}px;`"
+         @keydown.down.prevent="keyDown()"
+         @keydown.up.prevent="keyUp()"
+         @keydown.home.prevent="keyHome()"
+         @keydown.end.prevent="keyEnd()">
+        {% for item in items %}
+        {% set _variant = item.get("variant", "default") | validate_variant_block("context-menu__item", "default") %}
+        {% set _action = item.get("action", "") %}
+        {% set _href = item.get("href") %}
+        {% set _disabled = item.get("disabled") %}
+        {% set _icon = item.get("icon", "") %}
+        {% set _label = item.get("label", "") %}
+        {% if _href and not _disabled %}
+        <a class="chirpui-context-menu__item chirpui-context-menu__item--{{ _variant }}" href="{{ _href }}"
+           role="menuitem" tabindex="-1" x-ref="item-{{ loop.index0 }}"
+           data-label="{{ _label }}" data-href="{{ _href }}"
+           {{ route_link_attrs(_href) | html_attrs }}
+           @click="selectItem($el)">
+            {% if _icon %}<span class="chirpui-context-menu__icon" aria-hidden="true">{{ _icon }}</span>{% end %}
+            {{ _label }}
+        </a>
+        {% else %}
+        <button type="button"
+                class="chirpui-context-menu__item chirpui-context-menu__item--{{ _variant }}"
+                role="menuitem" tabindex="-1" x-ref="item-{{ loop.index0 }}"
+                data-label="{{ _label }}"{% if _action %} data-action="{{ _action }}"{% end %}
+                {% if _disabled %} aria-disabled="true"{% end %}
+                @click="selectItem($el)">
+            {% if _icon %}<span class="chirpui-context-menu__icon" aria-hidden="true">{{ _icon }}</span>{% end %}
+            {{ _label }}
+        </button>
+        {% end %}
+        {% end %}
+    </div>
+</div>
+{% end %}

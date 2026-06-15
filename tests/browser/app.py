@@ -955,6 +955,10 @@ def create_app() -> App:
             load_more_url=ctx["load_more_url"],
         )
 
+    @app.route("/context-menu")
+    async def context_menu_page(request: Request):
+        return Template("context_menu_page.html", page_title="Context Menu")
+
     @app.route("/application-chrome-gauntlet")
     async def application_chrome_gauntlet_page(request: Request):
         return Template(

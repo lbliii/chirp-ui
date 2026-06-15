@@ -112,6 +112,10 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
         macros=("data_grid",),
         conditional="selectable=true (the data_grid root always carries it)",
     ),
+    "chirpuiContextMenu": AlpineRequirement(
+        factory="chirpuiContextMenu",
+        macros=("context_menu",),
+    ),
 }
 
 

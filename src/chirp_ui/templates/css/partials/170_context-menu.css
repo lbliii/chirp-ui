@@ -1,0 +1,102 @@
+/* ==========================================================================
+   Context Menu — right-click / keyboard menu anchored at the pointer.
+   @layer + @scope envelope (see docs/plans/PLAN-css-scope-and-layer.md).
+
+   The region is a focusable trigger; the panel is position: fixed at the
+   pointer (clientX/clientY) and clamped to the viewport by the Alpine factory.
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-context-menu) to (.chirpui-context-menu .chirpui-context-menu) {
+        /* Root is layout-transparent (it only hosts the trigger + the fixed
+           panel); the trigger carries the box, so it is the focusable region. */
+        :scope {
+            display: contents;
+        }
+
+        & .chirpui-context-menu__target {
+            display: block;
+            cursor: context-menu;
+        }
+
+        & .chirpui-context-menu__target:focus-visible {
+            outline: var(--chirpui-state-focus-outline);
+            outline-offset: var(--chirpui-state-focus-offset);
+        }
+
+        & .chirpui-context-menu__panel {
+            position: fixed;
+            z-index: var(--chirpui-z-popover);
+            min-inline-size: 10rem;
+            max-inline-size: min(20rem, calc(100vw - 1rem));
+            max-block-size: calc(100dvh - 1rem);
+            overflow-y: auto;
+            padding: var(--chirpui-spacing-xs);
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius-sm);
+            background: var(--chirpui-surface);
+            box-shadow: var(--chirpui-elevation-floating);
+            font-size: var(--chirpui-font-sm);
+            line-height: var(--chirpui-line-height-normal);
+        }
+
+        & .chirpui-context-menu__item {
+            display: flex;
+            align-items: center;
+            gap: var(--chirpui-spacing-sm);
+            inline-size: 100%;
+            box-sizing: border-box;
+            min-inline-size: 0;
+            padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+            border: none;
+            background: none;
+            color: var(--chirpui-text);
+            font-family: var(--chirpui-ui-font-family);
+            font-size: var(--chirpui-font-sm);
+            font-weight: var(--chirpui-ui-font-weight-medium);
+            line-height: var(--chirpui-line-height-tight);
+            text-align: start;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: var(--chirpui-radius-sm);
+            overflow-wrap: anywhere;
+        }
+
+        & .chirpui-context-menu__item:hover {
+            background: var(--chirpui-muted-bg);
+        }
+
+        & .chirpui-context-menu__item:focus {
+            background: var(--chirpui-muted-bg);
+            outline: var(--chirpui-state-focus-outline);
+            outline-offset: -2px;
+        }
+
+        /* Danger text mixed toward the foreground so it clears WCAG AA contrast
+           in both themes (raw --chirpui-error is mid-lightness and fails on a
+           white surface). Hover/focus reuse the neutral base highlight rather
+           than a red-on-red tint. */
+        & .chirpui-context-menu__item--danger {
+            color: color-mix(in oklab, var(--chirpui-error) 68%, var(--chirpui-text));
+        }
+
+        & .chirpui-context-menu__item--muted {
+            color: var(--chirpui-text-muted);
+        }
+
+        & .chirpui-context-menu__item[aria-disabled="true"] {
+            color: var(--chirpui-text-muted);
+            opacity: 0.55;
+            cursor: default;
+        }
+
+        & .chirpui-context-menu__item[aria-disabled="true"]:hover {
+            background: none;
+        }
+
+        & .chirpui-context-menu__icon {
+            flex: 0 0 auto;
+            opacity: 0.8;
+        }
+    }
+}

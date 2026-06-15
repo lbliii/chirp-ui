@@ -30,7 +30,7 @@ surface with a preferred replacement. Components the manifest marks `internal`
 (Chirp UI composition infrastructure) are intentionally omitted.
 
 <!-- chirpui:generated:start -->
-_351 public components across 17 categories._
+_353 public components across 17 categories._
 
 ## Layout
 
@@ -107,11 +107,13 @@ _9 components._
 
 ## Navigation
 
-_27 components._
+_29 components._
 
 | Macro | Maturity | Description |
 |-------|----------|-------------|
 | `breadcrumbs` | stable | Breadcrumbs component |
+| `context_menu` | experimental | Context Menu |
+| `context_menu` | experimental | Context Menu |
 | `conversation_item` | stable | Conversation Item component |
 | `conversation_list` | stable | Conversation List component |
 | `dropdown` | stable | Dropdown component |

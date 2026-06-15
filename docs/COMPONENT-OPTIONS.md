@@ -5441,6 +5441,45 @@ Layout primitives — container, grid (flow), frame (structural), stack, cluster
 | `padding` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `context-menu`
+
+Context Menu
+
+- **Template:** `chirpui/context_menu.html`
+- **Macro:** `context_menu`
+- **Category:** `navigation`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `label` | no | (has default) |
+| `id` | no | (has default) |
+
+### `context-menu__item`
+
+Context Menu
+
+- **Template:** `chirpui/context_menu.html`
+- **Macro:** `context_menu`
+- **Category:** `navigation`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+- **Slots:** `(default)`
+- **Variants:** `danger`, `default`, `muted`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `label` | no | (has default) |
+| `id` | no | (has default) |
+
 ### `conversation-item`
 
 Conversation Item component
