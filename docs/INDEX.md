@@ -125,7 +125,6 @@ Briefs indexed by the reference implementation README:
 - [ANTI-FOOTGUNS.md](safety/anti-footguns.md) — Common pitfalls and how to avoid them
 - [VERIFICATION.md](safety/verification.md) — Locked-environment verification, generated artifact checks, and Kida mismatch troubleshooting
 - [PUBLIC-SURFACE-STABILIZATION.md](safety/public-surface-stabilization.md) — Pre-1.0 promotion, experimental, recipe-only, and compatibility decisions
-- [STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md](safety/static-showcase-legacy-helper-triage.md) — Static showcase legacy-helper inventory and decisions
 - [DASHBOARD-MATURITY-CONTRACT.md](components/dashboard-maturity-contract.md) — Dashboard component readiness checklist
 
 ## Design Records And Research

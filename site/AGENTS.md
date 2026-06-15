@@ -31,9 +31,9 @@ edits, and facts that contradict the registry or durable docs.
 - **Docs mirrors stay bridges.** Site pages under `site/content/docs/` should
   point readers back to durable docs when the full contract lives in `docs/`.
   Evidence: `site/content/docs/patterns/navigation.md:25`.
-- **Site build comes from source.** Pages workflow builds with Bengal, assembles
-  static showcase, emits manifest, and uploads `site/public`. Evidence:
-  `.github/workflows/pages.yml:48`.
+- **Site build comes from source.** Pages workflow builds with Bengal, emits the
+  manifest, and uploads `site/public`. Evidence:
+  `.github/workflows/pages.yml` build steps.
 - **Release pages match release reality.** `site/content/releases/` must agree
   with changelog/release state and public package version. Evidence:
   `CHANGELOG.md`, `site/content/releases/0.9.0.md`.
@@ -53,8 +53,6 @@ When this domain changes, check:
   and theme/site ownership.
 - `pyproject.toml` docs tasks and `.github/workflows/pages.yml` — local/hosted
   build parity.
-- `examples/static-showcase/`, `site/public/showcase/`, and
-  `scripts/assemble-static-showcase.sh` — showcase assembly boundaries.
 - Tests: `tests/test_docs_site.py`, `tests/browser/test_bengal_docs_chrome.py`,
   and source-map/provenance checks.
 

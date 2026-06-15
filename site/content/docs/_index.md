@@ -34,7 +34,7 @@ cascade:
       </div>
     </header>
     <div class="chirpui-card__body">
-      <p>Browse every macro and pattern in a static, offline-friendly gallery.</p>
+      <p>Browse every macro and pattern in the live, interactive showcase.</p>
     </div>
   </article>
   <article class="chirpui-card chirp-theme-directive-card">

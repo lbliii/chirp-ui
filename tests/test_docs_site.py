@@ -500,10 +500,6 @@ def test_agent_source_map_names_generated_output_ownership() -> None:
     assert manifest["Owner"] == "Chirp UI"
     assert "python -m chirp_ui.manifest --json" in manifest["Produced by"]
 
-    showcase = outputs["site/public/showcase/index.html"]
-    assert showcase["Owner"] == "Chirp UI assembly"
-    assert "not a copyable snippet source" in showcase["Agent use"]
-
 
 def test_agent_source_map_inputs_exist_and_reference_inventory() -> None:
     """Source inputs in the source map should point at real repo paths."""

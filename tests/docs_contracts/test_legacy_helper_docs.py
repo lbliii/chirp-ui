@@ -14,7 +14,6 @@ def test_primitive_docs_record_spacing_shortcut_deprecation_boundary() -> None:
         "Spacing shortcuts are **deprecate later** candidates.",
         "New first-party examples",
         "`mt-sm`, `mt-md`, or `mb-md`",
-        "STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md",
         "only `visually-hidden` remains",
     ]:
         assert required in text

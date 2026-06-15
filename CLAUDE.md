@@ -56,12 +56,13 @@ Or via Make: `make test`, `make lint`, `make ty`, `make ci`, `make test-browser`
 
 ```bash
 uv sync --group docs
-uv run poe docs-build-all   # bengal site build + static showcase → site/public/showcase/
-# or: uv run poe docs-build && make showcase-public
-uv run poe docs-serve       # local preview (rebuild first for /showcase/)
+uv run poe docs-build-all   # bengal site build + component manifest emit
+uv run poe docs-serve       # local preview
 ```
 
-Standalone showcase preview (no Bengal): `make showcase` → `_site/index.html`.
+The interactive component gallery is the `examples/component-showcase` Chirp app,
+deployed live at <https://chirp-ui-showcase-production.up.railway.app> (Railway; run
+locally with `python examples/component-showcase/app.py`).
 
 ## Release prep
 

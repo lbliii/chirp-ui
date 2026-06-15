@@ -78,7 +78,7 @@ When this domain changes, check:
 - `docs/COMPONENT-OPTIONS.md`, anatomy docs, `docs/components/htmx-patterns.md`,
   `docs/components/alpine-magics.md`, `docs/fundamentals/responsive.md`,
   `docs/fundamentals/relationship-contracts.md` — public guidance.
-- `examples/component-showcase/`, `examples/static-showcase/`, browser fixtures
+- `examples/component-showcase/`, browser fixtures
   — realistic rendered states.
 - `tests/test_components.py`, `tests/test_template_css_contract.py`,
   `tests/test_transition_tokens.py`, `tests/test_css_syntax.py`,

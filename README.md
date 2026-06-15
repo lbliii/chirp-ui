@@ -183,8 +183,9 @@ Fresh apps should start with a token-only app theme layer loaded after
 `/static/themes/app-theme-starter.css`, plus curated catalog packs at
 `/static/themes/atlas.css`, `/static/themes/ember.css`, and
 `/static/themes/sage.css`; each covers light, dark, and `system` mode so
-`theme_toggle()` has coherent app-owned tokens immediately. The runnable
-component showcase includes a `/theme-packs` matrix for visual comparison.
+`theme_toggle()` has coherent app-owned tokens immediately. The live
+[component showcase](https://chirp-ui-showcase-production.up.railway.app) includes a
+`/theme-packs` matrix for visual comparison.
 
 For token and override details, see
 [APP-THEME.md](docs/APP-THEME.md),
@@ -277,6 +278,13 @@ from package partials.
 
 ## Showcase
 
+The live, interactive showcase runs the real `examples/component-showcase` Chirp app —
+every macro, shell, form, island, and streaming demo against a real server runtime:
+
+**▶ <https://chirp-ui-showcase-production.up.railway.app>**
+
+Or run it locally:
+
 ```bash
 git clone https://github.com/lbliii/chirp-ui.git
 cd chirp-ui
@@ -311,7 +319,7 @@ uv run poe ci
 | Build CSS | `uv run poe build-css` |
 | Check manifest | `uv run poe build-manifest-check` |
 | Full CI | `uv run poe ci` |
-| Docs site and showcase | `uv sync --group docs` then `uv run poe docs-build-all` |
+| Docs site | `uv sync --group docs` then `uv run poe docs-build-all` |
 
 If you edit CSS, change `src/chirp_ui/templates/css/partials/*.css`, run
 `uv run poe build-css`, and commit the generated `chirpui.css`.
