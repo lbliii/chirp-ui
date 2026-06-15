@@ -7,5 +7,5 @@
 {% let description = page?.description ?? section?.description ?? "Executable notes, experiments, and outputs." %}
 {% let items = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
 
-{{ learning_index(title, page?.href ?? section?.href ?? "/notebook/", subtitle=description, items=items, content=content, search_placeholder="Filter notebooks...", results_title="Notebooks", item_singular="notebook", empty_title="No notebooks yet", empty_message="Published notebooks appear here.", layout="grid", card_kind="notebook") }}
+{{ learning_index(title, subtitle=description, items=items, content=content, eyebrow="Notebooks", eyebrow_icon="code", item_singular="notebook", empty_title="No notebooks yet", empty_message="Published notebooks appear here.", empty_icon="code", layout="grid", card_kind="notebook", surface="notebook") }}
 {% end %}

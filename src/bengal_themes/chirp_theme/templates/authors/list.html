@@ -1,61 +1,54 @@
 {% extends "base.html" %}
 
-{% from "chirpui/layout.html" import container %}
-{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/layout.html" import container, grid, stack %}
 {% from "chirpui/rendered_content.html" import rendered_content %}
 {% from "partials/taxonomy-pages.html" import count_label, term_resource_card %}
+{% from "partials/empty-state.html" import empty_state %}
 
 {% block content %}
 {% let page_title = page?.title ?? "Authors" %}
 {% let page_desc = page?.description ?? "Browse contributors and their published content." %}
-{% let authors_data = site?.data?.authors ?? {} %}
-{% let author_index = site?.indexes?.author ?? {} %}
-{% let author_pages = page?.children ?? [] %}
-{% let author_items = authors ?? [] %}
-
-{% if author_items | length == 0 %}
+{# site.data.authors is "" when no registry data file exists, so guard with
+   `is mapping`. The directory is built from the author CONTENT pages (resolved
+   via the standard fallback chain — page.children was empty in this context),
+   with per-author post counts from the author taxonomy index. #}
+{% let author_index_raw = site?.indexes?.author %}
+{% let author_index = author_index_raw if author_index_raw is mapping else {} %}
+{% let author_pages = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
 {% let author_items = [] %}
-{% for author_key, author_data in authors_data | items %}
-{% let author_posts = author_index.get(author_key) ?? [] %}
-{% set _ = author_items.append({
-  'name': author_data?.name ?? author_key,
-  'href': '/authors/' ~ author_key ~ '/',
-  'bio': author_data?.bio ?? '',
-  'post_count': author_posts | length
-}) %}
-{% end %}
 {% for child in author_pages %}
+{% let author_key = child?.metadata?.author_name ?? child?.params?.author_name ?? child?.title ?? '' %}
 {% set _ = author_items.append({
-  'name': child?.title ?? 'Author',
+  'name': child?.title ?? author_key,
   'href': child?.href ?? '#',
-  'bio': child?.description ?? child?.params?.bio ?? '',
-  'post_count': (author_index.get(child?.params?.author_name ?? child?.title ?? '') ?? []) | length
+  'bio': child?.metadata?.bio ?? child?.description ?? '',
+  'post_count': (author_index.get(author_key) ?? []) | length
 }) %}
 {% end %}
-{% end %}
+{% let _count = count_label(author_items | length, "author") %}
 
+<div data-chirp-theme-surface="author">
 {% call container(cls="chirp-theme-taxonomy-page") %}
-  {% call resource_index(
-    page_title,
-    page?.href ?? "/authors/",
-    subtitle=page_desc,
-    search_placeholder="Filter authors...",
-    button_icon="magnifying-glass",
-    results_title="Authors",
-    results_subtitle=count_label(author_items | length, "author"),
-    results_layout="grid",
-    results_cols=3,
-    has_results=author_items | length > 0,
-    empty_title="No authors yet",
-    empty_message="Add author data or author pages to list contributors.",
-    cls="chirp-theme-taxonomy-index"
-  ) %}
-    {% if content %}
-    {% call rendered_content(compact=true) %}{{ content | safe }}{% end %}
+  {% call stack(gap="lg") %}
+    {% call page_hero(title=page_title, subtitle=page_desc, variant="minimal", background="solid", cls="chirp-theme-learning-hero") %}
+      {% slot eyebrow %}{{ badge("Authors", variant="primary") }}{% end %}
+      {% slot metadata %}{{ _count }}{% end %}
     {% end %}
-    {% for author in author_items | sort(attribute="name") %}
-    {{ term_resource_card(author.name, author.href, author.post_count ?? 0, author.bio, "post", "chirp-theme-author-card") }}
+    {% if content %}
+    {% call rendered_content(compact=true, cls="chirp-theme-learning-content") %}{{ content | safe }}{% end %}
+    {% end %}
+    {% if author_items | length > 0 %}
+    {% call grid(cols=3, gap="md", cls="chirp-theme-author-grid chirp-theme-taxonomy-index") %}
+      {% for author in author_items | sort(attribute="name") %}
+      {{ term_resource_card(author.name, author.href, author.post_count ?? 0, author.bio, "post", "chirp-theme-author-card") }}
+      {% end %}
+    {% end %}
+    {% else %}
+    {{ empty_state("No authors yet", "Add author data or author pages to list contributors.", icon_name="users") }}
     {% end %}
   {% end %}
 {% end %}
+</div>
 {% end %}

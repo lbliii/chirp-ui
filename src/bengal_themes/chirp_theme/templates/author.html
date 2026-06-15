@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
+{% from "chirpui/avatar.html" import avatar %}
 {% from "chirpui/layout.html" import container, stack %}
-{% from "chirpui/metric_grid.html" import metric_card, metric_grid %}
 {% from "chirpui/profile_header.html" import profile_header %}
 {% from "chirpui/rendered_content.html" import rendered_content %}
 {% from "partials/taxonomy-pages.html" import count_label, social_links, taxonomy_post_feed %}
 
 {% block content %}
-{% let author_key = params?.author_name ?? page?.author_name ?? page?.title ?? "Author" %}
+{% let author_key = params?.author_name ?? page?.author_name ?? page?.slug ?? page?.title ?? "Author" %}
 {# Bengal's site.data returns "" (empty str) for missing data files, which is
    non-none so ?? {} won't replace it. Only treat it as a registry when it is a
    mapping (has a callable .get), otherwise fall back to an empty dict. #}
@@ -19,13 +19,28 @@
 {% let author_social = author_data?.social ?? params?.social ?? {} %}
 {% let author_index_raw = site?.indexes?.author %}
 {% let author_index = author_index_raw if author_index_raw is mapping else {} %}
-{% let indexed_posts = (author_index.get(author_key) | resolve_pages) if author_index.get(author_key) else [] %}
-{% let author_posts = posts ?? indexed_posts %}
+{# Feed the author's real authored content by matching `metadata.author` across
+   site.pages (the same proven pattern tracks/list.html uses for track_id).
+   `author` is not a registered taxonomy here, so site.indexes.author is empty;
+   and the page-context `posts` resolves to the profile page itself (a
+   self-referential card + misleading count). Exclude the profile page and the
+   author section index. #}
+{% let author_posts = [] %}
+{% for p in (site?.pages ?? []) %}
+{% if (p?.metadata?.author ?? none) == author_key and (p?.href ?? '') != (page?.href ?? '') %}
+{% set _ = author_posts.append(p) %}
+{% end %}
+{% end %}
+
+{# Initials for the avatar: first letter of the first two name words. #}
+{% let _name_words = (author_name | string).split(" ") %}
+{% let _initials = ((_name_words[0][0] if (_name_words and _name_words[0]) else "") ~ (_name_words[1][0] if (_name_words | length > 1 and _name_words[1]) else "")) | upper %}
 
 <div data-chirp-theme-surface="authors">
 {% call container(cls="chirp-theme-taxonomy-page chirp-theme-author-page") %}
   {% call stack(gap="lg") %}
     {% call profile_header(name=author_name, use_slots=true, cls="chirp-theme-author-header") %}
+      {% slot avatar %}{{ avatar(initials=_initials, alt=author_name, size="lg") }}{% end %}
       {% slot bio %}
       {% if author_bio %}<p>{{ author_bio }}</p>{% end %}
       {% end %}
@@ -38,12 +53,7 @@
     {% end %}
 
     {% if content %}
-    {% call rendered_content(compact=true) %}{{ content | safe }}{% end %}
-    {% end %}
-
-    {% call metric_grid(cols=2, gap="md") %}
-      {{ metric_card(value=author_posts | length, label="Published") }}
-      {{ metric_card(value=author_name, label="Author") }}
+    {% call rendered_content(compact=true, cls="chirp-theme-learning-content") %}{{ content | safe }}{% end %}
     {% end %}
 
     {{ taxonomy_post_feed(author_posts, "No content has been published by this author yet.", variant="compact") }}

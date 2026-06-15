@@ -7,5 +7,5 @@
 {% let description = page?.description ?? section?.description ?? "Hands-on guides and walkthroughs." %}
 {% let items = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
 
-{{ learning_index(title, page?.href ?? section?.href ?? "/tutorial/", subtitle=description, items=items, content=content, search_placeholder="Filter tutorials...", results_title="Tutorials", item_singular="tutorial", empty_title="No tutorials yet", empty_message="Tutorials appear here when published.", layout="grid", card_kind="tutorial") }}
+{{ learning_index(title, subtitle=description, items=items, content=content, eyebrow="Tutorial", eyebrow_icon="graduation-cap", item_singular="step", empty_title="No tutorials yet", empty_message="Tutorials appear here when published.", empty_icon="graduation-cap", layout="grid", card_kind="tutorial", surface="tutorial") }}
 {% end %}

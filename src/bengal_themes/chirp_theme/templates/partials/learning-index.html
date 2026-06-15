@@ -1,43 +1,66 @@
 {#- Shared learning/content index for chirp-theme.
 
     One parameterized listing surface for the near-duplicate `*/list.html`
-    pages (tutorial, resume, changelog, notebook). Each caller differs only in
-    labels and feed shape, so they share this macro instead of cloning a
-    `resource_index` call per vertical.
+    pages (tutorial, resume, notebook). Each caller differs only in labels and
+    feed shape, so they share this macro instead of cloning a per-vertical
+    template.
+
+    Composes page_hero + grid/feed DIRECTLY — it deliberately does NOT use
+    chirpui/resource_index, because resource_index always emits a search_header
+    GET form ("Filter X… / Search") + a "0 filters selected" selection bar that
+    is inert on a static Bengal build (no request-time server) and duplicates
+    the working global Cmd+K search. Discovery lives in Cmd+K; the list just
+    presents the catalog. This also removes the old double heading (page-hero
+    title + a near-synonym results_title). The blog/tracks lists already prove
+    this page_hero + grid pattern.
 
     Args:
         title           Index heading (e.g. "Tutorials").
-        href            Section href, used as the search/filter action target.
         subtitle        Lede under the heading.
         items           Resolved list of child pages to render.
         content         Optional rendered section body (markdown index page).
-        search_placeholder  Filter input placeholder.
-        results_title   Heading above the results region.
+        eyebrow         Optional small-caps badge label above the title.
+        eyebrow_icon    Optional icon name for the eyebrow badge.
         item_singular   Noun for the count label (e.g. "tutorial").
         item_plural     Optional explicit plural (defaults to singular + "s").
         empty_title     Empty-state heading.
         empty_message   Empty-state prose.
+        empty_icon      Empty-state icon name.
         layout          "grid" (resource cards) or "feed" (post-card stack).
-        card_kind       Card modifier + footer badge for grid layout.
+        card_kind       Card modifier for grid layout.
+        surface         data-chirp-theme-surface value (centers the intro lede
+                        via the type-identity measure system).
 -#}
-{% from "chirpui/layout.html" import container %}
-{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/layout.html" import container, stack %}
 {% from "partials/learning-pages.html" import content_cards, learning_feed, rendered_body %}
 {% from "partials/taxonomy-pages.html" import count_label %}
+{% from "partials/empty-state.html" import empty_state %}
 
-{% def learning_index(title, href, subtitle=none, items=none, content=none, search_placeholder="Filter...", results_title=none, item_singular="entry", item_plural=none, empty_title="Nothing here yet", empty_message="Entries appear here when published.", layout="grid", card_kind="page", cls="") %}
+{% def learning_index(title, subtitle=none, items=none, content=none, eyebrow=none, eyebrow_icon=none, item_singular="entry", item_plural=none, empty_title="Nothing here yet", empty_message="Entries appear here when published.", empty_icon="inbox", layout="grid", card_kind="page", surface=none, cls="") %}
 {% let safe_items = items ?? [] %}
 {% let _layout = "grid" if layout == "grid" else "feed" %}
-{% let _results_title = results_title ?? title %}
 {% let _count = count_label(safe_items | length, item_singular, item_plural) %}
+{% let _surface_attr = (' data-chirp-theme-surface="' ~ surface ~ '"') if surface else '' %}
+<div class="chirp-theme-learning-shell"{{ _surface_attr | safe }}>
 {% call container(cls="chirp-theme-learning-page" ~ (" " ~ cls if cls else "")) %}
-  {% call resource_index(title, href, subtitle=subtitle, search_placeholder=search_placeholder, button_icon="magnifying-glass", results_title=_results_title, results_subtitle=_count, results_layout=("grid" if _layout == "grid" else "stack"), results_cols=3, has_results=safe_items | length > 0, empty_title=empty_title, empty_message=empty_message, cls="chirp-theme-learning-index") %}
+  {% call stack(gap="lg") %}
+    {% call page_hero(title=title, subtitle=subtitle, variant="minimal", background="solid", cls="chirp-theme-learning-hero") %}
+      {% slot eyebrow %}{% if eyebrow %}{{ badge(eyebrow, variant="primary") }}{% end %}{% end %}
+      {% slot metadata %}{{ _count }}{% end %}
+    {% end %}
     {{ rendered_body(content) }}
+    {% if safe_items | length > 0 %}
     {% if _layout == "grid" %}
     {{ content_cards(safe_items, empty_message, card_kind) }}
     {% else %}
     {{ learning_feed(safe_items, empty_message) }}
     {% end %}
+    {% else %}
+    {{ empty_state(empty_title, empty_message, icon_name=empty_icon) }}
+    {% end %}
   {% end %}
 {% end %}
+</div>
 {% end %}

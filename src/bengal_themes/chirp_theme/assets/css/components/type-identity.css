@@ -29,6 +29,12 @@
   [data-chirp-theme-surface] .chirp-theme-learning-content,
   [data-chirp-theme-surface] .chirp-theme-blog-article__content {
     max-inline-size: var(--type-measure, none);
+    /* Center the clamped reading measure within its wider container so prose
+     * does not hard-anchor left while the footer (own centered container)
+     * centers. No-op when --type-measure is `none` (un-pointed surface) or
+     * wider than the viewport (mobile). Fixes the shared "content floats left"
+     * defect across tutorial / notebook / authors / resume / changelog. */
+    margin-inline: auto;
   }
 
   [data-chirp-theme-surface] .chirpui-rendered-content,

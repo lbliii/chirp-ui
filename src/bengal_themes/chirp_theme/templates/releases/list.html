@@ -2,11 +2,12 @@
 
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/code.html" import install_snippet %}
-{% from "chirpui/layout.html" import container %}
-{% from "chirpui/resource_index.html" import resource_index %}
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/layout.html" import container, stack %}
 {% from "chirpui/timeline.html" import timeline, timeline_item %}
 {% from "partials/learning-pages.html" import rendered_body %}
 {% from "partials/taxonomy-pages.html" import count_label %}
+{% from "partials/empty-state.html" import empty_state %}
 
 {#- Derive the bare version string from a release title or explicit param.
     "chirp-ui 0.9.0" -> "0.9.0"; an explicit metadata.version always wins. -#}
@@ -19,18 +20,29 @@
 {% let title = page?.title ?? section?.title ?? "Releases" %}
 {% let description = page?.description ?? section?.description ?? "chirp-ui release history." %}
 {% let raw_items = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
-{% let items = raw_items | sort(attribute="metadata.date,title", reverse=true) %}
+{#- Sort newest-first by the version in the title. Release list items do not
+    expose a resolvable `date` (unlike changelog), but the zero-padded
+    single-digit semver in "chirp-ui 0.9.0" sorts string-descending == version
+    descending, so title-desc gives the correct newest-first order. -#}
+{% let items = raw_items | sort(attribute="title", reverse=true) %}
+{% let _count = count_label(items | length, "release") %}
 
+<div data-chirp-theme-surface="changelog">
 {% call container(cls="chirp-theme-learning-page chirp-theme-release-page") %}
-  {% call resource_index(title, page?.href ?? section?.href ?? "/releases/", subtitle=description, search_placeholder="Filter releases...", button_icon="magnifying-glass", results_title="Release history", results_subtitle=count_label(items | length, "release"), has_results=items | length > 0, empty_title="No releases yet", empty_message="Release notes appear here when published.", cls="chirp-theme-learning-index") %}
+  {% call stack(gap="lg") %}
+    {% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-learning-hero") %}
+      {% slot eyebrow %}{{ badge("Releases", variant="primary") }}{% end %}
+      {% slot metadata %}{{ _count }}{% end %}
+    {% end %}
     {{ rendered_body(content) }}
+    {% if items | length > 0 %}
     {% call timeline(density="compact", link_mode="title", cls="chirp-theme-release-timeline") %}
       {% for item in items %}
       {% let version = release_version(item) | trim %}
       {% let parts = version.split(".") %}
       {% let patch = (parts[2] if parts | length > 2 else "0") | int %}
       {% let is_feature = patch == 0 %}
-      {% let is_latest = loop.index == 1 %}
+      {% let is_latest = loop.first %}
       {% let entry_href = item?.href ?? item?.url ?? "#" %}
       {% let entry_date = item?.metadata?.date ?? item?.date %}
       {#- One-line highlight: opt-in via frontmatter; skip the boilerplate
@@ -52,6 +64,10 @@
       {% end %}
       {% end %}
     {% end %}
+    {% else %}
+    {{ empty_state("No releases yet", "Release notes appear here when published.", icon_name="package") }}
+    {% end %}
   {% end %}
 {% end %}
+</div>
 {% end %}

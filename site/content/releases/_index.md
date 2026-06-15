@@ -4,7 +4,9 @@ description: chirp-ui release history
 draft: false
 weight: 90
 lang: en
-type: page
+type: releases
+cascade:
+  type: releases
 ---
 
 # Releases
