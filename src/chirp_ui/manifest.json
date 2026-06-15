@@ -7401,7 +7401,7 @@
         "chirpui-data-grid__title"
       ],
       "extra_emits": [],
-      "lineno": 111,
+      "lineno": 118,
       "macro": "data_grid",
       "maturity": "experimental",
       "modifiers": [
