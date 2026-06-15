@@ -15,7 +15,7 @@
     better with Chirp (template globals + use_chirp_ui Alpine injection).
 
     Route + template usage:
-        from chirp_ui import Column, parse_sort, sort_columns, selection_state
+        from chirp_ui import Column, parse_sort, sort_columns, selection_state, sort_query
 
         COLS = [Column("name","Name",sortable=True),
                 Column("status","Status",sortable=True,align="center"),
@@ -23,16 +23,22 @@
 
         @app.get("/users")
         def users(req):
+            offset = int(req.query.get("offset", 0))
             sort = parse_sort(req.query.get("sort"), default_key="name",
                               allowed=tuple(c.key for c in COLS))
-            rows = query_users(order_by=sort.key, desc=(sort.direction=="desc"))
+            rows = query_users(order_by=sort.key, desc=(sort.direction=="desc"),
+                               offset=offset, limit=PAGE)
             cols = sort_columns(COLS, sort, base_url="/users",
                                 extra_params={"q": req.query.get("q","")})
             sel = selection_state(req.query.getlist("ids"),
                                   page_ids=[u.id for u in rows], total=count_users())
             ctx = dict(columns=cols, rows=[[u.name,u.status,u.seats] for u in rows],
                        row_ids=[u.id for u in rows], row_labels=[u.name for u in rows],
-                       selection=sel)
+                       selection=sel, selection_id="users",
+                       has_more=offset + PAGE < count_users(),
+                       load_more_url=f"/users?offset={offset + PAGE}&sort={sort_query(sort)}")
+            # Load-more fetch → bare <tr> rows + an OOB sentinel that refreshes (or,
+            # on the last page, removes) the button (#231). Full page otherwise.
             if req.headers.get("HX-Target") == "users-grid-body":
                 return Response(render_fragment("data_grid_rows", **ctx))
             return Template("users.html", **ctx)
@@ -82,9 +88,37 @@
 {% end %}
 {% end %}
 
-{#- Body rows + optional refreshed load-more sentinel. The load-more route
-    renders THIS fragment (just <tr> rows, and the sentinel when has_more) and
-    htmx appends it (hx-swap="beforeend") to the same <tbody>.
+{#- Load-more sentinel — a stable-id container (`#{selection_id}-load-more`) that
+    holds the load-more button. Rendered once by `data_grid` (oob=false) and
+    re-rendered by `data_grid_rows` as an `hx-swap-oob` update (oob=true) on every
+    load-more fetch, so the button refreshes its next-page URL or — when `has_more`
+    is false — empties the container, removing the button exactly when the result
+    set is exhausted (#231). The button keeps hx-boost="false" + hx-select="unset"
+    so a boost-inherited select can't strip the bare-<tr> fragment. -#}
+{% def grid_load_more(selection_id="grid", load_more_url=none, body_id=none, has_more=false,
+                      load_more_label="Load more", load_more_trigger="click",
+                      load_more_swap="beforeend", oob=false) %}
+{% set _lm_id = selection_id ~ "-load-more" %}
+{% set _body = body_id or (selection_id ~ "-grid-body") %}
+<div id="{{ _lm_id }}" class="chirpui-data-grid__load-more"{% if oob %} hx-swap-oob="true"{% end %}>
+    {% if load_more_url and has_more %}
+    <button type="button" class="chirpui-btn chirpui-btn--secondary chirpui-data-grid__load-more-btn"
+            hx-boost="false"
+            {{ build_hx_attrs(hx_get=load_more_url, hx_target="#" ~ _body, hx_swap=load_more_swap, hx_trigger=load_more_trigger, hx_select="unset", hx_disinherit="hx-select") | html_attrs }}>
+        {{ load_more_label }}
+    </button>
+    {% end %}
+</div>
+{% end %}
+
+{#- Body rows, plus — when called as the load-more fragment with `load_more_url`
+    set — the load-more sentinel emitted as an `hx-swap-oob` update to the stable
+    `#{selection_id}-load-more` container. The load-more route renders THIS
+    fragment: the bare <tr> rows (htmx appends them via hx-swap="beforeend" to the
+    grid <tbody>) AND the OOB sentinel, which refreshes the button's next-page URL
+    or — when `has_more` is false — removes the button on the last page (#231).
+    The initial page's sentinel is rendered by `data_grid`; pass `selection_id`
+    here so the OOB id matches the rendered container.
 
     `row_labels` (optional, parallel to `row_ids`) supplies a clean, plain-text
     accessible name per row for the select checkbox. The first cell is NOT used
@@ -93,7 +127,10 @@
     or an empty spacer cell, which degrades the label to a non-distinguishing
     bare "Select". When no clean label is given we fall back to the stable row
     id, never the rendered cell, so every checkbox is distinct and unpolluted. -#}
-{% def data_grid_rows(columns, rows, row_ids=none, row_labels=none, selectable=false, select_name="ids", selection=none) %}
+{% def data_grid_rows(columns, rows, row_ids=none, row_labels=none, selectable=false,
+                      select_name="ids", selection=none, load_more_url=none, has_more=false,
+                      load_more_label="Load more", load_more_trigger="click",
+                      load_more_swap="beforeend", selection_id="grid") %}
 {% for row_data in rows %}
 {% set _rid = (row_ids[loop.index0] | string) if row_ids is not none and loop.index0 < (row_ids | length) else (loop.index0 | string) %}
 {% set _rlabel = (row_labels[loop.index0] | string) if row_labels is not none and loop.index0 < (row_labels | length) and row_labels[loop.index0] else _rid %}
@@ -112,6 +149,12 @@
         <td class="chirpui-table__td{{ " chirpui-table__td--" ~ _col.align if _col and _col.align else "" }}">{{ cell }}</td>
     {% end %}
 </tr>
+{% end %}
+{#- When rendered as the load-more fragment, refresh/remove the button via OOB. -#}
+{% if load_more_url %}
+{{ grid_load_more(selection_id=selection_id, load_more_url=load_more_url, has_more=has_more,
+                  load_more_label=load_more_label, load_more_trigger=load_more_trigger,
+                  load_more_swap=load_more_swap, oob=true) }}
 {% end %}
 {% end %}
 
@@ -202,15 +245,8 @@
     </div>
 
     {% if load_more_url and has_more %}
-    <div class="chirpui-data-grid__load-more">
-        {# hx-select="unset" + hx-disinherit defends against an inherited boost
-           hx-select that would otherwise strip the bare <tr> fragment. #}
-        <button type="button" class="chirpui-btn chirpui-btn--secondary chirpui-data-grid__load-more-btn"
-                hx-boost="false"
-                {{ build_hx_attrs(hx_get=load_more_url, hx_target="#" ~ _body_id, hx_swap=load_more_swap, hx_trigger=load_more_trigger, hx_select="unset", hx_disinherit="hx-select") | html_attrs }}>
-            {{ load_more_label }}
-        </button>
-    </div>
+    {{ grid_load_more(selection_id=selection_id, load_more_url=load_more_url, body_id=_body_id, has_more=has_more,
+                      load_more_label=load_more_label, load_more_trigger=load_more_trigger, load_more_swap=load_more_swap) }}
     {% elif total > 1 and url_pattern %}
     <div class="chirpui-data-grid__footer">
         {{ pagination(current=current, total=total, url_pattern=url_pattern, hx_target=("#" ~ _body_id)) }}

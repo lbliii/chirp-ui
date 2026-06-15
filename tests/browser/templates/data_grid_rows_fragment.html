@@ -1,4 +1,8 @@
-{#- Load-more / OOB fragment for the data-grid gauntlet (#200). Renders the bare
-    <tr> rows (and is appended via hx-swap="beforeend" to the grid <tbody>). -#}
+{#- Load-more / OOB fragment for the data-grid gauntlet (#200, #231). Renders the
+    bare <tr> rows (appended via hx-swap="beforeend" to the grid <tbody>) PLUS the
+    load-more sentinel as an hx-swap-oob update to #members-load-more, so the button
+    is refreshed (or removed, when has_more is false) on every load-more fetch. -#}
 {% from "chirpui/data_grid.html" import data_grid_rows %}
-{{ data_grid_rows(columns, rows, row_ids=row_ids, row_labels=row_labels, selectable=true, select_name="ids", selection=selection) }}
+{{ data_grid_rows(columns, rows, row_ids=row_ids, row_labels=row_labels, selectable=true,
+                  select_name="ids", selection=selection, selection_id="members",
+                  load_more_url=load_more_url, has_more=has_more) }}
