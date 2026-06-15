@@ -6524,6 +6524,41 @@ class TestCommandPalette:
         assert ">/" in html
         assert 'aria-label="Search project"' in html
 
+    def test_command_palette_combobox_contract(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_palette.html" import command_palette %}'
+            '{% call command_palette(id="cp", search_url="/s") %}{% end %}'
+        ).render()
+        # The dialog wraps the arrow-nav factory; the input is a combobox over the
+        # results listbox, defended against boost-inherited hx-select.
+        assert 'x-data="chirpuiCommandPalette()"' in html
+        assert 'role="combobox"' in html
+        assert 'aria-controls="cp-results"' in html
+        assert ':aria-activedescendant="activeId"' in html
+        assert 'hx-select="unset"' in html
+        assert 'role="listbox"' in html
+
+    def test_command_palette_item_is_roving_option(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_palette.html" import command_palette_item %}'
+            '{{ command_palette_item("opt-1", "New file", href="/new", hint="N") }}'
+        ).render()
+        assert 'id="opt-1"' in html
+        assert 'role="option"' in html
+        assert 'aria-selected="false"' in html
+        assert 'href="/new"' in html
+        assert "chirpui-command-palette__item-label" in html
+        assert "chirpui-command-palette__item-hint" in html
+
+    def test_command_palette_item_button_with_action(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_palette.html" import command_palette_item %}'
+            '{{ command_palette_item("opt-2", "Run", action="run") }}'
+        ).render()
+        assert "<button" in html
+        assert 'role="option"' in html
+        assert 'data-action="run"' in html
+
 
 class TestSplitButton:
     def test_split_button_link(self, env: Environment) -> None:

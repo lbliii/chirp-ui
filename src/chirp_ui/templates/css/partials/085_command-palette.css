@@ -74,7 +74,8 @@
     overflow-wrap: anywhere;
 }
 
-.chirpui-command-palette__item:hover {
+.chirpui-command-palette__item:hover,
+.chirpui-command-palette__item--active {
     background: var(--chirpui-bg-subtle);
 }
 

@@ -552,6 +552,98 @@
         };
     });
 
+    // Command palette: opens the <dialog> on Cmd/Ctrl+K and adds arrow-key
+    // navigation over htmx-loaded results. The role=combobox input tracks the
+    // active role=option via aria-activedescendant; each fresh result set
+    // (htmx:afterSettle into the results listbox) auto-highlights its first item.
+    register("chirpuiCommandPalette", function () {
+        return {
+            activeId: "",
+            hasOptions: false,
+            init: function () {
+                this.refresh();
+                var self = this;
+                this._onSettle = function (e) {
+                    var target = e.detail && e.detail.target;
+                    var results = self.$refs.results;
+                    if (results && target && (target === results || results.contains(target))) {
+                        self.refresh();
+                    }
+                };
+                document.addEventListener("htmx:afterSettle", this._onSettle);
+            },
+            destroy: function () {
+                if (this._onSettle) {
+                    document.removeEventListener("htmx:afterSettle", this._onSettle);
+                }
+            },
+            open: function () {
+                var dialog = this.$refs.dialog;
+                if (dialog && typeof dialog.showModal === "function" && !dialog.open) {
+                    dialog.showModal();
+                }
+            },
+            _options: function () {
+                return this.$refs.results
+                    ? Array.prototype.slice.call(
+                          this.$refs.results.querySelectorAll('[role="option"]')
+                      )
+                    : [];
+            },
+            // Set aria-selected + the --active class imperatively (the options are
+            // htmx-swapped plain HTML with no Alpine directives — binding them via
+            // x-bind would fight the swap). The input's aria-activedescendant is an
+            // Alpine binding on the non-swapped input, so it stays reactive.
+            _applyActive: function () {
+                var opts = this._options();
+                for (var i = 0; i < opts.length; i++) {
+                    var on = opts[i].id === this.activeId;
+                    opts[i].setAttribute("aria-selected", on ? "true" : "false");
+                    opts[i].classList.toggle(
+                        "chirpui-command-palette__item--active",
+                        on
+                    );
+                }
+            },
+            refresh: function () {
+                // A new result set landed — highlight the first item so Enter runs it.
+                var opts = this._options();
+                this.hasOptions = opts.length > 0;
+                this.activeId = opts.length ? opts[0].id : "";
+                this._applyActive();
+            },
+            move: function (delta) {
+                var opts = this._options();
+                if (!opts.length) {
+                    return;
+                }
+                var idx = -1;
+                for (var i = 0; i < opts.length; i++) {
+                    if (opts[i].id === this.activeId) {
+                        idx = i;
+                        break;
+                    }
+                }
+                idx = idx === -1 ? (delta > 0 ? 0 : opts.length - 1) : idx + delta;
+                if (idx < 0) {
+                    idx = opts.length - 1;
+                }
+                if (idx >= opts.length) {
+                    idx = 0;
+                }
+                this.activeId = opts[idx].id;
+                this._applyActive();
+                opts[idx].scrollIntoView({ block: "nearest" });
+            },
+            activate: function () {
+                var el = this.activeId ? document.getElementById(this.activeId) : null;
+                if (el) {
+                    el.click();
+                }
+            },
+        };
+    });
+
     register("chirpuiTabs", function () {
         return {
             active: "",

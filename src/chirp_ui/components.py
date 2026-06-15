@@ -2969,6 +2969,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         extra_emits=(
             "chirpui-command-palette-trigger--md",
             "chirpui-command-palette-trigger--sm",
+            "chirpui-command-palette__item--active",
         ),
     ),
     "collapse": ComponentDescriptor(
