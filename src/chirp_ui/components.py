@@ -659,6 +659,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         maturity="experimental",
         macro="context_menu",
     ),
+    "combobox": ComponentDescriptor(
+        block="combobox",
+        elements=("label", "input", "list", "option", "empty"),
+        template="combobox.html",
+        extra_emits=("chirpui-combobox__option--active",),
+        category="form",
+        maturity="experimental",
+        requires=("alpine",),
+        macro="combobox",
+    ),
     "breadcrumbs": ComponentDescriptor(
         block="breadcrumbs",
         template="breadcrumbs.html",

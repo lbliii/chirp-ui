@@ -116,6 +116,10 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
         factory="chirpuiContextMenu",
         macros=("context_menu",),
     ),
+    "chirpuiCombobox": AlpineRequirement(
+        factory="chirpuiCombobox",
+        macros=("combobox",),
+    ),
 }
 
 

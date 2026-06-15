@@ -959,6 +959,10 @@ def create_app() -> App:
     async def context_menu_page(request: Request):
         return Template("context_menu_page.html", page_title="Context Menu")
 
+    @app.route("/combobox")
+    async def combobox_page(request: Request):
+        return Template("combobox_page.html", page_title="Combobox")
+
     @app.route("/application-chrome-gauntlet")
     async def application_chrome_gauntlet_page(request: Request):
         return Template(

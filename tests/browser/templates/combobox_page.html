@@ -1,0 +1,29 @@
+{#- Gauntlet fixture for the combobox (#201). Renders a client-filtered combobox
+    with overlapping-prefix options ("Apple"/"Apricot") so typeahead filtering,
+    aria-activedescendant roving, select (click + keyboard), Escape/click-outside
+    close, the no-matches state, and axe a11y are all exercisable. -#}
+{% extends "base.html" %}
+{% block brand %}Combobox{% end %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path="/combobox", aria_label="Primary") %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/combobox", "Combobox", match="exact") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/combobox.html" import combobox %}
+<div id="page-root">
+  <h1 data-testid="main-content">Combobox</h1>
+  <div data-testid="combobox-container">
+    {{ combobox(name="fruit", label="Fruit", placeholder="Search fruits…", options=[
+        {"label": "Apple", "value": "apple"},
+        {"label": "Apricot", "value": "apricot"},
+        {"label": "Banana", "value": "banana"},
+        {"label": "Cherry", "value": "cherry"},
+        {"label": "Mango", "value": "mango"},
+    ]) }}
+  </div>
+</div>
+{% end %}

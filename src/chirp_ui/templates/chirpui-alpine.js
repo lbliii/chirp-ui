@@ -429,6 +429,129 @@
         };
     });
 
+    // Combobox / autocomplete: a role="combobox" text input over a filtered
+    // role="listbox". Options are server-rendered <li role="option"> elements;
+    // the factory filters them by the typed query (x-show via matches()), roves
+    // the visible subset with aria-activedescendant, and on select writes the
+    // option label to the visible input + the value to the hidden input.
+    register("chirpuiCombobox", function () {
+        return {
+            open: false,
+            query: "",
+            activeId: "",
+            _suppressOpen: false,
+            init: function () {
+                this.query = this.$refs.input.value || "";
+            },
+            _options: function () {
+                return Array.prototype.slice.call(
+                    this.$root.querySelectorAll(".chirpui-combobox__option")
+                );
+            },
+            _visible: function () {
+                var q = this.query.trim().toLowerCase();
+                return this._options().filter(function (o) {
+                    var label = (o.dataset.label || "").toLowerCase();
+                    return !q || label.indexOf(q) !== -1;
+                });
+            },
+            matches: function (label) {
+                var q = this.query.trim().toLowerCase();
+                return !q || (label || "").toLowerCase().indexOf(q) !== -1;
+            },
+            visibleCount: function () {
+                return this._visible().length;
+            },
+            onInput: function () {
+                this.query = this.$refs.input.value;
+                this.open = true;
+                var active = this.activeId;
+                var stillVisible = this._visible().some(function (o) {
+                    return o.id === active;
+                });
+                if (!stillVisible) {
+                    this.activeId = "";
+                }
+            },
+            openList: function () {
+                // Skip the focus that choose() re-issues after a selection, so
+                // returning focus to the input does not immediately reopen the list.
+                if (this._suppressOpen) {
+                    return;
+                }
+                if (this._options().length) {
+                    this.open = true;
+                }
+            },
+            close: function () {
+                this.open = false;
+                this.activeId = "";
+            },
+            move: function (delta) {
+                var vis = this._visible();
+                this.open = true;
+                if (!vis.length) {
+                    return;
+                }
+                var idx = -1;
+                for (var i = 0; i < vis.length; i++) {
+                    if (vis[i].id === this.activeId) {
+                        idx = i;
+                        break;
+                    }
+                }
+                idx = idx === -1 ? (delta > 0 ? 0 : vis.length - 1) : idx + delta;
+                if (idx < 0) {
+                    idx = vis.length - 1;
+                }
+                if (idx >= vis.length) {
+                    idx = 0;
+                }
+                this.activeId = vis[idx].id;
+                vis[idx].scrollIntoView({ block: "nearest" });
+            },
+            selectActive: function () {
+                var el = this.activeId ? document.getElementById(this.activeId) : null;
+                if (!el) {
+                    var vis = this._visible();
+                    if (vis.length === 1) {
+                        el = vis[0];
+                    } else {
+                        return;
+                    }
+                }
+                this.choose(el);
+            },
+            choose: function (el) {
+                if (!el) {
+                    return;
+                }
+                var label = el.dataset.label || "";
+                this.$refs.input.value = label;
+                this.query = label;
+                if (this.$refs.value) {
+                    this.$refs.value.value = el.dataset.value || "";
+                }
+                this.open = false;
+                this.activeId = "";
+                // Suppress only the focus() reopen below; clear on the next tick
+                // so a later genuine focus still opens the list (the keyboard
+                // path leaves the input already focused, firing no focus event).
+                this._suppressOpen = true;
+                this.$refs.input.focus();
+                this.$nextTick(
+                    function () {
+                        this._suppressOpen = false;
+                    }.bind(this)
+                );
+                this.$dispatch("chirpui:combobox-selected", {
+                    value: el.dataset.value || "",
+                    label: label,
+                });
+            },
+        };
+    });
+
     register("chirpuiTabs", function () {
         return {
             active: "",

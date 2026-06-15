@@ -251,6 +251,7 @@ vocabulary.
 | `band` | Keep experimental | Marketing pattern proof. |
 | `border-beam` | Keep experimental | Motion/effects visual proof. |
 | `catalog-rail` | Recipe-only | Media recipe proof; promote only after repeated app use. |
+| `combobox` | Keep experimental | Control interaction proof; typeahead role=combobox over a filtered listbox (#201) with aria-activedescendant roving + Escape/click-outside and axe coverage via the combobox browser gauntlet — promote in a later deliberate hardening PR once the gauntlet stabilizes. |
 | `composer-shell` | Keep experimental | Form interaction proof. |
 | `confetti` | Keep experimental | Motion/effects visual proof. |
 | `constellation` | Keep experimental | Motion/effects visual proof. |

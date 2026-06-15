@@ -6258,6 +6258,90 @@
       "trim_emits": [],
       "variants": []
     },
+    "combobox": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "combobox",
+      "category": "form",
+      "composes": [],
+      "consumes": [],
+      "description": "Combobox / autocomplete\n    Typeahead text input over a filtered role=\"listbox\" of suggestions — the\n    WAI-ARIA combobox pattern with aria-activedescendant. Typing filters the\n    options client-side; ArrowDown/ArrowUp rove the visible options, Enter selects\n    the active one, Escape closes, click-outside closes. Selecting fills the\n    visible input with the option label, writes the option value to a hidden input\n    (submitted under `name`), and dispatches `chirpui:combobox-selected`\n    {value, label}.\n\n    Requires Alpine.js. Options are server-rendered, so with JavaScript off the\n    field degrades to a plain text input (the hidden value still submits the\n    server-selected `value`). Suggestions are a fixed in-DOM list filtered on the\n    client — pair with a server round-trip for large/remote result sets later.\n\n    Options: list of {label, value?} dicts (value defaults to label).\n\n    Usage:\n        from \"chirpui/combobox.html\" import combobox\n\n        {{ combobox(name=\"country\", label=\"Country\",\n                    placeholder=\"Search countries…\", value=\"us\",\n                    options=[{\"label\": \"Canada\", \"value\": \"ca\"},\n                             {\"label\": \"United States\", \"value\": \"us\"}]) }}",
+      "elements": [
+        "empty",
+        "input",
+        "label",
+        "list",
+        "option"
+      ],
+      "emits": [
+        "chirpui-combobox",
+        "chirpui-combobox__empty",
+        "chirpui-combobox__input",
+        "chirpui-combobox__label",
+        "chirpui-combobox__list",
+        "chirpui-combobox__option",
+        "chirpui-combobox__option--active"
+      ],
+      "extra_emits": [
+        "chirpui-combobox__option--active"
+      ],
+      "lineno": 26,
+      "macro": "combobox",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "options"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "value"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "placeholder"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "combobox.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "command-bar": {
       "appearances": [],
       "authoring": "available",
@@ -24241,7 +24325,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 304,
+      "available": 305,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -24255,7 +24339,7 @@
       "data-display": 38,
       "effect": 46,
       "feedback": 25,
-      "form": 19,
+      "form": 20,
       "infrastructure": 2,
       "interactive": 9,
       "layout": 50,
@@ -24267,25 +24351,25 @@
       "typography": 29
     },
     "component_maturity": {
-      "experimental": 103,
+      "experimental": 104,
       "internal": 2,
       "legacy": 39,
       "stable": 211
     },
     "component_requirements": {
-      "alpine": 28,
+      "alpine": 29,
       "htmx": 26
     },
     "component_roles": {
-      "component": 190,
+      "component": 191,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 22,
       "primitive": 109
     },
     "components_with_consumes": 20,
-    "components_with_description": 252,
-    "components_with_params": 252,
+    "components_with_description": 253,
+    "components_with_params": 253,
     "components_with_provides": 12,
     "manifest_quality": {
       "missing_description": 0,
@@ -24293,7 +24377,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 250
+      "public_templated_components": 251
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -24301,8 +24385,8 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 127,
-      "explicit_extra_classes": 539,
+      "explicit_extra_blocks": 128,
+      "explicit_extra_classes": 540,
       "explicit_trim_blocks": 69,
       "explicit_trim_classes": 96
     },
@@ -24316,7 +24400,7 @@
       "spacing": 30,
       "typography": 45
     },
-    "total_components": 355,
+    "total_components": 356,
     "total_theme_packs": 3,
     "total_tokens": 435
   },
