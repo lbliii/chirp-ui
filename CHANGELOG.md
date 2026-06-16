@@ -137,10 +137,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   mask/intersect/focus plugins). The existing `ok` / `script_loaded` contract is
   unchanged ([#191](https://github.com/lbliii/chirp-ui/issues/191)).
 - Extended the chirp-theme dogfood: a first-class `notebook` section now ships a real dogfood notebook page (so the notebook layout renders on the live site) and is guarded by the family-coverage smoke test, a structured-frontmatter changelog entry exercises the version-grouped `change_section` path in `changelog/single.html`, and `tutorial/list.html` is deduped onto the shared `learning_index()` macro instead of an inlined `resource_index` block. The `/docs/` landing destination cards each lead with a shipped Phosphor icon, an adoption quickstart documents applying `theme: "chirp-theme"` to a Bengal site (minimum Bengal 0.3.3 and the `library_asset_tags` requirement), and the family-coverage smoke test now also guards that a category landing aggregates multiple pages (the singular `category:` frontmatter Bengal's default `categories` taxonomy reads).
+- Added eight new stable layout and control primitives: `aspect_ratio` (fixed-ratio frame for media, previews, and embeds), `item` (reusable row anatomy for lists, menus, command results, and resource links), `kbd` (inline keyboard-key hint for shortcuts), `ui_label` from `label.html` (standalone label primitive for custom controls and compact forms), `scroll_area` (contained overflow region for sidebars, menus, code previews, and panels), `separator` (semantic or decorative divider), `slider` (native range-input wrapper for numeric settings and filters), and `toggle_group` (grouped single- or multiple-selection toggle buttons) ([#118](https://github.com/lbliii/chirp-ui/issues/118)).
 
 ### Changed
 
-- +Extended the existing-token typography and rhythm polish pass to navigation, segmented-control, disclosure, and overlay component defaults.
+- Extended the existing-token typography and rhythm polish pass to navigation, segmented-control, disclosure, and overlay component defaults.
 - Demoted `workspace_shell` from `stable` to `experimental` maturity to match the
   new [Application Chrome Posture ADR](docs/decisions/application-chrome-posture.md):
   the blessed application-chrome composite is the route-context rail wired into
@@ -164,7 +165,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extended the existing-token typography and rhythm polish pass to site navigation, feature, resource, and token-input metadata surfaces.
 - Extended the existing-token typography and rhythm polish pass to special form controls, rating controls, range values, and drag affordances.
 - Extended the typography and rhythm polish pass to small controls, navigation affordances, and animated control primitives using existing Chirp UI tokens.
-- Improve registry discovery and add source-only reference proof, analysis, and recipe guidance for Chirp UI promotion candidates without adding new public component APIs.
+- Improve registry discovery and add source-only reference proof, analysis, and recipe guidance for Chirp UI promotion candidates.
 - Made the registry `maturity` field honest about thin composition wrappers. A
   `maturity="stable"` component that composes other registry components (non-empty
   `composes`) is now treated as a composition wrapper and must carry the same
@@ -206,6 +207,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `match="exact"`) on those links to restore client re-highlighting across boosted
   navigation ([#197](https://github.com/lbliii/chirp-ui/issues/197)).
 - Wired the cross-track membership widget into `doc/single.html`, so any doc whose slug appears in a `site/data/tracks.yaml` track now renders an in-track prev/next + progress card after its page navigation. A doc that belongs to multiple tracks surfaces one card per membership, and a doc in no track renders nothing. The prev/next links are plain internal anchors, so site-wide htmx boost handles them without a per-link opt-out.
+- Lowered the Bengal asset-path contract floor in `chirpui_asset_path()` from `0.3.3` to `0.3.2`, so the library asset-path scheme is also emitted on Bengal `0.3.2`. The `chirp-theme` package still requires Bengal `>= 0.3.3` for `library_asset_tags()` ([#118](https://github.com/lbliii/chirp-ui/issues/118)).
 
 ### Fixed
 
