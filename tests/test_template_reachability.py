@@ -123,7 +123,6 @@ INTENTIONALLY_RETAINED = frozenset(
         # include edge in this change.
         "partials/archive-sidebar.html",
         "partials/docs-meta.html",
-        "partials/empty-state.html",
         "partials/language-switcher.html",
         "partials/series-nav.html",
     }
