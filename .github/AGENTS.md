@@ -30,9 +30,9 @@ You defend release gates against workflow-only behavior and broad permissions.
 - **Node is only JS test harness.** Hosted tests use Node 22 and `npm ci` for
   Vitest. Evidence: `.github/workflows/tests.yml:25`,
   `package.json:11`.
-- **Pages builds from source.** Pages workflow builds Bengal output, assembles
-  showcase, emits manifest, and uploads `site/public`. Evidence:
-  `.github/workflows/pages.yml:48`.
+- **Pages builds from source.** Pages workflow builds Bengal output, emits the
+  manifest, and uploads `site/public`. Evidence:
+  `.github/workflows/pages.yml` build steps.
 - **Pages permissions are scoped.** Pages workflow uses `contents: read`,
   `pages: write`, and `id-token: write`. Evidence:
   `.github/workflows/pages.yml:8`.
@@ -52,7 +52,7 @@ When this domain changes, check:
 - `.github/workflows/ty.yml` — type-check parity, Python version, source scope,
   warning behavior.
 - `.github/workflows/pages.yml` — docs dependencies, Bengal cache hash, source
-  roots, showcase assembly, manifest emission, Pages permissions.
+  roots, manifest emission, Pages permissions.
 - `.github/workflows/python-publish.yml` — release trigger, build command,
   trusted publishing permissions, artifact handling, package-data proof.
 - `.github/workflows/changelog.yml`, `changelog.d/`, `pyproject.toml` — fragment

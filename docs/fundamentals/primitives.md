@@ -354,10 +354,9 @@ Use them when they solve a narrow edge that a primitive cannot own. Do not add n
 
 Spacing shortcuts are **deprecate later** candidates. New first-party examples
 should not use `mt-sm`, `mt-md`, or `mb-md`; use `stack()`, `flow`, component
-slots, or local page chrome instead. The current static-showcase exception is
-documented in [STATIC-SHOWCASE-LEGACY-HELPER-TRIAGE.md](../safety/static-showcase-legacy-helper-triage.md):
-only `visually-hidden` remains there, and it is classified as component-contract
-usage for native controls.
+slots, or local page chrome instead. Of the legacy helpers, only `visually-hidden` remains
+in first-party use, and it is classified as component-contract usage for native
+controls (accessible labels), not a typography or spacing helper.
 
 ---
 

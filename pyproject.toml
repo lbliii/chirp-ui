@@ -256,33 +256,9 @@ css-concat-check = { cmd = "pytest tests/test_chirpui_css_concat.py -q", help = 
 # Documentation
 docs-serve = { cmd = "python scripts/docs_site.py serve", help = "Serve docs site locally" }
 docs-build = { cmd = "python scripts/docs_site.py build", help = "Build docs site" }
-docs-assemble-showcase = { cmd = "bash scripts/assemble-static-showcase.sh site/public/showcase", help = "Copy static showcase into site/public/showcase (after docs-build)" }
 docs-emit-manifest.shell = "mkdir -p site/public && python -m chirp_ui.manifest --json > site/public/chirpui.manifest.json"
 docs-emit-manifest.help = "Emit chirpui component manifest to site/public/chirpui.manifest.json"
-showcase-guard.shell = """
-out="site/public/showcase/index.html"
-if [ ! -f "$out" ]; then
-  echo "ERROR: $out missing — the static showcase was not assembled." >&2
-  echo "       Run 'uv run poe docs-build-all' (docs-build + docs-assemble-showcase)." >&2
-  exit 1
-fi
-if grep -Fq 'injected here after' "$out" || grep -Fq 'No section content' "$out"; then
-  echo "ERROR: $out still contains the placeholder/empty-section sentinel." >&2
-  echo "       The real gallery was not injected over the section index." >&2
-  echo "       The /showcase/ route would serve build-command placeholder text." >&2
-  echo "       Re-run 'uv run poe docs-assemble-showcase' AFTER the Bengal build." >&2
-  exit 1
-fi
-if ! grep -Fq 'Complete Component Showcase' "$out"; then
-  echo "ERROR: $out does not contain the assembled gallery marker." >&2
-  echo "       Expected the static showcase ('Complete Component Showcase')," >&2
-  echo "       but found a fallback page. Run 'uv run poe docs-assemble-showcase'." >&2
-  exit 1
-fi
-echo "✓ /showcase/ serves the assembled gallery (no placeholder sentinels)"
-"""
-showcase-guard.help = "Fail if the published showcase HTML still serves the placeholder instead of the gallery"
-docs-build-all = { sequence = ["docs-build", "docs-assemble-showcase", "docs-emit-manifest", "showcase-guard"], help = "Build Bengal site, assemble static showcase, emit manifest, and guard against placeholder leakage" }
+docs-build-all = { sequence = ["docs-build", "docs-emit-manifest"], help = "Build Bengal site and emit the component manifest" }
 
 # CI Pipeline
 ci = { sequence = [

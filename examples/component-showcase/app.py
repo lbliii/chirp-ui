@@ -1539,4 +1539,13 @@ async def video(request: Request) -> Template:
 
 
 if __name__ == "__main__":
-    app.run()
+    import os
+
+    # Railway (and other PaaS) inject $PORT and route to a process bound on
+    # 0.0.0.0. With no $PORT set we fall back to Chirp's defaults (127.0.0.1:8000)
+    # so `python examples/component-showcase/app.py` keeps working locally.
+    _port = os.environ.get("PORT")
+    if _port:
+        app.run(host="0.0.0.0", port=int(_port))
+    else:
+        app.run()

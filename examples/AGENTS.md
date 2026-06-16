@@ -29,9 +29,9 @@ vocabulary, unsafe shortcuts, and stale macro usage.
 - **Candidate examples are not automatic snippets.** Showcase templates can
   inform agents only after explicit curation and runnable proof. Evidence:
   `docs/agents/agent-source-inventory.md:26`.
-- **Static showcase is not source truth.** `examples/static-showcase/` and
-  generated showcase output are visual surfaces, not public API sources.
-  Evidence: `docs/agents/agent-source-inventory.md:78`.
+- **Showcase output is not source truth.** The deployed
+  `examples/component-showcase` Chirp app is a visual surface, not a public API
+  source. Evidence: `docs/agents/agent-source-inventory.md:78`.
 - **Showcase shell chrome is not copyable component guidance.** Base/index
   showcase wrappers are excluded from snippets. Evidence:
   `docs/agents/agent-source-inventory.md:81`.
@@ -42,9 +42,10 @@ vocabulary, unsafe shortcuts, and stale macro usage.
 - **Unsafe escape hatches stay explicit.** General examples must not normalize
   raw attrs, `attrs_unsafe`, inline scripts, or unescaped HTML. Evidence:
   `docs/agents/agent-source-inventory.md:87`.
-- **Showcase assembly is generated.** Site showcase output is assembled by
-  script, not hand-authored in `site/public/`. Evidence:
-  `scripts/assemble-static-showcase.sh`, `pyproject.toml:233`.
+- **The component gallery is the live Chirp app.** The interactive gallery is
+  the deployed `examples/component-showcase` Chirp app (a live Railway service),
+  not hand-authored output in `site/public/`. Evidence:
+  `examples/component-showcase/app.py`.
 
 ## Contract Checklist
 
@@ -55,8 +56,6 @@ When this domain changes, check:
 - `examples/component-showcase/templates/` — public macro usage, safe attrs,
   composition primitives, non-default states, accessibility labels, and no
   showcase-only API claims.
-- `examples/static-showcase/` — visual audit scope, static-only classes,
-  generated-site assembly, and exclusion from copyable snippets.
 - `examples/design-system-gap-showcase/`, `examples/docs-theme-showcase/`,
   `examples/css-scope-prototype/` — stated purpose, public-safe content,
   theme/token boundaries, and no accidental API promotion.
@@ -87,7 +86,7 @@ When this domain changes, check:
 
 ## Own
 
-**Code:** `examples/component-showcase/`, `examples/static-showcase/`,
+**Code:** `examples/component-showcase/`,
 `examples/design-system-gap-showcase/`, `examples/docs-theme-showcase/`,
 `examples/css-scope-prototype/`.
 

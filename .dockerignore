@@ -1,0 +1,17 @@
+# Keep the Railway build context lean (the showcase app needs src/ + examples/,
+# not generated output, caches, or the local virtualenv).
+.git
+.github
+.venv
+_site
+site/public
+node_modules
+**/__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.context
+tests/browser
+docs
