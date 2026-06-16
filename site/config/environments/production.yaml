@@ -14,10 +14,25 @@ build:
   strict_mode: true
 
 assets:
-  # TODO(chirp-ui): Bengal's CSS minifier corrupts the chirp-ui `@scope (...) to (...)`
-  # envelope (drops scoped rules on the minified Pages build). Not patched here;
-  # tracked in https://github.com/lbliii/chirp-ui/issues/247 / upstream
-  # https://github.com/lbliii/bengal/issues/510. Once a fixed Bengal release is
-  # pinned, verify @scope blocks survive minification.
-  minify: true
+  # STOPGAP (temporary): CSS minification is disabled in production.
+  #
+  # Why: Bengal's CSS minifier strips the space inside chirp-ui's `@scope`
+  # envelope, turning `@scope (.block) to (.block .block)` into
+  # `... to(.block .block)`. The `to(` then tokenizes as a function, so the
+  # browser DROPS the entire `@scope` block — every enveloped component loses
+  # its inner padding/inset. This only manifests on the production build
+  # (`minify: true`); the local preview (`minify: false`) renders correctly,
+  # which is why GitHub Pages regressed while local looked fine.
+  #
+  # Bengal exposes minification as a single global `assets.minify` flag (mapped
+  # to `minify_assets`) — there is NO per-asset exclude list and NO separate
+  # CSS-only flag — so the least-invasive in-repo fix is to turn minification
+  # off here. Fingerprinting stays ON (cache-busting must not regress).
+  #
+  # The real fix lives in Bengal's minifier (handled separately upstream).
+  # Tracked: https://github.com/lbliii/chirp-ui/issues/247 / upstream
+  # https://github.com/lbliii/bengal/issues/510. RE-ENABLE `minify: true` once
+  # chirp-ui is pinned to a Bengal release shipping the `@scope ... to (...)`
+  # minifier fix (verify @scope blocks survive minification at that point).
+  minify: false
   fingerprint: true
