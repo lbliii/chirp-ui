@@ -1,0 +1,28 @@
+{#
+Shared section iconography.
+
+`section_icon_name(title, href)` maps a navigation section (by its title/href
+keywords) to a Phosphor icon name, or returns an empty string when no mapping
+applies. This is the single source of truth so the docs catalog rail
+(`partials/docs-nav.html` → `catalog_mark`) and the desktop navbar mega-dropdown
+(`base.html` → `render_navbar_item`) stay visually consistent.
+
+Callers decide the fallback (e.g. a numeric index) and the icon size:
+    {% from 'partials/nav-icons.html' import section_icon_name %}
+    {% let name = section_icon_name(title, href) | trim %}
+    {% if name %}{{ icon(name, size=18) }}{% else %}{{ index }}{% end %}
+#}
+{% def section_icon_name(title, href) %}
+{%- let key = ((title ?? '') ~ ' ' ~ (href ?? '')) | lower -%}
+{%- if 'component' in key -%}cube
+{%- elif 'release' in key -%}rocket
+{%- elif 'api' in key or 'reference' in key -%}code
+{%- elif 'blog' in key or 'forum' in key -%}newspaper
+{%- elif 'doc' in key or 'guide' in key -%}book-open
+{%- elif 'tutorial' in key -%}graduation-cap
+{%- elif 'track' in key -%}map
+{%- elif 'resume' in key -%}briefcase
+{%- elif 'author' in key -%}users
+{%- elif 'changelog' in key -%}git-commit
+{%- else -%}{%- end -%}
+{% end %}
