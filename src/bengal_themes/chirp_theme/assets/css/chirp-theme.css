@@ -2279,6 +2279,20 @@
     margin: 0;
   }
 
+  /* The breadcrumb nav carries the legacy, *unlayered* `.breadcrumbs`
+     rule from style.css (`margin-bottom: var(--space-6)` = 24px). Because that
+     declaration is unlayered, it outranks every rule in `@layer chirp-theme` —
+     so the sibling `.chirp-theme-docs-layout .breadcrumbs { margin: 0 }` reset
+     never wins, and the eyebrow grid cell (a block-formatting context, so the
+     child margin can't collapse out) inflates to ~59px for a single line of
+     breadcrumb text. Neutralize it on the eyebrow's own breadcrumb so the hero
+     inner grid's `row-gap` owns the eyebrow→title rhythm. `!important` is the
+     only lever that crosses the unlayered→layered boundary for a normal
+     declaration. */
+  .chirp-theme-docs-layout__hero .chirpui-hero__eyebrow .breadcrumbs {
+    margin-bottom: 0 !important;
+  }
+
   .chirp-theme-docs-layout__hero .chirpui-hero__title {
     grid-column: 1;
     max-width: 14ch;
@@ -2298,7 +2312,7 @@
   .chirp-theme-docs-layout__hero .chirpui-hero__actions {
     display: flex;
     grid-column: 2;
-    grid-row: 3;
+    grid-row: 2;
     gap: 0.45rem;
     align-self: start;
     justify-self: end;
@@ -2311,7 +2325,7 @@
 
   .chirp-theme-docs-layout__hero .chirpui-hero__metadata {
     grid-column: 2;
-    grid-row: 2;
+    grid-row: 3;
     align-self: start;
     justify-self: end;
     margin: 0.38rem 0 0;
