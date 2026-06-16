@@ -14,5 +14,10 @@ build:
   strict_mode: true
 
 assets:
+  # TODO(chirp-ui): Bengal's CSS minifier corrupts the chirp-ui `@scope (...) to (...)`
+  # envelope (drops scoped rules on the minified Pages build). Not patched here;
+  # tracked in https://github.com/lbliii/chirp-ui/issues/247 / upstream
+  # https://github.com/lbliii/bengal/issues/510. Once a fixed Bengal release is
+  # pinned, verify @scope blocks survive minification.
   minify: true
   fingerprint: true
