@@ -20569,6 +20569,12 @@ a.chirpui-chip:focus-visible {
         font-weight: var(--chirpui-ui-font-weight-semibold);
     }
 
+    /* A logo-less header should not let space-between push a lone metric to
+       the far edge; collapse the empty slot so the metric aligns with the body. */
+    :scope .chirpui-story-card__logo:empty {
+        display: none;
+    }
+
     :scope .chirpui-story-card__logo-img {
         display: block;
         max-inline-size: 100%;
@@ -20626,6 +20632,11 @@ a.chirpui-chip:focus-visible {
         color: var(--chirpui-text-muted);
         font-size: var(--chirpui-ui-sm);
         line-height: var(--chirpui-line-height-normal);
+    }
+
+    /* A footer with no CTA or slot content adds dead space below the card. */
+    :scope .chirpui-story-card__footer:empty {
+        display: none;
     }
 
     :scope .chirpui-story-card__cta {
@@ -21914,7 +21925,7 @@ a.chirpui-chip:focus-visible {
     :scope {
       display: inline-flex;
       align-items: stretch;
-      gap: 0;
+      gap: var(--chirpui-spacing-2xs);
       min-inline-size: 0;
       border: 1px solid var(--chirpui-border);
       border-radius: var(--chirpui-radius);
@@ -22104,8 +22115,7 @@ a.chirpui-chip:focus-visible {
 
   @scope (.chirpui-item) {
     :scope {
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr) auto auto;
+      display: flex;
       align-items: center;
       gap: var(--chirpui-spacing-sm);
       min-inline-size: 0;
@@ -22137,6 +22147,7 @@ a.chirpui-chip:focus-visible {
 
     .chirpui-item__icon {
       display: inline-grid;
+      flex: 0 0 auto;
       place-items: center;
       inline-size: 1.5rem;
       block-size: 1.5rem;
@@ -22145,6 +22156,7 @@ a.chirpui-chip:focus-visible {
 
     .chirpui-item__content {
       display: grid;
+      flex: 1 1 auto;
       gap: var(--chirpui-spacing-2xs);
       min-inline-size: 0;
     }
@@ -22170,6 +22182,7 @@ a.chirpui-chip:focus-visible {
 
     .chirpui-item__meta,
     .chirpui-item__action {
+      flex: 0 0 auto;
       color: var(--chirpui-text-muted);
       font-size: var(--chirpui-ui-xs);
       white-space: nowrap;
