@@ -53,6 +53,12 @@
         font-weight: var(--chirpui-ui-font-weight-semibold);
     }
 
+    /* A logo-less header should not let space-between push a lone metric to
+       the far edge; collapse the empty slot so the metric aligns with the body. */
+    :scope .chirpui-story-card__logo:empty {
+        display: none;
+    }
+
     :scope .chirpui-story-card__logo-img {
         display: block;
         max-inline-size: 100%;
@@ -110,6 +116,11 @@
         color: var(--chirpui-text-muted);
         font-size: var(--chirpui-ui-sm);
         line-height: var(--chirpui-line-height-normal);
+    }
+
+    /* A footer with no CTA or slot content adds dead space below the card. */
+    :scope .chirpui-story-card__footer:empty {
+        display: none;
     }
 
     :scope .chirpui-story-card__cta {

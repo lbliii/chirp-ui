@@ -5630,6 +5630,23 @@ class TestStoryCard:
         assert "Custom summary" in html
         assert "Case study" in html
 
+    def test_story_card_collapses_empty_logo_and_footer(self, env: Environment) -> None:
+        # A logo-less, link-less card must emit truly-empty header/footer
+        # wrappers so the `:empty { display: none }` rule can collapse them.
+        # Otherwise the empty logo holds the header's space-between open and
+        # shoves a lone metric to the far edge (the reported "random" float).
+        html = env.from_string(
+            '{% from "chirpui/story_card.html" import story_card %}'
+            '{{ story_card(customer="Python teams", '
+            'outcome="Pages and screens share one library.", '
+            'summary="Use Chirp UI for cards and forms.", metric="one library") }}'
+        ).render()
+
+        assert '<div class="chirpui-story-card__logo"></div>' in html
+        assert '<footer class="chirpui-story-card__footer"></footer>' in html
+        assert "chirpui-story-card__metric" in html
+        assert "Read story" not in html
+
 
 class TestCtaBand:
     def test_cta_band_with_standard_actions(self, env: Environment) -> None:

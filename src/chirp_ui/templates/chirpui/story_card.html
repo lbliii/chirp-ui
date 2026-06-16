@@ -26,11 +26,11 @@
 {% endif %}
     <header class="chirpui-story-card__header">
         <div class="chirpui-story-card__logo">
-            {% if logo_src %}
+            {%- if logo_src -%}
             <img class="chirpui-story-card__logo-img" src="{{ logo_src }}" alt="{{ logo_alt or customer }}">
-            {% else %}
-            {% slot logo %}
-            {% endif %}
+            {%- else -%}
+            {%- slot logo -%}
+            {%- endif -%}
         </div>
         {% if metric %}
         <span class="chirpui-story-card__metric">{{ metric }}</span>
@@ -47,8 +47,8 @@
         </div>
     </div>
     <footer class="chirpui-story-card__footer">
-        {% slot footer %}
-        {% if href %}<span class="chirpui-story-card__cta">{{ cta_label }}</span>{% endif %}
+        {%- slot footer -%}
+        {%- if href -%}<span class="chirpui-story-card__cta">{{ cta_label }}</span>{%- endif -%}
     </footer>
 {% if href %}
 </a>
