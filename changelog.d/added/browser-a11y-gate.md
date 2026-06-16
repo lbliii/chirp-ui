@@ -1,1 +1,0 @@
-Added a `make pre-pr` / `poe pre-pr` gate (full `poe ci` + a docs-chrome browser/a11y smoke covering folder-toggle, landmark, and axe proofs) and a non-required CI `browser-smoke` job, since `poe ci` intentionally does not run the Playwright suite.

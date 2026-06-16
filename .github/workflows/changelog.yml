@@ -30,8 +30,15 @@ jobs:
             exit 0
           fi
 
-          # Look for new fragments in changelog.d/
-          if git diff --name-only --diff-filter=A "$BASE...$HEAD" | grep -q '^changelog\.d/.*\.md$'; then
+          # Look for new fragments in changelog.d/. Require the flat, towncrier-
+          # discoverable form: changelog.d/<slug>.<type>.md (optionally with a
+          # numeric counter, and a leading "+" orphan prefix for issue-less notes).
+          # Towncrier derives the category from the FILENAME via a non-recursive
+          # listdir — fragments dropped in a changelog.d/<type>/ SUBDIRECTORY are
+          # silently ignored at build time, so the gate rejects them here instead.
+          TYPES='added|changed|deprecated|removed|fixed|security'
+          if git diff --name-only --diff-filter=A "$BASE...$HEAD" \
+            | grep -qE "^changelog\.d/[^/]+\.($TYPES)(\.[0-9]+)?\.md$"; then
             echo "Changelog fragment found."
             exit 0
           fi
@@ -44,6 +51,6 @@ jobs:
             exit 0
           fi
 
-          echo "::error::PR changes src/ but no new changelog.d/*.md fragment."
-          echo "Add a fragment (e.g. changelog.d/added/my-change.md) or label the PR with 'skip-changelog'."
+          echo "::error::PR changes src/ but no new towncrier-discoverable changelog fragment."
+          echo "Add a flat fragment (e.g. changelog.d/+my-change.added.md — NOT changelog.d/added/my-change.md, which towncrier ignores) or label the PR with 'skip-changelog'."
           exit 1

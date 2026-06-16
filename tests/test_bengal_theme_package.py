@@ -1618,11 +1618,11 @@ result_path.write_text(
     assert result["releases_has_install_snippet"]
     assert result["releases_no_dead_filter"]
     assert result["release_titles"][:5] == [
+        "chirp-ui 0.10.0",
         "chirp-ui 0.9.0",
         "chirp-ui 0.8.0",
         "chirp-ui 0.7.0",
         "chirp-ui 0.6.0",
-        "chirp-ui 0.5.0",
     ]
     assert not result["release_has_nested_resource_grid"]
     assert not result["has_legacy_content_tile"]

@@ -16,15 +16,26 @@
 {{ raw | trim }}
 {% end %}
 
+{#- Numeric version sort key. Zero-pad each semver component so a plain string
+    sort orders versions numerically — string-descending title sort breaks once a
+    component reaches two digits (e.g. "0.10.0" < "0.9.0" as strings). -#}
+{% def version_sort_key(item) %}
+{%- let v = release_version(item) | trim -%}
+{%- let p = v.split(".") -%}
+{%- let major = (p[0] if p | length > 0 else "0") | int -%}
+{%- let minor = (p[1] if p | length > 1 else "0") | int -%}
+{%- let patch = (p[2] if p | length > 2 else "0") | int -%}
+{{- "{:05d}.{:05d}.{:05d}" | format(major, minor, patch) -}}
+{% end %}
+
 {% block content %}
 {% let title = page?.title ?? section?.title ?? "Releases" %}
 {% let description = page?.description ?? section?.description ?? "chirp-ui release history." %}
 {% let raw_items = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
-{#- Sort newest-first by the version in the title. Release list items do not
-    expose a resolvable `date` (unlike changelog), but the zero-padded
-    single-digit semver in "chirp-ui 0.9.0" sorts string-descending == version
-    descending, so title-desc gives the correct newest-first order. -#}
-{% let items = raw_items | sort(attribute="title", reverse=true) %}
+{#- Sort newest-first by the parsed semver version. Release list items do not
+    expose a resolvable `date` (unlike changelog), and a raw title-string sort
+    misorders multi-digit components, so sort by a zero-padded version key. -#}
+{% let items = [{"_sk": version_sort_key(item) | trim, "_item": item} for item in raw_items] | sort(attribute="_sk", reverse=true) %}
 {% let _count = count_label(items | length, "release") %}
 
 <div data-chirp-theme-surface="changelog">
@@ -37,7 +48,8 @@
     {{ rendered_body(content) }}
     {% if items | length > 0 %}
     {% call timeline(density="compact", link_mode="title", cls="chirp-theme-release-timeline") %}
-      {% for item in items %}
+      {% for entry in items %}
+      {% let item = entry._item %}
       {% let version = release_version(item) | trim %}
       {% let parts = version.split(".") %}
       {% let patch = (parts[2] if parts | length > 2 else "0") | int %}

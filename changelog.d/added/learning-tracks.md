@@ -1,1 +1,0 @@
-Added the Tracks learning-path feature: a top-level section that assembles separate documents into one ordered, navigable pillar page (data-file model via `site/data/tracks.yaml`), with an LMS card index, in-track progress + prev/next, sidebar scroll-spy, and localStorage resume.
