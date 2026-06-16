@@ -1,1 +1,0 @@
-Reworked the docs sidebar disclosure: sections now open/close via an open/closed folder icon (a real toggle button beside the navigable label — no caret), keeping section labels visible when collapsed and adding zero nested-interactive / landmark / region axe violations.

@@ -1,1 +1,0 @@
-Accepted `notebook` as a documentation destination in the search-relevance fixture: now that the notebook family is first-class (#146/#147) and ships a "render a card from Python" dogfood page, that page legitimately ranks #1 for the query "card". Added `notebook` to the test's `DOC_SECTIONS` so this cross-family interaction is correct behavior rather than a failure.

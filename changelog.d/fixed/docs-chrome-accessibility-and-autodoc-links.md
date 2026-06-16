@@ -1,1 +1,0 @@
-Fixed flagship-page defects: dark-mode and home primary-button contrast, the Outfit webfont never loading, `search_bar` rendering a raw icon name, ~89 broken `/api/<module>/<member>/` autodoc links (now in-page anchors), unique nav landmark names, valid `<aside>` roles, a decorative reading-progress bar, and keyboard-scrollable parameter tables.

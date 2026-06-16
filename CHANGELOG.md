@@ -7,6 +7,235 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.10.0] - 2026-06-15
+
+### Added
+
+- Added **`data_grid`** — a server-driven interactive data grid composite
+  (`chirpui/data_grid.html`) backed by a new typed Python state helper
+  **`chirp_ui.grid_state`** (Chirp-agnostic, stdlib + dataclasses, in the
+  `route_tabs.py` mold). The helper exposes `Column`, `GridSort`, `ColumnSort`,
+  `SelectionState`, and the plain functions `parse_sort`, `sort_columns`,
+  `selection_state`, `column_aria_sort`, `sort_query` (exported from
+  `chirp_ui.__all__` and registered as Kida template globals).
+
+  `sort_columns(...)` projects each column into a `ColumnSort` carrying the
+  `aria_sort` value and the fully-built toggle `next_url` the macro renders **but
+  never computes**, so the server's `ORDER BY` and the rendered headers cannot
+  drift. The grid ships sortable columns (real `<button class="chirpui-table__sort">`
+  in a `<th aria-sort=…>`, single-sort invariant, stable sort key — never
+  `header|lower`, focus retained on the activated button after the swap), row
+  selection bound to a controlled `selection_bar` via one idempotent
+  `chirpuiGridSelection` Alpine factory (page-scoped select-all with the
+  JS-property `indeterminate` state, live `aria-live` count, server-seeded so it is
+  correct with JavaScript off). The factory re-seeds from server-checked rows after
+  **every** swap — including the load-more `beforeend` append, via a scoped
+  `htmx:afterSettle` listener registered in `init()` — so select-all then load-more
+  correctly drops select-all to *indeterminate* (only the original page is selected
+  of the now-larger set) and a server-checked appended row is re-adopted (WCAG
+  4.1.2). Each row checkbox's accessible name comes from an optional `row_labels`
+  list (clean plain text) and **never** the rendered first cell (which may be rich
+  HTML or an empty spacer) — it falls back to the stable row id, so every label
+  stays distinct and screen-reader-clean. Sticky header + opt-in sticky first
+  column are pure `position: sticky` with token-driven z-index (incl. a top-left
+  corner override) and a directional **seam shadow** (`color-mix` over
+  `--chirpui-border`) so scrolled content visibly slides under the pin. v1 pins the
+  first **visual** column (no per-column `Column(frozen=…)` — deliberately not
+  shipped rather than advertise a no-op). HTMX load-more uses the `data_grid_rows`
+  fragment (`beforeend`). The previously-orphaned `.chirpui-table__sort` CSS hook is
+  finally emitted. `table()` gained additive
+  `selectable` / `select_name` / `selection` / `row_id` / `sticky_first_col`
+  params (defaults off = byte-identical; the legacy `sortable=`/`sort_url=`
+  `header|lower` path is unchanged and documented as legacy). `selection_bar()`
+  gained an additive `controlled=` mode. Proven by `tests/test_grid_state.py`,
+  `tests/test_components.py`, `tests/js/grid_selection.test.js`, and the
+  `tests/browser/test_data_grid_gauntlet.py` a11y gauntlet (single-active
+  aria-sort, focusable sort button, focus retention, three-state select-all,
+  sticky pinning, load-more without duplicate ids, axe-clean). Differentiator vs
+  TanStack: Python/HTMX-native — the server owns the sort and selection state;
+  load-more replaces client virtualization. Cross-page "select all N matching" is
+  out of scope for v1. See `docs/patterns/data-grid.md` and
+  `docs/COMPONENT-OPTIONS.md § Data Grid`
+  ([#200](https://github.com/lbliii/chirp-ui/issues/200)).
+- Added Docs/API/Releases/All scope chips to the Cmd+K search modal so results can be narrowed in place, reusing the same API/release predicates that drive result grouping and ranking; styled the chips to mirror the /search filter affordance and reset the scope to All when the modal closes. Gave the JS-disabled /search page a styled server-side fallback that lists every indexed page grouped by section, guarded by a kida render test that renders the real search.html noscript fragment. Authored Playwright proofs that the preload modes are honored (smart/lazy issue zero index fetches on a cold page; hover, focus, and Cmd+K each warm the index once before the modal opens; immediate warms once after idle) and that the search combobox wires aria-activedescendant to the active option id on both the modal and the /search page, clearing it on close and returning focus to the trigger.
+- Added `combobox` — a typeahead autocomplete input following the WAI-ARIA combobox pattern. A `role="combobox"` text input filters a `role="listbox"` of server-rendered options as you type (client-side substring match); ArrowDown/ArrowUp rove the visible options via `aria-activedescendant` (the active option carries `aria-selected="true"`), Enter selects the active option, and Escape / click-outside close the list. Selecting fills the visible input with the option label, writes the option value to a hidden input submitted under `name`, and dispatches `chirpui:combobox-selected` `{value, label}`. Options are server-rendered, so the field degrades to a plain text input with JavaScript off. Behaviour lives in the idempotent `chirpuiCombobox` Alpine factory. Ships experimental with a keyboard/a11y browser gauntlet ([#201](https://github.com/lbliii/chirp-ui/issues/201)).
+- Added `context_menu` — a right-click / keyboard context menu anchored at the pointer. Wrap any non-interactive region in `context_menu(items=[...])`; right-clicking (or the ContextMenu key / Shift+F10 / Enter on the focused region) opens a `role="menu"` panel at the cursor with full keyboard support: roving tabindex via ArrowUp/Down/Home/End, Enter/Space to activate, Escape to close and return focus, click-outside dismissal, and viewport clamping. Items accept `action`/`href`, an icon, `disabled` (focusable-but-inert per WAI-ARIA), and `default`/`danger`/`muted` variants; selecting one dispatches `chirpui:context-menu-selected` with `{label, action?, href?}`. Behaviour lives in the idempotent `chirpuiContextMenu` Alpine factory. Ships experimental with a keyboard/a11y browser gauntlet ([#202](https://github.com/lbliii/chirp-ui/issues/202)).
+- Added `date_picker` — a date and date-range form control. A readonly display input opens a `role="dialog"` calendar popover with a `role="grid"` of `role="gridcell"` day buttons; the canonical value is an ISO `YYYY-MM-DD` string in a hidden input (range mode adds a second hidden input under `end_name`, default `{name}_end`). The calendar is fully client-rendered, so month navigation has no server round-trip. Keyboard: roving tabindex with Arrow (Left/Right ±1, Up/Down ±7), Home/End (week), PageUp/PageDown (month), Enter/Space to pick, Escape to close and return focus; focus movement clamps into `[min, max]` so it never strands on a disabled day. `min`/`max` (ISO) disable out-of-range days, today is marked with `aria-current`, and day names announce selection/range/today state. Range mode highlights the span and orders endpoints regardless of click order. Behaviour lives in the `chirpuiDatePicker` Alpine factory. Ships experimental with a keyboard/range/min-max/axe browser gauntlet; v1 is Sunday-first, English labels (localization is a follow-up) ([#201](https://github.com/lbliii/chirp-ui/issues/201)).
+- Added a **route-context rail** region to `app_shell` (`context_rail=true` + a
+  `context_rail` slot on the macro; a `context_rail` flag + `{% block context_rail %}`
+  on `app_shell_layout.html`). It renders an optional trailing-edge secondary region
+  (`<aside id="chirpui-context-rail">`, a labelled `complementary` landmark) for an
+  inspector/detail panel that updates with the current route. The update protocol
+  mirrors shell actions: a route response includes an out-of-band fragment targeting
+  the outlet — use the new `context_rail_oob()` helper in `chirpui/oob.html`. Works
+  standalone with htmx OOB; under Chirp, boosted navigation carries the rail fragment
+  in the same response. Responsive: the rail stacks under main below 72rem and joins
+  the single column below 48rem. Width is `--chirpui-context-rail-width` (default
+  20rem); `context_rail_variant="muted"` tints the surface. This is the one blessed
+  shell-region composite per the [Application Chrome Posture ADR](docs/decisions/application-chrome-posture.md)
+  ([#195](https://github.com/lbliii/chirp-ui/issues/195)).
+- Added a `make pre-pr` / `poe pre-pr` gate (full `poe ci` + a docs-chrome browser/a11y smoke covering folder-toggle, landmark, and axe proofs) and a non-required CI `browser-smoke` job, since `poe ci` intentionally does not run the Playwright suite.
+- Added a client-side Alpine runtime self-check to `chirpui-alpine.js`: when
+  chirp-ui components that require Alpine render but Alpine never initializes (a missing,
+  blocked, or misconfigured CDN script; a CSP block; a network error; or
+  `alpine=False`), the runtime now logs a loud `console.warn` with the likely
+  causes instead of leaving every interactive component silently inert. The
+  end-to-end Alpine-liveness proof (`tests/browser/test_alpine_lifecycle.py`,
+  including the new silent-disable case) is now wired into the
+  `test-browser-chrome` gate, and a Vitest unit test covers the self-check logic
+  in the fast `poe ci` suite ([#189](https://github.com/lbliii/chirp-ui/issues/189), [#190](https://github.com/lbliii/chirp-ui/issues/190)).
+- Added a complete, manifest-driven on-site component index at `site/content/docs/components/all.md` that lists every public Chirp UI macro grouped by category with its one-line description, generated by `scripts/build_component_index.py` (with a `build-component-index-check` poe task wired into `verify-generated` and `make release-preflight`) and guarded by `tests/docs_contracts/test_onsite_component_coverage.py`, so all public components are discoverable on-site without leaving for GitHub or running a local app, and the catalog can never silently drift behind the registry.
+- Added a multi-select (token-pill) mode to `combobox` (`multiple=true`). Selecting an option adds a removable pill, keeps the list open, and clears the query; each selected value submits as a repeated hidden `name` input. Backspace on the empty input removes the last pill, the per-pill remove button removes a specific one, and already-selected options drop out of the list. The control wraps the pills and a borderless flexing input. Single-select is unchanged. Multi-select requires JavaScript (pills/values are Alpine-managed); v1 starts empty. Proven by the combobox browser gauntlet (pills, hidden-input submission, remove, Backspace, axe) ([#201](https://github.com/lbliii/chirp-ui/issues/201)).
+- Added a scoped AGENTS.md steward network with audit and SME-question records so
+  agent work loads local domain invariants, review hooks, and verification
+  expectations at major repository boundaries.
+- Added an **`id_suffix`** parameter to `shell_actions_bar()` and `shell_action()`
+  (`chirpui/shell_actions.html`). Passing e.g. `id_suffix="-drawer"` namespaces the
+  overflow dropdown id and each menu-action id, so the same actions bar can render
+  in two regions at once (a topbar copy plus a mobile-drawer copy) without colliding
+  duplicate element ids. `shell_actions_bar` threads the suffix down into each
+  `shell_action`. The default `""` preserves the canonical ids, keeping every
+  single-instance render byte-identical
+  ([#224](https://github.com/lbliii/chirp-ui/issues/224)).
+- Added an always-available **`topbar_leading`** zone to both shell entry points
+  (a `topbar_leading` slot on the `app_shell()` macro; a `{% block topbar_leading %}`
+  on `app_shell_layout.html`). It renders a **non-anchor** leading region before the
+  brand — the correct home for a hamburger / back / command affordance. Interactive
+  controls belong here, never in the `brand` slot/block (which nests inside the
+  brand `<a>`, producing invalid HTML and hijacking the click). The built-in
+  `nav_drawer` hamburger and the layout's collapsible `sidebar_toggle` render in the
+  same wrapper. See `docs/patterns/navigation.md § Leading affordance`
+  ([#220](https://github.com/lbliii/chirp-ui/issues/220)).
+- Added an opt-in **mobile nav drawer** to `app_shell` (`nav_drawer=true` on the
+  macro; `nav_drawer=True` in the render context for `app_shell_layout.html`).
+  Below the 48rem breakpoint a topbar hamburger opens the sidebar as an accessible
+  off-canvas slide-over, and — with `context_rail=true` — a second trigger opens
+  the rail. It is a thin, additive affordance over the existing regions: the same
+  sidebar/rail `<aside>` is repositioned (no duplicated nav), so `aria-current`,
+  `syncNav`, and OOB swaps keep working; unset, the shell is byte-for-byte
+  unchanged (the horizontal-strip fallback). The open/close behavior — focus trap,
+  `Esc`, scrim dismiss, body scroll-lock, focus return, link-dismiss, and
+  auto-close when the viewport grows past the breakpoint — is vanilla JS in
+  `shell_runtime_script()` with **no Alpine dependency** ("works without Chirp,
+  better with Chirp"). The open drawer is `role="dialog" aria-modal="true"` and
+  named (sidebar via `aria-labelledby`, rail via its `aria-label`); the rail's
+  close control is injected by the runtime so it is never stranded by the rail's
+  OOB content swaps. Proven end-to-end by `tests/browser/test_shell_nav_drawer_gauntlet.py`
+  (in the `test-browser-chrome-check` gate). See `docs/patterns/navigation.md § Mobile Nav Drawer`
+  ([#196](https://github.com/lbliii/chirp-ui/issues/196)).
+- Added arrow-key result navigation to `command_palette`. The search input is now a `role="combobox"` over the `role="listbox"` results: ArrowUp/ArrowDown rove the `role="option"` items via `aria-activedescendant` (the active item carries `aria-selected="true"` and an `--active` highlight), Enter activates the active item, and each fresh htmx result set auto-highlights its first item. A new `command_palette_item(id, label, href|action, hint)` helper renders results as roving options; legacy raw-HTML results stay Tab-navigable. Behaviour lives in the new `chirpuiCommandPalette` Alpine factory (which also owns Cmd/Ctrl+K open). Proven by the command-palette browser gauntlet, now in the `test-browser-chrome` gate ([#201](https://github.com/lbliii/chirp-ui/issues/201)).
+- Added layout affinity conventions, workspace shell recipes, and relationship-owned spacing contracts so composed Chirp UI screens handle rhythm, pressure, wrapping, and local overflow with less page-specific CSS.
+- Added the Tracks learning-path feature: a top-level section that assembles separate documents into one ordered, navigable pillar page (data-file model via `site/data/tracks.yaml`), with an LMS card index, in-track progress + prev/next, sidebar scroll-spy, and localStorage resume.
+- Dogfooded every shipped chirp-theme template family on the live docs site (blog, tutorial, resume, authors, changelog) and added an on-site shortcodes/directives reference plus a component catalog, so the theme's surfaces are demonstrated and regression-guarded rather than undocumented.
+- Extended `check_alpine_runtime()` to detect Alpine **core** (not just the
+  `chirpui-alpine.js` registration script): the result now carries `core_loaded`
+  and `core_url_valid` plus a human-readable `problems` tuple, and flags the
+  silent CDN footgun where an Alpine core `<script>` is present but its URL is a
+  bare `alpinejs@<version>` (CommonJS) instead of the browser build ending in
+  `/dist/cdn.min.js`. Detection is framework-agnostic (matches `alpinejs@` /
+  `@alpinejs/csp` srcs and Chirp's `data-chirp="alpine"` marker, and ignores the
+  mask/intersect/focus plugins). The existing `ok` / `script_loaded` contract is
+  unchanged ([#191](https://github.com/lbliii/chirp-ui/issues/191)).
+- Extended the chirp-theme dogfood: a first-class `notebook` section now ships a real dogfood notebook page (so the notebook layout renders on the live site) and is guarded by the family-coverage smoke test, a structured-frontmatter changelog entry exercises the version-grouped `change_section` path in `changelog/single.html`, and `tutorial/list.html` is deduped onto the shared `learning_index()` macro instead of an inlined `resource_index` block. The `/docs/` landing destination cards each lead with a shipped Phosphor icon, an adoption quickstart documents applying `theme: "chirp-theme"` to a Bengal site (minimum Bengal 0.3.3 and the `library_asset_tags` requirement), and the family-coverage smoke test now also guards that a category landing aggregates multiple pages (the singular `category:` frontmatter Bengal's default `categories` taxonomy reads).
+- Added eight new stable layout and control primitives: `aspect_ratio` (fixed-ratio frame for media, previews, and embeds), `item` (reusable row anatomy for lists, menus, command results, and resource links), `kbd` (inline keyboard-key hint for shortcuts), `ui_label` from `label.html` (standalone label primitive for custom controls and compact forms), `scroll_area` (contained overflow region for sidebars, menus, code previews, and panels), `separator` (semantic or decorative divider), `slider` (native range-input wrapper for numeric settings and filters), and `toggle_group` (grouped single- or multiple-selection toggle buttons) ([#118](https://github.com/lbliii/chirp-ui/issues/118)).
+
+### Changed
+
+- Extended the existing-token typography and rhythm polish pass to navigation, segmented-control, disclosure, and overlay component defaults.
+- Demoted `workspace_shell` from `stable` to `experimental` maturity to match the
+  new [Application Chrome Posture ADR](docs/decisions/application-chrome-posture.md):
+  the blessed application-chrome composite is the route-context rail wired into
+  `app_shell`, not the broader workbench *frame*, which the application-chrome plan
+  still defers. The macro itself is unchanged and continues to render; only its
+  stability signal (manifest, `chirp-ui find`, generated docs) moves to experimental,
+  aligning it with `composer_shell` and `dock`.
+- Demoted the **`data-table`** descriptor from `stable` to `experimental`
+  (metadata-only; no render change). Per [#200](https://github.com/lbliii/chirp-ui/issues/200)'s
+  acceptance ("no longer a thin wrapper labeled stable"), `data_table` is the
+  deliberately-thin filter+table+pagination convenience wrapper and the new
+  `data_grid` composite is now the real interactive grid. `table` and `table-wrap`
+  remain `stable` — they are genuinely complete low-level primitives (real
+  `<table>` semantics, alignment, widths, sticky header/col, slots). Agents and
+  docs that read the manifest will see the new maturity value; it is intentional,
+  not a regression. See `docs/safety/public-surface-stabilization.md`.
+- Document and begin the bespoke `chirp-theme` rewrite by routing the desktop shell through Chirp UI navbar/footer primitives, marking core page/search/error surfaces, moving docs heroes/navigation/TOC and blog/card compatibility surfaces toward Chirp UI primitives, adding a catalog-style double-left-rail docs surface with symbol-first outer navigation, quieter contextual inner rail rows, a redesigned page-map TOC rail, and a rail-native back-to-top action, replacing raw release lists with ordered release cards, widening hover/focus nav dropdowns, removing legacy hard-coded Bengal palette controls/assets, and preserving the transitional Bengal asset shim.
+- Extended the existing-token typography and rhythm polish pass to data display and loading feedback component defaults.
+- Extended the existing-token typography and rhythm polish pass to header, setup, divider, tooltip, and compact affordance component defaults.
+- Extended the existing-token typography and rhythm polish pass to message, conversation, social, and media component defaults.
+- Extended the existing-token typography and rhythm polish pass to site navigation, feature, resource, and token-input metadata surfaces.
+- Extended the existing-token typography and rhythm polish pass to special form controls, rating controls, range values, and drag affordances.
+- Extended the typography and rhythm polish pass to small controls, navigation affordances, and animated control primitives using existing Chirp UI tokens.
+- Improve registry discovery and add source-only reference proof, analysis, and recipe guidance for Chirp UI promotion candidates.
+- Made the registry `maturity` field honest about thin composition wrappers. A
+  `maturity="stable"` component that composes other registry components (non-empty
+  `composes`) is now treated as a composition wrapper and must carry the same
+  promote-to-stable proof collateral as any stable promotion — either a
+  `| Promote to stable |` row in `docs/safety/public-surface-stabilization.md` or a
+  justified `STABLE_COMPOSERS_WITH_PROOF` allowlist entry naming its asserting
+  proof test. The new `test_no_thin_composition_wrapper_is_stable_without_proof`
+  (composing with the existing promote-to-stable-collateral invariant, no new
+  maturity tier) catches the class: `data_table` shipped `stable` with
+  `composes=("filter-row","table","pagination")` before #200 demoted it, and this
+  gate would flag any future repeat. The audit confirmed zero current offenders —
+  `data_table` is already `experimental`, and `table`/`table-wrap`/`calendar`/
+  `bar_chart`/`donut` plus the hardened ASCII set carry `composes=()` so the rule
+  provably never fires on those complete/low-feature primitives
+  ([#203](https://github.com/lbliii/chirp-ui/issues/203)).
+- Polished the chirp-theme home hero preview card and finished a slice of the CSS-token layering cleanup: the preview-card nav labels now read at body-copy contrast, the "example interface" overline uses the brand sans small-caps treatment, the window-chrome traffic-light dots were resized and recolored from public `--chirpui-*` tokens so they read as an intentional macOS-style cluster, and the remaining raw `rgba()` panel gradients/shadows are now token-driven. Release history can surface a one-line `highlight:`/`summary:` frontmatter line per card, now exercised on the latest and a feature release. Also deleted the dead `.has-prose-content` / `base/prose-content.css` primitive from the mermaid component CSS and the CSS scoping docs (no template ever emitted it), and lowered the legacy `var(--color-*)` ceiling to lock in the migration gain.
+- Raise the default visual taste floor for Chirp UI screens and high-impact components while preserving registry-owned component vocabulary.
+- Reconciled the chirp-theme JavaScript subsystems against what actually ships. Deleted the template-unreferenced dead modules `holo.js`, `session-path-tracker.js`, `data-table.js`, and the bundled `tabulator.min.js`, and removed the Tabulator/data-table branch from `lazy-loaders.js` and the `base.html` lazy bundle so only the live Mermaid and D3-graph lazy features remain. Stripped dead SPA-navigation listeners (`contentLoaded`, `turbo:*`, `pjax:*`, `astro:*`) that Bengal never dispatches from `toc.js`, `tracks.js`, `graph-contextual.js`, and `link-previews.js`, and added a `data-toc-bound` idempotency guard so the progressive-enhancement registry callback and the `ready()` auto-init no longer double-bind the TOC. Enabled `content.mermaid` in the site config so the existing blog mermaid dogfood renders with the full toolbar/theme bundle. Added regression tests asserting every `data-bengal` hook has a matching `Bengal.enhance.register()` init path, that no dead SPA listeners remain, that the retired modules stay deleted, and that `BENGAL_LAZY_ASSETS` carries exactly the keys for the enabled features; plus a vitest `mockDeniedStorage()` helper and theme.js regression proving theme switching still flips `data-theme` (and warns) when `localStorage` throws.
+- Refactored the chirp-theme non-documentation content types onto a shared list shell: the tutorial/resume/notebook lists (via `partials/learning-index.html`) and the changelog/releases/authors lists now compose `page_hero` + a grid/timeline directly instead of `chirpui/resource_index`, which removes the inert "Filter…/Search" GET form (non-functional on a static build, duplicating the global Cmd+K) and the duplicate page-hero/results heading — each list now leads with a single heading and the item count in the hero metadata. Single-page reading columns are also centered (added `margin-inline: auto` to the `type-identity.css` reading-measure block, with a sibling rule for the track article that carries `.prose`), so prose no longer hard-anchors left while the footer centers.
+- Replaced the hand-maintained static component showcase with the live `examples/component-showcase` Chirp app, now deployed as a Railway service at <https://chirp-ui-showcase-production.up.railway.app> and reachable from the `/showcase/` docs route (which keeps its inline live specimens and links out to the deployed app). Removed the static gallery and its build scaffolding — the `assemble-static-showcase.sh` script, the `docs-assemble-showcase`/`showcase-guard` poe tasks, the Makefile `showcase*` targets, and the Pages assemble+guard steps — so `docs-build-all` is now just the Bengal build plus manifest emit. Added Railway deploy config (`railway.json`, `examples/component-showcase/Dockerfile`, `.dockerignore`) and a `$PORT` bind in the example app so it runs unchanged locally and binds `0.0.0.0:$PORT` on the platform.
+- Reworked the docs sidebar disclosure: sections now open/close via an open/closed folder icon (a real toggle button beside the navigable label — no caret), keeping section labels visible when collapsed and adding zero nested-interactive / landmark / region axe violations.
+- Scope Chirp UI view-transition names to direct shell main boundaries to avoid duplicate transition names in embedded shell previews.
+- Unified active-link sync into one canonical implementation in
+  `shell_runtime_script()`, emitted by **both** shell entry points. The
+  `app_shell()` macro path now gets client active-sync it never had, and
+  `app_shell_layout.html` no longer carries a divergent inline copy. The shared
+  `syncNav` **mirrors the server's per-item `match=`**: `sidebar_link` /
+  `navbar_link` emit `data-chirpui-shell-match="exact"|"prefix"` only when `match=`
+  is set, and the JS toggles the `--active` class plus `aria-current` for those
+  links alone. The macro's `#chirpui-sidebar-nav` and the layout's
+  `#chirpui-topbar-breadcrumbs` announcers now reach parity.
+
+  **Behavior change to call out:** the layout's old blind-prefix client toggle —
+  which ran `path === href || path.startsWith(href + "/")` against **every** link
+  regardless of `match=` — is gone. Match-less sidebar/navbar links are now
+  **server-authoritative** (active state comes from server-rendered `active=` /
+  `aria-current`, not a client path guess). Shells that relied on the old
+  auto-highlight without setting `match=` should set `match="prefix"` (or
+  `match="exact"`) on those links to restore client re-highlighting across boosted
+  navigation ([#197](https://github.com/lbliii/chirp-ui/issues/197)).
+- Wired the cross-track membership widget into `doc/single.html`, so any doc whose slug appears in a `site/data/tracks.yaml` track now renders an in-track prev/next + progress card after its page navigation. A doc that belongs to multiple tracks surfaces one card per membership, and a doc in no track renders nothing. The prev/next links are plain internal anchors, so site-wide htmx boost handles them without a per-link opt-out.
+- Lowered the Bengal asset-path contract floor in `chirpui_asset_path()` from `0.3.3` to `0.3.2`, so the library asset-path scheme is also emitted on Bengal `0.3.2`. The `chirp-theme` package still requires Bengal `>= 0.3.3` for `library_asset_tags()` ([#118](https://github.com/lbliii/chirp-ui/issues/118)).
+
+### Fixed
+
+- Accepted `notebook` as a documentation destination in the search-relevance fixture: now that the notebook family is first-class (#146/#147) and ships a "render a card from Python" dogfood page, that page legitimately ranks #1 for the query "card". Added `notebook` to the test's `DOC_SECTIONS` so this cross-family interaction is correct behavior rather than a failure.
+- Added semantic icon aliases for common integration status names so `activity`,
+  `pause`, `info`, and `warning` render without validation warnings.
+- Completed the autodoc Python member detail and raised its visual floor: each documented method/function now renders its full Returns and Raises blocks inside the member accordion body (reading `member.metadata.returns`, `member.metadata.parsed_doc.returns`, and `member.metadata.parsed_doc.raises` via the shared `returns.html`/`raises.html` partials, strict-undefined guarded), so a raising member like `register_colors` finally surfaces its `ValueError`. The nested Python and OpenAPI reference list pages now pass `title=none` to `resource_index` so the page hero owns the sole `<h1>` and the results section heading is the only subheading (matching the already-fixed `/api/` home), and the now-dead `.chirp-theme-api-index .chirpui-search-header__content { display: none }` rule was removed.
+- Fixed `data_grid`'s "Load more" button never being refreshed or removed after the last page. `data_grid_rows` now accepts `load_more_url`/`has_more` (plus label/trigger/swap/`selection_id`) and emits the load-more sentinel as an `hx-swap-oob` update to a stable `#{selection_id}-load-more` container via the new `grid_load_more` macro — so each load-more fetch refreshes the button's next-page URL or, on the last page, removes it. Previously the button persisted past exhaustion and re-clicking it silently fetched past the end of the result set. Adds a load-more-to-exhaustion browser gauntlet assertion ([#231](https://github.com/lbliii/chirp-ui/issues/231)).
+- Fixed `segmented_control()` rendering 42px tall instead of the 40px shared control-height contract. The pill `segmented_control()` and the legacy form-field `segmented_control_field()` share the `.chirpui-segmented` block class, and the form-field block's `border: 1px solid` leaked onto the borderless pill — pushing it 2px proud of its neighbouring controls in toolbars and action strips. The legacy container rule is now scoped to the form-field structure (`:has(> .chirpui-segmented__input)`) so it no longer applies to the pill, and the option `min-block-size` math is explicit, so the pill computes to exactly the control-height token. The form field is unchanged ([#230](https://github.com/lbliii/chirp-ui/issues/230)).
+- Fixed flagship-page defects: dark-mode and home primary-button contrast, the Outfit webfont never loading, `search_bar` rendering a raw icon name, ~89 broken `/api/<module>/<member>/` autodoc links (now in-page anchors), unique nav landmark names, valid `<aside>` roles, a decorative reading-progress bar, and keyboard-scrollable parameter tables.
+- Fixed route-scoped shell regions stranding stale content on boosted navigation.
+  The `htmx:beforeSwap` reset that empties a shell region before its out-of-band
+  fragment lands previously lived only in `app_shell_layout.html`'s inline script
+  and was hardcoded to `#chirp-shell-actions` — so the `app_shell()` macro path had
+  no reset at all, and the new route-context rail (`#chirpui-context-rail`) was
+  never cleared. It is now in the shared `shell_runtime_script()` (emitted by both
+  shell entry points) and covers both regions: navigating to a route that ships no
+  fragment for a region now empties it rather than stranding the prior route's
+  content. Adds a Playwright gauntlet proving the rail swaps on boosted nav and
+  clears on a contextless route (wired into the `test-browser-chrome` gate)
+  ([#195](https://github.com/lbliii/chirp-ui/issues/195)).
+- Fixed the changelog/releases timelines and the authors profile. The "newest first" timelines were not chronological: the dotted `sort(attribute="metadata.date,title")` silently fell back to title-alpha (kida's attribute resolver does not descend dotted paths), so changelog now sorts by the flat `date` and releases by version (`title`). `/releases/` now renders its bespoke `releases/list.html` timeline (it was orphaned as `type: page` and fell through to the generic section index, which re-emitted the dead filter). The authors directory no longer shows "0 authors" for a published author (its data source now resolves the author content pages), and an author profile now renders an initials avatar, a single bio, and a real authored-post feed (matched via `metadata.author` across `site.pages`) instead of a self-referential card and a metric tile wasted on the author's own name.
+- Gave every `<nav>` landmark a unique, static accessible name and made the floating back-to-top button honor `prefers-reduced-motion`. The chirp-ui `navbar()` and `sidebar()` macros now accept an `aria_label` parameter so a page with multiple navigation landmarks (the theme's primary header nav, the docs catalog rail, and the docs sections tree) reads as distinct entries in a screen reader's landmark menu rather than "navigation, navigation, navigation" — the docs sections label is now baked into the template instead of relying on `docs-nav.js` runtime injection, so it survives even where that script never loads (the static showcase). The theme's `interactive.js` back-to-top handler now picks `behavior:'auto'` (an instant jump) for reduced-motion users via the shared `BengalUtils.prefersReducedMotion()` helper, and the showcase demo navs each carry a unique label.
+- Hardened the chirp-theme document head and critical render path: the Outfit display webfont is now reliably wired (the 400/600 woff2 weights preload with crossorigin and the generated fonts.css is linked, gated on the configured display font), and the unused .ttf font duplicates were dropped so only woff2 ships. The theme stylesheet now loads non-render-blocking via a stdlib-only `rel=preload as=style` + onload swap with a `<noscript>` fallback, and the d3js.org preconnect is gated behind the graph feature instead of being emitted on every page. The Bengal min-version contract is now loud: theme.toml declares both `requires_bengal` and a `[bengal] min_version` floor, and base.html emits a dev-visible diagnostic (naming Bengal >= 0.3.3) when `library_asset_tags()` is unavailable instead of silently shipping a token-less style-only build.
+- Made the built-home `style.css` non-render-blocking test (#157) fingerprint-tolerant: Bengal emits `style.<hash>.css` in built output, so the assertion now matches the stylesheet by stem+extension instead of the literal unhashed filename. The test skips on a clean checkout (it needs a built `site/public`) but failed a local `poe ci` run after `poe docs-build`; this keeps the local build gate green.
+- Made the chirp-theme's SEO surface emit absolute URLs end to end: the production environment now builds canonical, Open Graph, sitemap `<loc>`, and the robots.txt `Sitemap:` directive from the full absolute origin (`https://lbliii.github.io/chirp-ui`) instead of a path-only baseurl, and `og:image`/`twitter:image` are wrapped in `canonical_url(...)` so social scrapers receive absolute https image references instead of relative paths that yield no preview card. Added JSON-LD structured-data render tests (home → WebSite + SearchAction + Organization; doc → TechArticle + BreadcrumbList; post → BlogPosting; product → Product/Offer) that parse the emitted graphs and assert correct `@type`s, plus SEO config guards for the absolute production origin and the enabled RSS feed.
+
+
 ## [0.9.0] - 2026-05-14
 
 ### Added

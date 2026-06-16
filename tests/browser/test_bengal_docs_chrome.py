@@ -1244,8 +1244,8 @@ async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
     assert metrics["regularPaddingLeft"] >= 11, metrics
     assert metrics["regularRegionPadding"] == "0px", metrics
     assert metrics["regularFooterBackground"] == "none", metrics
-    await expect(latest.locator(".chirpui-card__title")).to_have_text("chirp-ui 0.9.0")
-    await expect(first_regular.locator(".chirpui-card__title")).to_have_text("chirp-ui 0.8.0")
+    await expect(latest.locator(".chirpui-card__title")).to_have_text("chirp-ui 0.10.0")
+    await expect(first_regular.locator(".chirpui-card__title")).to_have_text("chirp-ui 0.9.0")
 
 
 async def test_bengal_docs_branch_summaries_hold_parent_links(page, static_site_url):
