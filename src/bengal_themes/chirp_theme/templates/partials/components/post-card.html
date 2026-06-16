@@ -44,27 +44,31 @@ Variants:
 {% let excerpt_html = p.excerpt | card_excerpt_html(excerpt_words, p.title, p.description, halve_words=(variant == 'compact')) %}
 {% end %}
 {% let tag_limit = 3 if variant == 'featured' else 2 if variant == 'compact' else 4 %}
+{# card_excerpt_html dedupes the leading title/description and truncates on a
+   word boundary; strip the surviving inline tags so the text rides the
+   purpose-built resource_card description slot. Passing it via description=
+   (not as a bare default-slot child) is what keeps it INSIDE the card: kida
+   misroutes loose call-body content that coexists with a named {% slot %},
+   which previously stranded the excerpt as a sibling of the <article>. #}
+{% let excerpt_text = (excerpt_html | strip_html | trim) if excerpt_html else none %}
 
 {% call resource_card(
   p.href,
   p.title,
+  description=(excerpt_text or none),
   top_meta=top_meta,
   cls='chirp-theme-post-card chirp-theme-post-card--' ~ variant,
   link_mode='main'
 ) %}
-  {% if p.tags | length > 0 %}
+  {# Keep {% slot footer %} a DIRECT, unconditional child of the call: kida only
+     hoists slot-fills it sees at the top level of the call body. Wrapping the
+     slot in {% if %} made kida treat its tags as default-slot content, so they
+     rendered inside the card's main <a> (nested anchors) instead of the footer.
+     Guard on the tag count INSIDE the slot instead. #}
   {% slot footer %}
-  {{ tag_list(p.tags[:tag_limit], small=true) }}
+  {% if p.tags | length > 0 %}{{ tag_list(p.tags[:tag_limit], small=true) }}{% end %}
   {% end %}
-  {% end %}
-
-  {% if show_image and p.image %}
-  <img class="chirp-theme-post-card__image" src="{{ p.image }}" alt="{{ p.title }}" loading="lazy">
-  {% end %}
-
-  {% if excerpt_html %}
-  <div class="chirp-theme-post-card__excerpt">{{ excerpt_html | safe }}</div>
-{% end %}
 {% end %}
 
+{% end %}
 {% end %}

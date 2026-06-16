@@ -89,7 +89,7 @@
 .related-posts h2 {
   margin: 0 0 var(--chirpui-spacing);
   color: var(--chirpui-text);
-  font-family: var(--font-family-serif);
+  font-family: var(--font-display);
   font-size: var(--chirpui-font-xl);
   letter-spacing: -0.01em;
 }

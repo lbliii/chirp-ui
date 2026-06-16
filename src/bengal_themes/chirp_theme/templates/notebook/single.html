@@ -1,11 +1,7 @@
 {% extends "base.html" %}
 
-{% from "chirpui/badge.html" import badge %}
-{% from "chirpui/hero.html" import page_hero %}
 {% from "chirpui/layout.html" import cluster, container, stack %}
-{% from "chirpui/metric_grid.html" import metric_card, metric_grid %}
 {% from "chirpui/rendered_content.html" import rendered_content %}
-{% from "chirpui/surface.html" import surface %}
 
 {% block content %}
 {% let title = page?.title ?? "Notebook" %}
@@ -15,36 +11,67 @@
 {% let kernel_name = nb?.kernel_name ?? "" %}
 {% let language = nb?.language_version ?? "" %}
 {% let nb_date = page?.metadata?.date ?? page?.date %}
+{% let nb_slug = page?.slug ?? "notebook" %}
 
 <div data-chirp-theme-surface="notebook">
 {% call container(cls="chirp-theme-learning-page chirp-theme-notebook-page") %}
-  {% call stack(gap="lg") %}
-    {% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-learning-hero chirp-theme-notebook-hero") %}
-      {% slot eyebrow %}
-      {% call cluster(gap="xs", cls="chirp-theme-notebook-eyebrow") %}
-        {{ badge("Notebook", variant="info") }}
-        {% if language %}{{ badge(language, variant="muted") }}{% end %}
-        {% if nb_date %}{{ badge(nb_date | dateformat("%B %d, %Y"), variant="muted") }}{% end %}
-      {% end %}
-      {% end %}
-    {% end %}
+  {% call stack(gap="md", cls="chirp-theme-notebook-shell") %}
 
-    {% if cell_count > 0 or kernel_name or language %}
-    {% call metric_grid(cols=3, gap="md", cls="chirp-theme-notebook-meta") %}
-      {{ metric_card(value=cell_count, label="Cells", icon="list") }}
-      {{ metric_card(value=kernel_name | default("—"), label="Kernel", icon="gear") }}
-      {{ metric_card(value=language | default("—"), label="Language", icon="bolt") }}
-    {% end %}
-    {% end %}
+    <header class="chirp-theme-notebook-header">
+      {# Terminal/IDE window chrome — signals "dev tool" without a full skin. #}
+      <div class="chirp-theme-notebook-chrome">
+        <span class="chirp-theme-notebook-chrome__dots" aria-hidden="true">
+          <span class="chirp-theme-notebook-chrome__dot"></span>
+          <span class="chirp-theme-notebook-chrome__dot"></span>
+          <span class="chirp-theme-notebook-chrome__dot"></span>
+        </span>
+        <span class="chirp-theme-notebook-chrome__file">{{ nb_slug }}.ipynb</span>
+        {% if kernel_name %}
+        <span class="chirp-theme-notebook-chrome__kernel">
+          <span class="chirp-theme-notebook-chrome__pulse" aria-hidden="true"></span>
+          <span class="chirp-theme-notebook-chrome__kernel-label">kernel:</span>
+          {{ kernel_name }}
+        </span>
+        {% end %}
+      </div>
 
-    {% call surface(variant="default", cls="chirp-theme-notebook-surface") %}
-      {% if content %}
-      {% call rendered_content(compact=false, cls="chirp-theme-notebook-content chirp-theme-learning-content") %}
-      {{ content | safe }}
+      <div class="chirp-theme-notebook-titlebar">
+        <h1 class="chirp-theme-notebook-title">{{ title }}</h1>
+        {% if description %}
+        <p class="chirp-theme-notebook-lede">{{ description }}</p>
+        {% end %}
+      </div>
+
+      {% if language or cell_count > 0 or nb_date %}
+      {% call cluster(gap="xs", cls="chirp-theme-notebook-statusline") %}
+        {% if language %}
+        <span class="chirp-theme-notebook-stat">
+          <span class="chirp-theme-notebook-stat__key">lang</span>
+          <span class="chirp-theme-notebook-stat__val">{{ language }}</span>
+        </span>
+        {% end %}
+        {% if cell_count > 0 %}
+        <span class="chirp-theme-notebook-stat">
+          <span class="chirp-theme-notebook-stat__key">cells</span>
+          <span class="chirp-theme-notebook-stat__val">{{ cell_count }}</span>
+        </span>
+        {% end %}
+        {% if nb_date %}
+        <span class="chirp-theme-notebook-stat">
+          <span class="chirp-theme-notebook-stat__key">run</span>
+          <span class="chirp-theme-notebook-stat__val">{{ nb_date | dateformat("%Y-%m-%d") }}</span>
+        </span>
+        {% end %}
       {% end %}
-      {% else %}
-      <p class="chirpui-text-muted">This notebook has no rendered cells yet.</p>
       {% end %}
+    </header>
+
+    {% if content %}
+    {% call rendered_content(compact=true, cls="chirp-theme-notebook-content chirp-theme-learning-content") %}
+    {{ content | safe }}
+    {% end %}
+    {% else %}
+    <p class="chirpui-text-muted">This notebook has no rendered cells yet.</p>
     {% end %}
   {% end %}
 {% end %}

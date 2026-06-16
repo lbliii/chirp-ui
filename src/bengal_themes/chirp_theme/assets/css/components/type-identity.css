@@ -79,11 +79,12 @@
     --type-measure: var(--type-measure-profile);
   }
 
-  /* notebook — airy reading measure (wide code regions opt back out via the
-     chirp-ui base hardening that auto-contains <pre>/<table>). */
+  /* notebook — editorial reading measure but a DENSE, notebook-like cadence
+     (rhythm < 1 tightens prose spacing between cells). Wide code regions opt
+     back out via the chirp-ui base hardening that auto-contains <pre>/<table>. */
   [data-chirp-theme-surface="notebook"] {
     --type-measure: var(--type-measure-prose);
-    --type-rhythm: 1.15;
+    --type-rhythm: 0.92;
   }
 
   /* resume — narrow single-sheet document measure, tight rhythm. */

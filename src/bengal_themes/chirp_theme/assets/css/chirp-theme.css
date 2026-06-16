@@ -295,12 +295,15 @@
     margin: 0;
   }
 
-  /* Editorial voice: serif display title. Differentiation from docs/home is
-     STRUCTURAL/typographic (serif vs the sans --font-display used elsewhere),
-     not chromatic — the teal accent spine (::before) is unchanged. */
+  /* Editorial masthead title in the theme display face (Outfit), matching every
+     other hero title (home/page/docs) so the blog reads as the same product.
+     Differentiation from those heroes stays STRUCTURAL — the teal accent spine
+     (::before), the gradient wash and the left inset — not a one-off system
+     serif (var(--font-family-serif) is the uncurated Georgia/Times fallback,
+     which read as an unfinished default against the Outfit identity). */
   .chirp-theme-blog__hero .chirpui-hero__title {
     margin: 0;
-    font-family: var(--font-family-serif);
+    font-family: var(--font-display);
     font-size: clamp(2rem, 2.6vw, 2.95rem);
     font-weight: var(--font-weight-semibold);
     letter-spacing: -0.01em;
@@ -2946,6 +2949,22 @@
     padding-block-start: 0;
   }
 
+  /* Directive cards (card / cards / child_cards directives, plus hand-authored
+     `.chirp-theme-directive-card` markup in content) frequently embed a raw
+     inline `<svg>` straight inside `.chirpui-card__icon`, with no width/height
+     attributes. Such an SVG carries a viewBox aspect ratio but no intrinsic
+     size, so its rendered size is left entirely to ambient CSS: the base
+     reset's `svg { height: auto }` lets it balloon to its containing block
+     when the card header is not flex (e.g. the docs section index), or collapse
+     to ~0 inside the flex header. Pin it to a sensible icon size here. Scoped to
+     the *direct* child so `.bengal-icon`-wrapped icons (which size their own
+     SVG) are untouched. A plain selector (not the `@scope` envelope) keeps this
+     resilient through CSS minification. */
+  .chirp-theme-directive-card .chirpui-card__icon > svg {
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+  }
+
   .chirp-theme-release-index .chirpui-resource-index__results {
     align-items: stretch;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
@@ -3851,6 +3870,263 @@
     .chirp-theme-docs-layout pre {
       max-width: 100%;
       min-width: 0;
+    }
+  }
+
+  /* ===========================================================================
+   * Notebook surface — compact, developer-y (terminal / IDE / Jupyter) yet
+   * editorial. Scope is strictly [data-chirp-theme-surface="notebook"] +
+   * .chirp-theme-notebook-* so it cannot bleed into other learning surfaces.
+   *
+   * It reuses the shipped `.rosettes` code-block output (no bespoke code-block
+   * duplication) and layers on Jupyter signifiers: terminal window chrome on the
+   * header, In[n]:/Out[n]: execution gutters via CSS counters, monospace kernel
+   * chips, and a denser cell cadence. Density comes from token-scaled spacing;
+   * the editorial register survives via the title/lede prose and readable type.
+   * ========================================================================= */
+  [data-chirp-theme-surface="notebook"] {
+    /* Local dials — gutter width tracks the In[n]:/Out[n] prompt column. */
+    --nb-gutter: 3.25rem;
+    --nb-rail: var(--chirpui-border);
+    --nb-prompt: color-mix(in srgb, var(--chirpui-accent) 72%, var(--chirpui-text-muted));
+    --nb-live: #4cae4f;
+  }
+
+  .chirp-theme-notebook-shell {
+    --chirpui-stack-gap: var(--chirpui-spacing-md);
+  }
+
+  /* --- Header: terminal window chrome + title + monospace statusline -------- */
+  .chirp-theme-notebook-header {
+    overflow: hidden;
+    background: var(--chirpui-surface);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+    box-shadow: var(--chirpui-elevation-theme);
+  }
+
+  .chirp-theme-notebook-chrome {
+    display: flex;
+    align-items: center;
+    gap: var(--chirpui-spacing-sm);
+    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+    background: var(--chirpui-surface-alt);
+    border-bottom: 1px solid var(--chirpui-border);
+    font-family: var(--chirpui-mono-font-family);
+    font-size: 0.78rem;
+    color: var(--chirpui-text-muted);
+  }
+
+  .chirp-theme-notebook-chrome__dots {
+    display: inline-flex;
+    gap: 0.34rem;
+    flex: 0 0 auto;
+  }
+
+  .chirp-theme-notebook-chrome__dot {
+    inline-size: 0.62rem;
+    block-size: 0.62rem;
+    border-radius: var(--chirpui-radius-full);
+    background: var(--chirpui-border);
+  }
+
+  .chirp-theme-notebook-chrome__dot:nth-child(1) { background: #ef6b5e; }
+  .chirp-theme-notebook-chrome__dot:nth-child(2) { background: #f5bd4f; }
+  .chirp-theme-notebook-chrome__dot:nth-child(3) { background: #4cae4f; }
+
+  .chirp-theme-notebook-chrome__file {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--chirpui-text);
+    font-weight: var(--weight-medium);
+  }
+
+  .chirp-theme-notebook-chrome__kernel {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-inline-start: auto;
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .chirp-theme-notebook-chrome__kernel-label { opacity: 0.7; }
+
+  .chirp-theme-notebook-chrome__pulse {
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-radius: var(--chirpui-radius-full);
+    background: var(--nb-live);
+    animation: chirp-theme-notebook-pulse var(--chirpui-anim-pulse) var(--chirpui-ease-standard) infinite;
+  }
+
+  @keyframes chirp-theme-notebook-pulse {
+    0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--nb-live) 55%, transparent); }
+    70%  { box-shadow: 0 0 0 0.4rem color-mix(in srgb, var(--nb-live) 0%, transparent); }
+    100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--nb-live) 0%, transparent); }
+  }
+
+  .chirp-theme-notebook-titlebar {
+    padding: var(--chirpui-spacing-md) var(--chirpui-spacing-md) 0;
+  }
+
+  .chirp-theme-notebook-title {
+    margin: 0;
+    font-size: clamp(1.5rem, 3.4vw, 2rem);
+    line-height: 1.15;
+  }
+
+  .chirp-theme-notebook-lede {
+    margin: var(--chirpui-spacing-xs) 0 0;
+    max-inline-size: 64ch;
+    color: var(--chirpui-text-muted);
+    font-size: 0.95rem;
+  }
+
+  .chirp-theme-notebook-statusline {
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-md) var(--chirpui-spacing-md);
+  }
+
+  .chirp-theme-notebook-stat {
+    display: inline-flex;
+    align-items: stretch;
+    overflow: hidden;
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    font-family: var(--chirpui-mono-font-family);
+    font-size: 0.72rem;
+    line-height: 1;
+  }
+
+  .chirp-theme-notebook-stat__key {
+    padding: 0.3rem 0.45rem;
+    background: var(--chirpui-surface-alt);
+    color: var(--chirpui-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .chirp-theme-notebook-stat__val {
+    padding: 0.3rem 0.5rem;
+    color: var(--chirpui-text);
+    font-weight: var(--weight-medium);
+  }
+
+  /* --- Cell stream: rendered markdown styled as a compact notebook ---------- */
+  .chirp-theme-notebook-content {
+    counter-reset: nb-exec;
+  }
+
+  /* Markdown headings read as markdown-cell markers (`##` / `###`). */
+  .chirp-theme-notebook-content > h2,
+  .chirp-theme-notebook-content > h3 {
+    position: relative;
+    padding-inline-start: 1.3rem;
+    margin-block: var(--chirpui-spacing-lg) var(--chirpui-spacing-sm);
+    line-height: 1.3;
+  }
+
+  .chirp-theme-notebook-content > h2::before,
+  .chirp-theme-notebook-content > h3::before {
+    position: absolute;
+    inset-inline-start: 0;
+    color: var(--nb-prompt);
+    font-family: var(--chirpui-mono-font-family);
+    font-weight: var(--weight-semibold);
+    opacity: 0.7;
+  }
+
+  .chirp-theme-notebook-content > h2::before { content: "##"; }
+  .chirp-theme-notebook-content > h3::before { content: "###"; }
+
+  /* Code blocks become cells with an execution gutter. The shipped `.rosettes`
+     output (one per fenced block) is reused as-is; we only reframe it. */
+  .chirp-theme-notebook-content .rosettes {
+    position: relative;
+    margin-block: var(--chirpui-spacing-sm);
+    padding-inline-start: var(--nb-gutter);
+    overflow: hidden;
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius);
+    transition: border-color var(--chirpui-transition);
+  }
+
+  .chirp-theme-notebook-content .rosettes:hover {
+    border-color: color-mix(in srgb, var(--chirpui-accent) 38%, var(--chirpui-border));
+  }
+
+  /* Execution gutter strip. */
+  .chirp-theme-notebook-content .rosettes::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: var(--nb-gutter);
+    display: flex;
+    justify-content: center;
+    padding-block-start: var(--chirpui-spacing-sm);
+    background: var(--chirpui-surface-alt);
+    border-inline-end: 1px solid var(--chirpui-border);
+    font-family: var(--chirpui-mono-font-family);
+    font-size: 0.68rem;
+    line-height: var(--line-height-relaxed);
+    white-space: nowrap;
+    color: var(--chirpui-text-muted);
+  }
+
+  /* Input cells (any code language except plain text / output): In [n]:. */
+  .chirp-theme-notebook-content .rosettes:not([data-language="plaintext"]):not([data-language="text"]):not([data-language="output"]) {
+    counter-increment: nb-exec;
+  }
+
+  .chirp-theme-notebook-content .rosettes:not([data-language="plaintext"]):not([data-language="text"]):not([data-language="output"])::before {
+    content: "In [" counter(nb-exec) "]:";
+    color: var(--nb-prompt);
+    font-weight: var(--weight-medium);
+  }
+
+  /* Output cells (plain text / output) share the producing cell's number. */
+  .chirp-theme-notebook-content .rosettes[data-language="plaintext"]::before,
+  .chirp-theme-notebook-content .rosettes[data-language="text"]::before,
+  .chirp-theme-notebook-content .rosettes[data-language="output"]::before {
+    content: "Out[" counter(nb-exec) "]:";
+  }
+
+  /* Inner <pre>: drop the airy floating glow + oversized radius for a crisp,
+     dense IDE register. Layer order keeps this above components/code.css. */
+  .chirp-theme-notebook-content .rosettes pre {
+    margin: 0;
+    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing-md);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    animation: none;
+  }
+
+  /* Responsive: keep the gutter legible but tighter on phones. */
+  @media (max-width: 600px) {
+    [data-chirp-theme-surface="notebook"] {
+      --nb-gutter: 2.5rem;
+    }
+
+    .chirp-theme-notebook-content .rosettes {
+      margin-inline: 0;
+    }
+
+    .chirp-theme-notebook-content .rosettes::before {
+      font-size: 0.6rem;
+    }
+
+    .chirp-theme-notebook-chrome__file {
+      font-size: 0.7rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chirp-theme-notebook-chrome__pulse {
+      animation: none;
     }
   }
 }
