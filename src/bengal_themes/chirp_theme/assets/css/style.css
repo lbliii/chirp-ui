@@ -157,9 +157,9 @@
   @import url('components/mermaid.css');
 }
 
-@layer components {
-  @import url('components/pagination.css');
-}
+/* components/pagination.css removed (bugbash/bengal-theme): legacy default-Bengal
+   `.pagination` styling was unused — pagination renders as `.chirpui-pagination`
+   + `.chirpui-pagination__*` (see partials/navigation-components.html). */
 
 @layer components {
   @import url('components/toc.css');
@@ -261,14 +261,19 @@
    ============================================ */
 
 /* Page layout helpers */
+/* TODO(chirp-ui): `.page-content` / `.page-footer` are UNLAYERED legacy rules,
+   but they are the ONLY styling for the bespoke `.chirp-theme-page__content` /
+   `.chirp-theme-page__footer` elements in page.html (chirp-theme.css does NOT
+   define those BEM classes). Kept to avoid a visible regression (the
+   `.page-footer` top-border/spacing separates the tags footer). Native
+   replacement: move these into the `@layer chirp-theme` surface keyed on
+   `.chirp-theme-page__content` / `__footer` (or a chirp-ui primitive), then drop
+   the unlayered `.page-content` / `.page-footer` aliases and the `cls`-side
+   `page-content` / `page-footer` classes in page.html. (chirp-theme.css edits
+   are off-limits during this bugbash — deferred to coordinator.) */
 .page-content {
   flex: 1;
   min-width: 0;
-}
-
-.page-description {
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-4);
 }
 
 .page-footer {
@@ -293,203 +298,33 @@
 
 /* Home Page Hero: moved to components/hero.css; keep this section empty intentionally */
 
-/* Section Headers */
-.section-header {
-  margin-bottom: var(--space-8);
-}
+/* ============================================
+   LEGACY DEFAULT-BENGAL FILLER STRIPPED (bugbash/bengal-theme)
 
-.section-title {
-  margin: 0 0 var(--space-2) 0;
-  font-size: var(--text-3xl);
-  font-weight: var(--weight-bold);
-  color: var(--color-text-primary);
-  transition: color var(--transition-fast) var(--ease-out);
-}
+   Removed the following UNLAYERED legacy rules inherited from the default
+   Bengal theme. Being unlayered, they silently outranked the `@layer
+   chirp-theme` surface and the chirp-ui baseline (the documented breadcrumb
+   cascade hazard). Each is dead, duplicated, or superseded by chirp-ui:
 
-.section-title:hover {
-  color: var(--color-primary);
-}
-
-@supports (color: color-mix(in srgb, white, black)) {
-  .section-title:hover {
-    color: color-mix(in srgb, var(--color-primary) 90%, black);
-  }
-}
-
-.section-description {
-  margin: 0;
-  font-size: var(--text-lg);
-  color: var(--color-text-secondary);
-}
-
-/* Breadcrumbs */
-.breadcrumbs {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-  margin-bottom: var(--space-6);
-  padding: 0;
-  list-style: none;
-  font-size: var(--text-sm);
-
-}
-
-.breadcrumbs li,
-.breadcrumb__item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.breadcrumbs li:not(:last-child)::after {
-  content: '/';
-  color: var(--color-text-muted);
-}
-
-.breadcrumbs li:last-child {
-  color: var(--color-text-primary);
-  font-weight: var(--weight-medium);
-}
-
-.breadcrumbs a {
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  transition: color var(--transition-smooth) var(--ease-smooth);
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.breadcrumbs a:hover {
-  color: var(--color-primary);
-}
-
-@supports (color: color-mix(in srgb, white, black)) {
-  .breadcrumbs a:hover {
-    color: color-mix(in srgb, var(--color-primary) 90%, black);
-  }
-}
-
-/* Pagination */
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--space-2);
-  margin: var(--space-12) 0;
-  padding: 0;
-  list-style: none;
-
-}
-
-.pagination a,
-.pagination span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 40px;
-  height: 40px;
-  padding: var(--space-2) var(--space-3);
-  font-weight: var(--weight-medium);
-  color: var(--color-text-primary);
-  background-color: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  text-decoration: none;
-  transition: all var(--transition-smooth) var(--ease-smooth);
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  will-change: transform, background, box-shadow;
-}
-
-.pagination a:hover {
-  color: var(--color-primary);
-  border-color: var(--color-primary);
-  background-color: var(--color-bg-hover);
-  transform: translate3d(0, -1px, 0);
-  box-shadow: var(--elevation-low);
-}
-
-@supports (color: color-mix(in srgb, white, black)) {
-  .pagination a:hover {
-    background-color: color-mix(in srgb, var(--color-bg-hover) 95%, var(--color-primary));
-  }
-}
-
-.pagination a:active {
-  transform: translate3d(0, 0, 0);
-}
-
-.pagination .active {
-  color: var(--color-text-inverse);
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-}
-
-.pagination .disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-/* Alerts - moved to components/alerts.css */
-
-/* Loading Indicator */
-.loading {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  aspect-ratio: 1 / 1;
-  /* Added */
-  border: 3px solid var(--color-border);
-  border-block-start-color: var(--color-primary);
-  /* Changed from border-top-color */
-  border-radius: var(--radius-full);
-  animation: spin 1.5s linear infinite; /* Slower: increased from 0.8s to 1.5s */
-  will-change: transform;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .loading {
-    animation: none !important;
-    will-change: auto !important;
-  }
-}
-
-/* Print Styles */
-@media print {
-
-  header[role="banner"],
-  footer[role="contentinfo"],
-  .mobile-nav-toggle,
-  .share-buttons,
-  .article-nav {
-    display: none !important;
-  }
-
-  main {
-    padding: 0;
-  }
-
-  a {
-    color: var(--color-text-primary) !important;
-    text-decoration: underline !important;
-  }
-
-  .prose a::after {
-    content: " (" attr(href) ")";
-    font-size: var(--text-caption);
-    color: var(--color-text-muted);
-  }
-}
+   - `.section-header` / `.section-title` / `.section-description`: not emitted
+     by any chirp-theme template; chirp-ui ships `.chirpui-section-header`
+     (src/chirp_ui/templates/chirpui/layout.html) instead.
+   - `.breadcrumbs`: emitted only as a redundant alias alongside
+     `.chirpui-breadcrumbs` (navigation-components.html passes
+     `cls='breadcrumbs'`); the unlayered block was actively fighting the
+     `.chirpui-breadcrumbs` component reset. `.chirpui-breadcrumbs` now governs.
+   - `.pagination` / `.pagination .active` / `.disabled`: not emitted;
+     pagination renders as `.chirpui-pagination` + `.chirpui-pagination__*`
+     (navigation-components.html). The duplicate `components/pagination.css`
+     import was also removed.
+   - `.loading` spinner + `@keyframes spin`: no `class="loading"` is emitted;
+     the live search spinner defines its own `@keyframes spin` in
+     `components/search-modal.css`.
+   - Local `@media print` block: a weaker, partly-harmful duplicate of the
+     comprehensive `base/print.css` (already imported in `@layer base`); the
+     local copy also annotated anchor links, which `base/print.css` correctly
+     scopes to `http(s)` links only.
+   ============================================ */
 
 /* BESPOKE ACTIVE THEME SURFACE
    Theme-owned overrides live in the late-declared `chirp-theme` cascade layer
