@@ -207,6 +207,15 @@
       trigger.setAttribute('aria-haspopup', 'true');
       trigger.setAttribute('aria-expanded', dropdown.open ? 'true' : 'false');
 
+      // Section-overview href: the dropdown menu carries a link to its section
+      // root (e.g. /docs/). On hover-capable pointers the menu is revealed via
+      // CSS :hover/:focus-within, so the <summary> click is free to NAVIGATE to
+      // the section root instead of merely toggling (Supabase pattern: hover
+      // opens, click navigates). Touch / no-hover devices keep the native
+      // <details> toggle so the menu stays reachable.
+      const overviewLink = menu.querySelector('[data-chirp-theme-mega-overview]');
+      const overviewHref = overviewLink ? overviewLink.getAttribute('href') : null;
+
       if (!menu.id) {
         menu.id = `navbar-menu-${Math.random().toString(36).slice(2, 9)}`;
       }
@@ -269,11 +278,33 @@
         }
       });
 
+      // Navigate to the section root on click/Enter when a hover-capable
+      // pointer is present (the menu is already revealed by :hover, so the
+      // toggle is redundant). preventDefault stops the native <details> toggle.
+      function navigateToOverview() {
+        if (overviewHref) {
+          window.location.assign(overviewHref);
+          return true;
+        }
+        return false;
+      }
+
+      trigger.addEventListener('click', function(event) {
+        if (overviewHref && hoverMedia.matches) {
+          event.preventDefault();
+          navigateToOverview();
+        }
+      });
+
       trigger.addEventListener('keydown', function(event) {
         if (event.key === 'ArrowDown') {
           event.preventDefault();
           openDropdown();
           menu.querySelector('a')?.focus();
+        } else if (event.key === 'Enter' && overviewHref) {
+          // Enter activates the trigger as a link to the section root.
+          event.preventDefault();
+          navigateToOverview();
         } else if (event.key === 'Escape') {
           closeDropdown();
           trigger.focus();

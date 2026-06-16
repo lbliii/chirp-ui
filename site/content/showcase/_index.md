@@ -3,6 +3,10 @@ title: Component showcase
 description: Live, interactive gallery of every chirp-ui macro and pattern
 draft: false
 weight: 5
+# Hidden from the auto-discovered top nav: the "Component showcase" link is
+# defined explicitly in site/config/_default/menu.yaml so it can point at the
+# live Railway showcase app instead of this internal /showcase/ route (#245).
+menu: false
 type: page
 template: page.html
 lang: en

@@ -995,9 +995,16 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "chirp-theme-doc-catalog-rail__brand-mark" in docs_nav
     assert ">ᗢ</span>" in docs_nav
     assert "def catalog_mark" in docs_nav
-    assert "icon('cube'" in docs_nav
-    assert "icon('book-open'" in docs_nav
-    assert "icon('rocket'" in docs_nav
+    # Section iconography is centralized in partials/nav-icons.html so the docs
+    # catalog rail and the desktop navbar mega-dropdown stay visually consistent
+    # (single source of truth). docs-nav.html consumes it via section_icon_name.
+    nav_icons = (templates_root / "partials" / "nav-icons.html").read_text(encoding="utf-8")
+    assert "def section_icon_name" in nav_icons
+    assert "cube" in nav_icons
+    assert "book-open" in nav_icons
+    assert "rocket" in nav_icons
+    assert "from 'partials/nav-icons.html' import section_icon_name" in docs_nav
+    assert "icon(_name, size=18)" in docs_nav
     assert "chirp-theme-doc-catalog-rail__label" in docs_nav
     assert "def nav_type_icon" in docs_nav
     assert "icon('folder'" in docs_nav
@@ -1688,10 +1695,10 @@ result_path.write_text(
     assert result["mobile"], "Expected built home page to include mobile navigation."
     assert 'href=""' not in combined_nav
     assert "Component showcase" in combined_nav
-    assert re.search(
-        r"""href\s*=\s*(?:"[^"]*showcase/"|'[^']*showcase/'|[^\s>]*showcase/)""",
-        combined_nav,
-    )
+    # The showcase nav link now points at the live Railway-hosted showcase app
+    # (feat(showcase): live Railway showcase, #245) rather than the internal
+    # /showcase/ route.
+    assert "https://chirp-ui-showcase-production.up.railway.app" in combined_nav
     assert "Documentation" in combined_nav
     assert re.search(
         r"""href\s*=\s*(?:"[^"]*docs/"|'[^']*docs/'|[^\s>]*docs/)""",

@@ -39,7 +39,10 @@ menu:
       weight: 60
 
   extra:
-    - name: "Showcase"
-      url: "/showcase/"
-      weight: 15
+    # Points at the live Railway-hosted showcase app (feat(showcase) #245),
+    # not the internal /showcase/ route. The /showcase/ section is hidden from
+    # the auto-nav (menu: false in its _index.md) so this entry renders instead.
+    - name: "Component showcase"
+      url: "https://chirp-ui-showcase-production.up.railway.app"
+      weight: 5
       icon: layers

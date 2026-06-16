@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% from "chirpui/navbar.html" import navbar, navbar_link, navbar_dropdown %}
 {% from "chirpui/site_footer.html" import site_footer, footer_column, footer_link %}
+{% from "partials/nav-icons.html" import section_icon_name %}
 {#
 ================================================================================
 TEMPLATE VARIABLES
@@ -118,13 +119,27 @@ symbols imported inside another block.
 {% end %}
 {% let item_active = (item?.active ?? false) or (_page_url == item_href) or (item_href != '/' and item_href != '#' and _page_url.startswith(item_href)) or (active_children | length > 0) %}
 {% if item_children | length > 0 %}
+    {% let _section_overview = item_href if (item_href and item_href != '#') else none %}
     {% call navbar_dropdown(item_name, active=item_active, href=item_href, cls="chirp-theme-shell__nav-dropdown") %}
         <div class="chirp-theme-shell__mega">
+        {% if _section_overview %}
+        {# Overview link → section root (e.g. /docs/). Gives the dropdown a clear,
+           keyboard-reachable navigation target; nav-dropdown.js also wires the
+           summary trigger to this href on hover-capable pointers. #}
+        <a class="chirp-theme-shell__mega-header chirp-theme-shell__mega-overview{{ ' is-active' if item_active else '' }}"
+           href="{{ _section_overview | absolute_url }}" data-chirp-theme-mega-overview{% if _page_url == item_href %} aria-current="page"{% end %}>
+            <span class="chirp-theme-shell__mega-eyebrow">Explore</span>
+            <strong>{{ item_name }}</strong>
+            <p>{{ item_description }}</p>
+            <span class="chirp-theme-shell__mega-overview-cta" aria-hidden="true">{{ icon('arrow-right', size=14) }} <span>Section overview</span></span>
+        </a>
+        {% else %}
         <div class="chirp-theme-shell__mega-header">
             <span class="chirp-theme-shell__mega-eyebrow">Explore</span>
             <strong>{{ item_name }}</strong>
             <p>{{ item_description }}</p>
         </div>
+        {% end %}
         <div class="chirp-theme-shell__mega-list">
         {% for child in item_children %}
         {% let child_href = child?.href ?? child?.url ?? '#' %}
@@ -132,7 +147,7 @@ symbols imported inside another block.
         {% let child_active = child_href != '#' and (child_current or (child_href != '/' and _page_url.startswith(child_href))) %}
         {% let child_title = child?.name ?? child?.title ?? 'Untitled' %}
         {% let child_description = child?.description ?? child?.summary ?? child?.metadata?.description ?? 'Open this section' %}
-        {% let child_icon = child?.icon ?? none %}
+        {% let child_icon = child?.icon ?? (section_icon_name(child_title, child_href) | trim) %}
         <a class="chirpui-dropdown__item chirp-theme-shell__mega-item{{ ' chirpui-dropdown__item--active' if ((child?.active ?? false) or child_active) else '' }}"
            href="{{ child_href | absolute_url }}"{% if child_current %} aria-current="page"{% end %}>
             <span class="chirp-theme-shell__mega-item-mark" aria-hidden="true">
