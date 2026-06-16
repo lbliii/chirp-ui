@@ -21,13 +21,13 @@ resume:
   metrics:
     - value: "100+"
       label: Kida macros
-      icon: grid
+      icon: stack
     - value: "6"
       label: Layout primitives
-      icon: skills
+      icon: cube
     - value: "0"
       label: Build steps
-      icon: bolt
+      icon: zap
   experience:
     - role: Component Library
       org: chirp-ui
