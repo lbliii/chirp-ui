@@ -3854,3 +3854,132 @@
     }
   }
 }
+
+/* ==========================================================================
+   Resume / CV — data-driven page (resume/single.html)
+   Composes chirp-ui components; these rules add resume-specific polish only.
+   ========================================================================== */
+
+.chirp-theme-resume-page {
+  margin-inline: auto;
+}
+
+/* Header */
+.chirp-theme-resume-header {
+  padding-block-end: var(--chirpui-spacing-lg);
+  border-block-end: 1px solid var(--chirpui-border-subtle);
+}
+
+.chirp-theme-resume-headline {
+  margin: 0;
+  font-size: var(--chirpui-font-lg);
+  color: var(--chirpui-text-muted);
+  line-height: var(--chirpui-line-height-normal, 1.5);
+}
+
+/* Summary lede */
+.chirp-theme-resume-summary {
+  border-inline-start: 3px solid var(--chirpui-accent);
+}
+
+.chirp-theme-resume-summary__text {
+  margin: 0;
+  font-size: var(--chirpui-font-lg);
+  color: var(--chirpui-text);
+  text-wrap: pretty;
+}
+
+/* Timeline entries (experience, education, volunteer) */
+.chirp-theme-resume-entry__org {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--chirpui-spacing-xs);
+  margin: 0 0 var(--chirpui-spacing-2xs);
+}
+
+.chirp-theme-resume-entry__org-name {
+  font-weight: var(--chirpui-font-weight-semibold);
+  color: var(--chirpui-text);
+}
+
+.chirp-theme-resume-entry__loc {
+  font-size: var(--chirpui-font-sm);
+}
+
+.chirp-theme-resume-entry__summary {
+  margin: 0 0 var(--chirpui-spacing-xs);
+  text-wrap: pretty;
+}
+
+.chirp-theme-resume-entry__highlights {
+  margin: var(--chirpui-spacing-xs) 0 0;
+  padding-inline-start: var(--chirpui-spacing-lg);
+  list-style: disc;
+}
+
+.chirp-theme-resume-entry__highlights li {
+  margin-block: var(--chirpui-spacing-2xs);
+  color: var(--chirpui-text-muted);
+  text-wrap: pretty;
+}
+
+.chirp-theme-resume-entry__tech {
+  margin-block-start: var(--chirpui-spacing-sm);
+}
+
+/* Projects & skills cards */
+.chirp-theme-resume-project__title {
+  margin: 0;
+  font-size: var(--chirpui-font-base);
+  font-weight: var(--chirpui-font-weight-semibold);
+}
+
+.chirp-theme-resume-project__title a {
+  color: var(--chirpui-accent);
+  text-decoration: none;
+}
+
+.chirp-theme-resume-project__title a:hover {
+  text-decoration: underline;
+}
+
+.chirp-theme-resume-project__meta {
+  margin: 0;
+}
+
+/* Credentials (certifications, awards) */
+.chirp-theme-resume-credential__name {
+  margin: 0 0 var(--chirpui-spacing-2xs);
+  font-size: var(--chirpui-font-base);
+  font-weight: var(--chirpui-font-weight-semibold);
+}
+
+.chirp-theme-resume-credential__name a {
+  color: var(--chirpui-accent);
+  text-decoration: none;
+}
+
+.chirp-theme-resume-credential__name a:hover {
+  text-decoration: underline;
+}
+
+.chirp-theme-resume-credential__meta {
+  margin: 0;
+}
+
+/* Print: drop interactive chrome, keep the document legible on one column */
+@media print {
+  .chirp-theme-resume-section,
+  .chirp-theme-resume-project,
+  .chirp-theme-resume-skill-group,
+  .chirp-theme-resume .chirpui-timeline__item {
+    break-inside: avoid;
+  }
+
+  .chirp-theme-resume-projects,
+  .chirp-theme-resume-skills {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+

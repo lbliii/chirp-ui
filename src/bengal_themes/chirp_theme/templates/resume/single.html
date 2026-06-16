@@ -1,38 +1,307 @@
 {% extends "base.html" %}
 
 {% from "chirpui/badge.html" import badge %}
-{% from "chirpui/layout.html" import cluster, container, stack %}
+{% from "chirpui/layout.html" import cluster, container, grid, section_header, stack %}
+{% from "chirpui/description_list.html" import description_list %}
+{% from "chirpui/label_overline.html" import label_overline %}
+{% from "chirpui/metric_grid.html" import metric_grid, metric_card %}
 {% from "chirpui/profile_header.html" import profile_header %}
 {% from "chirpui/rendered_content.html" import rendered_content %}
 {% from "chirpui/surface.html" import surface %}
+{% from "chirpui/timeline.html" import timeline, timeline_item %}
 {% from "partials/taxonomy-pages.html" import social_links %}
 
+{#
+================================================================================
+Resume / CV — data-driven (Kida-Native)
+================================================================================
+
+Renders a structured resume from YAML data rather than prose markdown. Composes
+existing chirp-ui components: profile_header, metric_grid, section_header,
+timeline, surface, badge, description_list, plus stack/cluster/grid primitives.
+
+DATA SOURCE (first match wins):
+  1. page front-matter `resume:` block (per-page authoring — used by the example)
+  2. `site.data.resume`  (global data file, mirrors the original Bengal theme)
+  3. flat page front-matter (`headline`, `summary`, `social`, … as a fallback)
+
+SCHEMA (all sections optional):
+  name, headline, location
+  contact:    { email, phone, website, github, linkedin }
+  social:     { website, github, linkedin, email }   (alias for contact links)
+  summary:    str
+  metrics:    [ { value, label, icon? } ]
+  experience: [ { role|title, org|company, start|start_date, end|end_date,
+                  location?, summary|description?, highlights[]?, tech|technologies[]? } ]
+  projects:   [ { name, role?, date?, url?, github?, demo?, summary|description?,
+                  highlights[]?, tech|technologies[]? } ]
+  skills:     [ { category|name, items[] } ]
+  education:  [ { degree, institution, start|start_date, end|end_date,
+                  location?, gpa?, honors[]?, coursework[]? } ]
+  certifications: [ { name, issuer?, date?, url? } ]
+  awards:     [ { name, issuer?, date?, description? } ]
+  languages:  [ { language, proficiency } ]
+  volunteer:  [ { role, organization, start|start_date, end|end_date, description? } ]
+
+USAGE: set `template: resume/single.html` (or `type: resume`) in front-matter.
+================================================================================
+#}
+
+{# ---------------------------------------------------------------------------
+   Experience / education / volunteer entry — composes timeline_item
+--------------------------------------------------------------------------- #}
+{% def resume_timeline_entry(role, org, dates, location="", summary="", highlights=none, tech=none) %}
+{% let entry_highlights = highlights ?? [] %}
+{% let entry_tech = tech ?? [] %}
+{% call timeline_item(role, dates) %}
+  {% slot content %}
+  {% if org or location %}
+  <p class="chirp-theme-resume-entry__org">
+    {% if org %}<span class="chirp-theme-resume-entry__org-name">{{ org }}</span>{% end %}
+    {% if location %}<span class="chirp-theme-resume-entry__loc chirpui-text-muted">{{ location }}</span>{% end %}
+  </p>
+  {% end %}
+  {% if summary %}<p class="chirp-theme-resume-entry__summary chirpui-text-muted">{{ summary }}</p>{% end %}
+  {% if entry_highlights is iterable and entry_highlights is not string and entry_highlights | length > 0 %}
+  <ul class="chirp-theme-resume-entry__highlights">
+    {% for highlight in entry_highlights %}<li>{{ highlight }}</li>{% end %}
+  </ul>
+  {% end %}
+  {% if entry_tech is iterable and entry_tech is not string and entry_tech | length > 0 %}
+  {% call cluster(gap="xs", cls="chirp-theme-resume-entry__tech") %}
+    {% for tech_item in entry_tech %}{{ badge(tech_item, variant="muted") }}{% end %}
+  {% end %}
+  {% end %}
+  {% end %}
+{% end %}
+{% end %}
+
 {% block content %}
-{% let name = page?.title ?? "Resume" %}
-{% let headline = params?.headline ?? params?.role ?? page?.description ?? params?.subtitle ?? none %}
-{% let location = params?.location ?? "" %}
-{% let summary = params?.summary ?? "" %}
-{% let social = params?.social ?? {} %}
+{# Resolve the data source: front-matter block -> site data -> flat front-matter #}
+{% let resume = params?.resume ?? site?.data?.resume ?? params ?? {} %}
+
+{% let r_name = resume?.name ?? page?.title ?? "Resume" %}
+{% let r_headline = resume?.headline ?? resume?.role ?? page?.description ?? "" %}
+{% let r_location = resume?.location ?? (resume?.contact?.location if resume?.contact else "") %}
+{% let r_contact = resume?.contact ?? {} %}
+{% let r_social = resume?.social ?? r_contact ?? {} %}
+{% let r_summary = resume?.summary ?? "" %}
+{% let r_metrics = resume?.metrics ?? [] %}
+{% let r_experience = resume?.experience ?? [] %}
+{% let r_projects = resume?.projects ?? resume?.selected_work ?? [] %}
+{% let r_skills = resume?.skills ?? [] %}
+{% let r_education = resume?.education ?? [] %}
+{% let r_certifications = resume?.certifications ?? [] %}
+{% let r_awards = resume?.awards ?? [] %}
+{% let r_languages = resume?.languages ?? [] %}
+{% let r_volunteer = resume?.volunteer ?? [] %}
 
 <div data-chirp-theme-surface="resume">
-{% call container(cls="chirp-theme-learning-page chirp-theme-resume-page") %}
-  {% call stack(gap="lg") %}
-    {% call profile_header(name=name, use_slots=true, cls="chirp-theme-resume-header") %}
+{% call container(max_width="58rem", cls="chirp-theme-resume-page") %}
+  {% call stack(gap="xl", cls="chirp-theme-resume") %}
+
+    {# ---- Header ---------------------------------------------------------- #}
+    {% call profile_header(name=r_name, use_slots=true, cls="chirp-theme-resume-header") %}
       {% slot bio %}
-      {% if headline %}<p class="chirp-theme-resume-headline">{{ headline }}</p>{% end %}
+      {% if r_headline %}<p class="chirp-theme-resume-headline">{{ r_headline }}</p>{% end %}
       {% end %}
       {% slot stats %}
-      {% if location %}{{ badge(location, variant="muted") }}{% end %}
+      {% if r_location %}{{ badge(r_location, variant="muted", icon="compass") }}{% end %}
       {% end %}
       {% slot actions %}
-      {{ social_links(social) }}
+      {{ social_links(r_social) }}
       {% end %}
     {% end %}
 
-    {% if summary %}
-    <p class="chirp-theme-resume-summary chirpui-text-muted">{{ summary }}</p>
+    {# ---- Summary --------------------------------------------------------- #}
+    {% if r_summary %}
+    {% call surface(variant="muted", cls="chirp-theme-resume-summary") %}
+      <p class="chirp-theme-resume-summary__text">{{ r_summary }}</p>
+    {% end %}
     {% end %}
 
+    {# ---- Metrics / at-a-glance ------------------------------------------- #}
+    {% if r_metrics | length > 0 %}
+    {% call metric_grid(cols=(r_metrics | length if (r_metrics | length) < 4 else 4), gap="md", cls="chirp-theme-resume-metrics") %}
+      {% for metric in r_metrics %}
+      {{ metric_card(value=(metric?.value ?? ""), label=(metric?.label ?? ""), icon=(metric?.icon ?? none)) }}
+      {% end %}
+    {% end %}
+    {% end %}
+
+    {# ---- Experience ------------------------------------------------------ #}
+    {% if r_experience | length > 0 %}
+    <section class="chirp-theme-resume-section">
+      {{ section_header("Experience", icon="compass") }}
+      {% call timeline() %}
+        {% for job in r_experience %}
+        {% let job_start = job?.start ?? job?.start_date ?? "" %}
+        {% let job_end = job?.end ?? job?.end_date ?? "Present" %}
+        {% let job_dates = (job_start ~ " – " ~ job_end) if job_start else job_end %}
+        {{ resume_timeline_entry(
+            role=(job?.role ?? job?.title ?? ""),
+            org=(job?.org ?? job?.company ?? ""),
+            dates=job_dates,
+            location=(job?.location ?? ""),
+            summary=(job?.summary ?? job?.description ?? ""),
+            highlights=(job?.highlights ?? []),
+            tech=(job?.tech ?? job?.technologies ?? [])
+        ) }}
+        {% end %}
+      {% end %}
+    </section>
+    {% end %}
+
+    {# ---- Projects / selected work ---------------------------------------- #}
+    {% if r_projects | length > 0 %}
+    <section class="chirp-theme-resume-section">
+      {{ section_header("Selected work", icon="spark") }}
+      {% call grid(cols=2, gap="md", items="start", cls="chirp-theme-resume-projects") %}
+        {% for project in r_projects %}
+        {% let project_url = project?.url ?? project?.github ?? project?.demo ?? none %}
+        {% let project_tech = project?.tech ?? project?.technologies ?? [] %}
+        {% let project_highlights = project?.highlights ?? [] %}
+        {% call surface(variant="default", cls="chirp-theme-resume-project") %}
+          {% call stack(gap="xs") %}
+            <h3 class="chirp-theme-resume-project__title">
+              {% if project_url %}<a href="{{ project_url }}">{{ project?.name ?? "" }}</a>{% else %}{{ project?.name ?? "" }}{% end %}
+            </h3>
+            {% if project?.role or project?.date %}
+            <p class="chirp-theme-resume-project__meta chirpui-text-muted chirpui-font-sm">
+              {% if project?.role %}{{ project.role }}{% end %}{% if project?.role and project?.date %} · {% end %}{% if project?.date %}{{ project.date }}{% end %}
+            </p>
+            {% end %}
+            {% if project?.summary or project?.description %}
+            <p class="chirpui-text-muted">{{ project?.summary ?? project?.description }}</p>
+            {% end %}
+            {% if project_highlights | length > 0 %}
+            <ul class="chirp-theme-resume-entry__highlights">
+              {% for highlight in project_highlights %}<li>{{ highlight }}</li>{% end %}
+            </ul>
+            {% end %}
+            {% if project_tech | length > 0 %}
+            {% call cluster(gap="xs", cls="chirp-theme-resume-entry__tech") %}
+              {% for tech_item in project_tech %}{{ badge(tech_item, variant="muted") }}{% end %}
+            {% end %}
+            {% end %}
+          {% end %}
+        {% end %}
+        {% end %}
+      {% end %}
+    </section>
+    {% end %}
+
+    {# ---- Skills ---------------------------------------------------------- #}
+    {% if r_skills | length > 0 %}
+    <section class="chirp-theme-resume-section">
+      {{ section_header("Skills", icon="skills") }}
+      {% call grid(cols=2, gap="md", items="start", cls="chirp-theme-resume-skills") %}
+        {% for skill_group in r_skills %}
+        {% call surface(variant="muted", cls="chirp-theme-resume-skill-group") %}
+          {{ label_overline(skill_group?.category ?? skill_group?.name ?? "Skills", section=true, tag="h3") }}
+          {% call cluster(gap="xs") %}
+            {% for skill in (skill_group?.items ?? []) %}{{ badge(skill, variant="muted") }}{% end %}
+          {% end %}
+        {% end %}
+        {% end %}
+      {% end %}
+    </section>
+    {% end %}
+
+    {# ---- Education ------------------------------------------------------- #}
+    {% if r_education | length > 0 %}
+    <section class="chirp-theme-resume-section">
+      {{ section_header("Education", icon="graduation-cap") }}
+      {% call timeline() %}
+        {% for edu in r_education %}
+        {% let edu_start = edu?.start ?? edu?.start_date ?? "" %}
+        {% let edu_end = edu?.end ?? edu?.end_date ?? "" %}
+        {% let edu_dates = (edu_start ~ " – " ~ edu_end) if (edu_start and edu_end) else (edu_end or edu_start) %}
+        {% let edu_summary = ("GPA " ~ edu.gpa) if edu?.gpa else "" %}
+        {% let edu_extra = (edu?.honors ?? []) + (["Coursework: " ~ (edu.coursework | join(", "))] if edu?.coursework else []) %}
+        {% let edu_highlights = edu_extra if (edu_extra | length > 0) else (edu?.highlights ?? []) %}
+        {{ resume_timeline_entry(
+            role=(edu?.degree ?? ""),
+            org=(edu?.institution ?? ""),
+            dates=edu_dates,
+            location=(edu?.location ?? ""),
+            summary=edu_summary,
+            highlights=edu_highlights
+        ) }}
+        {% end %}
+      {% end %}
+    </section>
+    {% end %}
+
+    {# ---- Certifications -------------------------------------------------- #}
+    {% if r_certifications | length > 0 %}
+    <section class="chirp-theme-resume-section">
+      {{ section_header("Certifications", icon="check") }}
+      {% call stack(gap="sm", cls="chirp-theme-resume-list") %}
+        {% for cert in r_certifications %}
+        {% call surface(variant="muted", cls="chirp-theme-resume-credential") %}
+          <h3 class="chirp-theme-resume-credential__name">
+            {% if cert?.url %}<a href="{{ cert.url }}">{{ cert?.name ?? "" }}</a>{% else %}{{ cert?.name ?? "" }}{% end %}
+          </h3>
+          <p class="chirp-theme-resume-credential__meta chirpui-text-muted chirpui-font-sm">
+            {% if cert?.issuer %}{{ cert.issuer }}{% end %}{% if cert?.issuer and cert?.date %} · {% end %}{% if cert?.date %}{{ cert.date }}{% end %}
+          </p>
+        {% end %}
+        {% end %}
+      {% end %}
+    </section>
+    {% end %}
+
+    {# ---- Awards ---------------------------------------------------------- #}
+    {% if r_awards | length > 0 %}
+    <section class="chirp-theme-resume-section">
+      {{ section_header("Awards", icon="star") }}
+      {% call stack(gap="sm", cls="chirp-theme-resume-list") %}
+        {% for award in r_awards %}
+        {% call surface(variant="muted", cls="chirp-theme-resume-credential") %}
+          <h3 class="chirp-theme-resume-credential__name">{{ award?.name ?? "" }}</h3>
+          <p class="chirp-theme-resume-credential__meta chirpui-text-muted chirpui-font-sm">
+            {% if award?.issuer %}{{ award.issuer }}{% end %}{% if award?.issuer and award?.date %} · {% end %}{% if award?.date %}{{ award.date }}{% end %}
+          </p>
+          {% if award?.description %}<p class="chirpui-text-muted chirpui-font-sm">{{ award.description }}</p>{% end %}
+        {% end %}
+        {% end %}
+      {% end %}
+    </section>
+    {% end %}
+
+    {# ---- Languages ------------------------------------------------------- #}
+    {% if r_languages | length > 0 %}
+    <section class="chirp-theme-resume-section">
+      {{ section_header("Languages", icon="chat") }}
+      {{ description_list(
+          items=[{"term": (lang?.language ?? ""), "detail": (lang?.proficiency ?? "")} for lang in r_languages],
+          variant="horizontal", divided=true, cls="chirp-theme-resume-languages"
+      ) }}
+    </section>
+    {% end %}
+
+    {# ---- Volunteer ------------------------------------------------------- #}
+    {% if r_volunteer | length > 0 %}
+    <section class="chirp-theme-resume-section">
+      {{ section_header("Volunteer", icon="spark") }}
+      {% call timeline() %}
+        {% for vol in r_volunteer %}
+        {% let vol_start = vol?.start ?? vol?.start_date ?? "" %}
+        {% let vol_end = vol?.end ?? vol?.end_date ?? "Present" %}
+        {% let vol_dates = (vol_start ~ " – " ~ vol_end) if vol_start else vol_end %}
+        {{ resume_timeline_entry(
+            role=(vol?.role ?? ""),
+            org=(vol?.organization ?? ""),
+            dates=vol_dates,
+            summary=(vol?.description ?? "")
+        ) }}
+        {% end %}
+      {% end %}
+    </section>
+    {% end %}
+
+    {# ---- Optional prose body (supplementary notes) ----------------------- #}
     {% if content %}
     {% call surface(variant="default", cls="chirp-theme-resume-body") %}
       {% call rendered_content(compact=false, cls="chirp-theme-learning-content") %}
@@ -40,6 +309,7 @@
       {% end %}
     {% end %}
     {% end %}
+
   {% end %}
 {% end %}
 </div>
