@@ -64,10 +64,7 @@ def nav_pill_inline_style(
                 f"--chirpui-pill-w:{w}rem;--chirpui-pill-h:{block_size_em}rem"
             )
         x += w + gap_em
-    return (
-        "--chirpui-pill-x:0rem;--chirpui-pill-y:0rem;"
-        "--chirpui-pill-w:0rem;--chirpui-pill-h:0rem"
-    )
+    return "--chirpui-pill-x:0rem;--chirpui-pill-y:0rem;--chirpui-pill-w:0rem;--chirpui-pill-h:0rem"
 
 
 def segmented_pill_inline_style(items: Iterable[_PillItem]) -> str:

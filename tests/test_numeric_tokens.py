@@ -13,7 +13,9 @@ def test_tabular_numeric_declarations_use_token() -> None:
     pattern = re.compile(r"font-variant-numeric\s*:\s*([^;]+);")
 
     for css_file in sorted(PARTIALS_DIR.glob("*.css")):
-        for line_number, line in enumerate(css_file.read_text(encoding="utf-8").splitlines(), start=1):
+        for line_number, line in enumerate(
+            css_file.read_text(encoding="utf-8").splitlines(), start=1
+        ):
             match = pattern.search(line)
             if not match:
                 continue

@@ -166,7 +166,7 @@ def test_render_route_tabs_sliding_pill_opt_out(env: Environment) -> None:
     env.add_global("nav_pill_inline_style", nav_pill_inline_style)
     html = env.from_string(
         '{% from "chirpui/route_tabs.html" import render_route_tabs %}'
-        '{{ render_route_tabs(tab_items, current_path, sliding_pill=false) }}'
+        "{{ render_route_tabs(tab_items, current_path, sliding_pill=false) }}"
     ).render(
         tab_items=({"label": "Home", "href": "/"},),
         current_path="/",
