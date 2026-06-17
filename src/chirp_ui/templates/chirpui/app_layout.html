@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="/static/chirpui.css">
 <link rel="stylesheet" href="/static/themes/app-theme-starter.css">
 <link rel="stylesheet" href="/static/chirpui-transitions.css">
-<script>
+<script nonce="{{ csp_nonce() }}">
 (function(){var t=localStorage.getItem("chirpui-theme")||"system";var s=localStorage.getItem("chirpui-style")||"default";document.documentElement.setAttribute("data-theme",t);document.documentElement.setAttribute("data-style",s);})();
 </script>
 {% block head_extra %}{% end %}
