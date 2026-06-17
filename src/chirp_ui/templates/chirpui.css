@@ -210,7 +210,7 @@ body {
     --chirpui-surface-alt: light-dark(#f8fafc, #334155);
     --chirpui-border: light-dark(#e2e8f0, #475569);
     --chirpui-border-subtle: color-mix(in srgb, var(--chirpui-border) 70%, transparent);
-    --chirpui-accent: light-dark(#0284c7, #38bdf8);
+    --chirpui-accent: light-dark(#0369a1, #38bdf8);
     --chirpui-accent-hover: color-mix(in srgb, var(--chirpui-accent) var(--chirpui-shade-hover), black);
     --chirpui-bg: light-dark(#f8fafc, #0f172a);
     --chirpui-bg-subtle: light-dark(#f1f5f9, #1e293b);
@@ -228,7 +228,7 @@ body {
     --chirpui-fg: var(--chirpui-text);
     --chirpui-fg-muted: var(--chirpui-text-muted);
     --chirpui-danger: var(--chirpui-error);
-    --chirpui-on-accent: #fff;
+    --chirpui-on-accent: light-dark(#fff, #0f172a);
     --chirpui-on-warning: light-dark(#1a1a1a, #1a1a1a);
     --chirpui-font-family: var(--chirpui-prose-font-family);
     --chirpui-font-mono: var(--chirpui-mono-font-family);
@@ -634,7 +634,7 @@ body {
     --chirpui-surface: #ffffff;
     --chirpui-surface-alt: #f8fafc;
     --chirpui-border: #e2e8f0;
-    --chirpui-accent: #0284c7;
+    --chirpui-accent: #0369a1;
     --chirpui-bg: #f8fafc;
     --chirpui-bg-subtle: #f1f5f9;
     --chirpui-alert-info-bg: #eff6ff;
@@ -665,7 +665,7 @@ body {
         --chirpui-surface: light-dark(oklch(1 0 0), oklch(0.24 0.02 260));
         --chirpui-surface-alt: light-dark(oklch(0.985 0.002 260), oklch(0.31 0.02 260));
         --chirpui-border: light-dark(oklch(0.92 0.01 260), oklch(0.42 0.02 260));
-        --chirpui-accent: light-dark(oklch(0.55 0.15 230), oklch(0.78 0.12 230));
+        --chirpui-accent: light-dark(oklch(0.48 0.15 230), oklch(0.78 0.12 230));
         --chirpui-accent-hover: light-dark(oklch(0.45 0.15 230), oklch(0.85 0.1 230));
         --chirpui-bg: light-dark(oklch(0.985 0.002 260), oklch(0.18 0.02 260));
         --chirpui-bg-subtle: light-dark(oklch(0.965 0.005 260), oklch(0.24 0.02 260));
@@ -684,7 +684,7 @@ body {
         --chirpui-surface: oklch(1 0 0);
         --chirpui-surface-alt: oklch(0.985 0.002 260);
         --chirpui-border: oklch(0.92 0.01 260);
-        --chirpui-accent: oklch(0.55 0.15 230);
+        --chirpui-accent: oklch(0.48 0.15 230);
         --chirpui-accent-hover: oklch(0.45 0.15 230);
         --chirpui-bg: oklch(0.985 0.002 260);
         --chirpui-bg-subtle: oklch(0.965 0.005 260);
@@ -8420,12 +8420,17 @@ a.chirpui-tag:active {
         .chirpui-table__td:has(.chirpui-row-actions__trigger)
             > :where(.chirpui-cluster, .chirpui-dropdown, .chirpui-btn, .chirpui-icon-btn) {
             display: inline-flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             align-items: center;
             justify-content: flex-end;
             gap: var(--chirpui-spacing-xs);
             max-inline-size: 100%;
             margin-block: 0;
+        }
+
+        .chirpui-table__td--actions :where(.chirpui-btn, .chirpui-icon-btn),
+        .chirpui-table__td:has(.chirpui-row-actions__trigger) :where(.chirpui-btn, .chirpui-icon-btn) {
+            white-space: nowrap;
         }
 
         .chirpui-table__th {
@@ -22779,11 +22784,9 @@ a.chirpui-chip:focus-visible {
             border-radius: 0;
         }
 
-        /* Darken the accent so white (--chirpui-on-accent) clears WCAG AA on the
-           selected day in both themes; raw --chirpui-accent is too light. */
         & .chirpui-date-picker__day--selected,
         & .chirpui-date-picker__day--range-end {
-            background: color-mix(in oklab, var(--chirpui-accent), black 22%);
+            background: var(--chirpui-accent);
             color: var(--chirpui-on-accent);
         }
 

@@ -166,11 +166,9 @@
             border-radius: 0;
         }
 
-        /* Darken the accent so white (--chirpui-on-accent) clears WCAG AA on the
-           selected day in both themes; raw --chirpui-accent is too light. */
         & .chirpui-date-picker__day--selected,
         & .chirpui-date-picker__day--range-end {
-            background: color-mix(in oklab, var(--chirpui-accent), black 22%);
+            background: var(--chirpui-accent);
             color: var(--chirpui-on-accent);
         }
 
