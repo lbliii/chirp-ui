@@ -578,6 +578,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         block="tabs",
         slots=("",),
         template="tabs.html",
+        modifiers=("sliding-pill",),
         extra_emits=(
             "chirpui-tabs__tab",
             "chirpui-tabs__tab--active",
@@ -1994,6 +1995,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "segmented": ComponentDescriptor(
         block="segmented",
         sizes=("", "sm", "md", "lg"),
+        modifiers=("sliding-pill",),
         template="segmented_control.html",
         extra_emits=(
             "chirpui-segmented__icon",
@@ -2653,6 +2655,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "chirpui-sidebar__badge--reserved",
             "chirpui-sidebar__footer",
             "chirpui-sidebar__link--active",
+            "chirpui-sidebar__nav--sliding-pill",
             "chirpui-sidebar__section-links",
         ),
         category="navigation",
@@ -3976,6 +3979,12 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
         role="primitive",
         maturity="legacy",
     ),
+    "tabular": ComponentDescriptor(
+        block="tabular",
+        category="typography",
+        role="primitive",
+        maturity="stable",
+    ),
     "frame": ComponentDescriptor(
         block="frame",
         slots=("",),
@@ -4203,6 +4212,7 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
     ),
     "route-tabs": ComponentDescriptor(
         block="route-tabs",
+        modifiers=("sliding-pill",),
         category="navigation",
         role="primitive",
         maturity="stable",
@@ -4328,6 +4338,12 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
         role="primitive",
         maturity="stable",
         template="streaming.html",
+    ),
+    "nav-pill": ComponentDescriptor(
+        block="nav-pill",
+        category="navigation",
+        role="primitive",
+        maturity="stable",
     ),
     "suspense-group": ComponentDescriptor(
         block="suspense-group",

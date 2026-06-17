@@ -7063,6 +7063,24 @@ Media pattern assets
 | `state_variant` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `load-sentinel`
+
+Streaming and AI components
+
+- **Template:** `chirpui/streaming.html`
+- **Macro:** `load_sentinel`
+- **Category:** `feedback`
+- **Maturity:** `stable`
+- **Role:** `primitive`
+- **Authoring:** `available`
+- **Requires:** `htmx`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | no | (has default) |
+| `cls` | no | (has default) |
+| `busy` | no | (has default) |
+
 ### `logo`
 
 Logo component
@@ -7425,6 +7443,13 @@ SPA-style link for content areas
 | `href` | yes | — |
 | `label` | no | (has default) |
 | `cls` | no | (has default) |
+
+### `nav-pill`
+
+- **Category:** `navigation`
+- **Maturity:** `stable`
+- **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `nav-progress`
 
@@ -8132,6 +8157,7 @@ Route-backed subsection tabs
 | `current_path` | yes | — |
 | `target` | no | (has default) |
 | `is_active` | no | (has default) |
+| `sliding_pill` | no | (has default) |
 
 ### `route-tabs`
 
@@ -8139,6 +8165,7 @@ Route-backed subsection tabs
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `available`
+- **Modifiers:** `sliding-pill`
 
 ### `row-actions`
 
@@ -8395,6 +8422,7 @@ Segmented Control
 - **Role:** `component`
 - **Authoring:** `available`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
+- **Modifiers:** `sliding-pill`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -8402,6 +8430,7 @@ Segmented Control
 | `name` | no | (has default) |
 | `size` | no | (has default) |
 | `cls` | no | (has default) |
+| `sliding_pill` | no | (has default) |
 
 ### `selection-bar`
 
@@ -8563,6 +8592,7 @@ Sidebar component
 | `cls` | no | (has default) |
 | `current_path` | no | (has default) |
 | `aria_label` | no | (has default) |
+| `sliding_pill` | no | (has default) |
 
 ### `sidebar-toggle`
 
@@ -9270,11 +9300,20 @@ Tabs component
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
+- **Modifiers:** `sliding-pill`
 
 | Param | Required | Default |
 |-------|----------|---------|
 | `active` | no | (has default) |
 | `cls` | no | (has default) |
+| `sliding_pill` | no | (has default) |
+
+### `tabular`
+
+- **Category:** `typography`
+- **Maturity:** `stable`
+- **Role:** `primitive`
+- **Authoring:** `available`
 
 ### `tag`
 

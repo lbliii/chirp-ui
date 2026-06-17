@@ -14727,6 +14727,38 @@
       "trim_emits": [],
       "variants": []
     },
+    "nav-pill": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "nav-pill",
+      "category": "navigation",
+      "composes": [],
+      "consumes": [],
+      "description": "",
+      "elements": [],
+      "emits": [
+        "chirpui-nav-pill"
+      ],
+      "extra_emits": [],
+      "lineno": 0,
+      "macro": null,
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [],
+      "provides": [],
+      "requires": [],
+      "role": "primitive",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "nav-progress": {
       "appearances": [],
       "authoring": "available",
@@ -17489,13 +17521,16 @@
       "description": "",
       "elements": [],
       "emits": [
-        "chirpui-route-tabs"
+        "chirpui-route-tabs",
+        "chirpui-route-tabs--sliding-pill"
       ],
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
       "maturity": "stable",
-      "modifiers": [],
+      "modifiers": [
+        "sliding-pill"
+      ],
       "params": [],
       "provides": [],
       "requires": [],
@@ -18392,6 +18427,7 @@
       "emits": [
         "chirpui-segmented",
         "chirpui-segmented--lg",
+        "chirpui-segmented--sliding-pill",
         "chirpui-segmented--sm",
         "chirpui-segmented__icon",
         "chirpui-segmented__input",
@@ -18409,7 +18445,9 @@
       "lineno": 20,
       "macro": "segmented_control",
       "maturity": "stable",
-      "modifiers": [],
+      "modifiers": [
+        "sliding-pill"
+      ],
       "params": [
         {
           "has_default": false,
@@ -18992,6 +19030,7 @@
         "chirpui-sidebar__link",
         "chirpui-sidebar__link--active",
         "chirpui-sidebar__nav",
+        "chirpui-sidebar__nav--sliding-pill",
         "chirpui-sidebar__section",
         "chirpui-sidebar__section-links",
         "chirpui-sidebar__section-title"
@@ -19001,6 +19040,7 @@
         "chirpui-sidebar__badge--reserved",
         "chirpui-sidebar__footer",
         "chirpui-sidebar__link--active",
+        "chirpui-sidebar__nav--sliding-pill",
         "chirpui-sidebar__section-links"
       ],
       "lineno": 41,
@@ -21841,6 +21881,7 @@
       "elements": [],
       "emits": [
         "chirpui-tabs",
+        "chirpui-tabs--sliding-pill",
         "chirpui-tabs__tab",
         "chirpui-tabs__tab--active"
       ],
@@ -21851,7 +21892,9 @@
       "lineno": 15,
       "macro": "tabs",
       "maturity": "stable",
-      "modifiers": [],
+      "modifiers": [
+        "sliding-pill"
+      ],
       "params": [
         {
           "has_default": true,
@@ -21882,6 +21925,38 @@
       ],
       "slots_yielded": [],
       "template": "tabs.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "tabular": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "tabular",
+      "category": "typography",
+      "composes": [],
+      "consumes": [],
+      "description": "",
+      "elements": [],
+      "emits": [
+        "chirpui-tabular"
+      ],
+      "extra_emits": [],
+      "lineno": 0,
+      "macro": null,
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [],
+      "provides": [],
+      "requires": [],
+      "role": "primitive",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -24555,7 +24630,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 307,
+      "available": 309,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -24575,16 +24650,16 @@
       "layout": 50,
       "marketing": 11,
       "media": 6,
-      "navigation": 29,
+      "navigation": 30,
       "overlay": 3,
       "social": 4,
-      "typography": 29
+      "typography": 30
     },
     "component_maturity": {
       "experimental": 105,
       "internal": 2,
       "legacy": 39,
-      "stable": 212
+      "stable": 214
     },
     "component_requirements": {
       "alpine": 30,
@@ -24595,7 +24670,7 @@
       "effect": 32,
       "infrastructure": 2,
       "pattern": 22,
-      "primitive": 110
+      "primitive": 112
     },
     "components_with_consumes": 20,
     "components_with_description": 255,
@@ -24616,7 +24691,7 @@
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
       "explicit_extra_blocks": 129,
-      "explicit_extra_classes": 546,
+      "explicit_extra_classes": 547,
       "explicit_trim_blocks": 69,
       "explicit_trim_classes": 96
     },
@@ -24624,15 +24699,15 @@
       "color": 142,
       "component": 134,
       "elevation": 7,
-      "layout": 46,
+      "layout": 50,
       "motion": 24,
       "radius": 7,
       "spacing": 30,
-      "typography": 45
+      "typography": 46
     },
-    "total_components": 358,
+    "total_components": 360,
     "total_theme_packs": 3,
-    "total_tokens": 435
+    "total_tokens": 440
   },
   "theme_packs": [
     {
@@ -25629,6 +25704,10 @@
       "category": "color",
       "scope": "global"
     },
+    "--chirpui-nums-tabular": {
+      "category": "typography",
+      "scope": "global"
+    },
     "--chirpui-on-accent": {
       "category": "color",
       "scope": "global"
@@ -25732,6 +25811,22 @@
     "--chirpui-pattern-weave": {
       "category": "color",
       "scope": "global"
+    },
+    "--chirpui-pill-h": {
+      "category": "layout",
+      "scope": "navigation"
+    },
+    "--chirpui-pill-w": {
+      "category": "layout",
+      "scope": "navigation"
+    },
+    "--chirpui-pill-x": {
+      "category": "layout",
+      "scope": "navigation"
+    },
+    "--chirpui-pill-y": {
+      "category": "layout",
+      "scope": "navigation"
     },
     "--chirpui-pre-padding": {
       "category": "component",

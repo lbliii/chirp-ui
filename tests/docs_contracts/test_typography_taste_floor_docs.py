@@ -210,7 +210,7 @@ def test_typography_role_polish_uses_existing_tokens() -> None:
         ".chirpui-filter-rail__label",
         "font-weight: var(--chirpui-ui-font-weight-medium);",
         ".chirpui-metric-strip__value",
-        "font-variant-numeric: tabular-nums;",
+        "font-variant-numeric: var(--chirpui-nums-tabular);",
         ".chirpui-result-card__body",
         "line-height: var(--chirpui-line-height-normal);",
         ".chirpui-inspector-panel__body",
@@ -223,11 +223,11 @@ def test_typography_role_polish_uses_existing_tokens() -> None:
     assert ".chirpui-hero--page .chirpui-hero__subtitle" in hero
     assert "max-inline-size: 58ch;" in hero
 
-    assert "font-variant-numeric: tabular-nums;" in stat
+    assert "font-variant-numeric: var(--chirpui-nums-tabular);" in stat
     assert "line-height: var(--chirpui-line-height-tight);" in stat
 
     assert ".chirpui-story-card__metric" in story
-    assert "font-variant-numeric: tabular-nums;" in story
+    assert "font-variant-numeric: var(--chirpui-nums-tabular);" in story
     assert ".chirpui-story-card__summary" in story
     assert "line-height: var(--chirpui-line-height-normal);" in story
 
@@ -282,7 +282,7 @@ def test_component_taste_pass_uses_existing_role_tokens() -> None:
         assert "--chirpui-type-role" not in text, name
 
     for signal in [
-        "font-variant-numeric: tabular-nums;",
+        "font-variant-numeric: var(--chirpui-nums-tabular);",
         "line-height: var(--chirpui-line-height-tight);",
     ]:
         assert signal in partials["action_bar"]
@@ -291,21 +291,21 @@ def test_component_taste_pass_uses_existing_role_tokens() -> None:
     assert "color: var(--chirpui-text-muted);" in partials["action_containers"]
 
     assert "line-height: var(--chirpui-line-height-normal);" in partials["card"]
-    assert "font-variant-numeric: tabular-nums;" in partials["card"]
+    assert "font-variant-numeric: var(--chirpui-nums-tabular);" in partials["card"]
     assert "overflow-wrap: anywhere;" in partials["card"]
 
     assert ".chirpui-timeline__date" in partials["timeline"]
-    assert "font-variant-numeric: tabular-nums;" in partials["timeline"]
+    assert "font-variant-numeric: var(--chirpui-nums-tabular);" in partials["timeline"]
     assert ".chirpui-timeline__body" in partials["timeline"]
 
     assert ".chirpui-table__td--right" in partials["table"]
     assert "font-size: var(--chirpui-font-sm);" in partials["table"]
 
     assert ".chirpui-dl__detail--number" in partials["description_list"]
-    assert "font-variant-numeric: tabular-nums;" in partials["description_list"]
+    assert "font-variant-numeric: var(--chirpui-nums-tabular);" in partials["description_list"]
 
     assert ".chirpui-settings-row__status" in partials["settings_row"]
-    assert "font-variant-numeric: tabular-nums;" in partials["settings_row"]
+    assert "font-variant-numeric: var(--chirpui-nums-tabular);" in partials["settings_row"]
 
     assert ".chirpui-streaming-block" in partials["streaming"]
     assert "font-size: var(--chirpui-font-sm);" in partials["streaming"]
@@ -315,7 +315,7 @@ def test_component_taste_pass_uses_existing_role_tokens() -> None:
     assert "font-weight: var(--chirpui-ui-font-weight-medium);" in partials["form"]
 
     assert ".chirpui-badge" in partials["badge"]
-    assert "font-variant-numeric: tabular-nums;" in partials["badge"]
+    assert "font-variant-numeric: var(--chirpui-nums-tabular);" in partials["badge"]
 
     assert ".chirpui-empty-state__body" in partials["empty"]
     assert "max-inline-size: var(--chirpui-measure-sm);" in partials["empty"]
@@ -362,7 +362,7 @@ def test_second_component_taste_sweep_uses_existing_tokens() -> None:
         "status",
         "command_palette",
     ]:
-        assert "font-variant-numeric: tabular-nums;" in partials[name]
+        assert "font-variant-numeric: var(--chirpui-nums-tabular);" in partials[name]
 
     assert ".chirpui-panel__title" in partials["panel"]
     assert "line-height: var(--chirpui-line-height-tight);" in partials["panel"]
@@ -418,7 +418,7 @@ def test_navigation_and_disclosure_taste_sweep_uses_existing_tokens() -> None:
         assert "line-height: var(--chirpui-line-height-normal);" in partials[name]
 
     for name in ["sidebar", "route_tabs"]:
-        assert "font-variant-numeric: tabular-nums;" in partials[name]
+        assert "font-variant-numeric: var(--chirpui-nums-tabular);" in partials[name]
 
     assert ".chirpui-breadcrumbs__current" in partials["breadcrumbs"]
     assert "font-weight: var(--chirpui-ui-font-weight-normal);" in partials["breadcrumbs"]
@@ -472,7 +472,7 @@ def test_small_control_taste_sweep_uses_existing_tokens() -> None:
         assert "line-height: var(--chirpui-line-height-tight);" in partials[name]
 
     for name in ["stepper", "animated_stat"]:
-        assert "font-variant-numeric: tabular-nums;" in partials[name]
+        assert "font-variant-numeric: var(--chirpui-nums-tabular);" in partials[name]
 
     assert ".chirpui-inline-edit--display .chirpui-inline-edit__value" in partials["inline_edit"]
     assert "overflow-wrap: anywhere;" in partials["inline_edit"]
@@ -529,7 +529,7 @@ def test_header_setup_and_affordance_taste_sweep_uses_existing_tokens() -> None:
     assert "color: var(--chirpui-text-muted);" in partials["entity_header"]
     assert ".chirpui-divider__text" in partials["divider"]
     assert ".chirpui-profile-header__stats" in partials["profile_header"]
-    assert "font-variant-numeric: tabular-nums;" in partials["profile_header"]
+    assert "font-variant-numeric: var(--chirpui-nums-tabular);" in partials["profile_header"]
     assert (
         ".chirpui-wizard-form__body > :where(:not(script, style, template))"
         in partials["wizard_form"]
@@ -581,7 +581,7 @@ def test_content_and_media_taste_sweep_uses_existing_tokens() -> None:
         assert "line-height: var(--chirpui-line-height-normal);" in partials[name]
 
     for name in ["conversation", "post", "comment", "video", "channel", "playlist", "chapter"]:
-        assert "font-variant-numeric: tabular-nums;" in partials[name]
+        assert "font-variant-numeric: var(--chirpui-nums-tabular);" in partials[name]
 
     assert ".chirpui-message-bubble" in partials["message"]
     assert "overflow-wrap: anywhere;" in partials["message"]
@@ -628,7 +628,7 @@ def test_data_and_loading_taste_sweep_uses_existing_tokens() -> None:
     assert "line-height: var(--chirpui-line-height-normal);" in partials["infinite_scroll"]
 
     for name in ["bar_chart", "donut", "number_ticker", "animated_counter"]:
-        assert "font-variant-numeric: tabular-nums;" in partials[name]
+        assert "font-variant-numeric: var(--chirpui-nums-tabular);" in partials[name]
 
     assert ".chirpui-spinner--sm { font-size: var(--chirpui-font-xs); }" in partials["spinner"]
     assert ".chirpui-infinite-scroll__loading" in partials["infinite_scroll"]
@@ -669,7 +669,7 @@ def test_special_form_control_taste_sweep_uses_existing_tokens() -> None:
         ".chirpui-thumbs__label",
         ".chirpui-segmented > .chirpui-segmented__input:checked + .chirpui-segmented__label",
         ".chirpui-number-scale__label",
-        "font-variant-numeric: tabular-nums;",
+        "font-variant-numeric: var(--chirpui-nums-tabular);",
         ".chirpui-sortable__handle",
         ".chirpui-dnd__handle",
         ".chirpui-field__range-value",
