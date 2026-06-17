@@ -6,7 +6,8 @@ Server-side CSS custom-property estimates for first paint; shell runtime
 
 from __future__ import annotations
 
-from typing import Any, Callable, Iterable, cast
+from collections.abc import Callable, Iterable
+from typing import Any, cast
 
 from chirp_ui.route_tabs import tab_is_active
 
@@ -56,10 +57,7 @@ def nav_pill_inline_style(
     x = 0.0
     for item in items:
         w = estimate_nav_item_width_em(item)
-        if match == "flag":
-            on = bool(_item_get(item, "active"))
-        else:
-            on = active_fn(item, current_path)
+        on = bool(_item_get(item, "active")) if match == "flag" else active_fn(item, current_path)
         if on:
             return (
                 f"--chirpui-pill-x:{x}rem;--chirpui-pill-y:0rem;"

@@ -30,9 +30,9 @@ from chirp_ui.grid_state import (
     sort_columns,
     sort_query,
 )
+from chirp_ui.icons import icon as icon_filter
 from chirp_ui.nav_pill import nav_pill_inline_style, segmented_pill_inline_style
 from chirp_ui.route_tabs import tab_is_active
-from chirp_ui.icons import icon as icon_filter
 from chirp_ui.validation import ChirpUIValidationWarning, _warn, set_strict
 
 TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "src" / "chirp_ui" / "templates"

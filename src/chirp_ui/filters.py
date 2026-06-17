@@ -944,8 +944,8 @@ def register_filters(app: TemplateFilterApp) -> None:
             sort_columns,
             sort_query,
         )
-        from chirp_ui.route_tabs import tab_is_active
         from chirp_ui.nav_pill import nav_pill_inline_style, segmented_pill_inline_style
+        from chirp_ui.route_tabs import tab_is_active
 
         tg = cast(
             Callable[[str | None], Callable[[Callable[..., object]], Callable[..., object]]],
