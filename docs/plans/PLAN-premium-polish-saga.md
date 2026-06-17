@@ -137,6 +137,24 @@ dimensions:
 - Extend the **taste-law ratchet** + Playwright gauntlets + `lead-designer`
   screenshot critique to run **per-archetype**, so a polish regression fails CI.
 
+## Recommended Execution Order
+
+Phases A→D are dependency-ordered, but within/across them the recommended start
+sequence (max wow-per-effort, lowest risk first) is:
+
+1. **#257 tabular numerics** — smallest change, biggest immediate screenshot lift,
+   a clean consolidation of ~25 existing inline uses.
+2. **#255 sliding pill** — turns the whole shell "app-grade"; CSS-only.
+3. **#258 density scale** + **#256 fab/palette** — finish Phase A.
+4. **#259 hero gradients + aura** then the keystone **#206 default identity +
+   role-based type** (Phase B).
+5. **#260 live regions** + the existing #207/#208 feedback/motion epics (Phase C).
+6. **#261 data_grid fork** decision, then **#262 data-dense / `lucky_cat` golden
+   screen** as the integration proof (Phase D).
+
+Each item is "done" only when it carries its golden-screen entry + ratchet + gauntlet
+(see Proof Loop).
+
 ## Proof Loop (how we know it's expensive, for any app)
 
 Every phase output earns its quality the same way:

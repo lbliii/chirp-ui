@@ -430,6 +430,7 @@ parallel backlog.
 | Plan | Roadmap workstream |
 |---|---|
 | `PLAN-visual-taste-floor-saga.md` | Screen Catalog And Taste Floor |
+| `PLAN-premium-polish-saga.md` | Screen Catalog And Taste Floor |
 | `PLAN-pre-1.0-productization-saga.md` | Productization Coordination |
 | `PLAN-bengal-chirpui-library-contract.md` | Bengal And chirp-theme Integration |
 | `PLAN-chirp-theme-content-parity.md` | Bengal And chirp-theme Integration |
