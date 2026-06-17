@@ -91,7 +91,7 @@
 }
 
 .chirpui-hero--page .chirpui-hero__title {
-    max-inline-size: 12ch;
+    max-inline-size: 24ch;
     margin-inline: auto;
     font-size: var(--chirpui-prose-5xl);
     letter-spacing: var(--chirpui-display-letter-spacing);
