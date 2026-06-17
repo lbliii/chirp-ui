@@ -43,29 +43,29 @@ wheels = [
 
 [[package]]
 name = "bengal-chirp"
-version = "0.6.0"
+version = "0.8.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
     { name = "bengal-pounce" },
     { name = "kida-templates" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/37/c3/49b033f67c735fb4385d67e070c907e7db4d46e3b68ef15dc6db08e72a85/bengal_chirp-0.6.0.tar.gz", hash = "sha256:500d929c4d788edf99f311c0a0ee1fad6a1a52b6b57f39cef8a9af0cd0ccffb4", size = 559314, upload-time = "2026-05-02T18:12:59.997Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/75/a9/98d7649931ab4f63f124ba6cf55020a2c1a6a4d411504dae189b82be146f/bengal_chirp-0.8.1.tar.gz", hash = "sha256:bc3c4da6609cd81737409cd6fe2533762a698b361bc646429e0163feef5c4a51", size = 866757, upload-time = "2026-06-16T23:46:24.517Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/73/ae/8c6daf5e969c9ff36d7d4218a98e44fca56dd60b9c7e171de2e80dfebe67/bengal_chirp-0.6.0-py3-none-any.whl", hash = "sha256:3088c651d9e59ceb505e73b05b22bf8ca1b404d76dd7701cd08cb806aed7091b", size = 480323, upload-time = "2026-05-02T18:12:58.178Z" },
+    { url = "https://files.pythonhosted.org/packages/18/8f/83c9a9109ded1b5d80140924d4ac7064346105e0d36eb99afa7136e389f5/bengal_chirp-0.8.1-py3-none-any.whl", hash = "sha256:15588a758fa816d04b2bb7fef2dda0200482c24683fa182c5d989f536650abe9", size = 717724, upload-time = "2026-06-16T23:46:22.897Z" },
 ]
 
 [[package]]
 name = "bengal-pounce"
-version = "0.7.1"
+version = "0.8.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "h11" },
     { name = "milo-cli" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1e/89/987fe874d2aa008b8a777676f34a524aea04d8f5c0066854aae6fc940a9d/bengal_pounce-0.7.1.tar.gz", hash = "sha256:326452f317351488319292ee5b1032e98054993a146f63ba3550275eab853331", size = 201077, upload-time = "2026-05-23T16:49:26.62Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/01/77/a61cd170de9e6ab0681520d4de36bc43658518857fb5326609e5e0bf558f/bengal_pounce-0.8.1.tar.gz", hash = "sha256:ada2cf7603e7fc1dcd4993856bbb856cc7487ad8dcec43d199bb561f2b80a8cd", size = 238476, upload-time = "2026-06-15T21:09:01.709Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6e/0b/868403f83e95b3048a244014eff1f932a522372eccb699fca5f5040c01fd/bengal_pounce-0.7.1-py3-none-any.whl", hash = "sha256:63a04aab2596be51dbccba4146a8ab44223f9451f59fe16206ce05ffbed8b2ca", size = 232327, upload-time = "2026-05-23T16:49:24.372Z" },
+    { url = "https://files.pythonhosted.org/packages/6e/81/61324b3d1864c6fc426ff1b3db533a93b8d80275f14869aabf55285e9169/bengal_pounce-0.8.1-py3-none-any.whl", hash = "sha256:5eb229297cbeab24878c02ccddf46bf752925af19431fdbfbe96b9557496fbe8", size = 272453, upload-time = "2026-06-15T21:09:00.059Z" },
 ]
 
 [[package]]
@@ -125,14 +125,14 @@ docs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "bengal-chirp", marker = "extra == 'showcase'", specifier = ">=0.6.0" },
+    { name = "bengal-chirp", marker = "extra == 'showcase'", specifier = ">=0.8.0" },
     { name = "kida-templates", specifier = ">=0.9.0" },
 ]
 provides-extras = ["showcase"]
 
 [package.metadata.requires-dev]
 browser = [
-    { name = "bengal-chirp", specifier = ">=0.6.0" },
+    { name = "bengal-chirp", specifier = ">=0.8.0" },
     { name = "bengal-pounce", specifier = ">=0.2.1" },
     { name = "playwright", specifier = ">=1.50.0" },
     { name = "pytest-asyncio", specifier = ">=0.25.0" },

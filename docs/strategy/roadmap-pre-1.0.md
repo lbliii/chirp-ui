@@ -184,6 +184,9 @@ Tasks:
   stress cases in one place.
 - Add a screenshot checklist for desktop, tablet, and phone widths.
 - Use the page as the first stop before promoting experimental components.
+- Use `docs/plans/PLAN-showcase-v2-saga.md` for the live Railway component
+  showcase: page registry, command-palette search, modular app layout, and
+  scoped shell CSS (GitHub #273).
 
 Acceptance:
 
@@ -429,15 +432,17 @@ parallel backlog.
 
 | Plan | Roadmap workstream |
 |---|---|
-| `PLAN-visual-taste-floor-saga.md` | Screen Catalog And Taste Floor |
-| `PLAN-premium-polish-saga.md` | Screen Catalog And Taste Floor |
-| `PLAN-pre-1.0-productization-saga.md` | Productization Coordination |
+| `PLAN-application-chrome-system.md` | Application Chrome System |
 | `PLAN-bengal-chirpui-library-contract.md` | Bengal And chirp-theme Integration |
 | `PLAN-chirp-theme-content-parity.md` | Bengal And chirp-theme Integration |
-| `PLAN-content-type-refinement.md` | Bengal And chirp-theme Integration |
 | `PLAN-component-maturity-gap-sweep.md` | Bengal-Driven Component Maturation |
+| `PLAN-content-type-refinement.md` | Bengal And chirp-theme Integration |
 | `PLAN-css-scope-and-layer.md` | CSS Scope Hardening |
-| `PLAN-application-chrome-system.md` | Application Chrome System |
+| `PLAN-page-actions-primitive.md` | Application Chrome System |
+| `PLAN-pre-1.0-productization-saga.md` | Productization Coordination |
+| `PLAN-premium-polish-saga.md` | Screen Catalog And Taste Floor |
+| `PLAN-showcase-v2-saga.md` | Visible Design-System Showcase |
+| `PLAN-visual-taste-floor-saga.md` | Screen Catalog And Taste Floor |
 
 Archived planning inputs now live under `docs/plans/done/`. Notable archived
 inputs for the current productization push are `PLAN-skeleton-equivalent-roadmap.md`,

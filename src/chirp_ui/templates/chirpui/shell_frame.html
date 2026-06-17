@@ -54,10 +54,15 @@ hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-
 {% end %}
 
 {% def shell_runtime_script() %}
-<script>
+<script nonce="{{ csp_nonce() }}">
 (function () {
   if (window.__chirpuiShellRuntimeInitialized) return;
   window.__chirpuiShellRuntimeInitialized = true;
+
+  var pageNonce = document.currentScript && document.currentScript.nonce;
+  if (pageNonce && typeof htmx !== "undefined") {
+    htmx.config.inlineScriptNonce = pageNonce;
+  }
 
   var SCROLL_STATE = "__chirpuiShellScrollState";
   var historyRestorePending = false;
