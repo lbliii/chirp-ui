@@ -54,7 +54,9 @@ def test_app_shell_macro_shares_shell_runtime_markers() -> None:
 
 def test_inline_shell_scripts_carry_csp_nonce() -> None:
     """Inline chirp-ui scripts must be nonced when Chirp's CSP nonce middleware is active."""
-    templates_dir = Path(__file__).resolve().parents[1] / "src" / "chirp_ui" / "templates" / "chirpui"
+    templates_dir = (
+        Path(__file__).resolve().parents[1] / "src" / "chirp_ui" / "templates" / "chirpui"
+    )
     for name in ("app_layout.html", "app_shell_layout.html", "shell_frame.html"):
         text = (templates_dir / name).read_text(encoding="utf-8")
         assert '<script nonce="{{ csp_nonce() }}">' in text, name

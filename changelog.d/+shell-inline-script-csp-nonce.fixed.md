@@ -1,0 +1,1 @@
+Fixed chirp-ui shell layouts for Chirp 0.8+ CSP nonces: theme pre-paint, CSRF handler, and `shell_runtime_script()` now emit `nonce="{{ csp_nonce() }}"`, and HTMX inline swap scripts inherit the page nonce via `htmx.config.inlineScriptNonce`.
