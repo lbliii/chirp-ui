@@ -13298,6 +13298,59 @@
       "trim_emits": [],
       "variants": []
     },
+    "load-sentinel": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "load-sentinel",
+      "category": "feedback",
+      "composes": [],
+      "consumes": [],
+      "description": "Streaming and AI components\n    For LLM Playground, RAG demo, and SSE-driven UIs.\n    Works with htmx SSE and event delegation for copy buttons.\n\n    Usage:\n        {% from \"chirpui/streaming.html\" import streaming_block, copy_btn, prose %}\n\n        {% call streaming_block(streaming=true) %}\n            Content or thinking...\n        {% end %}\n\n        {% call copy_btn(text=\"Copy\", copy_text=answer_text) %}\n\n        <div class=\"chirpui-prose\">{{ content | markdown | safe(reason=\"markdown output\") }}</div>",
+      "elements": [
+        "label"
+      ],
+      "emits": [
+        "chirpui-load-sentinel",
+        "chirpui-load-sentinel__label"
+      ],
+      "extra_emits": [],
+      "lineno": 105,
+      "macro": "load_sentinel",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "busy"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "htmx"
+      ],
+      "role": "primitive",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "streaming.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "logo": {
       "appearances": [],
       "authoring": "available",
@@ -17403,6 +17456,11 @@
           "has_default": true,
           "is_required": false,
           "name": "is_active"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sliding_pill"
         }
       ],
       "provides": [],
@@ -18372,6 +18430,11 @@
           "has_default": true,
           "is_required": false,
           "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sliding_pill"
         }
       ],
       "provides": [],
@@ -18961,6 +19024,11 @@
           "has_default": true,
           "is_required": false,
           "name": "aria_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sliding_pill"
         }
       ],
       "provides": [
@@ -19010,7 +19078,7 @@
         "chirpui-sidebar-toggle__icon"
       ],
       "extra_emits": [],
-      "lineno": 101,
+      "lineno": 103,
       "macro": "sidebar_toggle",
       "maturity": "stable",
       "modifiers": [],
@@ -21351,7 +21419,7 @@
       "extra_emits": [
         "chirpui-tab--disabled"
       ],
-      "lineno": 21,
+      "lineno": 23,
       "macro": "tab",
       "maturity": "stable",
       "modifiers": [
@@ -21794,6 +21862,11 @@
           "has_default": true,
           "is_required": false,
           "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sliding_pill"
         }
       ],
       "provides": [],
@@ -24482,7 +24555,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 306,
+      "available": 307,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -24495,7 +24568,7 @@
       "control": 23,
       "data-display": 38,
       "effect": 46,
-      "feedback": 25,
+      "feedback": 26,
       "form": 21,
       "infrastructure": 2,
       "interactive": 9,
@@ -24511,22 +24584,22 @@
       "experimental": 105,
       "internal": 2,
       "legacy": 39,
-      "stable": 211
+      "stable": 212
     },
     "component_requirements": {
       "alpine": 30,
-      "htmx": 26
+      "htmx": 27
     },
     "component_roles": {
       "component": 192,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 22,
-      "primitive": 109
+      "primitive": 110
     },
     "components_with_consumes": 20,
-    "components_with_description": 254,
-    "components_with_params": 254,
+    "components_with_description": 255,
+    "components_with_params": 255,
     "components_with_provides": 12,
     "manifest_quality": {
       "missing_description": 0,
@@ -24534,7 +24607,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 252
+      "public_templated_components": 253
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -24557,7 +24630,7 @@
       "spacing": 30,
       "typography": 45
     },
-    "total_components": 357,
+    "total_components": 358,
     "total_theme_packs": 3,
     "total_tokens": 435
   },
