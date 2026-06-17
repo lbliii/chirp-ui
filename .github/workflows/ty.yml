@@ -13,11 +13,13 @@ concurrency:
 jobs:
   type-check:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
+        timeout-minutes: 3
         with:
           python-version: "3.14t"
 

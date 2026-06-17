@@ -4,9 +4,14 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: changelog-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   changelog-fragment:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-changelog') }}
     steps:
       - uses: actions/checkout@v6

@@ -14,11 +14,19 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # Backstop: the unit gate normally finishes in ~3 min. A generous ceiling
+    # bounds any hung step (e.g. a stalled `setup-uv` interpreter download) at
+    # 20 min instead of GitHub's 6-hour default.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
+        # Tight ceiling on the exact step that stalled 13.5 min in run
+        # 27700383948 — fail fast with a clearly-named step instead of
+        # leaning on the coarse job-level timeout.
+        timeout-minutes: 3
         with:
           python-version: "3.14t"
 
@@ -50,11 +58,16 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
+        # Tight ceiling on the exact step that stalled 13.5 min in run
+        # 27700383948 — fail fast with a clearly-named step instead of
+        # leaning on the coarse job-level timeout.
+        timeout-minutes: 3
         with:
           python-version: "3.14t"
 
@@ -83,6 +96,7 @@ jobs:
   # style/complexity debt stays advisory until it is paid down.
   lint-js:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
 
