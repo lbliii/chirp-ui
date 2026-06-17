@@ -217,14 +217,15 @@ def test_library_default_accent_on_accent_meets_aa() -> None:
     root_body = blocks.get(":root", "")
     accent = _declares(root_body, "--chirpui-accent")
     on_accent = _declares(root_body, "--chirpui-on-accent")
-    assert accent and on_accent, ":root must declare accent/on-accent tokens"
+    assert accent, ":root must declare --chirpui-accent"
+    assert on_accent, ":root must declare --chirpui-on-accent"
 
     light_accent = re.search(r"light-dark\(\s*(#[0-9a-fA-F]{3,6})", accent)
     light_on = re.search(r"light-dark\(\s*(#[0-9a-fA-F]{3,6})", on_accent)
     dark_on = re.search(r"light-dark\([^,]+,\s*(#[0-9a-fA-F]{3,6})", on_accent)
-    assert light_accent and light_on and dark_on, (
-        "library accent/on-accent must use light-dark() hex pairings"
-    )
+    assert light_accent, "library accent must use a light-dark() hex pairing"
+    assert light_on, "library on-accent must use a light-dark() hex pairing"
+    assert dark_on, "library on-accent must declare a dark-side hex fallback"
 
     light_ratio = _contrast_ratio(light_on.group(1), light_accent.group(1))
     assert light_ratio >= WCAG_AA_NORMAL, (
