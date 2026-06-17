@@ -12,8 +12,10 @@
         <div id="tab-content"> ... tab content loaded via htmx ... </div>
 -#}
 
-{% def tabs(active=none, cls="") %}
-<nav class="chirpui-tabs{{ " " ~ cls if cls else "" }}" role="tablist">
+{% def tabs(active=none, cls="", sliding_pill=false) %}
+<nav class="chirpui-tabs{% if sliding_pill %} chirpui-tabs--sliding-pill{% end %}{{ " " ~ cls if cls else "" }}"
+     role="tablist"{% if sliding_pill %} data-chirpui-sliding-pill="horizontal"{% endif %}>
+    {% if sliding_pill %}<span class="chirpui-nav-pill" aria-hidden="true"></span>{% endif %}
     {% slot %}
 </nav>
 {% end %}

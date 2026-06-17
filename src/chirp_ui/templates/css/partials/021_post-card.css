@@ -50,7 +50,7 @@ a.chirpui-post-card__name:hover {
 .chirpui-post-card__time {
     display: block;
     font-size: var(--chirpui-font-xs);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }

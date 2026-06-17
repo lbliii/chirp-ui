@@ -55,7 +55,7 @@
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-semibold);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     flex-shrink: 0;
     border: 2px solid var(--chirpui-border);

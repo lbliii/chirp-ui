@@ -30,6 +30,8 @@ from chirp_ui.grid_state import (
     sort_columns,
     sort_query,
 )
+from chirp_ui.nav_pill import nav_pill_inline_style, segmented_pill_inline_style
+from chirp_ui.route_tabs import tab_is_active
 from chirp_ui.icons import icon as icon_filter
 from chirp_ui.validation import ChirpUIValidationWarning, _warn, set_strict
 
@@ -318,6 +320,9 @@ def env() -> Environment:
     e.add_global("selection_state", selection_state)
     e.add_global("column_aria_sort", column_aria_sort)
     e.add_global("sort_query", sort_query)
+    e.add_global("tab_is_active", tab_is_active)
+    e.add_global("nav_pill_inline_style", nav_pill_inline_style)
+    e.add_global("segmented_pill_inline_style", segmented_pill_inline_style)
     e.add_global(
         "csrf_field",
         lambda: Markup('<input type="hidden" name="_csrf_token" value="test-csrf">'),

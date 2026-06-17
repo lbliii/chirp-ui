@@ -12,7 +12,7 @@
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
     line-height: var(--chirpui-line-height-tight);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     transition: background var(--chirpui-transition), color var(--chirpui-transition);
 }
 

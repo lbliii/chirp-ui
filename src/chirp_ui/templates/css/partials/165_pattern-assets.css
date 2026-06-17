@@ -142,7 +142,7 @@
 
     :scope .chirpui-facet-chip__count {
         color: var(--chirpui-text-muted);
-        font-variant-numeric: tabular-nums;
+        font-variant-numeric: var(--chirpui-nums-tabular);
     }
 
     :scope:focus-visible {

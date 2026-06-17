@@ -95,7 +95,7 @@
     padding-inline: var(--chirpui-spacing-xs);
     border-radius: 999px;
     background: var(--chirpui-bg-subtle);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
 }
 }
 
@@ -120,7 +120,7 @@
 .chirpui-metric-strip__value {
     font-size: var(--chirpui-font-lg);
     font-weight: var(--chirpui-ui-font-weight-semibold);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
 }
 

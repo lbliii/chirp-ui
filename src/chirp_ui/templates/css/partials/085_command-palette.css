@@ -145,6 +145,6 @@
     border-radius: var(--chirpui-radius-xs, 3px);
     background: var(--chirpui-bg-subtle);
     border: 1px solid var(--chirpui-border);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
 }

@@ -24,7 +24,7 @@
 .chirpui-settings-row__status {
     min-width: 0;
     color: var(--chirpui-text-muted);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
 }
 
 .chirpui-settings-row__detail {

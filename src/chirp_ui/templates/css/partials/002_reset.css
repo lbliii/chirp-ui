@@ -136,6 +136,9 @@ body {
     --chirpui-ui-font-weight-semibold: 600;
     --chirpui-ui-font-weight-bold: 700;
 
+    /* Numeric typography — tabular figures for aligned / live-updating numbers */
+    --chirpui-nums-tabular: tabular-nums;
+
     /* Prose typography — document content (body, headings) */
     --chirpui-prose-xs: var(--chirpui-font-xs);
     --chirpui-prose-base: var(--chirpui-font-base);

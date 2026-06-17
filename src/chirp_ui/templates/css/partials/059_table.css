@@ -218,7 +218,7 @@
 
         .chirpui-table__td--right,
         .chirpui-table__th--right {
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
         }
 
         @media (max-width: 40rem) {

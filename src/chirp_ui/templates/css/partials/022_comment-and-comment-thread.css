@@ -38,7 +38,7 @@ a.chirpui-comment__author:hover {
 
 .chirpui-comment__time {
     font-size: var(--chirpui-font-xs);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
     white-space: nowrap;

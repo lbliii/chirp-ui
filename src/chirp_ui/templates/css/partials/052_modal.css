@@ -146,7 +146,7 @@
             color: var(--chirpui-text-muted);
             font-size: var(--chirpui-font-sm);
             line-height: var(--chirpui-line-height-normal);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             overflow-wrap: anywhere;
             &:empty {
                 display: none;

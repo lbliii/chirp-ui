@@ -5,9 +5,12 @@
     Tab item: {label, href, icon?, badge?, badge_label?, badge_expected?, badge_loading?, match?}
     match: "exact" | "prefix"
 -#}
-{% def render_route_tabs(tab_items, current_path, target="#page-root", is_active=none) %}
+{% def render_route_tabs(tab_items, current_path, target="#page-root", is_active=none, sliding_pill=true) %}
 {% set _is_active = is_active if is_active is not none else tab_is_active %}
-<nav role="navigation" aria-label="Subsection navigation" class="chirpui-route-tabs">
+<nav role="navigation" aria-label="Subsection navigation"
+     class="chirpui-route-tabs{% if sliding_pill %} chirpui-route-tabs--sliding-pill{% end %}"
+     {% if sliding_pill %}data-chirpui-sliding-pill="horizontal" style="{{ nav_pill_inline_style(tab_items, current_path, _is_active) }}"{% end %}>
+  {% if sliding_pill %}<span class="chirpui-nav-pill" aria-hidden="true"></span>{% endif %}
   {% for tab in tab_items %}
   {% set badge = tab.get("badge") %}
   {% set badge_label = tab.get("badge_label") %}
@@ -31,6 +34,6 @@
 </nav>
 {% end %}
 
-{% def route_tabs(tabs, current_path, target="#page-root", is_active=none) %}
-{{ render_route_tabs(tabs, current_path, target=target, is_active=is_active) }}
+{% def route_tabs(tabs, current_path, target="#page-root", is_active=none, sliding_pill=true) %}
+{{ render_route_tabs(tabs, current_path, target=target, is_active=is_active, sliding_pill=sliding_pill) }}
 {% end %}

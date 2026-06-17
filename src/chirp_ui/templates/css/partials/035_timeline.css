@@ -93,7 +93,7 @@
 .chirpui-timeline__date {
     font-size: var(--chirpui-font-xs);
     line-height: var(--chirpui-line-height-tight);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     color: var(--chirpui-text-muted);
 }
 
@@ -134,7 +134,7 @@
     font-size: var(--chirpui-font-xs);
     color: var(--chirpui-text-muted);
     margin-bottom: var(--chirpui-spacing-2xs);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
 }
 
 /* Timeline: semantic dot colors */

@@ -74,7 +74,7 @@
 
 .chirpui-dl__detail--number {
     text-align: right;
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
 }
 
 @container chirpui-layout (width < 28rem) {

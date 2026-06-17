@@ -660,7 +660,7 @@ input[type="date"].chirpui-field__input {
     min-block-size: 2.25rem;
     font-size: var(--chirpui-prose-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-muted);
     background: var(--chirpui-bg);
@@ -1094,7 +1094,7 @@ input[type="date"].chirpui-field__input {
     flex: 0 0 auto;
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }

@@ -945,12 +945,15 @@ def register_filters(app: TemplateFilterApp) -> None:
             sort_query,
         )
         from chirp_ui.route_tabs import tab_is_active
+        from chirp_ui.nav_pill import nav_pill_inline_style, segmented_pill_inline_style
 
         tg = cast(
             Callable[[str | None], Callable[[Callable[..., object]], Callable[..., object]]],
             app.template_global,
         )
         tg("tab_is_active")(tab_is_active)
+        tg("nav_pill_inline_style")(nav_pill_inline_style)
+        tg("segmented_pill_inline_style")(segmented_pill_inline_style)
         tg("build_hx_attrs")(build_hx_attrs)
         tg("check_required_id")(check_required_id)
         tg("chirpui_asset_path")(chirpui_asset_path)

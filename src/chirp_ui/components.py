@@ -4321,6 +4321,14 @@ _CSS_ONLY_DESCRIPTORS: dict[str, ComponentDescriptor] = {
         role="primitive",
         maturity="stable",
     ),
+    "load-sentinel": ComponentDescriptor(
+        block="load-sentinel",
+        elements=("label",),
+        category="feedback",
+        role="primitive",
+        maturity="stable",
+        template="streaming.html",
+    ),
     "suspense-group": ComponentDescriptor(
         block="suspense-group",
         category="feedback",

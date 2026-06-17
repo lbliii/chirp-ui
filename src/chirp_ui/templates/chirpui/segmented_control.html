@@ -17,10 +17,13 @@
         ], name="range", size="sm")
 -#}
 
-{% def segmented_control(items, name="segmented", size="", cls="") %}
+{% def segmented_control(items, name="segmented", size="", cls="", sliding_pill=false) %}
 {% set size = size | validate_size("segmented", "") %}
 {% set size_class = " chirpui-segmented--" ~ size if size else "" %}
-<div class="chirpui-segmented{{ size_class }}{{ " " ~ cls if cls else "" }}" role="radiogroup" aria-label="{{ name }}">
+<div class="chirpui-segmented{{ size_class }}{% if sliding_pill %} chirpui-segmented--sliding-pill{% end %}{{ " " ~ cls if cls else "" }}"
+     role="radiogroup" aria-label="{{ name }}"
+     {% if sliding_pill %}data-chirpui-sliding-pill="horizontal" style="{{ segmented_pill_inline_style(items) }}"{% endif %}>
+    {% if sliding_pill %}<span class="chirpui-nav-pill" aria-hidden="true"></span>{% endif %}
     {% for item in items %}
     <label class="chirpui-segmented__option{% if item.get("active") %} chirpui-segmented__option--active{% end %}">
         <input type="radio" name="{{ name }}" value="{{ item.value | default("") }}"

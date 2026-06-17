@@ -22,7 +22,7 @@
     color: inherit;
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     transition: background var(--chirpui-transition);
 }
@@ -61,5 +61,5 @@ button.chirpui-pagination__link {
     min-inline-size: var(--chirpui-control-block-size);
     min-block-size: var(--chirpui-control-block-size);
     color: var(--chirpui-text-muted);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
 }
