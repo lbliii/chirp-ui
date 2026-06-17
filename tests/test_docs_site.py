@@ -898,8 +898,8 @@ def test_dogfood_blog_post_dogfoods_lazy_features() -> None:
 def test_dogfood_families_are_wired_into_menu_config() -> None:
     """#145 — the families are reachable from navigation via the real menu.yaml.
 
-    The footer menu (rendered by the theme) names each family; the top nav also
-    auto-discovers the sections, but the explicit menu makes the wiring durable.
+    The footer menu (rendered by the theme) names each family; the top nav
+    groups them under the manual ``Layouts`` dropdown in ``menu.main``.
     """
     text = MENU_CONFIG.read_text(encoding="utf-8")
     for section in DOGFOOD_FAMILIES:
