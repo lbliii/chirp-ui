@@ -1,14 +1,121 @@
 # Menu Configuration
 # ===================
 #
-# The top navigation auto-discovers top-level content sections (ordered by
-# weight) when no `main` menu is defined, so blog/, tutorial/, resume/,
-# authors/, and changelog/ surface in the header automatically.
+# Top navigation is defined explicitly in `main` so dogfood layout families
+# group under a single "Layouts" dropdown instead of crowding the header.
+# Bengal skips auto-discovery when `main` is non-empty.
 #
-# The `footer` menu below gives those families an explicit, discoverable home
+# The `footer` menu gives those families an explicit, discoverable home
 # in the site footer (the theme renders `footer`, falling back to `main`).
 
 menu:
+  main:
+    - name: "Component showcase"
+      url: "https://chirp-ui-showcase-production.up.railway.app"
+      weight: 5
+      icon: layers
+
+    - name: "Documentation"
+      url: "/docs/"
+      weight: 10
+      identifier: documentation
+
+    - name: "Get Started"
+      url: "/docs/get-started/"
+      parent: documentation
+      weight: 10
+
+    - name: "Components"
+      url: "/docs/components/"
+      parent: documentation
+      weight: 20
+
+    - name: "Theming"
+      url: "/docs/theming/"
+      parent: documentation
+      weight: 30
+
+    - name: "Reference"
+      url: "/docs/reference/"
+      parent: documentation
+      weight: 35
+
+    - name: "App Shell"
+      url: "/docs/app-shell/"
+      parent: documentation
+      weight: 40
+
+    - name: "Patterns"
+      url: "/docs/patterns/"
+      parent: documentation
+      weight: 45
+
+    - name: "About"
+      url: "/docs/about/"
+      parent: documentation
+      weight: 50
+
+    - name: "Layouts"
+      # Placeholder URL — must be unique per dropdown parent (Bengal dedupes by url).
+      url: "#"
+      weight: 50
+      identifier: layouts
+
+    - name: "Tutorial"
+      url: "/tutorial/"
+      parent: layouts
+      weight: 10
+
+    - name: "Learning tracks"
+      url: "/tracks/"
+      parent: layouts
+      weight: 20
+
+    - name: "Blog"
+      url: "/blog/"
+      parent: layouts
+      weight: 30
+
+    - name: "Resume"
+      url: "/resume/"
+      parent: layouts
+      weight: 40
+
+    - name: "Notebooks"
+      url: "/notebook/"
+      parent: layouts
+      weight: 45
+
+    - name: "Authors"
+      url: "/authors/"
+      parent: layouts
+      weight: 50
+
+    - name: "Changelog"
+      url: "/changelog/"
+      parent: layouts
+      weight: 60
+
+    - name: "Dev"
+      # Distinct from Layouts' "#" so Bengal does not drop this parent as a duplicate.
+      url: "#dev"
+      weight: 90
+      identifier: dev
+
+    - name: "GitHub"
+      url: "https://github.com/lbliii/chirp-ui"
+      parent: dev
+      weight: 1
+
+    - name: "chirp-ui API Reference"
+      url: "/api/"
+      parent: dev
+      weight: 2
+
+    - name: "Releases"
+      url: "/releases/"
+      weight: 95
+
   footer:
     - name: "Components"
       url: "/docs/components/"
@@ -37,12 +144,3 @@ menu:
     - name: "Releases"
       url: "/releases/"
       weight: 60
-
-  extra:
-    # Points at the live Railway-hosted showcase app (feat(showcase) #245),
-    # not the internal /showcase/ route. The /showcase/ section is hidden from
-    # the auto-nav (menu: false in its _index.md) so this entry renders instead.
-    - name: "Component showcase"
-      url: "https://chirp-ui-showcase-production.up.railway.app"
-      weight: 5
-      icon: layers
