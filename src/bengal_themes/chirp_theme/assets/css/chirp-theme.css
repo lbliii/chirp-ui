@@ -576,12 +576,25 @@
     display: none;
     position: absolute;
     inset-block-start: calc(100% + 0.75rem);
-    inset-inline-start: 50%;
+    /*
+     * Anchor the panel to the trigger's START edge and let it open toward the
+     * inline-end. The previous centre-anchor (`inset-inline-start: 50%` +
+     * `translate: -50% 0`) centred this 42rem (672px) mega-panel on its
+     * trigger — fine for a centred bar, but the nav cluster sits at the LEFT
+     * of the bar, so a panel centred on "Documentation"/"Dev" ran off the left
+     * viewport edge (left: -154px) and clipped its first column. Start-aligning
+     * keeps it on-screen for any left-clustered trigger and is the conventional
+     * dropdown behaviour. NOTE: a trigger past viewport-centre would now risk
+     * the inline-END edge; this nav never places one there. A fully
+     * edge-agnostic flip needs CSS anchor positioning (`position-try`) or JS —
+     * intentionally deferred until browser support is broad and a right-side
+     * trigger actually exists.
+     */
+    inset-inline-start: 0;
     z-index: var(--chirpui-z-dropdown);
     inline-size: min(42rem, calc(100vw - 2rem));
     max-inline-size: calc(100vw - 2rem);
     padding: 0;
-    translate: -50% 0;
     overflow: visible;
     border: 1px solid color-mix(in srgb, var(--chirpui-accent) 24%, var(--chirpui-border));
     border-radius: calc(var(--radius-xl) + 0.2rem);
@@ -2116,6 +2129,97 @@
     block-size: 0.68rem;
   }
 
+  /*
+   * Folder sections deeper than depth-1 (depth 2, 3, 4 …). These only surface
+   * in the API reference, where packages nest several levels (e.g. cache >
+   * backends, data > drivers > _pelt). The depth-1 rules above are pinned to
+   * the literal `--depth-1` class (a package test asserts that selector), so
+   * rather than enumerate every depth we generalise the SAME treatment to
+   * every folder via `--has-toggle` — the class the template stamps on every
+   * disclosure section at depth ≥ 1. Without this, deep section headers and
+   * leaves fell through to the generic 17px `.chirpui-sidebar__link` style,
+   * clashing with the 0.66rem mono-uppercase depth-1 headers above them
+   * ("child section nodes, the font is wrong"). The compounding
+   * margin-inline-start on each nested `__section-links` supplies the
+   * indentation, so one depth-agnostic block reads as one consistent tree.
+   * (For depth-1 these rules duplicate the values above harmlessly.)
+   */
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header {
+    margin-bottom: 0.1rem;
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.36rem;
+    min-block-size: 1.65rem;
+    padding: 0.14rem 0.32rem;
+    border-color: transparent;
+    border-radius: var(--radius-sm);
+    color: var(--chirpui-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link:hover,
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link:focus-visible,
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link--active {
+    border-color: transparent;
+    background: color-mix(in srgb, var(--chirpui-accent) 7%, transparent);
+    color: var(--chirpui-accent);
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-copy {
+    gap: 0.35rem;
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links {
+    display: grid;
+    gap: 0.18rem;
+    margin-inline-start: 0.5rem;
+    padding-block: 0.16rem 0.22rem;
+    padding-inline-start: 0.55rem;
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__leaf-link {
+    grid-template-columns: 1rem minmax(0, 1fr);
+    gap: 0.36rem;
+    min-block-size: 1.85rem;
+    padding: 0.18rem 0.36rem;
+    border-color: transparent;
+    border-radius: var(--radius-sm);
+    color: var(--chirpui-text-muted);
+    font-size: 0.84rem;
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__leaf-link:hover,
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__leaf-link:focus-visible {
+    border-color: transparent;
+    background: color-mix(in srgb, var(--chirpui-accent) 6%, transparent);
+    color: var(--chirpui-text);
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__leaf-link[aria-current="page"],
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__leaf-link.chirpui-sidebar__link--active {
+    border-color: color-mix(in srgb, var(--chirpui-accent) 24%, transparent);
+    background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+    color: var(--chirpui-text);
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__leaf-link .chirp-theme-docs-nav__type-icon {
+    inline-size: 1rem;
+    block-size: 1rem;
+    border-radius: 0.32rem;
+    background: transparent;
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__leaf-link .chirp-theme-docs-nav__type-icon svg {
+    inline-size: 0.68rem;
+    block-size: 0.68rem;
+  }
+
   .chirp-theme-docs-nav__link {
     display: grid;
     grid-template-columns: 1.75rem minmax(0, 1fr) auto;
@@ -2342,6 +2446,21 @@
     font-size: clamp(1.9rem, 2.4vw, 2.75rem);
     letter-spacing: 0;
     margin: 0;
+  }
+
+  /*
+   * API / reference hero titles are fully-qualified dotted names
+   * (cache.backends.redis), not short doc headings. The 14ch measure above is
+   * right for "Reference" / "Get Started" but forced these long names to wrap,
+   * and because a dotted identifier carries no soft-wrap opportunities it then
+   * broke mid-token ("redis" → "re/dis"). Give API titles the full hero column
+   * so the qualified name sits on one line; overflow-wrap:anywhere is only a
+   * last-resort for an exceptionally long path rather than the default.
+   */
+  .chirp-theme-docs-layout__hero.chirp-theme-reference-hero .chirpui-hero__title,
+  .chirp-theme-docs-layout__hero.chirp-theme-api-hero .chirpui-hero__title {
+    max-width: none;
+    overflow-wrap: anywhere;
   }
 
   .chirp-theme-docs-layout__hero .chirpui-hero__subtitle {

@@ -338,14 +338,23 @@ symbols imported inside another block.
     <link rel="preconnect" href="https://d3js.org" crossorigin>
     {% end %}
 
-    {# Display webfont — Bengal generates assets/fonts.css from fonts.yaml
-       (fonts.display: "Outfit:400,600,700"). Preload the above-the-fold weights
-       (400 body/headings, 600 section labels) and link the generated stylesheet so
-       var(--font-display) resolves to Outfit. fonts.css keeps font-display:swap. #}
+    {# Display webfont — Bengal generates assets/fonts.css from the site's [fonts]
+       config (e.g. fonts.display: "Outfit:400,600,700") and we link it here so
+       var(--font-display) resolves to Outfit. fonts.css keeps font-display:swap,
+       which already prevents invisible text during the woff2 fetch.
+
+       We deliberately do NOT emit <link rel="preload" as="font"> for individual
+       weights. The theme can't know which weights a consuming site configured
+       (the Chirp docs site ships Outfit 700 only) and — critically — Bengal's
+       build rewrites the @font-face URLs inside fonts.css to content-fingerprinted
+       filenames (outfit-700.<hash>.woff2) via _rewrite_fonts_css_urls, while
+       asset_url('fonts/outfit-400.woff2') yields an UN-fingerprinted path. So a
+       hardcoded preload both 404s (absent weight + wrong filename) and, even when
+       a file exists, fails to dedupe with the @font-face fetch (double download).
+       Correct above-the-fold preloading belongs in Bengal's font helper, which
+       alone knows the emitted weights and fingerprinted filenames. #}
     {% let _fonts_display = config?.fonts?.display ?? none %}
     {% if _fonts_display %}
-    <link rel="preload" href="{{ asset_url('fonts/outfit-400.woff2') }}" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="{{ asset_url('fonts/outfit-600.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ asset_url('fonts.css') }}">
     {% end %}
 
@@ -387,6 +396,29 @@ symbols imported inside another block.
         };
         window.Bengal = window.Bengal || {};
         window.Bengal.debug = "{{ 'true' if _enhance_debug else 'false' }}" === "true";
+        {#
+          Tell the progressive-enhancement loader (bengal-enhance.js) the
+          fingerprinted URL of each enhancement module. Without this the loader
+          fell back to a hardcoded, baseurl-less, un-fingerprinted
+          '/assets/js/enhancements/<name>.js' — which 404s on any baseurl deploy
+          (e.g. /chirp/) and on any fingerprinting build. enhanceUrls maps each
+          registry name to the file that registers it (note track-nav lives in
+          tracks.js); asset_url() supplies the baseurl + content hash. (The
+          loader also derives a baseurl-correct directory from its own script URL
+          for any name not listed here, so enhanceBaseUrl is no longer needed.)
+          The modules are also bundled, so this is the safety net for
+          htmx-swapped / observer-timed lazy loads.
+        #}
+        window.Bengal.enhanceUrls = {
+            'docs-nav': '{{ asset_url("js/enhancements/docs-nav.js") }}',
+            'toc': '{{ asset_url("js/enhancements/toc.js") }}',
+            'track-nav': '{{ asset_url("js/enhancements/tracks.js") }}',
+            'tabs': '{{ asset_url("js/enhancements/tabs.js") }}',
+            'mobile-nav': '{{ asset_url("js/enhancements/mobile-nav.js") }}',
+            'lightbox': '{{ asset_url("js/enhancements/lightbox.js") }}',
+            'back-to-top': '{{ asset_url("js/enhancements/interactive.js") }}',
+            'reading-progress': '{{ asset_url("js/enhancements/interactive.js") }}'
+        };
     </script>
 
     {# Inline theme init #}
