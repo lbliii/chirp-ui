@@ -28,6 +28,7 @@ USAGE: set `template: tracks/list.html` on the tracks landing page.
 {% from "chirpui/hero.html" import page_hero %}
 {% from "chirpui/layout.html" import container, grid, stack %}
 {% from "partials/learning-pages.html" import rendered_body %}
+{% from "partials/catalog-shell.html" import catalog_shell %}
 
 {# =============================================================================
    TRACK CARD — one LMS card. `track_page` is the resolved pillar page (or none).
@@ -104,6 +105,7 @@ USAGE: set `template: tracks/list.html` on the tracks landing page.
 {% end %}
 {% end %}
 
+{% call catalog_shell(surface="tracks", current_path=_page_url) %}
 {% call container(cls="chirp-theme-tracks-index") %}
   {% call stack(gap="lg") %}
     {% call page_hero(title=page_title, subtitle=page_desc, variant='editorial', background='solid', cls='chirp-theme-tracks-index__hero') %}
@@ -130,5 +132,6 @@ USAGE: set `template: tracks/list.html` on the tracks landing page.
     </div>
     {% end %}
   {% end %}
+{% end %}
 {% end %}
 {% end %}

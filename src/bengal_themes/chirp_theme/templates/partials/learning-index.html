@@ -37,13 +37,14 @@
 {% from "partials/learning-pages.html" import content_cards, learning_feed, rendered_body %}
 {% from "partials/taxonomy-pages.html" import count_label %}
 {% from "partials/empty-state.html" import empty_state %}
+{% from "partials/catalog-shell.html" import catalog_shell %}
 
 {% def learning_index(title, subtitle=none, items=none, content=none, eyebrow=none, eyebrow_icon=none, item_singular="entry", item_plural=none, empty_title="Nothing here yet", empty_message="Entries appear here when published.", empty_icon="inbox", layout="grid", card_kind="page", surface=none, cls="") %}
 {% let safe_items = items ?? [] %}
 {% let _layout = "grid" if layout == "grid" else "feed" %}
 {% let _count = count_label(safe_items | length, item_singular, item_plural) %}
-{% let _surface_attr = (' data-chirp-theme-surface="' ~ surface ~ '"') if surface else '' %}
-<div class="chirp-theme-learning-shell"{{ _surface_attr | safe }}>
+{% call catalog_shell(surface=surface, current_path=_page_url) %}
+<div class="chirp-theme-learning-shell">
 {% call container(cls="chirp-theme-learning-page" ~ (" " ~ cls if cls else "")) %}
   {% call stack(gap="lg") %}
     {% call page_hero(title=title, subtitle=subtitle, variant="minimal", background="solid", cls="chirp-theme-learning-hero") %}
@@ -63,4 +64,5 @@
   {% end %}
 {% end %}
 </div>
+{% end %}
 {% end %}

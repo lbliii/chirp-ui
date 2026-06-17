@@ -24,5 +24,8 @@ Callers decide the fallback (e.g. a numeric index) and the icon size:
 {%- elif 'resume' in key -%}briefcase
 {%- elif 'author' in key -%}users
 {%- elif 'changelog' in key -%}git-commit
+{%- elif 'showcase' in key or 'layers' in key -%}layers
+{%- elif 'layout' in key -%}layout-template
+{%- elif 'dev' in key -%}terminal
 {%- else -%}{%- end -%}
 {% end %}

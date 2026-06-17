@@ -15,7 +15,7 @@ _path, kind, tags are always defined - no defensive checks needed.
 {# Template-wide variables using {% let %} for explicit scope #}
 {% let params = params ?? {} %}
 {% let _page_title = page?.title ?? none %}
-{% let _page_url = page?._path ?? page?.href ?? "/" %}
+{% let _page_url = page?._path ?? page?.href ?? section?._path ?? section?.href ?? "/" %}
 
 {# Navigation - cache function calls #}
 {% let _current_lang = current_lang() %}
@@ -424,7 +424,18 @@ symbols imported inside another block.
 {% let _page_is_draft = page?.is_draft ?? false %}
 {% let _page_hidden = page?.hidden ?? false %}
 {% let _page_is_featured = page?.is_featured ?? false %}
-{% let _page_is_catalog_shell = (_page_url is string) and (_page_url == '/docs/' or _page_url.startswith('/docs/') or _page_url == '/api/' or _page_url.startswith('/api/') or _page_url == '/releases/' or _page_url.startswith('/releases/')) %}
+{% let _page_is_catalog_shell = (_page_url is string) and (
+  _page_url == '/docs/' or _page_url.startswith('/docs/') or
+  _page_url == '/api/' or _page_url.startswith('/api/') or
+  _page_url == '/releases/' or _page_url.startswith('/releases/') or
+  _page_url == '/blog/' or _page_url.startswith('/blog/') or
+  _page_url == '/tutorial/' or _page_url.startswith('/tutorial/') or
+  _page_url == '/tracks/' or _page_url.startswith('/tracks/') or
+  _page_url == '/resume/' or _page_url.startswith('/resume/') or
+  _page_url == '/notebook/' or _page_url.startswith('/notebook/') or
+  _page_url == '/authors/' or _page_url.startswith('/authors/') or
+  _page_url == '/changelog/' or _page_url.startswith('/changelog/')
+) %}
 <body data-type="{{ _page_type }}" data-variant="{{ _page_variant }}" data-chirp-theme-spine="bespoke"
     class="chirp-theme-shell page-kind-{{ _page_kind }}{% if _page_is_catalog_shell %} chirp-theme-shell--rail-only{% end %}{% if _page_is_draft %} draft-page{% end %}{% if _page_hidden %} hidden-page{% end %}{% if _page_is_featured %} featured-content{% end %}">
 
@@ -462,12 +473,6 @@ symbols imported inside another block.
                     {% let item_path = item?._path ?? item_href %}
                     {% let item_active = _page_url is string and item_path is string and (_page_url == item_path or (item_path != '/' and item_path != '#' and _page_url.startswith(item_path))) %}
                     {{ navbar_link(item_href | absolute_url, item?.name ?? item?.title ?? 'Untitled', active=item_active, cls='chirp-theme-shell__nav-link') }}
-                    {% end %}
-                    {% end %}
-                    {% with site.params.repo_url as repo_url %}
-                    {% if repo_url and not (site._dev_menu_metadata?.github_bundled ?? false) %}
-                    <a class="chirpui-navbar__link chirp-theme-shell__nav-link" href="{{ repo_url }}" target="_blank" rel="noopener" aria-label="GitHub">{{
-                            icon('github-logo', size=16) }} <span>GitHub</span></a>
                     {% end %}
                     {% end %}
                     {% block nav_items %}{% end %}
@@ -544,12 +549,6 @@ symbols imported inside another block.
                     class="{{ ['active' if (_page_url is string and item_path is string and (_page_url == item_path or (item_path != '/' and item_path != '#' and _page_url.startswith(item_path))))] | classes }}">
                     <a href="{{ item_href | absolute_url }}">{{ item?.name ?? item?.title ?? 'Untitled' }}</a>
                 </li>{% end %}
-                {% end %}
-                {% with site.params.repo_url as repo_url %}
-                {% if repo_url and not (site._dev_menu_metadata?.github_bundled ?? false) %}
-                <li><a href="{{ repo_url }}" target="_blank" rel="noopener">{{ icon('github-logo', size=16) }}
-                        GitHub</a></li>
-                {% end %}
                 {% end %}
                 {% block mobile_nav_items %}{% end %}
             </ul>

@@ -914,7 +914,7 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
         "doc/home.html": 'data-chirp-theme-surface="doc-home"',
         "doc/list.html": 'data-chirp-theme-surface="doc-list"',
         "doc/single.html": 'data-chirp-theme-surface="doc"',
-        "blog/shell.html": 'data-chirp-theme-surface="blog"',
+        "blog/shell.html": "catalog_shell(surface='blog', current_path=_page_url)",
         "search.html": 'data-chirp-theme-surface="search"',
         "404.html": 'data-chirp-theme-surface="error"',
     }
@@ -944,15 +944,15 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "page_hero" in doc_list
     assert "chirpui/hero.html" in doc_single
     assert "page_hero" in doc_single
-    # blog_shell is intentionally excluded: the blog is an editorial single
-    # column, not a docs catalog. It dropped the chirp-theme-docs-layout grid
-    # and the partials/docs-nav.html left rail (the docs nav does not belong on
-    # /blog/). It still carries data-chirp-theme-surface="blog" (asserted above).
+    # blog_shell now uses the global catalog shell so layout pages share the
+    # same primary navigation rail as documentation and releases.
     for article_template in (doc_list, doc_single, page, section_index):
         assert "chirp-theme-docs-layout" in article_template
         assert "include 'partials/docs-nav.html'" in article_template
-    assert "chirp-theme-docs-layout" not in blog_shell
-    assert "include 'partials/docs-nav.html'" not in blog_shell
+    assert "partials/catalog-shell.html" in blog_shell
+    catalog_shell = (templates_root / "partials" / "catalog-shell.html").read_text(encoding="utf-8")
+    assert "chirp-theme-docs-layout" in catalog_shell
+    assert "include 'partials/docs-nav.html'" in catalog_shell
     assert "include 'partials/page-hero.html'" not in doc_list
     assert "include 'partials/page-hero.html'" not in doc_single
     assert 'from "partials/empty-state.html" import empty_state' not in not_found
@@ -995,6 +995,7 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "chirp-theme-doc-catalog-rail__brand-mark" in docs_nav
     assert ">ᗢ</span>" in docs_nav
     assert "def catalog_mark" in docs_nav
+    assert "_main_menu" in docs_nav or 'get_menu_lang("main"' in docs_nav
     # Section iconography is centralized in partials/nav-icons.html so the docs
     # catalog rail and the desktop navbar mega-dropdown stay visually consistent
     # (single source of truth). docs-nav.html consumes it via section_icon_name.

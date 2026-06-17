@@ -6,6 +6,7 @@
 {% from "chirpui/rendered_content.html" import rendered_content %}
 {% from "partials/taxonomy-pages.html" import count_label, term_resource_card %}
 {% from "partials/empty-state.html" import empty_state %}
+{% from "partials/catalog-shell.html" import catalog_shell %}
 
 {% block content %}
 {% let page_title = page?.title ?? "Authors" %}
@@ -29,7 +30,7 @@
 {% end %}
 {% let _count = count_label(author_items | length, "author") %}
 
-<div data-chirp-theme-surface="author">
+{% call catalog_shell(surface="author", current_path=_page_url) %}
 {% call container(cls="chirp-theme-taxonomy-page") %}
   {% call stack(gap="lg") %}
     {% call page_hero(title=page_title, subtitle=page_desc, variant="minimal", background="solid", cls="chirp-theme-learning-hero") %}
@@ -50,5 +51,5 @@
     {% end %}
   {% end %}
 {% end %}
-</div>
+{% end %}
 {% end %}
