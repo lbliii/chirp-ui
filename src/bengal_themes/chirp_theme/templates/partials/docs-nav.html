@@ -256,7 +256,8 @@ menu, or the scoped documentation tree on /docs/ and /api/ pages.
   {% end %}
 
   <div class="chirp-theme-doc-catalog__secondary" data-chirp-theme-doc-nav="sections">
-  {% call sidebar(cls='chirp-theme-docs-nav', current_path=current_path, aria_label='Section navigation') %}
+  {% let sidebar_label = 'Documentation sections' if use_doc_tree else 'Section navigation' %}
+  {% call sidebar(cls='chirp-theme-docs-nav', current_path=current_path, aria_label=sidebar_label) %}
     {% slot header %}
     {% if use_doc_tree and not is_autodoc %}
     {% include 'partials/version-selector.html' %}
