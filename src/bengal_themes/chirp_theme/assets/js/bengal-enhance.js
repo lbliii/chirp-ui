@@ -25,11 +25,27 @@
   const ENHANCED = new WeakSet();
   const PENDING_LOADS = new Map();
 
+  // Derive the enhancements directory from THIS script's own URL so the lazy
+  // loader respects the site baseurl (e.g. /chirp/) even when the template did
+  // not inject window.Bengal.enhanceBaseUrl. bengal-enhance.js sits beside the
+  // enhancements/ dir (…/assets/js/bengal-enhance[.hash].js →
+  // …/assets/js/enhancements). document.currentScript is valid during this
+  // IIFE's synchronous execution. The old root-absolute '/assets/js/enhancements'
+  // 404'd on every baseurl deploy. (Fingerprinted targets still need the
+  // template-injected enhanceUrls map below — this only fixes the prefix.)
+  function deriveEnhanceBaseUrl() {
+    try {
+      const self = document.currentScript && document.currentScript.src;
+      if (self) return self.replace(/\/[^/]*$/, '/enhancements');
+    } catch (e) { /* fall through */ }
+    return '/assets/js/enhancements';
+  }
+
   // Configuration with defaults
   const CONFIG = {
     debug: (window.Bengal && window.Bengal.debug) || false,
     watchDom: (window.Bengal && window.Bengal.watchDom !== false) || true,
-    baseUrl: (window.Bengal && window.Bengal.enhanceBaseUrl) || '/assets/js/enhancements',
+    baseUrl: (window.Bengal && window.Bengal.enhanceBaseUrl) || deriveEnhanceBaseUrl(),
     // Pre-resolved URLs for fingerprinted assets (injected by template)
     urls: (window.Bengal && window.Bengal.enhanceUrls) || {}
   };

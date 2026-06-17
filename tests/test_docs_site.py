@@ -546,45 +546,57 @@ def _built_html_pages() -> list[Path]:
 
 
 def test_base_template_links_fonts_css_when_display_font_configured() -> None:
-    """#135 — fonts.css must be linked, gated on a fonts-configured check, with
-    the above-the-fold Outfit weights preloaded as woff2 (font-display:swap is in
-    the generated stylesheet)."""
+    """#135 — fonts.css must be linked, gated on a fonts-configured check, so
+    var(--font-display) resolves to Outfit (font-display:swap lives in the
+    generated stylesheet and prevents invisible text during the fetch)."""
     template = THEME_BASE_TEMPLATE.read_text(encoding="utf-8")
 
     # The gate keys off the configured display font (fonts.yaml: fonts.display).
     assert "config?.fonts?.display" in template
     # Generated stylesheet is linked so var(--font-display) resolves to Outfit.
     assert "asset_url('fonts.css')" in template
-    # 400 (body/headings) and 600 (section labels) are above the fold — preload both.
-    assert 'rel="preload"' in template
-    assert 'as="font"' in template
-    assert 'type="font/woff2"' in template
-    assert "asset_url('fonts/outfit-400.woff2')" in template
-    assert "asset_url('fonts/outfit-600.woff2')" in template
-    # crossorigin is required for font preloads to be reused by the @font-face fetch.
-    fonts_block = template[template.index("config?.fonts?.display") :]
-    fonts_block = fonts_block[: fonts_block.index("{% end %}")]
-    for line in fonts_block.splitlines():
-        if 'rel="preload"' in line and 'as="font"' in line:
-            assert "crossorigin" in line, line
+
+
+def test_base_template_does_not_hardcode_per_weight_font_preloads() -> None:
+    """Regression guard — the theme must NOT emit `<link rel=preload as=font>`
+    for specific Outfit weights.
+
+    The old preloads 404'd on every page of the Chirp docs site: the theme
+    can't know which weights a consuming site configured (Chirp ships Outfit
+    700 only), and Bengal's build fingerprints the @font-face URLs inside
+    fonts.css (_rewrite_fonts_css_urls) while asset_url('fonts/outfit-400.woff2')
+    stays un-fingerprinted — so the preload both missed the file and failed to
+    dedupe with the real fetch. Correct preloading must come from Bengal's font
+    helper, which knows the emitted, fingerprinted filenames.
+    """
+    template = THEME_BASE_TEMPLATE.read_text(encoding="utf-8")
+    # Strip kida {# ... #} comments — the rationale comment intentionally names
+    # the anti-pattern, so assert against actual markup only.
+    markup = re.sub(r"\{#.*?#\}", "", template, flags=re.DOTALL)
+
+    assert "asset_url('fonts/outfit-400.woff2')" not in markup
+    assert "asset_url('fonts/outfit-600.woff2')" not in markup
+    # No hardcoded per-weight font preload remains.
+    assert 'as="font"' not in markup
+    assert not re.search(r"outfit-\d.*\.woff2", markup)
 
 
 def test_fonts_config_defines_a_display_font() -> None:
     """The fonts gate is only meaningful while a display font is configured."""
     text = FONTS_CONFIG.read_text(encoding="utf-8")
 
-    # fonts.display: "Outfit:400,600,700" — the weights the preloads/stylesheet serve.
+    # fonts.display: "Outfit:400,600,700" — the weights the stylesheet serves.
     assert "display:" in text
     assert "Outfit" in text
 
 
 def test_fonts_css_declares_font_faces_for_all_weights() -> None:
     """#135 — the generated stylesheet must define @font-face for 400/600/700 with
-    font-display:swap so the preloaded woff2 weights actually resolve to Outfit.
+    font-display:swap so the configured woff2 weights actually resolve to Outfit.
 
-    base.html links this file (gated on config.fonts.display) and preloads the
-    400/600 woff2; this guards the other half of the contract — that the linked
-    stylesheet wires those weights to the Outfit family with swap behavior.
+    base.html links this file (gated on config.fonts.display); this guards the
+    other half of the contract — that the linked stylesheet wires those weights
+    to the Outfit family with swap behavior so text stays visible during fetch.
     """
     css = FONTS_CSS.read_text(encoding="utf-8")
 
@@ -627,7 +639,13 @@ def test_base_template_reads_real_search_preload_config_path() -> None:
 
 
 def test_built_pages_link_fonts_css() -> None:
-    """#135 — every built page links fonts.css while a display font is configured."""
+    """#135 — every built page links fonts.css while a display font is configured.
+
+    (Per-weight woff2 preloads were removed — see
+    test_base_template_does_not_hardcode_per_weight_font_preloads — because they
+    404'd on fingerprinting / weight-mismatched consumer sites. fonts.css with
+    font-display:swap is the load path now.)
+    """
     pages = _built_html_pages()
     if not pages:
         pytest.skip("site/public not built; Gate rebuilds the site before verification")
@@ -635,9 +653,6 @@ def test_built_pages_link_fonts_css() -> None:
     for page in pages:
         html = page.read_text(encoding="utf-8")
         assert "fonts.css" in html, f"fonts.css not linked in {page}"
-        assert re.search(r'rel="preload"[^>]*as="font"[^>]*type="font/woff2"', html), (
-            f"no woff2 font preload in {page}"
-        )
 
 
 def test_built_pages_render_clean_search_preload_meta() -> None:
