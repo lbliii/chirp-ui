@@ -7,6 +7,7 @@
 {% from "partials/learning-pages.html" import rendered_body %}
 {% from "partials/taxonomy-pages.html" import count_label %}
 {% from "partials/empty-state.html" import empty_state %}
+{% from "partials/catalog-shell.html" import catalog_shell %}
 
 {% block content %}
 {% let title = page?.title ?? section?.title ?? "Changelog" %}
@@ -19,7 +20,7 @@
 {% let items = raw_items | sort(attribute="date", reverse=true) %}
 {% let _count = count_label(items | length, "update") %}
 
-<div data-chirp-theme-surface="changelog">
+{% call catalog_shell(surface="changelog", current_path=_page_url) %}
 {% call container(cls="chirp-theme-learning-page chirp-theme-changelog-page") %}
   {% call stack(gap="lg") %}
     {% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-learning-hero") %}
@@ -48,5 +49,5 @@
     {% end %}
   {% end %}
 {% end %}
-</div>
+{% end %}
 {% end %}

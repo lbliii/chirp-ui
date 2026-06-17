@@ -1,0 +1,18 @@
+{#
+Global catalog shell — left site rail + main content column.
+
+Mirrors the docs layout grid used on documentation pages so the primary
+navigation rail is available across layout, dev, and release surfaces.
+#}
+
+{% def catalog_shell(surface='', cls='', layout_cls='', current_path=none) %}
+{% let catalog_current_path = current_path ?? page?._path ?? page?.href ?? '/' %}
+<div class="chirp-theme-docs-layout{{ ' ' ~ layout_cls if layout_cls else '' }}{{ ' ' ~ cls if cls else '' }}"{% if surface %} data-chirp-theme-surface="{{ surface }}"{% end %}>
+<aside class="chirp-theme-docs-layout__sidebar" id="docs-sidebar">
+  {% include 'partials/docs-nav.html' %}
+</aside>
+<div class="chirp-theme-docs-layout__main">
+  {% slot %}
+</div>
+</div>
+{% end %}

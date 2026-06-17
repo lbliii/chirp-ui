@@ -8,6 +8,7 @@
 {% from "partials/learning-pages.html" import rendered_body %}
 {% from "partials/taxonomy-pages.html" import count_label %}
 {% from "partials/empty-state.html" import empty_state %}
+{% from "partials/catalog-shell.html" import catalog_shell %}
 
 {#- Derive the bare version string from a release title or explicit param.
     "chirp-ui 0.9.0" -> "0.9.0"; an explicit metadata.version always wins. -#}
@@ -38,7 +39,7 @@
 {% let items = [{"_sk": version_sort_key(item) | trim, "_item": item} for item in raw_items] | sort(attribute="_sk", reverse=true) %}
 {% let _count = count_label(items | length, "release") %}
 
-<div data-chirp-theme-surface="changelog">
+{% call catalog_shell(surface="release-list", current_path=_page_url) %}
 {% call container(cls="chirp-theme-learning-page chirp-theme-release-page") %}
   {% call stack(gap="lg") %}
     {% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-learning-hero") %}
@@ -81,5 +82,5 @@
     {% end %}
   {% end %}
 {% end %}
-</div>
+{% end %}
 {% end %}

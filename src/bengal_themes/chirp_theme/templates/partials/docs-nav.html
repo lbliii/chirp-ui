@@ -1,21 +1,62 @@
 {#
 Documentation navigation.
 
-The tree still comes from Bengal's NavTree context, but the emitted chrome uses
-Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
+The primary icon rail mirrors the top-level `main` menu (Home + top bar
+sections). The secondary panel shows the active section's children from that
+menu, or the scoped documentation tree on /docs/ and /api/ pages.
 #}
 
 {% from 'chirpui/sidebar.html' import sidebar %}
 {% from 'chirpui/workspace_primitives.html' import filter_rail %}
 {% from 'partials/nav-icons.html' import section_icon_name %}
 
-{% def catalog_mark(title, href, index) %}
-{% let _name = section_icon_name(title, href) | trim %}
+{% def catalog_mark(title, href, index, icon_name=none) %}
+{% let _name = (icon_name ?? (section_icon_name(title, href) | trim)) | trim %}
 {% if _name %}
 {{ icon(_name, size=18) }}
 {% else %}
 <span>{{ index }}</span>
 {% end %}
+{% end %}
+
+{% def menu_rail_href(item) %}
+{% let item_href = item?.href ?? item?.url ?? '#' %}
+{% let item_children = item?.children ?? [] %}
+{% if item_href == '#' and item_children | length > 0 %}
+{{ (item_children[0]?.href ?? item_children[0]?.url ?? item_href) | trim }}
+{% elif item_href == '#dev' %}
+{% let resolved = item_href %}
+{% for child in item_children %}
+{% let child_href = child?.href ?? child?.url ?? '#' %}
+{% if child_href != '#' and not (child_href.startswith('http://') or child_href.startswith('https://')) %}
+{% let resolved = child_href %}
+{% end %}
+{% end %}
+{% if resolved == '#dev' and item_children | length > 0 %}
+{{ (item_children[0]?.href ?? item_children[0]?.url ?? resolved) | trim }}
+{% else %}
+{{ resolved | trim }}
+{% end %}
+{% else %}
+{{ item_href | trim }}
+{% end %}
+{% end %}
+
+{% def menu_nav_leaf(child) %}
+{% let child_title = child?.name ?? child?.title ?? 'Untitled' %}
+{% let child_href = child?.href ?? child?.url ?? '#' %}
+{% let child_current = current_path == child_href %}
+{% let child_active = child_href != '#' and (child_current or (child_href != '/' and current_path.startswith(child_href))) %}
+{% let child_icon = child?.icon ?? (section_icon_name(child_title, child_href) | trim) %}
+<a class="chirpui-sidebar__link chirp-theme-docs-nav__link chirp-theme-docs-nav__leaf-link chirp-theme-docs-nav__menu-leaf{{ ' chirpui-sidebar__link--active' if child_active else '' }}"
+   href="{{ child_href | absolute_url }}"
+   title="{{ child_title }}"
+   {% if child_current %}aria-current="page"{% end %}{{ route_link_attrs(child_href | absolute_url) | html_attrs }}>
+  <span class="chirpui-sidebar__icon chirp-theme-docs-nav__type-icon" aria-hidden="true">
+  {% if child_icon %}{{ icon(child_icon, size=14) }}{% else %}{{ icon('article', size=14) }}{% end %}
+  </span>
+  <span class="chirpui-sidebar__label chirp-theme-docs-nav__label">{{ child_title }}</span>
+</a>
 {% end %}
 
 {% def nav_type_icon(kind, branch=false) %}
@@ -40,23 +81,6 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
 
 {% if has_children %}
   {% if depth > 0 %}
-  {#
-    Disclosure section — explicit header row, NOT native <details>.
-
-    The folder icon is a real <button> (`__toggle`); the navigable section
-    label is its SIBLING <a> (`__summary-link`) in the always-visible
-    `__section-header` row. NEITHER nests inside the other, so axe-core's
-    `nested-interactive` rule passes (a link inside a <summary>, which carries
-    an implicit button role, used to trip it). Clicking the folder toggles the
-    section open/closed via JS (aria-expanded + the children region's
-    visibility) with NO navigation; clicking the label navigates. The folder
-    glyph swaps closed→open off the button's aria-expanded state in CSS — no
-    caret, same look as before. The server seeds aria-expanded from
-    is_branch_active so the active trail starts expanded on a fresh load.
-
-    No-JS fallback: the children region renders visible by default (no
-    `hidden` in the markup), so content stays reachable without scripting.
-  #}
   {% let section_slug = (item_href if item_href else (item_title | lower)) | replace('/', '-') | replace(' ', '-') | replace('.', '-') | trim('-') %}
   {% let section_id = 'docs-nav-sect-' ~ section_slug %}
   <div class="chirpui-sidebar__section chirp-theme-docs-nav__section chirp-theme-docs-nav__section--has-toggle chirp-theme-docs-nav__section--depth-{{ depth }}{{ ' is-active' if is_branch_active else '' }}">
@@ -139,16 +163,22 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
 {% end %}
 {% end %}
 
-{% let is_autodoc = is_autodoc_page(page) if is_autodoc_page is defined else false %}
-{% let page_section = page?._section %}
+{% let nav_page = page ?? none %}
+{% let is_autodoc = is_autodoc_page(nav_page) if (is_autodoc_page is defined and nav_page) else false %}
+{% let page_section = nav_page?._section %}
 {% let root_section = page_section?.root ?? none %}
-{% let current_path = page?.href ?? page?._path ?? '' %}
-{% let catalog_items = get_nav_tree(page) ?? [] %}
+{% let current_path = catalog_current_path ?? nav_page?._path ?? nav_page?.href ?? '' %}
+{% let rail_items = get_menu_lang("main", _current_lang ?? current_lang()) ?? [] %}
+{% let use_doc_tree = nav_page and (current_path.startswith('/docs/') or current_path == '/docs/' or current_path.startswith('/api/') or current_path == '/api/') and root_section %}
+{% let in_layouts_section = current_path.startswith('/blog/') or current_path == '/blog/' or current_path.startswith('/tutorial/') or current_path == '/tutorial/' or current_path.startswith('/tracks/') or current_path == '/tracks/' or current_path.startswith('/resume/') or current_path == '/resume/' or current_path.startswith('/notebook/') or current_path == '/notebook/' or current_path.startswith('/authors/') or current_path == '/authors/' or current_path.startswith('/changelog/') or current_path == '/changelog/' %}
+{% let in_dev_section = current_path.startswith('/api/') or current_path == '/api/' %}
+{% let in_releases_section = current_path.startswith('/releases/') or current_path == '/releases/' %}
 
 <div class="chirp-theme-doc-catalog" data-chirp-theme-doc-nav="catalog" data-bengal="docs-nav">
-  {% if catalog_items | length > 0 %}
+  {% if rail_items | length > 0 %}
   <div class="chirp-theme-doc-catalog__primary">
-    {% call filter_rail(label='Documentation catalog', cls='chirp-theme-doc-catalog-rail') %}
+    {% let rail_label = 'Documentation catalog' if use_doc_tree else 'Site navigation' %}
+    {% call filter_rail(label=rail_label, cls='chirp-theme-doc-catalog-rail') %}
       <div class="chirp-theme-doc-catalog-rail__group chirp-theme-doc-catalog-rail__group--home">
         <a class="chirpui-filter-rail__item chirp-theme-doc-catalog-rail__item chirp-theme-doc-catalog-rail__home{{ ' is-active' if current_path == '/' else '' }}"
            href="{{ '/' | absolute_url }}"
@@ -165,19 +195,27 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
       </div>
 
       <div class="chirp-theme-doc-catalog-rail__group chirp-theme-doc-catalog-rail__group--sections">
-      {% for item in catalog_items %}
-      {% let item_title = item?.title ?? 'Untitled' %}
-      {% let item_href = item?.href ?? '#' %}
+      {% for item in rail_items %}
+      {% let item_title = item?.name ?? item?.title ?? 'Untitled' %}
+      {% let item_href = menu_rail_href(item) | trim %}
+      {% let item_icon = item?.icon ?? none %}
       {% let item_children = item?.children ?? [] %}
-      {% let is_active = (item?.is_current ?? false) or (item?.is_in_trail ?? false) or (item?.is_expanded ?? false) %}
+      {% set active_children = [] %}
+      {% for child in item_children %}
+      {% let child_href = child?.href ?? child?.url ?? '#' %}
+      {% if child_href != '#' and (current_path == child_href or (child_href != '/' and current_path.startswith(child_href))) %}
+      {% set _ = active_children.append(true) %}
+      {% end %}
+      {% end %}
+      {% let is_active = (current_path == item_href) or (item_href != '/' and item_href != '#' and item_href != '#dev' and current_path.startswith(item_href)) or (active_children | length > 0) or (item_title == 'Layouts' and in_layouts_section) or (item_title == 'Dev' and in_dev_section) or (item_title == 'Documentation' and (current_path.startswith('/docs/') or current_path == '/docs/')) or (item_title == 'Releases' and in_releases_section) %}
       <a class="chirpui-filter-rail__item chirp-theme-doc-catalog-rail__item{{ ' is-active' if is_active else '' }}"
          href="{{ item_href | absolute_url }}"
          aria-label="{{ item_title }}"
-         {% if item?.is_current ?? false %}aria-current="page"{% end %}
+         {% if current_path == item_href %}aria-current="page"{% end %}
          data-chirpui-role="nav"
          data-chirpui-pressure="compress"
          data-chirpui-rhythm="group"{{ route_link_attrs(item_href | absolute_url) | html_attrs }}>
-        <span class="chirpui-filter-rail__mark chirp-theme-doc-catalog-rail__mark" aria-hidden="true">{{ catalog_mark(item_title, item_href, loop.index) }}</span>
+        <span class="chirpui-filter-rail__mark chirp-theme-doc-catalog-rail__mark" aria-hidden="true">{{ catalog_mark(item_title, item_href, loop.index, icon_name=item_icon) }}</span>
         <span class="chirpui-filter-rail__body">
           <strong class="chirpui-filter-rail__label chirp-theme-doc-catalog-rail__label">{{ item_title }}</strong>
         </span>
@@ -218,21 +256,42 @@ Chirp UI sidebar primitives instead of a bespoke docs-nav class system.
   {% end %}
 
   <div class="chirp-theme-doc-catalog__secondary" data-chirp-theme-doc-nav="sections">
-  {% call sidebar(cls='chirp-theme-docs-nav', current_path=current_path, aria_label='Documentation sections') %}
+  {% let sidebar_label = 'Documentation sections' if use_doc_tree else 'Section navigation' %}
+  {% call sidebar(cls='chirp-theme-docs-nav', current_path=current_path, aria_label=sidebar_label) %}
     {% slot header %}
-    {% unless is_autodoc %}
+    {% if use_doc_tree and not is_autodoc %}
     {% include 'partials/version-selector.html' %}
     {% end %}
     {% end %}
 
-    {% if root_section %}
-    {% let nav_context = get_nav_context(page, root_section=root_section) %}
+    {% if use_doc_tree %}
+    {% let nav_context = get_nav_context(nav_page, root_section=root_section) %}
     {% with nav_context?.root as root_item %}
     {{ nav_node(root_item, 0) }}
     {% end %}
     {% else %}
-    {% for item in catalog_items %}
-    {{ nav_node(item, 0) }}
+    {% for item in rail_items %}
+    {% let item_href = item?.href ?? item?.url ?? '#' %}
+    {% let item_children = item?.children ?? [] %}
+    {% set active_children = [] %}
+    {% for child in item_children %}
+    {% let child_href = child?.href ?? child?.url ?? '#' %}
+    {% if child_href != '#' and (current_path == child_href or (child_href != '/' and current_path.startswith(child_href))) %}
+    {% set _ = active_children.append(true) %}
+    {% end %}
+    {% end %}
+    {% let item_title = item?.name ?? item?.title ?? 'Untitled' %}
+    {% let is_active = (current_path == item_href) or (item_href != '/' and item_href != '#' and item_href != '#dev' and current_path.startswith(item_href)) or (active_children | length > 0) or (item_title == 'Layouts' and in_layouts_section) or (item_title == 'Dev' and in_dev_section and not use_doc_tree) or (item_title == 'Documentation' and (current_path.startswith('/docs/') or current_path == '/docs/')) or (item_title == 'Releases' and in_releases_section) %}
+    {% if is_active %}
+    {% let section_children = item?.children ?? [] %}
+    {% if section_children | length > 0 %}
+    <div class="chirpui-sidebar__section-links chirp-theme-docs-nav__section-links chirp-theme-docs-nav__menu-section">
+      {% for child in section_children %}
+      {{ menu_nav_leaf(child) }}
+      {% end %}
+    </div>
+    {% end %}
+    {% end %}
     {% end %}
     {% end %}
   {% end %}

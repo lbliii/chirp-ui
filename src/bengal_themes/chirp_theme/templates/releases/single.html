@@ -8,6 +8,7 @@
 {% from "chirpui/rendered_content.html" import rendered_content %}
 {% from "chirpui/surface.html" import surface %}
 {% from "partials/navigation-components.html" import breadcrumbs, page_navigation %}
+{% from "partials/catalog-shell.html" import catalog_shell %}
 
 {% block content %}
 {#- "chirp-ui 0.9.0" -> "0.9.0"; explicit metadata.version always wins. -#}
@@ -19,6 +20,7 @@
 {% let release_github = params?.github_release ?? params?.github ?? "https://github.com/lbliii/chirp-ui/releases/tag/v" ~ version %}
 {% let release_pypi = params?.pypi ?? params?.download_url ?? "https://pypi.org/project/chirp-ui/" ~ version ~ "/" %}
 
+{% call catalog_shell(surface="release", current_path=_page_url) %}
 {% call container(cls="chirp-theme-learning-page chirp-theme-release-single") %}
   {% call stack(gap="lg") %}
     {% call page_hero(title="chirp-ui " ~ version, subtitle=(params?.summary ?? params?.highlight ?? none), variant="minimal", background="solid", cls="chirp-theme-release-hero") %}
@@ -51,5 +53,6 @@
 
     {{ page_navigation(page) }}
   {% end %}
+{% end %}
 {% end %}
 {% end %}

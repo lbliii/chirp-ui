@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
 {% from 'chirpui/layout.html' import container %}
+{% from 'partials/catalog-shell.html' import catalog_shell %}
 
 {% block content %}
-<div class="chirp-theme-blog-shell" data-chirp-theme-surface="blog">
+{% call catalog_shell(surface='blog', current_path=_page_url) %}
+<div class="chirp-theme-blog-shell">
 {% call container(max_width='84rem', cls='chirp-theme-blog') %}
 <div class="chirp-theme-blog__spine">
 {% block blog_hero %}{% end %}
@@ -14,6 +16,7 @@
 </div>
 {% end %}
 </div>
+{% end %}
 {% end %}
 
 {% block site_footer %}{% end %}

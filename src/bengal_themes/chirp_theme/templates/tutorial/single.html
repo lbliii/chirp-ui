@@ -3,6 +3,7 @@
 {% from "chirpui/hero.html" import page_hero %}
 {% from "chirpui/layout.html" import container, stack %}
 {% from "partials/learning-pages.html" import content_cards, progress_for, rendered_body %}
+{% from "partials/catalog-shell.html" import catalog_shell %}
 
 {% block content %}
 {% let title = page?.title ?? "Tutorial" %}
@@ -10,7 +11,7 @@
 {% let steps = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
 {% let current_step = params?.current_step ?? 1 %}
 
-<div data-chirp-theme-surface="tutorial">
+{% call catalog_shell(surface="tutorial", current_path=_page_url) %}
 {% call container(cls="chirp-theme-learning-page chirp-theme-tutorial-page") %}
   {% call stack(gap="lg") %}
     {% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-learning-hero") %}
@@ -21,5 +22,5 @@
     {{ content_cards(steps, "No tutorial steps have been added yet.", "step") }}
   {% end %}
 {% end %}
-</div>
+{% end %}
 {% end %}

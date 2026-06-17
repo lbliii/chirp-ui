@@ -9,6 +9,7 @@
 {% from "chirpui/rendered_content.html" import rendered_content %}
 {% from "chirpui/surface.html" import surface %}
 {% from "partials/navigation-components.html" import breadcrumbs, page_navigation %}
+{% from "partials/catalog-shell.html" import catalog_shell %}
 
 {#- One change-category section (Added / Changed / Fixed / ...). Rendered as a
     labelled surface block with a bulleted list. Skipped when the list is empty. -#}
@@ -47,7 +48,7 @@
 {% let changes_security = params?.security ?? [] %}
 {% let has_sections = (changes_added | length) + (changes_changed | length) + (changes_fixed | length) + (changes_deprecated | length) + (changes_removed | length) + (changes_security | length) > 0 %}
 
-<div data-chirp-theme-surface="changelog">
+{% call catalog_shell(surface="changelog", current_path=_page_url) %}
 {% call container(cls="chirp-theme-learning-page chirp-theme-changelog-single") %}
   {% call stack(gap="lg") %}
     {% call page_hero(title=version, subtitle=(release_name if release_name else none), variant="minimal", background="solid", cls="chirp-theme-changelog-hero") %}
@@ -102,5 +103,5 @@
     {{ page_navigation(page) }}
   {% end %}
 {% end %}
-</div>
+{% end %}
 {% end %}
