@@ -10,7 +10,7 @@
 .chirpui-animated-counter__value {
     font-size: var(--chirpui-prose-2xl);
     font-weight: var(--chirpui-ui-font-weight-bold);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     counter-reset: chirpui-num var(--chirpui-num);
     animation: chirpui-count-up 1.8s var(--chirpui-ease-decel) forwards;

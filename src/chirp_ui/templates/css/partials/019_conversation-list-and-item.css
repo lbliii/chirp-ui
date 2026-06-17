@@ -57,7 +57,7 @@
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-xs);
     font-weight: var(--chirpui-ui-font-weight-normal);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
     white-space: nowrap;
@@ -90,7 +90,7 @@
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-xs);
     font-weight: var(--chirpui-ui-font-weight-semibold);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     text-align: center;
     background: var(--chirpui-accent);

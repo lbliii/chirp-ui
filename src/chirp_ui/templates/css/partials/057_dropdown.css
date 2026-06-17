@@ -355,7 +355,7 @@
     font-family: var(--chirpui-ui-font-family);
     font-weight: var(--chirpui-ui-font-weight-medium);
     line-height: var(--chirpui-line-height-tight);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     transition: background var(--chirpui-transition), border-color var(--chirpui-transition),
         color var(--chirpui-transition), box-shadow var(--chirpui-transition);
 }

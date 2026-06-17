@@ -436,6 +436,31 @@ hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-
     "chirpui-sidebar__link": "chirpui-sidebar__link--active",
     "chirpui-navbar__link": "chirpui-navbar__link--active"
   };
+  var PILL_ACTIVE_SELECTORS = [
+    '[aria-current="page"]',
+    ".chirpui-route-tab--active",
+    ".chirpui-tab--active",
+    ".chirpui-sidebar__link--active",
+    ".chirpui-navbar__link--active",
+    ".chirpui-segmented__option--active",
+    ".chirpui-segmented__option:has(input:checked)"
+  ].join(", ");
+  function syncPill() {
+    var nodes = document.querySelectorAll("[data-chirpui-sliding-pill]");
+    Array.prototype.forEach.call(nodes, function (el) {
+      var active = el.querySelector(PILL_ACTIVE_SELECTORS);
+      if (!active) return;
+      var pill = el.querySelector(".chirpui-nav-pill");
+      if (!pill) return;
+      var containerRect = el.getBoundingClientRect();
+      var activeRect = active.getBoundingClientRect();
+      el.style.setProperty("--chirpui-pill-x", (activeRect.left - containerRect.left + el.scrollLeft) + "px");
+      el.style.setProperty("--chirpui-pill-y", (activeRect.top - containerRect.top + el.scrollTop) + "px");
+      el.style.setProperty("--chirpui-pill-w", activeRect.width + "px");
+      el.style.setProperty("--chirpui-pill-h", activeRect.height + "px");
+      el.setAttribute("data-chirpui-pill-ready", "");
+    });
+  }
   function syncNav() {
     var p = window.location.pathname;
     var links = document.querySelectorAll("[data-chirpui-shell-match]");
@@ -454,10 +479,12 @@ hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-
       if (on) a.setAttribute("aria-current", "page");
       else a.removeAttribute("aria-current");
     });
+    syncPill();
   }
   document.body.addEventListener("htmx:pushedIntoHistory", syncNav);
   document.body.addEventListener("htmx:replacedInHistory", syncNav);
   document.body.addEventListener("htmx:afterSettle", syncNav, true);
+  window.addEventListener("resize", syncPill);
   syncNav();
 
   setupShellDrawers();

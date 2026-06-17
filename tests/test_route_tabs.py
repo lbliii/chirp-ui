@@ -2,7 +2,16 @@
 
 from kida import Environment
 
+from chirp_ui.nav_pill import nav_pill_inline_style
 from chirp_ui.route_tabs import tab_is_active
+
+
+def _route_tabs_env() -> Environment:
+    env = Environment()
+    env.add_global("tab_is_active", tab_is_active)
+    env.add_global("nav_pill_inline_style", nav_pill_inline_style)
+    env.add_global("nav_pill_inline_style", nav_pill_inline_style)
+    return env
 
 
 def test_tab_is_active_exact_match() -> None:
@@ -54,6 +63,7 @@ def test_tab_is_active_with_dataclass() -> None:
 
 def test_render_route_tabs_macro_renders_htmx_attrs(env: Environment) -> None:
     env.add_global("tab_is_active", tab_is_active)
+    env.add_global("nav_pill_inline_style", nav_pill_inline_style)
     html = env.from_string(
         '{% from "chirpui/route_tabs.html" import render_route_tabs %}'
         '{{ render_route_tabs(tab_items, current_path, target="#page-root") }}'
@@ -75,6 +85,7 @@ def test_render_route_tabs_macro_renders_htmx_attrs(env: Environment) -> None:
 
 def test_render_route_tabs_anatomy_contract(env: Environment) -> None:
     env.add_global("tab_is_active", tab_is_active)
+    env.add_global("nav_pill_inline_style", nav_pill_inline_style)
     html = env.from_string(
         '{% from "chirpui/route_tabs.html" import render_route_tabs %}'
         '{{ render_route_tabs(tab_items, current_path, target="#page-root") }}'
@@ -93,10 +104,10 @@ def test_render_route_tabs_anatomy_contract(env: Environment) -> None:
         current_path="/pulls",
     )
 
-    assert (
-        '<nav role="navigation" aria-label="Subsection navigation" class="chirpui-route-tabs">'
-        in html
-    )
+    assert "chirpui-route-tabs--sliding-pill" in html
+    assert 'data-chirpui-sliding-pill="horizontal"' in html
+    assert "chirpui-nav-pill" in html
+    assert "--chirpui-pill-x:" in html
     assert 'class="chirpui-route-tab chirpui-route-tab--active"' in html
     assert 'aria-current="page"' in html
     assert 'hx-boost="false"' in html
@@ -114,6 +125,7 @@ def test_render_route_tabs_anatomy_contract(env: Environment) -> None:
 
 def test_route_tabs_alias_still_renders(env: Environment) -> None:
     env.add_global("tab_is_active", tab_is_active)
+    env.add_global("nav_pill_inline_style", nav_pill_inline_style)
     html = env.from_string(
         '{% from "chirpui/route_tabs.html" import route_tabs %}{{ route_tabs(tabs, current_path) }}'
     ).render(
@@ -127,6 +139,7 @@ def test_route_tabs_alias_still_renders(env: Environment) -> None:
 
 def test_tabbed_page_layout_template_exposes_contract_blocks(env: Environment) -> None:
     env.add_global("tab_is_active", tab_is_active)
+    env.add_global("nav_pill_inline_style", nav_pill_inline_style)
     html = env.from_string(
         '{% extends "chirpui/tabbed_page_layout.html" %}'
         "{% block page_header %}<h1>Header</h1>{% end %}"
@@ -146,3 +159,17 @@ def test_tabbed_page_layout_template_exposes_contract_blocks(env: Environment) -
     assert "<h1>Header</h1>" in html
     assert "Toolbar" in html
     assert "<p>Body</p>" in html
+
+
+def test_render_route_tabs_sliding_pill_opt_out(env: Environment) -> None:
+    env.add_global("tab_is_active", tab_is_active)
+    env.add_global("nav_pill_inline_style", nav_pill_inline_style)
+    html = env.from_string(
+        '{% from "chirpui/route_tabs.html" import render_route_tabs %}'
+        "{{ render_route_tabs(tab_items, current_path, sliding_pill=false) }}"
+    ).render(
+        tab_items=({"label": "Home", "href": "/"},),
+        current_path="/",
+    )
+    assert "chirpui-route-tabs--sliding-pill" not in html
+    assert "chirpui-nav-pill" not in html

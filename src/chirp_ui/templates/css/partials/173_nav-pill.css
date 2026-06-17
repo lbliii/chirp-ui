@@ -1,0 +1,125 @@
+/* ==========================================================================
+   Nav pill — shared sliding active indicator (#255)
+   ========================================================================== */
+
+:root {
+    --chirpui-pill-x: 0px;
+    --chirpui-pill-y: 0px;
+    --chirpui-pill-w: 0px;
+    --chirpui-pill-h: 0px;
+}
+
+[data-chirpui-sliding-pill] {
+    position: relative;
+    isolation: isolate;
+}
+
+.chirpui-nav-pill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: var(--chirpui-pill-w);
+    height: var(--chirpui-pill-h);
+    transform: translate3d(var(--chirpui-pill-x), var(--chirpui-pill-y), 0);
+    pointer-events: none;
+    z-index: 0;
+    transition:
+        transform var(--chirpui-transition-emphasized),
+        width var(--chirpui-transition-emphasized),
+        height var(--chirpui-transition-emphasized);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-nav-pill {
+        transition: none;
+    }
+}
+
+/* --- route tabs (horizontal) --- */
+
+.chirpui-route-tabs--sliding-pill .chirpui-nav-pill {
+    border: 1px solid var(--chirpui-border);
+    border-bottom: none;
+    border-radius: var(--chirpui-radius-sm) var(--chirpui-radius-sm) 0 0;
+    background: var(--chirpui-primary-muted);
+    box-shadow: 0 -1px 0 0 var(--chirpui-accent);
+}
+
+.chirpui-route-tabs--sliding-pill[data-chirpui-pill-ready] :where(.chirpui-route-tab--active, .chirpui-route-tab[aria-current="page"]) {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.chirpui-route-tabs--sliding-pill .chirpui-route-tab {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- tabs (horizontal underline variant) --- */
+
+.chirpui-tabs--sliding-pill .chirpui-nav-pill {
+    height: 2px;
+    margin-block-start: calc(var(--chirpui-pill-h) - 2px);
+    border-radius: 1px;
+    background: var(--chirpui-accent);
+}
+
+.chirpui-tabs--sliding-pill[data-chirpui-pill-ready] .chirpui-tab--active {
+    border-bottom-color: transparent;
+}
+
+.chirpui-tabs--sliding-pill .chirpui-tab {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- segmented control --- */
+
+.chirpui-segmented--sliding-pill .chirpui-nav-pill {
+    border-radius: calc(var(--chirpui-radius) - 2px);
+    background: var(--chirpui-surface);
+    box-shadow: var(--chirpui-shadow-sm);
+}
+
+.chirpui-segmented--sliding-pill[data-chirpui-pill-ready] :where(.chirpui-segmented__option--active, .chirpui-segmented__option:has(input:checked)) {
+    background: transparent;
+    box-shadow: none;
+}
+
+.chirpui-segmented--sliding-pill .chirpui-segmented__option {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- sidebar / shell rail --- */
+
+.chirpui-sidebar__nav--sliding-pill .chirpui-nav-pill {
+    border-radius: 0 var(--chirpui-radius-sm) var(--chirpui-radius-sm) 0;
+    background: var(--chirpui-sidebar-active-bg);
+}
+
+.chirpui-sidebar__nav--sliding-pill:not([data-chirpui-pill-ready]) :where(.chirpui-sidebar__link--active, .chirpui-sidebar__link[aria-current="page"]) {
+    background: var(--chirpui-sidebar-active-bg);
+}
+
+.chirpui-sidebar__nav--sliding-pill[data-chirpui-pill-ready] :where(.chirpui-sidebar__link--active, .chirpui-sidebar__link[aria-current="page"]) {
+    background: transparent;
+}
+
+.chirpui-sidebar__nav--sliding-pill :where(.chirpui-sidebar__link, .chirpui-nav-tree__link) {
+    position: relative;
+    z-index: 1;
+}
+
+/* Horizontal shell strip (mobile): slide on X; vertical rail (desktop): slide on Y */
+.chirpui-app-shell__sidebar .chirpui-sidebar__nav--sliding-pill .chirpui-nav-pill {
+    transform: translate3d(var(--chirpui-pill-x), 0, 0);
+}
+
+@media (min-width: 48rem) {
+    .chirpui-app-shell__sidebar .chirpui-sidebar__nav--sliding-pill .chirpui-nav-pill {
+        transform: translate3d(0, var(--chirpui-pill-y), 0);
+    }
+}

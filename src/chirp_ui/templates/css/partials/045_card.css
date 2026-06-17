@@ -284,7 +284,7 @@
             background: color-mix(in srgb, var(--chirpui-surface) 90%, var(--chirpui-bg-subtle));
             font-size: var(--chirpui-font-sm);
             line-height: var(--chirpui-line-height-normal);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             color: var(--chirpui-text-muted);
             overflow-wrap: anywhere;
         }
@@ -295,7 +295,7 @@
             padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
             font-size: var(--chirpui-font-sm);
             line-height: var(--chirpui-line-height-normal);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             color: var(--chirpui-text-muted);
             overflow-wrap: anywhere;
         }
@@ -309,7 +309,7 @@
             border-bottom: 1px solid var(--chirpui-border-subtle);
             font-size: var(--chirpui-font-xs);
             line-height: var(--chirpui-line-height-tight);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             color: var(--chirpui-text-muted);
             &:empty {
                 display: none;

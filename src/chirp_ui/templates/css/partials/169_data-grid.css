@@ -12,6 +12,11 @@
             max-inline-size: 100%;
         }
 
+        .chirpui-data-grid__table .chirpui-table__td,
+        .chirpui-data-grid__table .chirpui-table__th--right {
+            font-variant-numeric: var(--chirpui-nums-tabular);
+        }
+
         .chirpui-data-grid__header {
             display: flex;
             flex-direction: column;

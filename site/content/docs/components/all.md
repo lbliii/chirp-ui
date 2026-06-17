@@ -30,7 +30,7 @@ surface with a preferred replacement. Components the manifest marks `internal`
 (Chirp UI composition infrastructure) are intentionally omitted.
 
 <!-- chirpui:generated:start -->
-_355 public components across 17 categories._
+_358 public components across 17 categories._
 
 ## Layout
 
@@ -107,7 +107,7 @@ _9 components._
 
 ## Navigation
 
-_29 components._
+_30 components._
 
 | Macro | Maturity | Description |
 |-------|----------|-------------|
@@ -123,6 +123,7 @@ _29 components._
 | `index_card` | stable | Index card component |
 | `link` | stable | Link component |
 | `nav_link` | stable | SPA-style link for content areas |
+| `nav-pill` *(CSS / utility)* | stable | - |
 | `nav_progress` | stable | Navigation progress bar |
 | `nav_tree` | stable | Nav tree component |
 | `navbar` | stable | Navbar component |
@@ -246,7 +247,7 @@ _38 components._
 
 ## Feedback
 
-_25 components._
+_26 components._
 
 | Macro | Maturity | Description |
 |-------|----------|-------------|
@@ -258,6 +259,7 @@ _25 components._
 | `empty_panel_state` | stable | Empty panel state |
 | `empty_state` | stable | Empty State component |
 | `live_badge` | stable | Live Badge component |
+| `load_sentinel` | stable | Streaming and AI components |
 | `notification_dot` | stable | Notification Dot |
 | `progress` *(CSS / utility)* | stable | - |
 | `progress_bar` | stable | Progress Bar component |
@@ -322,7 +324,7 @@ _11 components._
 
 ## Typography
 
-_29 components._
+_30 components._
 
 | Macro | Maturity | Description |
 |-------|----------|-------------|
@@ -342,6 +344,7 @@ _29 components._
 | `prose-lg` *(CSS / utility)* | legacy | - |
 | `prose-sm` *(CSS / utility)* | legacy | - |
 | `rendered_content` | stable | Rendered content |
+| `tabular` *(CSS / utility)* | stable | - |
 | `text-muted` *(CSS / utility)* | legacy | - |
 | `ui-base` *(CSS / utility)* | legacy | - |
 | `ui-bold` *(CSS / utility)* | legacy | - |

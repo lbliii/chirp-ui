@@ -77,7 +77,7 @@
     box-shadow: 0 0 0 1px color-mix(in srgb, var(--chirpui-border) 60%, transparent);
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     text-align: center;
     color: var(--chirpui-text);

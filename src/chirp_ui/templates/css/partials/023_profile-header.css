@@ -69,7 +69,7 @@ a.chirpui-profile-header__name:hover {
     gap: var(--chirpui-spacing-lg);
     margin-bottom: var(--chirpui-spacing-sm);
     font-size: var(--chirpui-font-sm);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
 }
 

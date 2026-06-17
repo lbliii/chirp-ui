@@ -886,6 +886,7 @@ async def test_bengal_docs_hero_uses_catalog_header_treatment(page, static_site_
             const titleRect = title.getBoundingClientRect();
             const subtitleRect = subtitle.getBoundingClientRect();
             const metadataRect = metadata.getBoundingClientRect();
+            const metadataAnchorRect = subtitle ? subtitleRect : titleRect;
             return {
                 textAlign: innerStyle.textAlign,
                 borderBottom: heroStyle.borderBottomWidth,
@@ -894,7 +895,9 @@ async def test_bengal_docs_hero_uses_catalog_header_treatment(page, static_site_
                 titleInset: Math.round(titleRect.left - heroRect.left),
                 subtitleInsetDelta: Math.round(Math.abs(subtitleRect.left - titleRect.left)),
                 metadataRightGap: Math.round(heroRect.right - metadataRect.right),
-                metadataTopDelta: Math.round(Math.abs(metadataRect.top - titleRect.top)),
+                metadataTopDelta: Math.round(
+                    Math.abs(metadataRect.top - metadataAnchorRect.top)
+                ),
                 height: Math.round(heroRect.height),
             };
         }"""
@@ -906,6 +909,8 @@ async def test_bengal_docs_hero_uses_catalog_header_treatment(page, static_site_
     assert 12 <= metrics["titleInset"] <= 32, metrics
     assert metrics["subtitleInsetDelta"] <= 2, metrics
     assert metrics["metadataRightGap"] <= 4, metrics
+    # Since #250, page actions sit on row 2 and metadata drops to row 3 — when a
+    # subtitle is present the pill shares that row (not the title row).
     assert metrics["metadataTopDelta"] <= 16, metrics
     # The <= 170 ceiling was aspirational and never actually met — the docs hero
     # measures ~190px @1280 / ~172px @1600 / ~179px @2309 on macOS, and ~206px on
@@ -1163,89 +1168,64 @@ async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
     await page.goto(f"{static_site_url}/releases/")
     await page.wait_for_load_state("networkidle")
 
-    await assert_no_document_horizontal_overflow(page, "releases-latest-card")
+    await assert_no_document_horizontal_overflow(page, "releases-latest-entry")
     await expect(page.locator(".chirp-theme-shell__header")).to_be_hidden()
-    await expect(page.locator(".chirp-theme-doc-catalog-rail__home")).to_be_visible()
-    await expect(
-        page.locator(".chirp-theme-doc-catalog-rail__group--actions .nav-search-trigger")
-    ).to_be_visible()
-    await expect(
-        page.locator(".chirp-theme-doc-catalog-rail__group--actions .theme-dropdown__button")
-    ).to_be_visible()
-    latest = page.locator(".chirp-theme-release-card--latest")
+    await expect(page.locator(".chirp-theme-release-timeline")).to_be_visible()
+
+    latest = page.locator(".chirp-theme-release-entry--latest")
     first_regular = page.locator(
-        ".chirp-theme-release-card:not(.chirp-theme-release-card--latest)"
+        ".chirp-theme-release-entry:not(.chirp-theme-release-entry--latest)"
     ).first
     await expect(latest).to_be_visible()
+    await expect(latest.locator(".chirpui-badge__text")).to_have_text("Latest")
     metrics = await page.evaluate(
         """() => {
-            const layout = document.querySelector(".chirp-theme-docs-layout");
-            const results = document.querySelector(".chirp-theme-release-index .chirpui-resource-index__results");
-            const latest = document.querySelector(".chirp-theme-release-card--latest");
+            const timeline = document.querySelector(".chirp-theme-release-timeline");
+            const latest = document.querySelector(".chirp-theme-release-entry--latest");
             const regular = document.querySelector(
-                ".chirp-theme-release-card:not(.chirp-theme-release-card--latest)"
+                ".chirp-theme-release-entry:not(.chirp-theme-release-entry--latest)"
             );
-            const layoutStyle = getComputedStyle(layout);
             const latestStyle = getComputedStyle(latest);
-            const resultsStyle = getComputedStyle(results);
+            const regularStyle = getComputedStyle(regular);
             const latestRect = latest.getBoundingClientRect();
             const regularRect = regular.getBoundingClientRect();
-            const resultsRect = results.getBoundingClientRect();
-            const regularBadge = regular.querySelector(".chirpui-card__header-badges");
-            const regularBody = regular.querySelector(".chirpui-card__body");
-            const regularInstall = regular.querySelector(".chirp-theme-release-card__install");
-            const latestMeta = latest.querySelector(".chirpui-card__top-meta");
-            const regularMeta = regular.querySelector(".chirpui-card__top-meta");
-            const regularTitle = regular.querySelector(".chirpui-card__title");
-            const latestInstall = latest.querySelector(".chirp-theme-release-card__install");
-            const regularStyle = getComputedStyle(regular);
-            const latestPaddingLeft = Number.parseFloat(latestStyle.paddingLeft);
-            const regularPaddingLeft = Number.parseFloat(regularStyle.paddingLeft);
+            const latestTitle = latest.querySelector(".chirpui-timeline__title-link");
+            const regularTitle = regular.querySelector(".chirpui-timeline__title-link");
+            const latestInstall = latest.querySelector(".chirp-theme-release-entry__install");
+            const regularInstall = regular.querySelector(".chirp-theme-release-entry__install");
+            const latestDot = latest.querySelector(".chirpui-timeline__dot");
+            const heroMetadata = document.querySelector(
+                ".chirp-theme-learning-hero .chirpui-hero__metadata"
+            );
             return {
-                layoutColumns: layoutStyle.gridTemplateColumns.split(" ").filter(Boolean),
-                tocCount: document.querySelectorAll(".chirp-theme-docs-layout__toc").length,
-                latestWidth: Math.round(latestRect.width),
-                regularWidth: Math.round(regularRect.width),
-                resultsWidth: Math.round(resultsRect.width),
-                resultColumns: resultsStyle.gridTemplateColumns.split(" ").filter(Boolean).length,
-                latestColumns: latestStyle.gridTemplateColumns,
-                latestBackground: latestStyle.backgroundImage,
+                timelineCount: timeline.querySelectorAll(".chirp-theme-release-entry").length,
+                latestTop: Math.round(latestRect.top),
+                regularTop: Math.round(regularRect.top),
                 latestBorderLeft: latestStyle.borderLeftWidth,
-                regularBadgeDisplay: getComputedStyle(regularBadge).display,
-                regularBodyDisplay: getComputedStyle(regularBody).display,
-                regularInstallWidth: Math.round(regularInstall.getBoundingClientRect().width),
-                latestInset: Math.round(latestMeta.getBoundingClientRect().left - latestRect.left),
-                regularInset: Math.round(regularMeta.getBoundingClientRect().left - regularRect.left),
-                regularTitleInset: Math.round(regularTitle.getBoundingClientRect().left - regularRect.left),
-                latestInstallRightGap: Math.round(latestRect.right - latestInstall.getBoundingClientRect().right),
-                latestPaddingLeft: Math.round(latestPaddingLeft),
-                regularPaddingLeft: Math.round(regularPaddingLeft),
-                regularRegionPadding: getComputedStyle(regularMeta).paddingLeft,
-                regularFooterBackground: getComputedStyle(regular.querySelector(".chirpui-card__footer-wrap")).backgroundImage,
+                regularBorderLeft: regularStyle.borderLeftWidth,
+                latestDotBackground: getComputedStyle(latestDot).backgroundColor,
+                latestTitle: latestTitle?.textContent?.trim(),
+                regularTitle: regularTitle?.textContent?.trim(),
+                latestInstallText: latestInstall?.textContent?.trim(),
+                regularInstallText: regularInstall?.textContent?.trim(),
+                heroMetadata: heroMetadata?.textContent?.trim(),
             };
         }"""
     )
-    assert len(metrics["layoutColumns"]) == 3, metrics
-    assert metrics["tocCount"] == 0, metrics
-    assert metrics["latestWidth"] >= metrics["resultsWidth"] - 2, metrics
-    assert metrics["latestWidth"] > metrics["regularWidth"] * 2, metrics
-    assert 2 <= metrics["resultColumns"] <= 4, metrics
-    assert "linear-gradient" in metrics["latestBackground"], metrics
+    assert metrics["timelineCount"] >= 2, metrics
+    assert metrics["latestTop"] < metrics["regularTop"], metrics
     assert metrics["latestBorderLeft"] != "0px", metrics
-    assert " " in metrics["latestColumns"], metrics
-    assert metrics["regularBadgeDisplay"] == "none", metrics
-    assert metrics["regularBodyDisplay"] == "none", metrics
-    assert metrics["regularInstallWidth"] >= metrics["regularWidth"] - 32, metrics
-    assert metrics["latestInset"] >= 16, metrics
-    assert metrics["regularInset"] >= 12, metrics
-    assert metrics["regularTitleInset"] >= 12, metrics
-    assert metrics["latestInstallRightGap"] >= 16, metrics
-    assert metrics["latestPaddingLeft"] >= 15, metrics
-    assert metrics["regularPaddingLeft"] >= 11, metrics
-    assert metrics["regularRegionPadding"] == "0px", metrics
-    assert metrics["regularFooterBackground"] == "none", metrics
-    await expect(latest.locator(".chirpui-card__title")).to_have_text("chirp-ui 0.10.0")
-    await expect(first_regular.locator(".chirpui-card__title")).to_have_text("chirp-ui 0.9.0")
+    assert metrics["regularBorderLeft"] != "0px", metrics
+    assert metrics["latestDotBackground"] not in ("", "rgba(0, 0, 0, 0)"), metrics
+    assert metrics["latestTitle"] == "chirp-ui 0.10.0", metrics
+    assert metrics["regularTitle"] == "chirp-ui 0.9.0", metrics
+    assert "uv add chirp-ui==0.10.0" in (metrics["latestInstallText"] or ""), metrics
+    assert "uv add chirp-ui==0.9.0" in (metrics["regularInstallText"] or ""), metrics
+    assert "19 releases" in (metrics["heroMetadata"] or ""), metrics
+    await expect(latest.locator(".chirpui-timeline__title-link")).to_have_text("chirp-ui 0.10.0")
+    await expect(first_regular.locator(".chirpui-timeline__title-link")).to_have_text(
+        "chirp-ui 0.9.0"
+    )
 
 
 async def test_bengal_docs_branch_summaries_hold_parent_links(page, static_site_url):

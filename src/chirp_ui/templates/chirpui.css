@@ -173,6 +173,9 @@ body {
     --chirpui-ui-font-weight-semibold: 600;
     --chirpui-ui-font-weight-bold: 700;
 
+    /* Numeric typography — tabular figures for aligned / live-updating numbers */
+    --chirpui-nums-tabular: tabular-nums;
+
     /* Prose typography — document content (body, headings) */
     --chirpui-prose-xs: var(--chirpui-font-xs);
     --chirpui-prose-base: var(--chirpui-font-base);
@@ -1495,7 +1498,7 @@ html {
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
     line-height: var(--chirpui-line-height-normal);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     overflow-wrap: anywhere;
 }
 
@@ -2146,7 +2149,7 @@ html {
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-lg);
     font-weight: var(--chirpui-ui-font-weight-semibold);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text);
 }
@@ -2297,7 +2300,7 @@ a.chirpui-action-bar__item {
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: inherit;
 }
@@ -3025,7 +3028,7 @@ a.chirpui-action-bar__item {
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-xs);
     font-weight: var(--chirpui-ui-font-weight-normal);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
     white-space: nowrap;
@@ -3058,7 +3061,7 @@ a.chirpui-action-bar__item {
     font-family: var(--chirpui-ui-font-family);
     font-size: var(--chirpui-ui-xs);
     font-weight: var(--chirpui-ui-font-weight-semibold);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     text-align: center;
     background: var(--chirpui-accent);
@@ -3180,7 +3183,7 @@ a.chirpui-post-card__name:hover {
 .chirpui-post-card__time {
     display: block;
     font-size: var(--chirpui-font-xs);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }
@@ -3259,7 +3262,7 @@ a.chirpui-comment__author:hover {
 
 .chirpui-comment__time {
     font-size: var(--chirpui-font-xs);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
     white-space: nowrap;
@@ -3391,7 +3394,7 @@ a.chirpui-profile-header__name:hover {
     gap: var(--chirpui-spacing-lg);
     margin-bottom: var(--chirpui-spacing-sm);
     font-size: var(--chirpui-font-sm);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
 }
 
@@ -3941,7 +3944,7 @@ a.chirpui-mention:focus-visible {
     color: var(--chirpui-text);
     font-size: var(--chirpui-font-xs);
     font-weight: var(--chirpui-ui-font-weight-semibold);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
 }
 
@@ -4030,7 +4033,7 @@ a.chirpui-mention:focus-visible {
     color: var(--chirpui-text-muted);
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-semibold);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     flex-shrink: 0;
     border: 2px solid var(--chirpui-border);
@@ -4194,7 +4197,7 @@ a.chirpui-mention:focus-visible {
 
 .chirpui-dl__detail--number {
     text-align: right;
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
 }
 
 @container chirpui-layout (width < 28rem) {
@@ -4248,7 +4251,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-settings-row__status {
     min-width: 0;
     color: var(--chirpui-text-muted);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
 }
 
 .chirpui-settings-row__detail {
@@ -4419,7 +4422,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-timeline__date {
     font-size: var(--chirpui-font-xs);
     line-height: var(--chirpui-line-height-tight);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     color: var(--chirpui-text-muted);
 }
 
@@ -4460,7 +4463,7 @@ a.chirpui-mention:focus-visible {
     font-size: var(--chirpui-font-xs);
     color: var(--chirpui-text-muted);
     margin-bottom: var(--chirpui-spacing-2xs);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
 }
 
 /* Timeline: semantic dot colors */
@@ -4640,6 +4643,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-font-lg { font-size: var(--chirpui-font-lg); }
 .chirpui-font-xl { font-size: var(--chirpui-font-xl); }
 .chirpui-font-mono { font-family: var(--chirpui-mono-font-family); }
+.chirpui-tabular { font-variant-numeric: var(--chirpui-nums-tabular); }
 .chirpui-font-2xl { font-size: var(--chirpui-font-2xl); }
 .chirpui-font-medium { font-weight: 500; }
 .chirpui-text-muted { color: var(--chirpui-text-muted); }
@@ -4966,6 +4970,20 @@ a.chirpui-mention:focus-visible {
     opacity: 0.6;
 }
 
+.chirpui-load-sentinel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-sm);
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-load-sentinel__label {
+    font-variant-numeric: var(--chirpui-nums-tabular);
+}
+
 @supports (text-box-trim: trim-both) {
     .chirpui-copy-btn,
     .chirpui-badge,
@@ -5040,7 +5058,7 @@ a.chirpui-mention:focus-visible {
     border-radius: var(--chirpui-radius-sm);
     color: var(--chirpui-text-muted);
     line-height: var(--chirpui-line-height-tight);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
 }
 
 .chirpui-model-card__body {
@@ -5051,7 +5069,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-model-card__footer {
     font-size: var(--chirpui-font-sm);
     line-height: var(--chirpui-line-height-normal);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     color: var(--chirpui-text-muted);
 }
 
@@ -6184,7 +6202,7 @@ a.chirpui-mention:focus-visible {
             background: color-mix(in srgb, var(--chirpui-surface) 90%, var(--chirpui-bg-subtle));
             font-size: var(--chirpui-font-sm);
             line-height: var(--chirpui-line-height-normal);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             color: var(--chirpui-text-muted);
             overflow-wrap: anywhere;
         }
@@ -6195,7 +6213,7 @@ a.chirpui-mention:focus-visible {
             padding: var(--chirpui-space-card-gap) var(--chirpui-space-card-padding);
             font-size: var(--chirpui-font-sm);
             line-height: var(--chirpui-line-height-normal);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             color: var(--chirpui-text-muted);
             overflow-wrap: anywhere;
         }
@@ -6209,7 +6227,7 @@ a.chirpui-mention:focus-visible {
             border-bottom: 1px solid var(--chirpui-border-subtle);
             font-size: var(--chirpui-font-xs);
             line-height: var(--chirpui-line-height-tight);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             color: var(--chirpui-text-muted);
             &:empty {
                 display: none;
@@ -6470,7 +6488,7 @@ a.chirpui-mention:focus-visible {
             padding: var(--chirpui-spacing-2xs) 0.35rem;
             font-size: var(--chirpui-font-xs);
             font-weight: var(--chirpui-ui-font-weight-semibold);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             line-height: var(--chirpui-line-height-tight);
             background: rgba(0, 0, 0, 0.75);
             color: var(--chirpui-on-accent);
@@ -6497,7 +6515,7 @@ a.chirpui-mention:focus-visible {
         .chirpui-video-card__meta {
             margin: 0;
             font-size: var(--chirpui-font-xs);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             line-height: var(--chirpui-line-height-tight);
             color: var(--chirpui-text-muted);
             overflow-wrap: anywhere;
@@ -6567,7 +6585,7 @@ a.chirpui-mention:focus-visible {
         .chirpui-channel-card__subscribers {
             margin: var(--chirpui-spacing-xs) 0 0;
             font-size: var(--chirpui-font-sm);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             line-height: var(--chirpui-line-height-tight);
             color: var(--chirpui-text-muted);
         }
@@ -6771,7 +6789,7 @@ a.chirpui-mention:focus-visible {
 .chirpui-playlist-item__duration {
     flex-shrink: 0;
     font-size: var(--chirpui-font-xs);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }
@@ -6865,7 +6883,7 @@ a.chirpui-chapter-item__link:focus-visible {
 .chirpui-chapter-item__timestamp {
     flex-shrink: 0;
     font-size: var(--chirpui-font-xs);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }
@@ -7027,7 +7045,7 @@ a.chirpui-chapter-item__link:focus-visible {
             color: var(--chirpui-text-muted);
             font-size: var(--chirpui-font-sm);
             line-height: var(--chirpui-line-height-normal);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             overflow-wrap: anywhere;
             &:empty {
                 display: none;
@@ -7799,7 +7817,7 @@ a.chirpui-chapter-item__link:focus-visible {
     font-family: var(--chirpui-ui-font-family);
     font-weight: var(--chirpui-ui-font-weight-medium);
     line-height: var(--chirpui-line-height-tight);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     transition: background var(--chirpui-transition), border-color var(--chirpui-transition),
         color var(--chirpui-transition), box-shadow var(--chirpui-transition);
 }
@@ -8530,7 +8548,7 @@ a.chirpui-tag:active {
 
         .chirpui-table__td--right,
         .chirpui-table__th--right {
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
         }
 
         @media (max-width: 40rem) {
@@ -8780,7 +8798,7 @@ a.chirpui-tag:active {
     color: inherit;
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     transition: background var(--chirpui-transition);
 }
@@ -8819,7 +8837,7 @@ button.chirpui-pagination__link {
     min-inline-size: var(--chirpui-control-block-size);
     min-block-size: var(--chirpui-control-block-size);
     color: var(--chirpui-text-muted);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
 }
 }
 
@@ -9031,7 +9049,7 @@ button.chirpui-pagination__link {
     min-inline-size: calc(var(--chirpui-spacing) + var(--chirpui-spacing-xs));
     font-size: var(--chirpui-font-xs);
     font-weight: var(--chirpui-ui-font-weight-semibold);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     padding: var(--chirpui-spacing-2xs) 0.375rem;
     background: var(--chirpui-surface-alt);
     border-radius: 9999px;
@@ -10611,7 +10629,7 @@ input[type="date"].chirpui-field__input {
     min-block-size: 2.25rem;
     font-size: var(--chirpui-prose-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-muted);
     background: var(--chirpui-bg);
@@ -11045,7 +11063,7 @@ input[type="date"].chirpui-field__input {
     flex: 0 0 auto;
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }
@@ -11774,7 +11792,7 @@ a.chirpui-btn {
             font-family: var(--chirpui-ui-font-family);
             font-size: var(--chirpui-ui-sm);
             font-weight: var(--chirpui-ui-font-weight-medium);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             line-height: 1.1;
             border: 1px solid;
             text-decoration: none;
@@ -12596,7 +12614,7 @@ a.chirpui-btn {
     box-shadow: 0 0 0 1px color-mix(in srgb, var(--chirpui-border) 60%, transparent);
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     text-align: center;
     color: var(--chirpui-text);
@@ -12685,7 +12703,7 @@ a.chirpui-btn {
 
 .chirpui-bar-chart__value {
     font-size: var(--chirpui-font-sm);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
     min-width: 2ch;
@@ -12734,7 +12752,7 @@ a.chirpui-btn {
     gap: 0;
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-semibold);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     color: var(--chirpui-text);
     line-height: var(--chirpui-line-height-tight);
     text-align: center;
@@ -12787,7 +12805,7 @@ a.chirpui-btn {
     font-size: var(--chirpui-font-sm);
     font-weight: var(--chirpui-ui-font-weight-medium);
     line-height: var(--chirpui-line-height-tight);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     transition: background var(--chirpui-transition), color var(--chirpui-transition);
 }
 
@@ -14080,7 +14098,7 @@ body.htmx-request .chirpui-nav-progress::after {
     border-radius: var(--chirpui-radius-xs, 3px);
     background: var(--chirpui-bg-subtle);
     border: 1px solid var(--chirpui-border);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
 }
 }
@@ -14734,7 +14752,7 @@ body.htmx-request .chirpui-nav-progress::after {
     font-size: var(--chirpui-font-xs);
     font-weight: var(--chirpui-ui-font-weight-semibold);
     line-height: 1;
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     box-shadow: 0 1px 2px color-mix(in srgb, black 18%, transparent);
 }
 
@@ -14787,7 +14805,7 @@ body.htmx-request .chirpui-nav-progress::after {
 }
 .chirpui-number-ticker__value {
     display: inline-block;
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     counter-reset: chirpui-num var(--chirpui-num);
     animation: chirpui-count-up var(--chirpui-anim-pulse) var(--chirpui-ease-decel) forwards;
@@ -15079,7 +15097,7 @@ body.htmx-request .chirpui-nav-progress::after {
 .chirpui-animated-counter__value {
     font-size: var(--chirpui-prose-2xl);
     font-weight: var(--chirpui-ui-font-weight-bold);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     counter-reset: chirpui-num var(--chirpui-num);
     animation: chirpui-count-up 1.8s var(--chirpui-ease-decel) forwards;
@@ -15274,7 +15292,7 @@ body.htmx-request .chirpui-nav-progress::after {
     gap: var(--chirpui-spacing-2xs);
     font-size: var(--chirpui-ui-xs);
     font-weight: var(--chirpui-ui-font-weight-medium);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }
@@ -20587,7 +20605,7 @@ a.chirpui-chip:focus-visible {
         color: var(--chirpui-accent);
         font-size: var(--chirpui-ui-lg);
         font-weight: var(--chirpui-ui-font-weight-semibold);
-        font-variant-numeric: tabular-nums;
+        font-variant-numeric: var(--chirpui-nums-tabular);
         line-height: var(--chirpui-line-height-tight);
     }
 
@@ -20850,7 +20868,7 @@ a.chirpui-chip:focus-visible {
 
     :scope .chirpui-facet-chip__count {
         color: var(--chirpui-text-muted);
-        font-variant-numeric: tabular-nums;
+        font-variant-numeric: var(--chirpui-nums-tabular);
     }
 
     :scope:focus-visible {
@@ -21431,7 +21449,7 @@ a.chirpui-chip:focus-visible {
     padding-inline: var(--chirpui-spacing-xs);
     border-radius: 999px;
     background: var(--chirpui-bg-subtle);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
 }
 }
 
@@ -21456,7 +21474,7 @@ a.chirpui-chip:focus-visible {
 .chirpui-metric-strip__value {
     font-size: var(--chirpui-font-lg);
     font-weight: var(--chirpui-ui-font-weight-semibold);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
 }
 
@@ -22050,7 +22068,7 @@ a.chirpui-chip:focus-visible {
       color: var(--chirpui-text-muted);
       font-family: var(--chirpui-code-font-family);
       font-size: var(--chirpui-ui-xs);
-      font-variant-numeric: tabular-nums;
+      font-variant-numeric: var(--chirpui-nums-tabular);
     }
 
     .chirpui-slider__input {
@@ -22265,6 +22283,11 @@ a.chirpui-chip:focus-visible {
             box-sizing: border-box;
             min-inline-size: 0;
             max-inline-size: 100%;
+        }
+
+        .chirpui-data-grid__table .chirpui-table__td,
+        .chirpui-data-grid__table .chirpui-table__th--right {
+            font-variant-numeric: var(--chirpui-nums-tabular);
         }
 
         .chirpui-data-grid__header {
@@ -22805,4 +22828,133 @@ a.chirpui-chip:focus-visible {
             outline-offset: var(--chirpui-state-focus-offset);
         }
     }
+}
+
+/* === partials/173_nav-pill.css === */
+@layer chirpui.component {
+/* ==========================================================================
+   Nav pill — shared sliding active indicator (#255)
+   ========================================================================== */
+
+:root {
+    --chirpui-pill-x: 0px;
+    --chirpui-pill-y: 0px;
+    --chirpui-pill-w: 0px;
+    --chirpui-pill-h: 0px;
+}
+
+[data-chirpui-sliding-pill] {
+    position: relative;
+    isolation: isolate;
+}
+
+.chirpui-nav-pill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: var(--chirpui-pill-w);
+    height: var(--chirpui-pill-h);
+    transform: translate3d(var(--chirpui-pill-x), var(--chirpui-pill-y), 0);
+    pointer-events: none;
+    z-index: 0;
+    transition:
+        transform var(--chirpui-transition-emphasized),
+        width var(--chirpui-transition-emphasized),
+        height var(--chirpui-transition-emphasized);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-nav-pill {
+        transition: none;
+    }
+}
+
+/* --- route tabs (horizontal) --- */
+
+.chirpui-route-tabs--sliding-pill .chirpui-nav-pill {
+    border: 1px solid var(--chirpui-border);
+    border-bottom: none;
+    border-radius: var(--chirpui-radius-sm) var(--chirpui-radius-sm) 0 0;
+    background: var(--chirpui-primary-muted);
+    box-shadow: 0 -1px 0 0 var(--chirpui-accent);
+}
+
+.chirpui-route-tabs--sliding-pill[data-chirpui-pill-ready] :where(.chirpui-route-tab--active, .chirpui-route-tab[aria-current="page"]) {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.chirpui-route-tabs--sliding-pill .chirpui-route-tab {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- tabs (horizontal underline variant) --- */
+
+.chirpui-tabs--sliding-pill .chirpui-nav-pill {
+    height: 2px;
+    margin-block-start: calc(var(--chirpui-pill-h) - 2px);
+    border-radius: 1px;
+    background: var(--chirpui-accent);
+}
+
+.chirpui-tabs--sliding-pill[data-chirpui-pill-ready] .chirpui-tab--active {
+    border-bottom-color: transparent;
+}
+
+.chirpui-tabs--sliding-pill .chirpui-tab {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- segmented control --- */
+
+.chirpui-segmented--sliding-pill .chirpui-nav-pill {
+    border-radius: calc(var(--chirpui-radius) - 2px);
+    background: var(--chirpui-surface);
+    box-shadow: var(--chirpui-shadow-sm);
+}
+
+.chirpui-segmented--sliding-pill[data-chirpui-pill-ready] :where(.chirpui-segmented__option--active, .chirpui-segmented__option:has(input:checked)) {
+    background: transparent;
+    box-shadow: none;
+}
+
+.chirpui-segmented--sliding-pill .chirpui-segmented__option {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- sidebar / shell rail --- */
+
+.chirpui-sidebar__nav--sliding-pill .chirpui-nav-pill {
+    border-radius: 0 var(--chirpui-radius-sm) var(--chirpui-radius-sm) 0;
+    background: var(--chirpui-sidebar-active-bg);
+}
+
+.chirpui-sidebar__nav--sliding-pill:not([data-chirpui-pill-ready]) :where(.chirpui-sidebar__link--active, .chirpui-sidebar__link[aria-current="page"]) {
+    background: var(--chirpui-sidebar-active-bg);
+}
+
+.chirpui-sidebar__nav--sliding-pill[data-chirpui-pill-ready] :where(.chirpui-sidebar__link--active, .chirpui-sidebar__link[aria-current="page"]) {
+    background: transparent;
+}
+
+.chirpui-sidebar__nav--sliding-pill :where(.chirpui-sidebar__link, .chirpui-nav-tree__link) {
+    position: relative;
+    z-index: 1;
+}
+
+/* Horizontal shell strip (mobile): slide on X; vertical rail (desktop): slide on Y */
+.chirpui-app-shell__sidebar .chirpui-sidebar__nav--sliding-pill .chirpui-nav-pill {
+    transform: translate3d(var(--chirpui-pill-x), 0, 0);
+}
+
+@media (min-width: 48rem) {
+    .chirpui-app-shell__sidebar .chirpui-sidebar__nav--sliding-pill .chirpui-nav-pill {
+        transform: translate3d(0, var(--chirpui-pill-y), 0);
+    }
+}
 }

@@ -35,6 +35,20 @@
     opacity: 0.6;
 }
 
+.chirpui-load-sentinel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--chirpui-spacing-xs);
+    padding: var(--chirpui-spacing-sm);
+    font-size: var(--chirpui-font-sm);
+    color: var(--chirpui-text-muted);
+}
+
+.chirpui-load-sentinel__label {
+    font-variant-numeric: var(--chirpui-nums-tabular);
+}
+
 @supports (text-box-trim: trim-both) {
     .chirpui-copy-btn,
     .chirpui-badge,
@@ -109,7 +123,7 @@
     border-radius: var(--chirpui-radius-sm);
     color: var(--chirpui-text-muted);
     line-height: var(--chirpui-line-height-tight);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
 }
 
 .chirpui-model-card__body {
@@ -120,7 +134,7 @@
 .chirpui-model-card__footer {
     font-size: var(--chirpui-font-sm);
     line-height: var(--chirpui-line-height-normal);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     color: var(--chirpui-text-muted);
 }
 

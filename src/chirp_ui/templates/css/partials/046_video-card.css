@@ -61,7 +61,7 @@
             padding: var(--chirpui-spacing-2xs) 0.35rem;
             font-size: var(--chirpui-font-xs);
             font-weight: var(--chirpui-ui-font-weight-semibold);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             line-height: var(--chirpui-line-height-tight);
             background: rgba(0, 0, 0, 0.75);
             color: var(--chirpui-on-accent);
@@ -88,7 +88,7 @@
         .chirpui-video-card__meta {
             margin: 0;
             font-size: var(--chirpui-font-xs);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             line-height: var(--chirpui-line-height-tight);
             color: var(--chirpui-text-muted);
             overflow-wrap: anywhere;

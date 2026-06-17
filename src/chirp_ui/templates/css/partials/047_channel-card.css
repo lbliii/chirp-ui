@@ -50,7 +50,7 @@
         .chirpui-channel-card__subscribers {
             margin: var(--chirpui-spacing-xs) 0 0;
             font-size: var(--chirpui-font-sm);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             line-height: var(--chirpui-line-height-tight);
             color: var(--chirpui-text-muted);
         }

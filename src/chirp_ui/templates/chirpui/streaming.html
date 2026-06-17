@@ -25,7 +25,7 @@
 <article class="chirpui-message-bubble{{ role_class }}{{ state_class }}{{ " " ~ cls if cls else "" }}"
          {% if sse_connect %}hx-ext="sse" sse-connect="{{ sse_connect }}" sse-close="{{ sse_close }}" hx-disinherit="hx-target hx-swap" {% end %}aria-label="{{ _aria_labels[role_valid] if role_valid in _aria_labels else "message" }}"{% if _state == "error" %} role="alert"{% end %}{% if _state == "thinking" %} aria-busy="true"{% end %}>
     <div class="chirpui-streaming-block{{ " chirpui-streaming-block--active" if streaming else "" }}"
-         {% if sse_connect or sse_swap_target %}sse-swap="fragment" hx-target="this" hx-swap="beforeend" {% end %}aria-live="polite" aria-atomic="true">
+         {% if sse_connect or sse_swap_target %}sse-swap="fragment" hx-target="this" hx-swap="beforeend" {% endif %}role="log" aria-relevant="additions text">
         {% try %}
         {% slot %}
         {% if _state == "thinking" %}
@@ -45,8 +45,8 @@
 
 {% def streaming_block(streaming=false, sse_swap_target=false, cls="") %}
 <div class="chirpui-streaming-block{{ " chirpui-streaming-block--active" if streaming else "" }}{{ " " ~ cls if cls else "" }}"
-     {% if sse_swap_target %}sse-swap="fragment" hx-target="this" {% end %}aria-live="polite"
-     aria-atomic="true">
+     {% if sse_swap_target %}sse-swap="fragment" hx-target="this" {% endif %}role="log"
+     aria-relevant="additions text">
     {% try %}
     {% slot %}
     {% if streaming %}
@@ -86,7 +86,7 @@
     <div class="chirpui-card__body chirpui-model-card__body">
         {% if sse_streaming %}
         <div class="chirpui-streaming-block chirpui-streaming-block--active"
-             sse-swap="fragment" hx-target="this" aria-live="polite" aria-atomic="true">
+             sse-swap="fragment" hx-target="this" role="log" aria-relevant="additions text">
             {% slot %}
             <span class="chirpui-streaming-block__cursor" aria-hidden="true"></span>
         </div>
@@ -100,4 +100,14 @@
     </footer>
     {% end %}
 </article>
+{% end %}
+
+{% def load_sentinel(label="Loading more", cls="", busy=false) %}
+{#- Accessible infinite-scroll / load-more sentinel — announces loading state
+    without stealing focus. Pair with HTMX hx-indicator or append-only lists. -#}
+<div class="chirpui-load-sentinel{{ " " ~ cls if cls else "" }}"
+     role="status"
+     aria-label="{{ label }}"{% if busy %} aria-busy="true"{% end %}>
+    <span class="chirpui-load-sentinel__label">{{ label }}</span>
+</div>
 {% end %}

@@ -13298,6 +13298,59 @@
       "trim_emits": [],
       "variants": []
     },
+    "load-sentinel": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "load-sentinel",
+      "category": "feedback",
+      "composes": [],
+      "consumes": [],
+      "description": "Streaming and AI components\n    For LLM Playground, RAG demo, and SSE-driven UIs.\n    Works with htmx SSE and event delegation for copy buttons.\n\n    Usage:\n        {% from \"chirpui/streaming.html\" import streaming_block, copy_btn, prose %}\n\n        {% call streaming_block(streaming=true) %}\n            Content or thinking...\n        {% end %}\n\n        {% call copy_btn(text=\"Copy\", copy_text=answer_text) %}\n\n        <div class=\"chirpui-prose\">{{ content | markdown | safe(reason=\"markdown output\") }}</div>",
+      "elements": [
+        "label"
+      ],
+      "emits": [
+        "chirpui-load-sentinel",
+        "chirpui-load-sentinel__label"
+      ],
+      "extra_emits": [],
+      "lineno": 105,
+      "macro": "load_sentinel",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "busy"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "htmx"
+      ],
+      "role": "primitive",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "streaming.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "logo": {
       "appearances": [],
       "authoring": "available",
@@ -14669,6 +14722,38 @@
       ],
       "slots_yielded": [],
       "template": "nav_link.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "nav-pill": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "nav-pill",
+      "category": "navigation",
+      "composes": [],
+      "consumes": [],
+      "description": "",
+      "elements": [],
+      "emits": [
+        "chirpui-nav-pill"
+      ],
+      "extra_emits": [],
+      "lineno": 0,
+      "macro": null,
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [],
+      "provides": [],
+      "requires": [],
+      "role": "primitive",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -17403,6 +17488,11 @@
           "has_default": true,
           "is_required": false,
           "name": "is_active"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sliding_pill"
         }
       ],
       "provides": [],
@@ -17431,13 +17521,16 @@
       "description": "",
       "elements": [],
       "emits": [
-        "chirpui-route-tabs"
+        "chirpui-route-tabs",
+        "chirpui-route-tabs--sliding-pill"
       ],
       "extra_emits": [],
       "lineno": 0,
       "macro": null,
       "maturity": "stable",
-      "modifiers": [],
+      "modifiers": [
+        "sliding-pill"
+      ],
       "params": [],
       "provides": [],
       "requires": [],
@@ -18334,6 +18427,7 @@
       "emits": [
         "chirpui-segmented",
         "chirpui-segmented--lg",
+        "chirpui-segmented--sliding-pill",
         "chirpui-segmented--sm",
         "chirpui-segmented__icon",
         "chirpui-segmented__input",
@@ -18351,7 +18445,9 @@
       "lineno": 20,
       "macro": "segmented_control",
       "maturity": "stable",
-      "modifiers": [],
+      "modifiers": [
+        "sliding-pill"
+      ],
       "params": [
         {
           "has_default": false,
@@ -18372,6 +18468,11 @@
           "has_default": true,
           "is_required": false,
           "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sliding_pill"
         }
       ],
       "provides": [],
@@ -18929,6 +19030,7 @@
         "chirpui-sidebar__link",
         "chirpui-sidebar__link--active",
         "chirpui-sidebar__nav",
+        "chirpui-sidebar__nav--sliding-pill",
         "chirpui-sidebar__section",
         "chirpui-sidebar__section-links",
         "chirpui-sidebar__section-title"
@@ -18938,6 +19040,7 @@
         "chirpui-sidebar__badge--reserved",
         "chirpui-sidebar__footer",
         "chirpui-sidebar__link--active",
+        "chirpui-sidebar__nav--sliding-pill",
         "chirpui-sidebar__section-links"
       ],
       "lineno": 41,
@@ -18961,6 +19064,11 @@
           "has_default": true,
           "is_required": false,
           "name": "aria_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sliding_pill"
         }
       ],
       "provides": [
@@ -19010,7 +19118,7 @@
         "chirpui-sidebar-toggle__icon"
       ],
       "extra_emits": [],
-      "lineno": 101,
+      "lineno": 103,
       "macro": "sidebar_toggle",
       "maturity": "stable",
       "modifiers": [],
@@ -21351,7 +21459,7 @@
       "extra_emits": [
         "chirpui-tab--disabled"
       ],
-      "lineno": 21,
+      "lineno": 23,
       "macro": "tab",
       "maturity": "stable",
       "modifiers": [
@@ -21773,6 +21881,7 @@
       "elements": [],
       "emits": [
         "chirpui-tabs",
+        "chirpui-tabs--sliding-pill",
         "chirpui-tabs__tab",
         "chirpui-tabs__tab--active"
       ],
@@ -21783,7 +21892,9 @@
       "lineno": 15,
       "macro": "tabs",
       "maturity": "stable",
-      "modifiers": [],
+      "modifiers": [
+        "sliding-pill"
+      ],
       "params": [
         {
           "has_default": true,
@@ -21794,6 +21905,11 @@
           "has_default": true,
           "is_required": false,
           "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "sliding_pill"
         }
       ],
       "provides": [],
@@ -21809,6 +21925,38 @@
       ],
       "slots_yielded": [],
       "template": "tabs.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "tabular": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "tabular",
+      "category": "typography",
+      "composes": [],
+      "consumes": [],
+      "description": "",
+      "elements": [],
+      "emits": [
+        "chirpui-tabular"
+      ],
+      "extra_emits": [],
+      "lineno": 0,
+      "macro": null,
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [],
+      "provides": [],
+      "requires": [],
+      "role": "primitive",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -24482,7 +24630,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 306,
+      "available": 309,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -24495,38 +24643,38 @@
       "control": 23,
       "data-display": 38,
       "effect": 46,
-      "feedback": 25,
+      "feedback": 26,
       "form": 21,
       "infrastructure": 2,
       "interactive": 9,
       "layout": 50,
       "marketing": 11,
       "media": 6,
-      "navigation": 29,
+      "navigation": 30,
       "overlay": 3,
       "social": 4,
-      "typography": 29
+      "typography": 30
     },
     "component_maturity": {
       "experimental": 105,
       "internal": 2,
       "legacy": 39,
-      "stable": 211
+      "stable": 214
     },
     "component_requirements": {
       "alpine": 30,
-      "htmx": 26
+      "htmx": 27
     },
     "component_roles": {
       "component": 192,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 22,
-      "primitive": 109
+      "primitive": 112
     },
     "components_with_consumes": 20,
-    "components_with_description": 254,
-    "components_with_params": 254,
+    "components_with_description": 255,
+    "components_with_params": 255,
     "components_with_provides": 12,
     "manifest_quality": {
       "missing_description": 0,
@@ -24534,7 +24682,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 252
+      "public_templated_components": 253
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -24543,7 +24691,7 @@
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
       "explicit_extra_blocks": 129,
-      "explicit_extra_classes": 546,
+      "explicit_extra_classes": 547,
       "explicit_trim_blocks": 69,
       "explicit_trim_classes": 96
     },
@@ -24551,15 +24699,15 @@
       "color": 142,
       "component": 134,
       "elevation": 7,
-      "layout": 46,
+      "layout": 50,
       "motion": 24,
       "radius": 7,
       "spacing": 30,
-      "typography": 45
+      "typography": 46
     },
-    "total_components": 357,
+    "total_components": 360,
     "total_theme_packs": 3,
-    "total_tokens": 435
+    "total_tokens": 440
   },
   "theme_packs": [
     {
@@ -25556,6 +25704,10 @@
       "category": "color",
       "scope": "global"
     },
+    "--chirpui-nums-tabular": {
+      "category": "typography",
+      "scope": "global"
+    },
     "--chirpui-on-accent": {
       "category": "color",
       "scope": "global"
@@ -25659,6 +25811,22 @@
     "--chirpui-pattern-weave": {
       "category": "color",
       "scope": "global"
+    },
+    "--chirpui-pill-h": {
+      "category": "layout",
+      "scope": "navigation"
+    },
+    "--chirpui-pill-w": {
+      "category": "layout",
+      "scope": "navigation"
+    },
+    "--chirpui-pill-x": {
+      "category": "layout",
+      "scope": "navigation"
+    },
+    "--chirpui-pill-y": {
+      "category": "layout",
+      "scope": "navigation"
     },
     "--chirpui-pre-padding": {
       "category": "component",

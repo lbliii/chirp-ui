@@ -38,14 +38,16 @@
 -#}
 {% from "chirpui/shell_frame.html" import shell_outlet_attrs %}
 
-{% def sidebar(cls="", current_path="", aria_label="") %}
+{% def sidebar(cls="", current_path="", aria_label="", sliding_pill=false) %}
 {# @provides _nav_current_path — consumed by: sidebar_link #}
 {% provide _nav_current_path = current_path %}
 {% set _responsive_dropdowns = cls and "chirpui-sidebar--responsive-dropdowns" in cls %}
 <nav class="chirpui-sidebar{{ " " ~ cls if cls else "" }}"{% if aria_label %} aria-label="{{ aria_label }}"{% end %}
      {% if _responsive_dropdowns %}x-data="chirpuiResponsiveSidebar()" x-init="init()" @keydown.escape.window="closeMenus()" @click.outside="closeMenus()"{% end %}>
     <div class="chirpui-sidebar__header">{% slot header %}</div>
-    <div class="chirpui-sidebar__nav">
+    <div class="chirpui-sidebar__nav{% if sliding_pill %} chirpui-sidebar__nav--sliding-pill{% end %}"
+         {% if sliding_pill %}data-chirpui-sliding-pill="rail"{% endif %}>
+        {% if sliding_pill %}<span class="chirpui-nav-pill" aria-hidden="true"></span>{% endif %}
         {% slot %}
     </div>
     <div class="chirpui-sidebar__footer">{% slot footer %}</div>

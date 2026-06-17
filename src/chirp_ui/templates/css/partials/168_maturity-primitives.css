@@ -267,7 +267,7 @@
       color: var(--chirpui-text-muted);
       font-family: var(--chirpui-code-font-family);
       font-size: var(--chirpui-ui-xs);
-      font-variant-numeric: tabular-nums;
+      font-variant-numeric: var(--chirpui-nums-tabular);
     }
 
     .chirpui-slider__input {

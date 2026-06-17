@@ -1524,7 +1524,7 @@ class TestRouteTabs:
         assert 'aria-label="2 pull requests"' in html
         assert "chirpui-route-tab__badge--loading" in html
         assert "chirpui-route-tab__badge--reserved" in html
-        assert html.count('aria-hidden="true"') == 2
+        assert html.count('aria-hidden="true"') == 3
 
 
 # ---------------------------------------------------------------------------
@@ -2045,7 +2045,8 @@ class TestStreaming:
         ).render()
         assert "chirpui-streaming-block" in html
         assert "Content" in html
-        assert "aria-live" in html
+        assert 'role="log"' in html
+        assert 'aria-relevant="additions text"' in html
 
     def test_streaming_block_active(self, env: Environment) -> None:
         html = env.from_string(
@@ -2062,6 +2063,16 @@ class TestStreaming:
         ).render()
         assert 'sse-swap="fragment"' in html
         assert 'hx-target="this"' in html
+
+    def test_load_sentinel(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import load_sentinel %}'
+            '{{ load_sentinel(label="Loading more activity items", busy=true) }}'
+        ).render()
+        assert "chirpui-load-sentinel" in html
+        assert 'role="status"' in html
+        assert 'aria-label="Loading more activity items"' in html
+        assert 'aria-busy="true"' in html
 
     def test_copy_btn(self, env: Environment) -> None:
         html = env.from_string(

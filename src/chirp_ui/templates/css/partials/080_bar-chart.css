@@ -76,7 +76,7 @@
 
 .chirpui-bar-chart__value {
     font-size: var(--chirpui-font-sm);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
     min-width: 2ch;

@@ -1,0 +1,1 @@
+Added premium polish Phase A primitives: `--chirpui-nums-tabular` / `.chirpui-tabular`, streaming `role="log"` with `load_sentinel()`, and a sliding nav pill for route tabs (SSR offsets + shell `syncPill()`), with opt-in support on tabs, segmented control, and sidebar rail.

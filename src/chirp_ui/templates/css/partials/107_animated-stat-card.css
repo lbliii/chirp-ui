@@ -17,7 +17,7 @@
     gap: var(--chirpui-spacing-2xs);
     font-size: var(--chirpui-ui-xs);
     font-weight: var(--chirpui-ui-font-weight-medium);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     color: var(--chirpui-text-muted);
 }

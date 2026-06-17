@@ -8,7 +8,7 @@
 }
 .chirpui-number-ticker__value {
     display: inline-block;
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: var(--chirpui-nums-tabular);
     line-height: var(--chirpui-line-height-tight);
     counter-reset: chirpui-num var(--chirpui-num);
     animation: chirpui-count-up var(--chirpui-anim-pulse) var(--chirpui-ease-decel) forwards;
