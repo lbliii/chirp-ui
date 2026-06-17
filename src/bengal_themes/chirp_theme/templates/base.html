@@ -15,7 +15,7 @@ _path, kind, tags are always defined - no defensive checks needed.
 {# Template-wide variables using {% let %} for explicit scope #}
 {% let params = params ?? {} %}
 {% let _page_title = page?.title ?? none %}
-{% let _page_url = page?._path ?? page?.href ?? section?._path ?? section?.href ?? "/" %}
+{% let _page_url = page?._path ?? page?.href ?? "/" %}
 
 {# Navigation - cache function calls #}
 {% let _current_lang = current_lang() %}

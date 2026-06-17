@@ -164,12 +164,14 @@ def test_every_structural_surface_sets_a_measure() -> None:
 # (5) no orphaned surface block — every block is emitted by a template
 # --------------------------------------------------------------------------- #
 def _emitted_surface_attrs() -> set[str]:
-    """Surface names emitted by type templates, covering both literal
-    `data-chirp-theme-surface="blog"` and conditional ternary forms inside
-    `{{ … }}` (index.html emits release-list that way)."""
+    """Surface names emitted by type templates, covering literal
+    `data-chirp-theme-surface="blog"`, conditional ternary forms inside
+    `{{ … }}` (index.html emits release-list that way), and `surface=`
+    arguments passed into catalog_shell / learning_index macros."""
     found: set[str] = set()
     literal = re.compile(r'data-chirp-theme-surface="([^"{}]+)"')
     quoted = re.compile(r"""['"]([a-z][a-z0-9-]*)['"]""")
+    surface_kw = re.compile(r"""surface\s*=\s*['"]([a-z][a-z0-9-]*)['"]""")
     for path in TEMPLATES_DIR.rglob("*.html"):
         text = path.read_text(encoding="utf-8")
         for value in literal.findall(text):
@@ -177,6 +179,7 @@ def _emitted_surface_attrs() -> set[str]:
         for line in text.splitlines():
             if "data-chirp-theme-surface=" in line and "{{" in line:
                 found.update(quoted.findall(line))
+        found.update(surface_kw.findall(text))
     return found
 
 

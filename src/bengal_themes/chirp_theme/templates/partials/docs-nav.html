@@ -167,7 +167,7 @@ menu, or the scoped documentation tree on /docs/ and /api/ pages.
 {% let is_autodoc = is_autodoc_page(nav_page) if (is_autodoc_page is defined and nav_page) else false %}
 {% let page_section = nav_page?._section %}
 {% let root_section = page_section?.root ?? none %}
-{% let current_path = catalog_current_path ?? _page_url ?? nav_page?._path ?? nav_page?.href ?? '' %}
+{% let current_path = catalog_current_path ?? nav_page?._path ?? nav_page?.href ?? '' %}
 {% let rail_items = get_menu_lang("main", _current_lang ?? current_lang()) ?? [] %}
 {% let use_doc_tree = nav_page and (current_path.startswith('/docs/') or current_path == '/docs/' or current_path.startswith('/api/') or current_path == '/api/') and root_section %}
 {% let in_layouts_section = current_path.startswith('/blog/') or current_path == '/blog/' or current_path.startswith('/tutorial/') or current_path == '/tutorial/' or current_path.startswith('/tracks/') or current_path == '/tracks/' or current_path.startswith('/resume/') or current_path == '/resume/' or current_path.startswith('/notebook/') or current_path == '/notebook/' or current_path.startswith('/authors/') or current_path == '/authors/' or current_path.startswith('/changelog/') or current_path == '/changelog/' %}
@@ -177,7 +177,8 @@ menu, or the scoped documentation tree on /docs/ and /api/ pages.
 <div class="chirp-theme-doc-catalog" data-chirp-theme-doc-nav="catalog" data-bengal="docs-nav">
   {% if rail_items | length > 0 %}
   <div class="chirp-theme-doc-catalog__primary">
-    {% call filter_rail(label='Site navigation', cls='chirp-theme-doc-catalog-rail') %}
+    {% let rail_label = 'Documentation catalog' if use_doc_tree else 'Site navigation' %}
+    {% call filter_rail(label=rail_label, cls='chirp-theme-doc-catalog-rail') %}
       <div class="chirp-theme-doc-catalog-rail__group chirp-theme-doc-catalog-rail__group--home">
         <a class="chirpui-filter-rail__item chirp-theme-doc-catalog-rail__item chirp-theme-doc-catalog-rail__home{{ ' is-active' if current_path == '/' else '' }}"
            href="{{ '/' | absolute_url }}"

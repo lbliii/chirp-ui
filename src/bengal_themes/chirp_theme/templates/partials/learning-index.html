@@ -43,7 +43,8 @@
 {% let safe_items = items ?? [] %}
 {% let _layout = "grid" if layout == "grid" else "feed" %}
 {% let _count = count_label(safe_items | length, item_singular, item_plural) %}
-{% call catalog_shell(surface=surface, current_path=_page_url) %}
+{% let _catalog_path = page?._path ?? page?.href ?? '/' %}
+{% call catalog_shell(surface=surface, current_path=_catalog_path) %}
 <div class="chirp-theme-learning-shell">
 {% call container(cls="chirp-theme-learning-page" ~ (" " ~ cls if cls else "")) %}
   {% call stack(gap="lg") %}

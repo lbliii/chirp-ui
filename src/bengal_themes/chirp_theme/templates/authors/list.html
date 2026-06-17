@@ -30,7 +30,7 @@
 {% end %}
 {% let _count = count_label(author_items | length, "author") %}
 
-{% call catalog_shell(surface="author", current_path=_page_url) %}
+{% call catalog_shell(surface="authors", current_path=_page_url) %}
 {% call container(cls="chirp-theme-taxonomy-page") %}
   {% call stack(gap="lg") %}
     {% call page_hero(title=page_title, subtitle=page_desc, variant="minimal", background="solid", cls="chirp-theme-learning-hero") %}
