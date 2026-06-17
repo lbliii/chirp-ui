@@ -90,12 +90,17 @@
         .chirpui-table__td:has(.chirpui-row-actions__trigger)
             > :where(.chirpui-cluster, .chirpui-dropdown, .chirpui-btn, .chirpui-icon-btn) {
             display: inline-flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             align-items: center;
             justify-content: flex-end;
             gap: var(--chirpui-spacing-xs);
             max-inline-size: 100%;
             margin-block: 0;
+        }
+
+        .chirpui-table__td--actions :where(.chirpui-btn, .chirpui-icon-btn),
+        .chirpui-table__td:has(.chirpui-row-actions__trigger) :where(.chirpui-btn, .chirpui-icon-btn) {
+            white-space: nowrap;
         }
 
         .chirpui-table__th {

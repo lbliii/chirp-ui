@@ -6,6 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 APP_THEME = ROOT / "docs" / "theming" / "app-theme.md"
 TOKENS = ROOT / "docs" / "fundamentals" / "tokens.md"
 SHOWCASE = ROOT / "examples" / "design-system-gap-showcase" / "index.html"
+RESET_CSS = ROOT / "src" / "chirp_ui" / "templates" / "css" / "partials" / "002_reset.css"
 THEME_CSS_DIR = ROOT / "src" / "bengal_themes" / "chirp_theme" / "assets" / "css"
 THEME_CSS = THEME_CSS_DIR / "chirp-theme.css"
 STYLE_CSS = THEME_CSS_DIR / "style.css"
@@ -206,6 +207,47 @@ def test_primary_button_meets_aa_in_root_and_theme_overrides() -> None:
         assert ratio >= WCAG_AA_NORMAL, (
             f"{selector}: primary button label {on_accent} on accent "
             f"{accent} is {ratio:.2f}:1, below WCAG AA {WCAG_AA_NORMAL}:1"
+        )
+
+
+def test_library_default_accent_on_accent_meets_aa() -> None:
+    """Shipped chirp-ui baseline tokens must pair accent/on-accent for AA contrast."""
+    css = RESET_CSS.read_text(encoding="utf-8")
+    blocks = _split_theme_blocks(css)
+    root_body = blocks.get(":root", "")
+    accent = _declares(root_body, "--chirpui-accent")
+    on_accent = _declares(root_body, "--chirpui-on-accent")
+    assert accent, ":root must declare --chirpui-accent"
+    assert on_accent, ":root must declare --chirpui-on-accent"
+
+    light_accent = re.search(r"light-dark\(\s*(#[0-9a-fA-F]{3,6})", accent)
+    light_on = re.search(r"light-dark\(\s*(#[0-9a-fA-F]{3,6})", on_accent)
+    dark_on = re.search(r"light-dark\([^,]+,\s*(#[0-9a-fA-F]{3,6})", on_accent)
+    assert light_accent, "library accent must use a light-dark() hex pairing"
+    assert light_on, "library on-accent must use a light-dark() hex pairing"
+    assert dark_on, "library on-accent must declare a dark-side hex fallback"
+
+    light_ratio = _contrast_ratio(light_on.group(1), light_accent.group(1))
+    assert light_ratio >= WCAG_AA_NORMAL, (
+        f"library light accent {light_accent.group(1)} with on-accent "
+        f"{light_on.group(1)} is {light_ratio:.2f}:1, below WCAG AA"
+    )
+
+    dark_accent = re.search(r"light-dark\([^,]+,\s*(#[0-9a-fA-F]{3,6})", accent)
+    assert dark_accent, "library accent must declare a dark-side hex fallback"
+    dark_ratio = _contrast_ratio(dark_on.group(1), dark_accent.group(1))
+    assert dark_ratio >= WCAG_AA_NORMAL, (
+        f"library dark accent {dark_accent.group(1)} with on-accent "
+        f"{dark_on.group(1)} is {dark_ratio:.2f}:1, below WCAG AA"
+    )
+
+    light_block = blocks.get('[data-theme="light"]', "")
+    light_override = _declares(light_block, "--chirpui-accent")
+    if light_override and re.match(r"^#[0-9a-fA-F]{3,6}$", light_override):
+        ratio = _contrast_ratio("#fff", light_override)
+        assert ratio >= WCAG_AA_NORMAL, (
+            f'[data-theme="light"] accent {light_override} with white on-accent '
+            f"is {ratio:.2f}:1, below WCAG AA"
         )
 
 

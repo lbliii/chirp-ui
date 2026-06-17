@@ -12,11 +12,11 @@
     :root {
         color-scheme: light dark;
 
-        /* Brand anchors */
-        --chirpui-accent: oklch(0.58 0.16 248);
-        --chirpui-accent-hover: oklch(0.5 0.16 248);
+        /* Brand anchors — accent/on-accent must stay AA-paired (see #241). */
+        --chirpui-accent: oklch(0.48 0.16 248);
+        --chirpui-accent-hover: oklch(0.42 0.16 248);
         --chirpui-accent-secondary: oklch(0.58 0.14 305);
-        --chirpui-on-accent: #ffffff;
+        --chirpui-on-accent: light-dark(#fff, #0f172a);
 
         /* Typography */
         --chirpui-ui-font-family: ui-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -70,6 +70,7 @@
         --chirpui-accent: oklch(0.76 0.13 248);
         --chirpui-accent-hover: oklch(0.84 0.11 248);
         --chirpui-accent-secondary: oklch(0.78 0.12 305);
+        --chirpui-on-accent: #0f172a;
         --chirpui-primary: var(--chirpui-accent);
         --chirpui-success: oklch(0.72 0.16 150);
         --chirpui-warning: oklch(0.82 0.13 70);
@@ -98,9 +99,10 @@
             --chirpui-text: oklch(0.22 0.028 248);
             --chirpui-text-muted: oklch(0.5 0.028 248);
 
-            --chirpui-accent: oklch(0.58 0.16 248);
-            --chirpui-accent-hover: oklch(0.5 0.16 248);
+            --chirpui-accent: oklch(0.48 0.16 248);
+            --chirpui-accent-hover: oklch(0.42 0.16 248);
             --chirpui-accent-secondary: oklch(0.58 0.14 305);
+            --chirpui-on-accent: #fff;
             --chirpui-primary: var(--chirpui-accent);
             --chirpui-success: oklch(0.58 0.17 150);
             --chirpui-warning: oklch(0.72 0.15 70);
@@ -133,6 +135,7 @@
             --chirpui-accent: oklch(0.76 0.13 248);
             --chirpui-accent-hover: oklch(0.84 0.11 248);
             --chirpui-accent-secondary: oklch(0.78 0.12 305);
+            --chirpui-on-accent: #0f172a;
             --chirpui-primary: var(--chirpui-accent);
             --chirpui-success: oklch(0.72 0.16 150);
             --chirpui-warning: oklch(0.82 0.13 70);
