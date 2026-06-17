@@ -126,7 +126,27 @@ unused-ignore-comment = "warn"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
-addopts = ["-ra", "-q", "--strict-markers", "--import-mode=importlib", "--ignore=tests/browser"]
+# -n auto / --dist worksteal: run the ~2700 unit tests across all cores
+#   (measured ~2.15x faster). All shared state (validation strict flag, named-
+#   color registry) is ContextVar-isolated, so xdist's separate worker processes
+#   are safe — no test needs an xdist_group. worksteal keeps the handful of long
+#   Bengal-build tests from stranding a single worker.
+# --timeout: a default per-test ceiling so one wedged test fails fast (with a
+#   traceback) instead of stalling CI. thread method (not the POSIX signal
+#   default) is required: signal arms SIGALRM only on the main thread and can't
+#   interrupt the Bengal tests' blocking subprocess.run, and it is also
+#   free-threading-safe. The browser tasks clear addopts via --override-ini.
+addopts = [
+    "-ra",
+    "-q",
+    "--strict-markers",
+    "--import-mode=importlib",
+    "--ignore=tests/browser",
+    "-n", "auto",
+    "--dist", "worksteal",
+    "--timeout=120",
+    "--timeout-method=thread",
+]
 asyncio_mode = "auto"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
@@ -179,6 +199,7 @@ dev = [
     "pytest>=9.0.2",
     "pytest-cov>=6.0.0",
     "pytest-timeout>=2.3.0",
+    "pytest-xdist>=3.6.0",
     "tinycss2>=1.4.0",
     # Type Checking
     "ty>=0.0.11",

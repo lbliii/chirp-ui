@@ -1591,6 +1591,10 @@ result_path.write_text(
         check=True,
         env=env,
         cwd=str(_WORKSPACE_BENGAL if _WORKSPACE_BENGAL.exists() else REPO_ROOT),
+        # ~4.5x the measured ~13-20s child wall time. A wedged Bengal build
+        # raises TimeoutExpired (surfacing the child's stderr) instead of
+        # stalling CI — the pytest-timeout thread method cannot reap a child.
+        timeout=90,
     )
     result = json.loads(result_path.read_text(encoding="utf-8"))
 
@@ -1688,6 +1692,10 @@ result_path.write_text(
         check=True,
         env=env,
         cwd=str(_WORKSPACE_BENGAL if _WORKSPACE_BENGAL.exists() else REPO_ROOT),
+        # ~4.5x the measured ~13-20s child wall time. A wedged Bengal build
+        # raises TimeoutExpired (surfacing the child's stderr) instead of
+        # stalling CI — the pytest-timeout thread method cannot reap a child.
+        timeout=90,
     )
     result = json.loads(result_path.read_text(encoding="utf-8"))
     combined_nav = result["header"] + result["mobile"]
@@ -1753,6 +1761,10 @@ result_path.write_text(
         check=True,
         env=env,
         cwd=str(_WORKSPACE_BENGAL if _WORKSPACE_BENGAL.exists() else REPO_ROOT),
+        # ~4.5x the measured ~13-20s child wall time. A wedged Bengal build
+        # raises TimeoutExpired (surfacing the child's stderr) instead of
+        # stalling CI — the pytest-timeout thread method cannot reap a child.
+        timeout=90,
     )
     result = json.loads(result_path.read_text(encoding="utf-8"))
 
@@ -1880,6 +1892,10 @@ result_path.write_text(
         check=True,
         env=env,
         cwd=str(_WORKSPACE_BENGAL if _WORKSPACE_BENGAL.exists() else REPO_ROOT),
+        # ~4.5x the measured ~13-20s child wall time. A wedged Bengal build
+        # raises TimeoutExpired (surfacing the child's stderr) instead of
+        # stalling CI — the pytest-timeout thread method cannot reap a child.
+        timeout=90,
     )
     result = json.loads(result_path.read_text(encoding="utf-8"))
     referenced_assets = result["referenced_assets"]
