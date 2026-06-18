@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% from "chirpui/card.html" import resource_card %}
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/layout.html" import container, grid, stack %}
+{% from "partials/learning-pages.html" import rendered_body %}
+{% from "partials/catalog-shell.html" import catalog_shell %}
+{% from "partials/nav-icons.html" import section_icon_name %}
+
+{% block content %}
+{% let title = page?.title ?? section?.title ?? "Dev" %}
+{% let description = page?.description ?? section?.description ?? "Developer resources for chirp-ui." %}
+{% let menu_items = get_menu_lang("main", _current_lang ?? current_lang()) ?? [] %}
+{% let dev_children = [] %}
+{% for item in menu_items %}
+{% if (item?.name ?? item?.title ?? '') == "Dev" %}
+{% let dev_children = item?.children ?? [] %}
+{% end %}
+{% endfor %}
+{% let dev_cards = dev_children + [{"name": "Releases", "href": "/releases/", "icon": "package"}] %}
+
+{% call catalog_shell(surface="dev", current_path=_page_url) %}
+{% call container(cls="chirp-theme-section-hub chirp-theme-dev-hub") %}
+  {% call stack(gap="lg") %}
+    {% call page_hero(title=title, subtitle=description, variant="editorial", background="solid", cls="chirp-theme-section-hub__hero") %}
+    {% end %}
+    {{ rendered_body(content) }}
+    {% call grid(cols=3, gap="md", cls="chirp-theme-section-hub__grid") %}
+      {% for child in dev_cards %}
+      {% let child_title = child?.name ?? child?.title ?? "Untitled" %}
+      {% let child_href = child?.href ?? child?.url ?? "#" %}
+      {% let child_icon = child?.icon ?? (section_icon_name(child_title, child_href) | trim) %}
+      {% let is_external = child_href.startswith('http://') or child_href.startswith('https://') %}
+      {% call resource_card(child_href, child_title, description=none, cls="chirp-theme-section-hub__card") %}
+        {% slot badges %}
+        <span class="chirpui-card__icon chirp-theme-section-hub__mark" aria-hidden="true">
+          {% if child_icon %}{{ icon(child_icon, size=18) }}{% else %}{{ icon('external' if is_external else 'code', size=18) }}{% end %}
+        </span>
+        {% end %}
+        {% if is_external %}
+        <p class="chirpui-text-muted chirpui-font-sm chirp-theme-section-hub__external">Opens in a new tab</p>
+        {% end %}
+      {% end %}
+      {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}
+{% end %}

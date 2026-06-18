@@ -2,7 +2,7 @@
 
 {% from "chirpui/badge.html" import badge %}
 {% from "chirpui/button.html" import btn %}
-{% from "chirpui/code.html" import install_snippet %}
+{% from "partials/releases-shared.html" import release_install_row %}
 {% from "chirpui/hero.html" import page_hero %}
 {% from "chirpui/layout.html" import cluster, container, stack %}
 {% from "chirpui/rendered_content.html" import rendered_content %}
@@ -40,7 +40,7 @@
     {% end %}
 
     {% call surface(variant="muted", cls="chirp-theme-release-single__install") %}
-      {{ install_snippet("uv add chirp-ui==" ~ version, label="install") }}
+      {{ release_install_row(version) }}
     {% end %}
 
     {% if content and content.strip() %}

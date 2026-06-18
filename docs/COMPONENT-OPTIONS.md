@@ -8033,6 +8033,7 @@ Resource Index composite
 | `button_label` | no | (has default) |
 | `button_icon` | no | (has default) |
 | `search_method` | no | (has default) |
+| `show_search` | no | (has default) |
 | `filter_action` | no | (has default) |
 | `filter_method` | no | (has default) |
 | `filter_surface_variant` | no | (has default) |

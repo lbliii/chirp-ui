@@ -1,0 +1,52 @@
+{#- Section landing hub — card grid for a top-level menu family (Layouts, Dev).
+
+    Resolves children from `site/config/_default/menu.yaml` by `menu_identifier`
+    so the landing page stays in sync with the nav rail and header dropdown.
+-#}
+{% from "chirpui/card.html" import resource_card %}
+{% from "chirpui/hero.html" import page_hero %}
+{% from "chirpui/layout.html" import container, grid, stack %}
+{% from "partials/learning-pages.html" import rendered_body %}
+{% from "partials/catalog-shell.html" import catalog_shell %}
+{% from "partials/nav-icons.html" import section_icon_name %}
+
+{% def section_landing(title, subtitle, menu_title, surface, content=none, cls="") %}
+{% let menu_items = get_menu_lang("main", _current_lang ?? current_lang()) ?? [] %}
+{% let hub_children = [] %}
+{% for item in menu_items %}
+{% if (item?.name ?? item?.title ?? '') == menu_title %}
+{% let hub_children = item?.children ?? [] %}
+{% end %}
+{% endfor %}
+{% let catalog_path = page?._path ?? page?.href ?? '/' %}
+
+{% call catalog_shell(surface=surface, current_path=catalog_path) %}
+{% call container(cls="chirp-theme-section-hub" ~ (" " ~ cls if cls else "")) %}
+  {% call stack(gap="lg") %}
+    {% call page_hero(title=title, subtitle=subtitle, variant="editorial", background="solid", cls="chirp-theme-section-hub__hero") %}
+    {% end %}
+    {{ rendered_body(content) }}
+    {% if hub_children | length > 0 %}
+    {% call grid(cols=3, gap="md", cls="chirp-theme-section-hub__grid") %}
+      {% for child in hub_children %}
+      {% let child_title = child?.name ?? child?.title ?? "Untitled" %}
+      {% let child_href = child?.href ?? child?.url ?? "#" %}
+      {% let child_icon = child?.icon ?? (section_icon_name(child_title, child_href) | trim) %}
+      {% let is_external = child_href.startswith('http://') or child_href.startswith('https://') %}
+      {% call resource_card(child_href, child_title, description=none, cls="chirp-theme-section-hub__card") %}
+        {% slot badges %}
+        <span class="chirpui-card__icon chirp-theme-section-hub__mark" aria-hidden="true">
+          {% if child_icon %}{{ icon(child_icon, size=18) }}{% else %}{{ icon('external' if is_external else 'article', size=18) }}{% end %}
+        </span>
+        {% end %}
+        {% if is_external %}
+        <p class="chirpui-text-muted chirpui-font-sm chirp-theme-section-hub__external">Opens in a new tab</p>
+        {% end %}
+      {% end %}
+      {% end %}
+    {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+{% end %}
+{% end %}

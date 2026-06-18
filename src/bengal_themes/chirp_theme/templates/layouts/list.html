@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% from "partials/section-hub.html" import section_landing %}
+
+{% block content %}
+{% let title = page?.title ?? section?.title ?? "Layouts" %}
+{% let description = page?.description ?? section?.description ?? "Explore chirp-theme layout families." %}
+
+{{ section_landing(title, description, "Layouts", "layouts", content=content) }}
+{% end %}

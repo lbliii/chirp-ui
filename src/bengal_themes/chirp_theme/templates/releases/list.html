@@ -1,82 +1,80 @@
 {% extends "base.html" %}
 
 {% from "chirpui/badge.html" import badge %}
-{% from "chirpui/code.html" import install_snippet %}
 {% from "chirpui/hero.html" import page_hero %}
 {% from "chirpui/layout.html" import container, stack %}
 {% from "chirpui/timeline.html" import timeline, timeline_item %}
 {% from "partials/learning-pages.html" import rendered_body %}
-{% from "partials/taxonomy-pages.html" import count_label %}
 {% from "partials/empty-state.html" import empty_state %}
 {% from "partials/catalog-shell.html" import catalog_shell %}
-
-{#- Derive the bare version string from a release title or explicit param.
-    "chirp-ui 0.9.0" -> "0.9.0"; an explicit metadata.version always wins. -#}
-{% def release_version(item) %}
-{%- let raw = item?.metadata?.version ?? ((item?.title ?? "") | replace("chirp-ui ", "")) -%}
-{{ raw | trim }}
-{% end %}
-
-{#- Numeric version sort key. Zero-pad each semver component so a plain string
-    sort orders versions numerically — string-descending title sort breaks once a
-    component reaches two digits (e.g. "0.10.0" < "0.9.0" as strings). -#}
-{% def version_sort_key(item) %}
-{%- let v = release_version(item) | trim -%}
-{%- let p = v.split(".") -%}
-{%- let major = (p[0] if p | length > 0 else "0") | int -%}
-{%- let minor = (p[1] if p | length > 1 else "0") | int -%}
-{%- let patch = (p[2] if p | length > 2 else "0") | int -%}
-{{- "{:05d}.{:05d}.{:05d}" | format(major, minor, patch) -}}
-{% end %}
+{% from "partials/releases-shared.html" import release_version, version_sort_key, release_minor_key, release_install_row %}
 
 {% block content %}
-{% let title = page?.title ?? section?.title ?? "Releases" %}
-{% let description = page?.description ?? section?.description ?? "chirp-ui release history." %}
 {% let raw_items = posts ?? pages ?? page?.children ?? section?.pages ?? section?.regular_pages ?? [] %}
-{#- Sort newest-first by the parsed semver version. Release list items do not
-    expose a resolvable `date` (unlike changelog), and a raw title-string sort
-    misorders multi-digit components, so sort by a zero-padded version key. -#}
 {% let items = [{"_sk": version_sort_key(item) | trim, "_item": item} for item in raw_items] | sort(attribute="_sk", reverse=true) %}
-{% let _count = count_label(items | length, "release") %}
 
 {% call catalog_shell(surface="release-list", current_path=_page_url) %}
-{% call container(cls="chirp-theme-learning-page chirp-theme-release-page") %}
+{% call container(cls="chirp-theme-release-page") %}
   {% call stack(gap="lg") %}
-    {% call page_hero(title=title, subtitle=description, variant="minimal", background="solid", cls="chirp-theme-learning-hero") %}
-      {% slot eyebrow %}{{ badge("Releases", variant="primary") }}{% end %}
-      {% slot metadata %}{{ _count }}{% end %}
+    {% call page_hero(title="Releases", subtitle="Install a specific version or read what shipped in each line.", variant="editorial", background="solid", cls="chirp-theme-release-hero chirp-theme-release-hero--index") %}
     {% end %}
     {{ rendered_body(content) }}
+
     {% if items | length > 0 %}
-    {% call timeline(density="compact", link_mode="title", cls="chirp-theme-release-timeline") %}
+    <div class="chirp-theme-release-groups">
+      {% let prev_minor = '' %}
       {% for entry in items %}
       {% let item = entry._item %}
       {% let version = release_version(item) | trim %}
       {% let parts = version.split(".") %}
       {% let patch = (parts[2] if parts | length > 2 else "0") | int %}
+      {% let minor = release_minor_key(version) %}
       {% let is_feature = patch == 0 %}
       {% let is_latest = loop.first %}
       {% let entry_href = item?.href ?? item?.url ?? "#" %}
       {% let entry_date = item?.metadata?.date ?? item?.date %}
-      {#- One-line highlight: opt-in via frontmatter; skip the boilerplate
-          "Release X.Y.Z" description so empty cards stay clean. -#}
       {% let raw_highlight = item?.metadata?.highlight ?? item?.metadata?.summary ?? item?.summary ?? none %}
       {% let highlight = raw_highlight if (raw_highlight and (raw_highlight | trim) != ("Release " ~ version)) else none %}
-      {% let tier_class = "chirp-theme-release-entry--feature" if is_feature else "chirp-theme-release-entry--patch" %}
-      {% let latest_class = " chirp-theme-release-entry--latest" if is_latest else "" %}
-      {% call timeline_item("chirp-ui " ~ version, entry_date | dateformat("%b %d, %Y") if entry_date else "", href=entry_href, link_mode="title", cls="chirp-theme-release-entry " ~ tier_class ~ latest_class) %}
-        {% slot header_actions %}
-        {% if is_latest %}{{ badge("Latest", variant="success") }}
-        {% elif is_feature %}{{ badge("Feature", variant="info") }}
-        {% else %}{{ badge("Patch", variant="muted") }}{% end %}
-        {% end %}
-        {% slot content %}
-        {% if highlight %}<p class="chirp-theme-release-entry__highlight">{{ highlight }}</p>{% end %}
-        {{ install_snippet("uv add chirp-ui==" ~ version, label=none, cls="chirp-theme-release-entry__install") }}
+      {% let anchor = 'release-' ~ (minor | replace('.', '-')) %}
+
+      {% if minor != prev_minor %}
+      {% if not loop.first %}</div></section>{% end %}
+      <section id="{{ anchor }}" class="chirp-theme-release-group" aria-labelledby="{{ anchor }}-title">
+        <header class="chirp-theme-release-group__header">
+          <h2 id="{{ anchor }}-title" class="chirp-theme-release-group__title">{{ minor }}</h2>
+          {% if is_latest %}{{ badge("Latest line", variant="success") }}{% end %}
+        </header>
+        <div class="chirp-theme-release-group__entries">
+      {% end %}
+      {% let prev_minor = minor %}
+
+      {% if is_feature %}
+      {% call timeline(density="compact", link_mode="title", cls="chirp-theme-release-timeline chirp-theme-release-timeline--headline") %}
+        {% call timeline_item("chirp-ui " ~ version, entry_date | dateformat("%b %d, %Y") if entry_date else "", href=entry_href, link_mode="title", cls="chirp-theme-release-entry chirp-theme-release-entry--feature" ~ (" chirp-theme-release-entry--latest" if is_latest else "")) %}
+          {% slot header_actions %}
+          {% if is_latest %}{{ badge("Latest", variant="success") }}
+          {% else %}{{ badge("Feature", variant="info") }}{% end %}
+          {% end %}
+          {% slot content %}
+          {% if highlight %}<p class="chirp-theme-release-entry__highlight">{{ highlight }}</p>{% end %}
+          {{ release_install_row(version, cls="chirp-theme-release-entry__install") }}
+          {% end %}
         {% end %}
       {% end %}
+      {% else %}
+      <article class="chirp-theme-release-patch">
+        <div class="chirp-theme-release-patch__header">
+          <a href="{{ entry_href }}" class="chirp-theme-release-patch__title">{{ version }}</a>
+          {% if entry_date %}<time class="chirp-theme-release-patch__date" datetime="{{ entry_date }}">{{ entry_date | dateformat("%b %d, %Y") }}</time>{% end %}
+          {{ badge("Patch", variant="muted") }}
+        </div>
+        {% if highlight %}<p class="chirp-theme-release-patch__highlight">{{ highlight }}</p>{% end %}
+        {{ release_install_row(version, cls="chirp-theme-release-patch__install") }}
+      </article>
       {% end %}
-    {% end %}
+      {% if loop.last %}</div></section>{% endif %}
+      {% endfor %}
+    </div>
     {% else %}
     {{ empty_state("No releases yet", "Release notes appear here when published.", icon_name="package") }}
     {% end %}

@@ -1,6 +1,6 @@
 ---
 title: Releases
-description: chirp-ui release history
+description: Install a specific version or browse release notes by version line.
 draft: false
 weight: 90
 lang: en
@@ -9,6 +9,4 @@ cascade:
   type: releases
 ---
 
-# Releases
-
-Release notes for chirp-ui.
+Pick a version to install, or open a release note for the full changelog.

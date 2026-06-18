@@ -452,6 +452,7 @@ async def test_bengal_api_index_uses_catalog_shell_without_overflow(page, static
     assert await page.locator(".chirp-theme-reference-card").count() >= 3
     assert await page.locator(".chirp-theme-reference-grid").count() == 0
     assert await page.locator(".chirp-theme-api-index .chirpui-selection-bar:visible").count() == 0
+    assert await page.locator(".chirp-theme-api-index .chirpui-resource-index__search").count() == 0
 
     metrics = await page.evaluate(
         """() => {
@@ -467,7 +468,6 @@ async def test_bengal_api_index_uses_catalog_shell_without_overflow(page, static
             const navBottom = nav.getBoundingClientRect().bottom;
             const heroRect = hero.getBoundingClientRect();
             const resultsStyle = getComputedStyle(results);
-            const searchStyle = getComputedStyle(search);
             const cardStyle = getComputedStyle(card);
             const cardRect = card.getBoundingClientRect();
             const descriptionStyle = getComputedStyle(cardDescription);
@@ -475,7 +475,7 @@ async def test_bengal_api_index_uses_catalog_shell_without_overflow(page, static
                 heroGap: Math.round(heroRect.top - navBottom),
                 heroBackground: getComputedStyle(hero).backgroundImage,
                 resultColumns: resultsStyle.gridTemplateColumns.split(" ").filter(Boolean).length,
-                searchBackground: searchStyle.backgroundImage,
+                hasDeadSearchForm: Boolean(search),
                 cardBorder: cardStyle.borderTopWidth,
                 cardBackground: cardStyle.backgroundImage,
                 cardDisplay: cardStyle.display,
@@ -492,7 +492,7 @@ async def test_bengal_api_index_uses_catalog_shell_without_overflow(page, static
     assert 0 <= metrics["heroGap"] <= 18, metrics
     assert "linear-gradient" in metrics["heroBackground"], metrics
     assert metrics["resultColumns"] >= 2, metrics
-    assert "linear-gradient" in metrics["searchBackground"], metrics
+    assert metrics["hasDeadSearchForm"] is False, metrics
     assert metrics["cardBorder"] == "0px", metrics
     assert "linear-gradient" in metrics["cardBackground"], metrics
     assert metrics["cardDisplay"] == "grid", metrics
@@ -572,6 +572,80 @@ async def test_bengal_api_module_uses_app_shell_reference_frame(page, static_sit
     assert metrics["memberContentBorderTop"] == "1px", metrics
     assert metrics["memberActionBadgeCount"] == 1, metrics
     assert metrics["memberBodyBadgeCount"] == 0, metrics
+
+
+async def test_bengal_section_hubs_and_release_index(page, static_site_url):
+    await page.set_viewport_size({"width": 1280, "height": 900})
+    await page.goto(f"{static_site_url}/layouts/")
+    await page.wait_for_load_state("networkidle")
+    assert await page.locator(".chirp-theme-section-hub__card").count() >= 5
+    await page.goto(f"{static_site_url}/dev/")
+    await page.wait_for_load_state("networkidle")
+    assert await page.locator(".chirp-theme-section-hub__card").count() >= 2
+    await page.goto(f"{static_site_url}/releases/")
+    await page.wait_for_load_state("networkidle")
+    metrics = await page.evaluate(
+        """() => ({
+            groups: document.querySelectorAll(".chirp-theme-release-group").length,
+            navItems: document.querySelectorAll(".chirp-theme-releases-nav__item").length,
+            heroBadge: document.querySelector(".chirp-theme-release-hero--index .chirpui-badge"),
+            heroCount: (document.querySelector(".chirp-theme-release-hero--index .chirpui-hero__metadata")?.textContent ?? "").trim(),
+            installHeight: Math.round(document.querySelector(".chirp-theme-release-install")?.getBoundingClientRect().height ?? 0),
+        })"""
+    )
+    assert metrics["groups"] == 10, metrics
+    assert metrics["navItems"] == 10, metrics
+    assert metrics["heroBadge"] is None, metrics
+    assert metrics["heroCount"] == "", metrics
+    assert metrics["installHeight"] <= 28, metrics
+
+
+async def test_bengal_api_module_symbol_cards_use_reference_grid(page, static_site_url):
+    await page.set_viewport_size({"width": 1280, "height": 900})
+    await page.goto(f"{static_site_url}/api/inspect/")
+    await page.wait_for_load_state("networkidle")
+    await page.wait_for_timeout(100)
+
+    await expect(page.locator(".chirp-theme-reference-symbols")).to_be_visible()
+    symbol_cards = page.locator(".chirp-theme-reference-card--symbol")
+    assert await symbol_cards.count() >= 3
+
+    metrics = await page.evaluate(
+        """() => {
+            const card = document.querySelector(".chirp-theme-reference-card--symbol");
+            const mark = card.querySelector(".chirp-theme-reference-card__mark");
+            const eyebrow = card.querySelector(".chirp-theme-reference-card__eyebrow");
+            const title = card.querySelector(".chirp-theme-reference-card__title");
+            const description = card.querySelector(".chirp-theme-reference-card__description");
+            const cardStyle = getComputedStyle(card);
+            const markRect = mark.getBoundingClientRect();
+            const eyebrowRect = eyebrow.getBoundingClientRect();
+            const titleRect = title.getBoundingClientRect();
+            const nameCell = document.querySelector(
+                ".chirp-theme-reference-params .chirpui-params-table__td--name code"
+            );
+            return {
+                usesResourceCardDom: Boolean(card.querySelector(".chirpui-card__top-meta")),
+                cardDisplay: cardStyle.display,
+                cardHeight: Math.round(card.getBoundingClientRect().height),
+                markEyebrowSameRow: Math.abs(markRect.top - eyebrowRect.top) <= 2,
+                titleBelowEyebrow: titleRect.top > eyebrowRect.top,
+                descriptionClamp: getComputedStyle(description).webkitLineClamp,
+                nameCodeWrap: nameCell ? getComputedStyle(nameCell).whiteSpace : null,
+                duplicateModuleBadge: document.querySelectorAll(
+                    ".chirp-theme-reference-badges .chirpui-badge"
+                ).length,
+            };
+        }"""
+    )
+    assert metrics["usesResourceCardDom"] is False, metrics
+    assert metrics["cardDisplay"] == "grid", metrics
+    assert metrics["cardHeight"] <= 220, metrics
+    assert metrics["markEyebrowSameRow"] is True, metrics
+    assert metrics["titleBelowEyebrow"] is True, metrics
+    assert metrics["descriptionClamp"] == "3", metrics
+    assert metrics["nameCodeWrap"] == "nowrap", metrics
+    assert metrics["duplicateModuleBadge"] == 0, metrics
 
 
 async def test_bengal_api_prose_code_specimens_use_compact_treatment(page, static_site_url):
@@ -1170,7 +1244,8 @@ async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
 
     await assert_no_document_horizontal_overflow(page, "releases-latest-entry")
     await expect(page.locator(".chirp-theme-shell__header")).to_be_hidden()
-    await expect(page.locator(".chirp-theme-release-timeline")).to_be_visible()
+    await expect(page.locator(".chirp-theme-release-groups")).to_be_visible()
+    assert await page.locator(".chirp-theme-release-timeline").count() >= 1
 
     latest = page.locator(".chirp-theme-release-entry--latest")
     first_regular = page.locator(
@@ -1180,7 +1255,7 @@ async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
     await expect(latest.locator(".chirpui-badge__text")).to_have_text("Latest")
     metrics = await page.evaluate(
         """() => {
-            const timeline = document.querySelector(".chirp-theme-release-timeline");
+            const firstTimeline = document.querySelector(".chirp-theme-release-timeline");
             const latest = document.querySelector(".chirp-theme-release-entry--latest");
             const regular = document.querySelector(
                 ".chirp-theme-release-entry:not(.chirp-theme-release-entry--latest)"
@@ -1192,13 +1267,16 @@ async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
             const latestTitle = latest.querySelector(".chirpui-timeline__title-link");
             const regularTitle = regular.querySelector(".chirpui-timeline__title-link");
             const latestInstall = latest.querySelector(".chirp-theme-release-entry__install");
-            const regularInstall = regular.querySelector(".chirp-theme-release-entry__install");
+            const regularInstall = regular?.querySelector(
+                ".chirp-theme-release-entry__install, .chirp-theme-release-patch__install"
+            );
             const latestDot = latest.querySelector(".chirpui-timeline__dot");
-            const heroMetadata = document.querySelector(
-                ".chirp-theme-learning-hero .chirpui-hero__metadata"
+            const heroSubtitle = document.querySelector(
+                ".chirp-theme-release-hero--index .chirpui-hero__subtitle"
             );
             return {
-                timelineCount: timeline.querySelectorAll(".chirp-theme-release-entry").length,
+                groupCount: document.querySelectorAll(".chirp-theme-release-group").length,
+                timelineCount: firstTimeline?.querySelectorAll(".chirp-theme-release-entry").length ?? 0,
                 latestTop: Math.round(latestRect.top),
                 regularTop: Math.round(regularRect.top),
                 latestBorderLeft: latestStyle.borderLeftWidth,
@@ -1208,20 +1286,19 @@ async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
                 regularTitle: regularTitle?.textContent?.trim(),
                 latestInstallText: latestInstall?.textContent?.trim(),
                 regularInstallText: regularInstall?.textContent?.trim(),
-                heroMetadata: heroMetadata?.textContent?.trim(),
+                heroSubtitle: heroSubtitle?.textContent?.trim(),
             };
         }"""
     )
-    assert metrics["timelineCount"] >= 2, metrics
+    assert metrics["groupCount"] >= 2, metrics
+    assert metrics["timelineCount"] >= 1, metrics
     assert metrics["latestTop"] < metrics["regularTop"], metrics
-    assert metrics["latestBorderLeft"] != "0px", metrics
-    assert metrics["regularBorderLeft"] != "0px", metrics
     assert metrics["latestDotBackground"] not in ("", "rgba(0, 0, 0, 0)"), metrics
     assert metrics["latestTitle"] == "chirp-ui 0.10.0", metrics
     assert metrics["regularTitle"] == "chirp-ui 0.9.0", metrics
     assert "uv add chirp-ui==0.10.0" in (metrics["latestInstallText"] or ""), metrics
     assert "uv add chirp-ui==0.9.0" in (metrics["regularInstallText"] or ""), metrics
-    assert "19 releases" in (metrics["heroMetadata"] or ""), metrics
+    assert "Install a specific version" in (metrics["heroSubtitle"] or ""), metrics
     await expect(latest.locator(".chirpui-timeline__title-link")).to_have_text("chirp-ui 0.10.0")
     await expect(first_regular.locator(".chirpui-timeline__title-link")).to_have_text(
         "chirp-ui 0.9.0"
@@ -1709,3 +1786,61 @@ async def test_bengal_docs_toc_count_pills_and_deep_labels_stay_compact(page, st
     assert metrics["groupDisplay"] == "grid", metrics
     assert len(metrics["groupColumns"]) == 3, metrics
     assert metrics["nestedInsetCount"] > 0, metrics
+
+
+async def test_bengal_docs_link_preview_shows_on_prose_hover(page, static_site_url):
+    await page.set_viewport_size({"width": 1280, "height": 900})
+    await page.goto(f"{static_site_url}/docs/app-shell/")
+    await page.wait_for_load_state("networkidle")
+    await page.wait_for_timeout(100)
+
+    link = page.locator('article.prose a[href$="/docs/app-shell/ui-layers/"]').first
+    await expect(link).to_be_visible()
+
+    await link.hover()
+    preview = page.locator(".link-preview")
+    await expect(preview).to_be_visible(timeout=2000)
+    await expect(preview.locator(".link-preview__title")).to_contain_text("UI layers")
+    await expect(preview.locator(".link-preview__section")).to_contain_text("app-shell")
+    await expect(preview.locator(".link-preview__excerpt")).not_to_be_empty()
+    await expect(preview.locator(".link-preview__meta")).to_contain_text("min read")
+
+    metrics = await page.evaluate(
+        """() => {
+            const preview = document.querySelector(".link-preview");
+            const style = getComputedStyle(preview);
+            return {
+                background: style.backgroundColor,
+                borderRadius: style.borderRadius,
+                boxShadow: style.boxShadow,
+                zIndex: style.zIndex,
+            };
+        }"""
+    )
+    assert metrics["zIndex"] != "auto", metrics
+    assert metrics["boxShadow"] != "none", metrics
+    assert metrics["borderRadius"] != "0px", metrics
+
+
+async def test_bengal_docs_link_preview_cross_site_allowed_host(page, static_site_url):
+    await page.set_viewport_size({"width": 1280, "height": 900})
+    await page.goto(f"{static_site_url}/docs/about/")
+    await page.wait_for_load_state("networkidle")
+    await page.wait_for_timeout(100)
+
+    link = page.locator('article.prose a[href="https://lbliii.github.io/chirp"]').first
+    await expect(link).to_be_visible()
+
+    await link.hover()
+    preview = page.locator(".link-preview")
+    await expect(preview).to_be_visible(timeout=4000)
+    await expect(preview.locator(".link-preview__title")).to_contain_text("Chirp")
+    await expect(preview.locator(".link-preview__excerpt")).not_to_be_empty()
+
+    config = await page.evaluate(
+        """() => {
+            const el = document.getElementById('bengal-config');
+            return el ? JSON.parse(el.textContent).linkPreviews.allowedHosts : [];
+        }"""
+    )
+    assert "lbliii.github.io" in config

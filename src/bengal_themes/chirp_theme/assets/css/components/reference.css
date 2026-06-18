@@ -225,6 +225,32 @@
   transform: translateX(2px);
 }
 
+.chirp-theme-reference-card--symbol:hover .chirp-theme-reference-card__footer svg {
+  transform: translateY(1px);
+}
+
+.chirp-theme-reference-symbols {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.chirp-theme-reference-symbols > h2 {
+  margin: 0;
+  font-size: clamp(1.05rem, 0.5vw + 0.95rem, 1.35rem);
+}
+
+.chirp-theme-reference-symbol-grid {
+  align-items: stretch;
+}
+
+.chirp-theme-reference-card--symbol {
+  min-height: 100%;
+}
+
+.chirp-theme-reference-card--symbol .chirp-theme-reference-card__description {
+  -webkit-line-clamp: 3;
+}
+
 .chirp-theme-reference-description {
   margin-block: 0;
   padding: clamp(0.9rem, 1.5vw, 1.15rem);
@@ -386,6 +412,18 @@
 .chirp-theme-reference-params {
   overflow: clip;
   border-radius: var(--radius-md);
+}
+
+.chirp-theme-reference-params .chirpui-params-table__th--name,
+.chirp-theme-reference-params .chirpui-params-table__td--name {
+  min-width: 11rem;
+  width: 11rem;
+}
+
+.chirp-theme-reference-params .chirpui-params-table__td--name .chirpui-params-table__code {
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .chirp-theme-rest-reference {

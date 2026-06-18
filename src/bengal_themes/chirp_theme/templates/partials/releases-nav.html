@@ -1,0 +1,41 @@
+{% from "partials/releases-shared.html" import release_version, version_sort_key, release_minor_key %}
+
+{#- Secondary nav for /releases/ — one link per minor line (0.10, 0.9, …)
+    so patch releases consolidate instead of flooding the drawer. -#}
+
+{% let raw_release_pages = [] %}
+{% for p in (site?.pages ?? []) %}
+{% let phref = p?.href ?? p?._path ?? '' %}
+{% if phref.startswith('/releases/') and phref != '/releases/' and phref != '/releases' %}
+{% set _ = raw_release_pages.append(p) %}
+{% end %}
+{% endfor %}
+{% let sorted_release_pages = [{"_sk": version_sort_key(p) | trim, "_page": p} for p in raw_release_pages] | sort(attribute="_sk", reverse=true) %}
+
+{% if sorted_release_pages | length > 0 %}
+<nav class="chirp-theme-releases-nav" aria-label="Release versions">
+  <p class="chirp-theme-releases-nav__eyebrow">By version line</p>
+  <ul class="chirp-theme-releases-nav__list" role="list">
+    {% let prev_nav_minor = '' %}
+    {% for entry in sorted_release_pages %}
+    {% let page_item = entry._page %}
+    {% let version = release_version(page_item) | trim %}
+    {% let minor = release_minor_key(version) %}
+    {% if minor != prev_nav_minor %}
+    {% let anchor = 'release-' ~ (minor | replace('.', '-')) %}
+    {% let is_current_minor = current_path.startswith('/releases/') and version in current_path %}
+    <li class="chirp-theme-releases-nav__item">
+      <a href="{{ ('/releases/#' ~ anchor) if (current_path == '/releases/' or current_path.endswith('/releases/')) else ('/releases/#' ~ anchor) }}"
+         class="chirp-theme-releases-nav__link{{ ' is-active' if is_current_minor else '' }}"
+         {% if is_current_minor %}aria-current="page"{% end %}
+         title="Release line {{ minor }}">
+        <span class="chirp-theme-releases-nav__label">{{ minor }}</span>
+        {% if loop.first %}<span class="chirp-theme-releases-nav__pill">Latest</span>{% end %}
+      </a>
+    </li>
+    {% let prev_nav_minor = minor %}
+    {% end %}
+    {% endfor %}
+  </ul>
+</nav>
+{% endif %}

@@ -4757,6 +4757,19 @@ class TestActionContainers:
         assert "Try a different filter." in html
         assert "chirpui-empty-state" in html
 
+    def test_resource_index_show_search_false_omits_search_header(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/resource_index.html" import resource_index %}'
+            "{% call resource_index("
+            '"Skills", "/skills", show_search=false, results_title="All skills"'
+            ") %}"
+            "<article>Skill A</article>"
+            "{% end %}"
+        ).render()
+        assert "chirpui-resource-index__search" not in html
+        assert "All skills" in html
+        assert "Skill A" in html
+
     def test_resource_index_mutation_result_id_renders_div(self, env: Environment) -> None:
         """mutation_result_id renders co-located result div at start of results block."""
         html = env.from_string(

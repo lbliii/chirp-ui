@@ -13,6 +13,7 @@ theme:
     - navigation.toc.sticky
     - navigation.prev_next
     - navigation.back_to_top
+    - navigation.link_previews
     - content.code.copy
     - content.reading_time
     - content.author
