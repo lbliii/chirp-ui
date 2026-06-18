@@ -143,7 +143,9 @@ def test_search_index_serializes_visible_pages() -> None:
     index = search_index()
     assert len(index) <= 55
     assert all({"path", "title", "section", "description", "tags"} <= set(entry) for entry in index)
-    catalog = [entry for entry in filter_search_index("catalog") if entry["path"] == "/catalog-shell"]
+    catalog = [
+        entry for entry in filter_search_index("catalog") if entry["path"] == "/catalog-shell"
+    ]
     streaming = [entry for entry in filter_search_index("stream") if entry["path"] == "/streaming"]
     assert catalog
     assert streaming

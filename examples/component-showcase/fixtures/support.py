@@ -233,9 +233,7 @@ def support_context(request: Request, *, base_path: str = "/support-shell") -> d
             },
             {
                 "label": "migration",
-                "href": support_url(
-                    q="migration", queue=queue, status=status, base_path=base_path
-                ),
+                "href": support_url(q="migration", queue=queue, status=status, base_path=base_path),
             },
             {
                 "label": "webhooks",

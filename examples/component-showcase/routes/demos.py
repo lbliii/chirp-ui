@@ -142,7 +142,9 @@ def register(app: App) -> None:
         selected = query_list(request, "selected")
         if not selected:
             return Fragment("showcase/_bulk_bar.html", "bulk_bar", count=0)
-        return Fragment("showcase/_bulk_bar.html", "bulk_bar", count=len(selected), selected=selected)
+        return Fragment(
+            "showcase/_bulk_bar.html", "bulk_bar", count=len(selected), selected=selected
+        )
 
     @app.route("/data/export", methods=["GET"])
     async def data_export(request: Request) -> Response:

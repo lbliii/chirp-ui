@@ -635,4 +635,6 @@ def nav_sections() -> tuple[tuple[str, tuple[ShowcasePage, ...]], ...]:
 
 def index_cards() -> tuple[ShowcasePage, ...]:
     """Home page card grid entries in display order."""
-    return tuple(sorted((page for page in PAGES if page.index_card), key=lambda item: item.index_order))
+    return tuple(
+        sorted((page for page in PAGES if page.index_card), key=lambda item: item.index_order)
+    )

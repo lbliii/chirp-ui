@@ -253,4 +253,3 @@ def ops_context(request: Request, *, base_path: str = "/operations-shell") -> di
         "ops_status": status,
         "ops_status_items": status_items,
     }
-
