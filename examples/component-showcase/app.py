@@ -32,8 +32,14 @@ from chirp import (
 from chirp_ui.theme_packs import get_theme_pack, list_theme_packs
 
 from showcase.registry import index_cards, nav_sections, visible_pages
+from showcase.search import search_index_json
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
+
+SHOWCASE_PALETTE_BOOST_ATTRS = (
+    'hx-boost="true" hx-target="#main" hx-swap="innerHTML" '
+    'hx-select="#page-content" hx-sync="#main:replace"'
+)
 
 # Use source chirp-ui templates (many components not yet in installed package)
 _CHIRPUI_SRC_TEMPLATES = Path(__file__).resolve().parents[2] / "src" / "chirp_ui" / "templates"
@@ -57,6 +63,8 @@ def _page(request: Request, template: str, **context: object) -> Template:
     context.setdefault("showcase_nav_sections", nav_sections())
     context.setdefault("showcase_index_cards", index_cards())
     context.setdefault("showcase_pages", visible_pages())
+    context.setdefault("showcase_search_index_json", search_index_json())
+    context.setdefault("showcase_palette_boost_attrs", SHOWCASE_PALETTE_BOOST_ATTRS)
     return Template(template, **context)
 
 
@@ -72,6 +80,11 @@ def _query_list(request: Request, key: str) -> list[str]:
 @app.route("/toast", methods=["POST"])
 async def show_toast(request: Request) -> Fragment:
     return Fragment("_toast.html", "toast_demo")
+
+
+@app.route("/showcase/pages.json")
+async def showcase_pages_json(request: Request) -> Response:
+    return Response(search_index_json(), media_type="application/json; charset=utf-8")
 
 
 @app.route("/", template="index.html")
@@ -1225,7 +1238,7 @@ async def theme_pack_preview(request: Request, name: str, mode: str) -> Template
     pack = get_theme_pack(name)
     if pack is None or mode not in pack.modes:
         return Response("Theme pack preview not found", status=404)
-    return Template("showcase/theme_pack_preview.html", pack=pack, mode=mode)
+    return _page(request, "showcase/theme_pack_preview.html", pack=pack, mode=mode)
 
 
 @app.route("/forms/demo", methods=["POST"])

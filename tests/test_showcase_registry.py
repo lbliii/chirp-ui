@@ -126,3 +126,16 @@ def test_nav_sections_preserve_sidebar_groups() -> None:
     data_paths = [page.path for page in sections[2][1]]
     assert "/catalog-shell" in data_paths
     assert "/screen-command-center" not in data_paths
+
+
+def test_search_index_serializes_visible_pages() -> None:
+    sys.path.insert(0, str(SHOWCASE_DIR))
+    from showcase.search import filter_search_index, search_index  # noqa: E402
+
+    index = search_index()
+    assert len(index) <= 55
+    assert all({"path", "title", "section", "description", "tags"} <= set(entry) for entry in index)
+    catalog = [entry for entry in filter_search_index("catalog") if entry["path"] == "/catalog-shell"]
+    streaming = [entry for entry in filter_search_index("stream") if entry["path"] == "/streaming"]
+    assert catalog
+    assert streaming

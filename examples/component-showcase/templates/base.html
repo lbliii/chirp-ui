@@ -1082,7 +1082,10 @@
 
 {% call app_shell(brand_url="/", brand_slot=true, sidebar_collapsible=true) %}
 {% slot brand %}{{ logo(text="chirp-ui", variant="text") }}{% end %}
-{% slot topbar_end %}{{ theme_toggle() }}{% end %}
+{% slot topbar_end %}
+{% include "showcase/_search_palette_trigger.html" %}
+{{ theme_toggle() }}
+{% end %}
 {% slot sidebar %}
 {% call sidebar(cls="chirpui-sidebar--responsive-dropdowns", current_path=current_path | default(""), aria_label="Showcase sections") %}
 {% for section_name, pages in showcase_nav_sections %}
@@ -1098,4 +1101,5 @@
 {% block main %}{% end %}
 
 {% end %}
+{% include "showcase/_search_palette.html" %}
 {% end %}

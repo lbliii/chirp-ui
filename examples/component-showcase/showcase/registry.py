@@ -117,6 +117,13 @@ PAGES: tuple[ShowcasePage, ...] = (
         hidden=True,
         show_in_sidebar=False,
     ),
+    ShowcasePage(
+        path="/showcase/pages.json",
+        title="Showcase page index JSON",
+        hidden=True,
+        show_in_sidebar=False,
+        tags=("search", "json"),
+    ),
     # --- Components ---
     ShowcasePage(
         path="/htmx",
