@@ -2847,6 +2847,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "advanced-params": ComponentDescriptor(
         block="advanced-params",
         elements=("summary", "body"),
+        slots=("",),
         template="param_override.html",
         category="form",
         maturity="stable",
