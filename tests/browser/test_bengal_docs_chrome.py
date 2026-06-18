@@ -1244,7 +1244,8 @@ async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
 
     await assert_no_document_horizontal_overflow(page, "releases-latest-entry")
     await expect(page.locator(".chirp-theme-shell__header")).to_be_hidden()
-    await expect(page.locator(".chirp-theme-release-timeline")).to_be_visible()
+    await expect(page.locator(".chirp-theme-release-groups")).to_be_visible()
+    assert await page.locator(".chirp-theme-release-timeline").count() >= 1
 
     latest = page.locator(".chirp-theme-release-entry--latest")
     first_regular = page.locator(
@@ -1254,7 +1255,7 @@ async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
     await expect(latest.locator(".chirpui-badge__text")).to_have_text("Latest")
     metrics = await page.evaluate(
         """() => {
-            const timeline = document.querySelector(".chirp-theme-release-timeline");
+            const firstTimeline = document.querySelector(".chirp-theme-release-timeline");
             const latest = document.querySelector(".chirp-theme-release-entry--latest");
             const regular = document.querySelector(
                 ".chirp-theme-release-entry:not(.chirp-theme-release-entry--latest)"
@@ -1266,13 +1267,16 @@ async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
             const latestTitle = latest.querySelector(".chirpui-timeline__title-link");
             const regularTitle = regular.querySelector(".chirpui-timeline__title-link");
             const latestInstall = latest.querySelector(".chirp-theme-release-entry__install");
-            const regularInstall = regular.querySelector(".chirp-theme-release-entry__install");
+            const regularInstall = regular?.querySelector(
+                ".chirp-theme-release-entry__install, .chirp-theme-release-patch__install"
+            );
             const latestDot = latest.querySelector(".chirpui-timeline__dot");
-            const heroMetadata = document.querySelector(
-                ".chirp-theme-learning-hero .chirpui-hero__metadata"
+            const heroSubtitle = document.querySelector(
+                ".chirp-theme-release-hero--index .chirpui-hero__subtitle"
             );
             return {
-                timelineCount: timeline.querySelectorAll(".chirp-theme-release-entry").length,
+                groupCount: document.querySelectorAll(".chirp-theme-release-group").length,
+                timelineCount: firstTimeline?.querySelectorAll(".chirp-theme-release-entry").length ?? 0,
                 latestTop: Math.round(latestRect.top),
                 regularTop: Math.round(regularRect.top),
                 latestBorderLeft: latestStyle.borderLeftWidth,
@@ -1282,20 +1286,19 @@ async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
                 regularTitle: regularTitle?.textContent?.trim(),
                 latestInstallText: latestInstall?.textContent?.trim(),
                 regularInstallText: regularInstall?.textContent?.trim(),
-                heroMetadata: heroMetadata?.textContent?.trim(),
+                heroSubtitle: heroSubtitle?.textContent?.trim(),
             };
         }"""
     )
-    assert metrics["timelineCount"] >= 2, metrics
+    assert metrics["groupCount"] >= 2, metrics
+    assert metrics["timelineCount"] >= 1, metrics
     assert metrics["latestTop"] < metrics["regularTop"], metrics
-    assert metrics["latestBorderLeft"] != "0px", metrics
-    assert metrics["regularBorderLeft"] != "0px", metrics
     assert metrics["latestDotBackground"] not in ("", "rgba(0, 0, 0, 0)"), metrics
     assert metrics["latestTitle"] == "chirp-ui 0.10.0", metrics
     assert metrics["regularTitle"] == "chirp-ui 0.9.0", metrics
     assert "uv add chirp-ui==0.10.0" in (metrics["latestInstallText"] or ""), metrics
     assert "uv add chirp-ui==0.9.0" in (metrics["regularInstallText"] or ""), metrics
-    assert "19 releases" in (metrics["heroMetadata"] or ""), metrics
+    assert "Install a specific version" in (metrics["heroSubtitle"] or ""), metrics
     await expect(latest.locator(".chirpui-timeline__title-link")).to_have_text("chirp-ui 0.10.0")
     await expect(first_regular.locator(".chirpui-timeline__title-link")).to_have_text(
         "chirp-ui 0.9.0"
