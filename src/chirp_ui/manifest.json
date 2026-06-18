@@ -17006,6 +17006,11 @@
         {
           "has_default": true,
           "is_required": false,
+          "name": "show_search"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
           "name": "filter_action"
         },
         {

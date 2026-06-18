@@ -36,7 +36,7 @@
       {% call resource_card(child_href, child_title, description=none, cls="chirp-theme-section-hub__card") %}
         {% slot badges %}
         <span class="chirpui-card__icon chirp-theme-section-hub__mark" aria-hidden="true">
-          {% if child_icon %}{{ icon(child_icon, size=18) }}{% else %}{{ icon('arrow-square-out' if is_external else 'article', size=18) }}{% end %}
+          {% if child_icon %}{{ icon(child_icon, size=18) }}{% else %}{{ icon('external' if is_external else 'article', size=18) }}{% end %}
         </span>
         {% end %}
         {% if is_external %}
