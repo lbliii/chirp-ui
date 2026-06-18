@@ -66,10 +66,12 @@ def make_env(
 ) -> Environment:
     """Kida environment with chirp-ui loader, filters, and CSRF global."""
     env = Environment(
-        loader=ChoiceLoader([
-            FileSystemLoader(str(template_dir)),
-            get_loader(),
-        ]),
+        loader=ChoiceLoader(
+            [
+                FileSystemLoader(str(template_dir)),
+                get_loader(),
+            ]
+        ),
         autoescape=True,
     )
     register_filters(KidaFilterApp(env))
@@ -91,9 +93,7 @@ def page_shell(
     """Wrap rendered kida body in a full HTML document with assets + Alpine."""
     alpine_core = f"{CDN}/alpinejs@{ALPINE_VERSION}/dist/cdn.min.js"
     htmx_script = (
-        f'<script src="{CDN}/htmx.org@2.0.4/dist/htmx.min.js"></script>\n'
-        if include_htmx
-        else ""
+        f'<script src="{CDN}/htmx.org@2.0.4/dist/htmx.min.js"></script>\n' if include_htmx else ""
     )
     return f"""<!DOCTYPE html>
 <html lang="en">

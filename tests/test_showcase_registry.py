@@ -149,3 +149,59 @@ def test_search_index_serializes_visible_pages() -> None:
     streaming = [entry for entry in filter_search_index("stream") if entry["path"] == "/streaming"]
     assert catalog
     assert streaming
+
+
+SHELL_CSS_DIR = SHOWCASE_DIR / "templates" / "showcase" / "_css"
+SHELL_CSS_PREFIXES = ("catalog-shell-", "ops-shell-", "support-shell-")
+SHELL_TEMPLATE_INCLUDES = {
+    "showcase/catalog_shell.html": "showcase/_css/catalog_shell.css.html",
+    "showcase/operations_shell.html": "showcase/_css/ops_shell.css.html",
+    "showcase/operations_shell_workspace.html": "showcase/_css/ops_shell.css.html",
+    "showcase/support_shell.html": "showcase/_css/support_shell.css.html",
+}
+GALLERY_TEMPLATES = (
+    "showcase/forms.html",
+    "showcase/ui.html",
+    "showcase/cards.html",
+    "index.html",
+)
+
+
+def _style_block(text: str) -> str:
+    match = re.search(r"<style>(.*?)</style>", text, flags=re.DOTALL)
+    return match.group(1) if match else ""
+
+
+def test_base_html_style_block_is_showcase_copy_only() -> None:
+    """Gallery pages must not download catalog/ops/support shell CSS (#269)."""
+    base = BASE_HTML.read_text(encoding="utf-8")
+    style = _style_block(base)
+    assert style
+    assert "showcase-copy" in style
+    for prefix in SHELL_CSS_PREFIXES:
+        assert prefix not in style, f"base.html still defines {prefix}* rules"
+    style_lines = len(style.splitlines())
+    assert style_lines < 400, f"base.html style block should be <400 lines, got {style_lines}"
+
+
+def test_shell_css_partials_are_scoped() -> None:
+    for partial in SHELL_CSS_DIR.glob("*.css.html"):
+        content = partial.read_text(encoding="utf-8")
+        assert content.startswith("<style>")
+        assert content.endswith("</style>\n")
+        assert any(prefix in content for prefix in SHELL_CSS_PREFIXES)
+
+
+def test_shell_recipe_templates_include_scoped_css() -> None:
+    templates_dir = SHOWCASE_DIR / "templates"
+    for rel_path, include_path in SHELL_TEMPLATE_INCLUDES.items():
+        template = (templates_dir / rel_path).read_text(encoding="utf-8")
+        assert include_path in template, f"{rel_path} must include {include_path}"
+
+
+def test_gallery_templates_do_not_include_shell_css() -> None:
+    templates_dir = SHOWCASE_DIR / "templates"
+    for rel_path in GALLERY_TEMPLATES:
+        template = (templates_dir / rel_path).read_text(encoding="utf-8")
+        for include_path in SHELL_TEMPLATE_INCLUDES.values():
+            assert include_path not in template, f"{rel_path} must not include {include_path}"

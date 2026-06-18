@@ -31,9 +31,7 @@ def _render_kida(request: HttpRequest, template: str, **context: object) -> str:
     token = get_token(request)
 
     def csrf_field() -> Markup:
-        return Markup(
-            f'<input type="hidden" name="csrfmiddlewaretoken" value="{token}">'
-        )
+        return Markup(f'<input type="hidden" name="csrfmiddlewaretoken" value="{token}">')
 
     env = make_env(template_dir=KIDA_TEMPLATES, csrf_field=csrf_field)
     body = render_template(env, template, **context)
