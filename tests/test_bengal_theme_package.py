@@ -667,11 +667,12 @@ def test_chirp_theme_css_assets_are_reachable_from_style_entrypoint() -> None:
 
 def test_chirp_theme_css_avoids_bengal_minifier_spacing_regression() -> None:
     """Theme CSS should stay valid when Bengal minifies modern custom-property values."""
-    css_minifier = pytest.importorskip("bengal.assets.css_minifier")
+    from bengal.css.minify import minify_css
+
     package_root = resources.files(THEME_PACKAGE)
     css = (package_root / "assets" / "css" / "chirp-theme.css").read_text(encoding="utf-8")
 
-    minified = css_minifier.minify_css(css)
+    minified = minify_css(css)
     broken_scrollbar_value = re.compile(
         r"scrollbar-color:[^;]*(?:var\(--chirpui-accent\)34%|\)transparent)"
     )
