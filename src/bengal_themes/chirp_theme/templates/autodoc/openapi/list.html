@@ -29,7 +29,7 @@
 
 <article class="chirp-theme-docs-layout__article chirp-theme-reference-page chirp-theme-reference-page--openapi-index">
   <div class="docs-content chirp-theme-docs-layout__content chirp-theme-reference-content">
-  {% call resource_index(none, page?.href ?? section?.href ?? "/api/", subtitle=none, search_placeholder="Filter endpoints and schemas...", button_icon="magnifying-glass", results_title="Endpoint Index", results_subtitle=item_count ~ " entr" ~ ("ies" if item_count != 1 else "y"), results_layout="grid", results_cols=3, has_results=items | length > 0, empty_title="No API entries yet", empty_message="OpenAPI endpoints and schemas appear here when generated.", cls="chirp-theme-reference-index chirp-theme-api-index") %}
+  {% call resource_index(none, page?.href ?? section?.href ?? "/api/", subtitle=none, show_search=false, results_title="Endpoint Index", results_subtitle=item_count ~ " entr" ~ ("ies" if item_count != 1 else "y") ~ " · search with ⌘K", results_layout="grid", results_cols=3, has_results=items | length > 0, empty_title="No API entries yet", empty_message="OpenAPI endpoints and schemas appear here when generated.", cls="chirp-theme-reference-index chirp-theme-api-index") %}
     {% let items = items %}
     {% include "autodoc/partials/cards.html" %}
   {% end %}

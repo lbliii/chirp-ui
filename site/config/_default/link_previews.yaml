@@ -1,0 +1,9 @@
+# Link hover previews — Wikipedia-style cards from per-page index.json
+# ========================================================================
+# Cross-site previews fetch JSON from whitelisted Bengal hosts. The chirp-ui
+# docs link to sibling projects on lbliii.github.io (Chirp, Bengal, Kida).
+
+link_previews:
+  enabled: true
+  allowed_hosts:
+    - lbliii.github.io

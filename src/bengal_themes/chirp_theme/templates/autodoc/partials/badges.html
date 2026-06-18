@@ -19,12 +19,14 @@
 
 {% let meta = element?.metadata ?? {} %}
 {% let is_deprecated = (element?.deprecated ?? none) or (meta?.is_deprecated ?? false) %}
+{% let show_reference_badges = is_deprecated or (meta?.is_async ?? false) or (meta?.is_property ?? false) or (meta?.is_classmethod ?? false) or (meta?.is_staticmethod ?? false) or (meta?.required ?? false) %}
+{% if show_reference_badges %}
 {% call cluster(gap="xs", cls="chirp-theme-reference-badges") %}
-  {% if element?.element_type %}{{ badge(element.element_type, variant="muted") }}{% end %}
   {% if is_deprecated %}{{ badge("deprecated", variant="error") }}{% end %}
   {% if meta?.is_async ?? false %}{{ badge("async", variant="info") }}{% end %}
   {% if meta?.is_property ?? false %}{{ badge("property", variant="muted") }}{% end %}
   {% if meta?.is_classmethod ?? false %}{{ badge("classmethod", variant="muted") }}{% end %}
   {% if meta?.is_staticmethod ?? false %}{{ badge("staticmethod", variant="muted") }}{% end %}
   {% if meta?.required ?? false %}{{ badge("required", variant="warning") }}{% end %}
+{% end %}
 {% end %}

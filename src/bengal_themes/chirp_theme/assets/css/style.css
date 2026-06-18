@@ -188,6 +188,7 @@
 @layer components {
   @import url('components/search.css');
   @import url('components/search-modal.css');
+  @import url('components/link-preview.css');
 }
 
 @layer components {

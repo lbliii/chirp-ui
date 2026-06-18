@@ -56,8 +56,7 @@ menu:
       weight: 50
 
     - name: "Layouts"
-      # Placeholder URL — must be unique per dropdown parent (Bengal dedupes by url).
-      url: "#"
+      url: "/layouts/"
       weight: 50
       identifier: layouts
 
@@ -97,8 +96,7 @@ menu:
       weight: 60
 
     - name: "Dev"
-      # Distinct from Layouts' "#" so Bengal does not drop this parent as a duplicate.
-      url: "#dev"
+      url: "/dev/"
       weight: 90
       identifier: dev
 

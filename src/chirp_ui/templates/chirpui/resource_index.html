@@ -17,9 +17,10 @@
 {% from "chirpui/filter_bar.html" import filter_bar %}
 {% from "chirpui/search_header.html" import search_header %}
 
-{% def resource_index(title, search_action, query="", subtitle=none, search_name="q", search_placeholder="Search...", button_label="Search", button_icon="search", search_method="get", filter_action=none, filter_method="get", filter_surface_variant="default", filter_density="sm", filter_label=none, filter_state_name=none, filter_state_value=none, selected_count=0, selected_label="filters selected", selected_aria_label=none, results_title=none, results_subtitle=none, results_layout="stack", results_cols=2, results_gap="md", has_results=true, empty_title="No results found", empty_icon="search", empty_hint=none, empty_message=none, mutation_result_id=none, cls="") %}
+{% def resource_index(title, search_action, query="", subtitle=none, search_name="q", search_placeholder="Search...", button_label="Search", button_icon="search", search_method="get", show_search=true, filter_action=none, filter_method="get", filter_surface_variant="default", filter_density="sm", filter_label=none, filter_state_name=none, filter_state_value=none, selected_count=0, selected_label="filters selected", selected_aria_label=none, results_title=none, results_subtitle=none, results_layout="stack", results_cols=2, results_gap="md", has_results=true, empty_title="No results found", empty_icon="search", empty_hint=none, empty_message=none, mutation_result_id=none, cls="") %}
 {% set results_layout = results_layout | validate_variant(("stack", "grid"), "stack") %}
 {% call stack(gap="lg", cls="chirpui-resource-index" ~ (" " ~ cls if cls else "")) %}
+{% if show_search %}
 {% call search_header(title, search_action, query=query, search_name=search_name, subtitle=subtitle, form_method=search_method, search_placeholder=search_placeholder, button_label=button_label, button_icon=button_icon, cls="chirpui-resource-index__search") %}
 {% if filter_state_name and filter_state_value %}
 {{ hidden_field(filter_state_name, value=filter_state_value) }}
@@ -27,6 +28,7 @@
 {% slot toolbar_controls %}
 {% end %}
 {% end %}
+{% endif %}
 
 {% if filter_action %}
 {% call filter_bar(filter_action, method=filter_method, surface_variant=filter_surface_variant, density=filter_density, cls="chirpui-resource-index__filters") %}

@@ -22,7 +22,12 @@ menu, or the scoped documentation tree on /docs/ and /api/ pages.
 {% def menu_rail_href(item) %}
 {% let item_href = item?.href ?? item?.url ?? '#' %}
 {% let item_children = item?.children ?? [] %}
-{% if item_href == '#' and item_children | length > 0 %}
+{% let item_identifier = item?.identifier ?? '' %}
+{% if item_href in ['#', '#dev'] and item_identifier == 'layouts' %}
+/layouts/
+{% elif item_href in ['#', '#dev'] and item_identifier == 'dev' %}
+/dev/
+{% elif item_href == '#' and item_children | length > 0 %}
 {{ (item_children[0]?.href ?? item_children[0]?.url ?? item_href) | trim }}
 {% elif item_href == '#dev' %}
 {% let resolved = item_href %}
@@ -170,8 +175,8 @@ menu, or the scoped documentation tree on /docs/ and /api/ pages.
 {% let current_path = catalog_current_path ?? nav_page?._path ?? nav_page?.href ?? '' %}
 {% let rail_items = get_menu_lang("main", _current_lang ?? current_lang()) ?? [] %}
 {% let use_doc_tree = nav_page and (current_path.startswith('/docs/') or current_path == '/docs/' or current_path.startswith('/api/') or current_path == '/api/') and root_section %}
-{% let in_layouts_section = current_path.startswith('/blog/') or current_path == '/blog/' or current_path.startswith('/tutorial/') or current_path == '/tutorial/' or current_path.startswith('/tracks/') or current_path == '/tracks/' or current_path.startswith('/resume/') or current_path == '/resume/' or current_path.startswith('/notebook/') or current_path == '/notebook/' or current_path.startswith('/authors/') or current_path == '/authors/' or current_path.startswith('/changelog/') or current_path == '/changelog/' %}
-{% let in_dev_section = current_path.startswith('/api/') or current_path == '/api/' %}
+{% let in_layouts_section = current_path.startswith('/layouts/') or current_path == '/layouts/' or current_path.startswith('/blog/') or current_path == '/blog/' or current_path.startswith('/tutorial/') or current_path == '/tutorial/' or current_path.startswith('/tracks/') or current_path == '/tracks/' or current_path.startswith('/resume/') or current_path == '/resume/' or current_path.startswith('/notebook/') or current_path == '/notebook/' or current_path.startswith('/authors/') or current_path == '/authors/' or current_path.startswith('/changelog/') or current_path == '/changelog/' %}
+{% let in_dev_section = current_path.startswith('/dev/') or current_path == '/dev/' or current_path.startswith('/api/') or current_path == '/api/' %}
 {% let in_releases_section = current_path.startswith('/releases/') or current_path == '/releases/' %}
 
 <div class="chirp-theme-doc-catalog" data-chirp-theme-doc-nav="catalog" data-bengal="docs-nav">
@@ -269,6 +274,8 @@ menu, or the scoped documentation tree on /docs/ and /api/ pages.
     {% with nav_context?.root as root_item %}
     {{ nav_node(root_item, 0) }}
     {% end %}
+    {% elif in_releases_section %}
+    {% include 'partials/releases-nav.html' %}
     {% else %}
     {% for item in rail_items %}
     {% let item_href = item?.href ?? item?.url ?? '#' %}

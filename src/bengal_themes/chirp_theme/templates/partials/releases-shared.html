@@ -1,0 +1,45 @@
+{#- Shared release version helpers + compact install row for release surfaces. -#}
+
+{% def release_version(item) %}
+{%- let raw = item?.metadata?.version ?? ((item?.title ?? "") | replace("chirp-ui ", "")) -%}
+{{ raw | trim }}
+{% end %}
+
+{% def version_sort_key(item) %}
+{%- let v = release_version(item) | trim -%}
+{%- let p = v.split(".") -%}
+{%- let major = (p[0] if p | length > 0 else "0") | int -%}
+{%- let minor = (p[1] if p | length > 1 else "0") | int -%}
+{%- let patch = (p[2] if p | length > 2 else "0") | int -%}
+{{- "{:05d}.{:05d}.{:05d}" | format(major, minor, patch) -}}
+{% end %}
+
+{% def release_minor_key(version) %}
+{%- let p = (version | trim).split(".") -%}
+{{- (p[0] if p | length > 0 else "0") ~ "." ~ (p[1] if p | length > 1 else "0") -}}
+{% end %}
+
+{% def release_minor_anchor(minor_key) %}
+release-{{ minor_key | replace('.', '-') }}
+{% end %}
+
+{% def release_highlight(item, version) %}
+{%- let raw = item?.metadata?.highlight ?? item?.metadata?.summary ?? item?.summary ?? none -%}
+{{- raw if (raw and (raw | trim) != ("Release " ~ version)) else none -}}
+{% end %}
+
+{% def release_install_row(version, cls="") %}
+<div class="chirp-theme-release-install{{ " " ~ cls if cls else "" }}" x-data="chirpuiCopy()">
+  <code class="chirp-theme-release-install__cmd chirpui-font-mono">uv add chirp-ui=={{ version }}</code>
+  <button type="button"
+          class="chirpui-code-block__copy chirp-theme-release-install__copy"
+          data-copy-text="uv add chirp-ui=={{ version }}"
+          data-copy-timeout="1600"
+          @click="copy()"
+          aria-label="Copy install command for {{ version }}"
+          title="Copy">
+    <span x-show="!copied" aria-hidden="true">&#x29C9;</span>
+    <span x-show="copied" x-cloak aria-hidden="true">&#x2713;</span>
+  </button>
+</div>
+{% end %}
