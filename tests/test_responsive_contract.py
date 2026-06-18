@@ -51,7 +51,7 @@ def test_showcase_sidebar_opts_into_responsive_dropdown_groups() -> None:
     assert 'sidebar(cls="chirpui-sidebar--responsive-dropdowns"' in base
     assert 'current_path=current_path | default("")' in base
     assert "showcase_nav_sections" in base
-    assert 'sidebar_section(section_name, collapsible=true)' in base
+    assert "sidebar_section(section_name, collapsible=true)" in base
 
 
 def test_navigation_strips_scroll_horizontally_on_phone_widths() -> None:
