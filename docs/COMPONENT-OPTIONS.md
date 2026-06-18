@@ -9099,7 +9099,7 @@ Streaming and AI components
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
-- **Requires:** `htmx`
+- **Requires:** `alpine`, `htmx`
 - **Slots:** `(default)`
 - **Variants:** `error`, `thinking`
 - **Provides:** `_streaming_role`
