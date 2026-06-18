@@ -1,0 +1,1 @@
+Added AI Chat saga Phase 1: typed `config_schema` projection with `config_form()` and `param_override` macros, `chirpuiStreamLifecycle` terminal-done SSE cleanup, a real `prose()` streaming macro, and the `docs/patterns/sse-events.md` event-vocabulary doctrine.

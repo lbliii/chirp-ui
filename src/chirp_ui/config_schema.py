@@ -32,22 +32,22 @@ Example (Chirp route)::
     # -> template: {{ config_form(fields, action="/settings", method="post") }}
 """
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
-from enum import Enum
-from typing import Any, Callable
+from enum import StrEnum
+from typing import Any
 
 __all__ = ["Field", "ProjectedField", "Widget", "project_fields"]
 
 _SECRET_MASK = ""  # secrets never round-trip to the client; render an empty input
 
 
-class Widget(str, Enum):
+class Widget(StrEnum):
     """The render target a :class:`ProjectedField` dispatches to.
 
     Each value maps to an existing macro in ``forms.html`` (text_field,
     textarea_field, select_field, toggle_field, range_field, number_scale,
-    password_field). ``str`` mixin so ``widget == "select"`` works in templates.
+    password_field). :class:`StrEnum` so ``widget == "select"`` works in templates.
     """
 
     TEXT = "text"
