@@ -994,8 +994,15 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "chirp-theme-page-nav-card--next" in navigation
     assert "top_meta_title='Previous page'" in navigation
     assert "top_meta_title='Next page'" in navigation
+    # The cd command targets the real sibling path `../<slug>` (no fake
+    # human-title-with-spaces); the command text lives in the template, the
+    # `$` prompt sigil and the PREV/NEXT direction eyebrow are styled in CSS.
+    assert "top_meta='cd ../' ~ (prev_link.slug" in navigation
+    assert "top_meta='cd ../' ~ (next_link.slug" in navigation
     assert ".chirp-theme-page-nav-card--prev" in css
-    assert "$ cd ../" in css
+    assert 'content: "$ "' in css
+    assert 'content: "\\2190  prev"' in css
+    assert 'content: "next  \\2192"' in css
     assert "chirpui/workspace_primitives.html" in docs_nav
     assert "chirp-theme-doc-catalog" in docs_nav
     assert "chirp-theme-doc-catalog-rail" in docs_nav
