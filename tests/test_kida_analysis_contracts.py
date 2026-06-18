@@ -62,7 +62,7 @@ ALLOWED_PRIVACY_FINDINGS = frozenset(
     }
 )
 SHOWCASE_PAGE_CONTEXTS = {
-    "index.html": {"current_path"},
+    "index.html": {"current_path", "showcase_index_cards"},
     "showcase/animation.html": {"current_path"},
     "showcase/ascii.html": {"current_path"},
     "showcase/ascii_primitives.html": {"current_path"},

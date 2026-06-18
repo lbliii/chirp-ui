@@ -40,11 +40,13 @@ def test_app_py_is_thin_entrypoint() -> None:
 
 
 def test_route_and_fixture_modules_import_cleanly() -> None:
+    pytest.importorskip("chirp")
     for module_name in (*ROUTE_MODULES, *FIXTURE_MODULES, "showcase.helpers"):
         importlib.import_module(module_name)
 
 
 def test_route_modules_do_not_import_each_other() -> None:
+    pytest.importorskip("chirp")
     importers: dict[str, set[str]] = {}
     for module_name in ROUTE_MODULES:
         module = importlib.import_module(module_name)
@@ -63,6 +65,7 @@ def test_route_modules_do_not_import_each_other() -> None:
 
 
 def test_helpers_live_in_showcase_package() -> None:
+    pytest.importorskip("chirp")
     helpers = importlib.import_module("showcase.helpers")
     assert hasattr(helpers, "page")
     assert hasattr(helpers, "query_list")
