@@ -187,7 +187,8 @@ def test_base_html_style_block_is_showcase_copy_only() -> None:
 def test_shell_css_partials_are_scoped() -> None:
     for partial in SHELL_CSS_DIR.glob("*.css.html"):
         content = partial.read_text(encoding="utf-8")
-        assert content.startswith("<style>") and content.endswith("</style>\n")
+        assert content.startswith("<style>")
+        assert content.endswith("</style>\n")
         assert any(prefix in content for prefix in SHELL_CSS_PREFIXES)
 
 
