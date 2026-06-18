@@ -1,0 +1,1 @@
+Chirp-theme docs chrome: repair API symbol card grids, add Layouts/Dev section hubs, redesign the releases index, remove the dead API index filter search, and wire Bengal link hover previews (including cross-site previews for lbliii.github.io).

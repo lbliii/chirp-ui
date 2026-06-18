@@ -1841,4 +1841,3 @@ async def test_bengal_docs_link_preview_cross_site_allowed_host(page, static_sit
         }"""
     )
     assert "lbliii.github.io" in config
-
