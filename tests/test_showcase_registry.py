@@ -18,19 +18,27 @@ from showcase.registry import PAGES, index_cards, nav_sections, page_by_path  # 
 ROUTE_RE = re.compile(
     r'@app\.route\("([^"]+)"(?:,\s*template="[^"]+")?(?:,\s*methods=\[([^\]]+)\])?\)'
 )
+ROUTE_SOURCES = (
+    APP_PY,
+    SHOWCASE_DIR / "routes" / "components.py",
+    SHOWCASE_DIR / "routes" / "demos.py",
+    SHOWCASE_DIR / "routes" / "shells.py",
+    SHOWCASE_DIR / "routes" / "screens.py",
+)
 
 
 def _parse_app_routes() -> list[tuple[str, list[str]]]:
-    text = APP_PY.read_text(encoding="utf-8")
     routes: list[tuple[str, list[str]]] = []
-    for match in ROUTE_RE.finditer(text):
-        path = match.group(1)
-        methods_raw = match.group(2)
-        if methods_raw:
-            methods = [item.strip().strip("\"'") for item in methods_raw.split(",")]
-        else:
-            methods = ["GET"]
-        routes.append((path, methods))
+    for source in ROUTE_SOURCES:
+        text = source.read_text(encoding="utf-8")
+        for match in ROUTE_RE.finditer(text):
+            path = match.group(1)
+            methods_raw = match.group(2)
+            if methods_raw:
+                methods = [item.strip().strip("\"'") for item in methods_raw.split(",")]
+            else:
+                methods = ["GET"]
+            routes.append((path, methods))
     return routes
 
 
