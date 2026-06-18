@@ -425,7 +425,7 @@ def test_showcase_page_templates_match_route_context_contracts() -> None:
         issues = check_context_contract(
             template,
             provided,
-            globals=_imported_names(ast) | {"caller"},
+            globals=_imported_names(ast) | {"caller", "super"},
         )
         missing_context.extend(
             f"{template_name}: {issue.path}" for issue in issues if issue.code == "K-CTX-001"

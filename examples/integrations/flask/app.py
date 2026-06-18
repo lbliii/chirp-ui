@@ -39,7 +39,9 @@ def _render_page(template: str, **context: object) -> str:
 
 @app.get("/")
 def index() -> Response:
-    return Response(_render_page("index.html", errors={}, name_value="", saved=False), mimetype="text/html")
+    return Response(
+        _render_page("index.html", errors={}, name_value="", saved=False), mimetype="text/html"
+    )
 
 
 @app.post("/submit")

@@ -1,0 +1,342 @@
+<style>
+  .ops-shell-page {
+    --ops-shell-panel: color-mix(in srgb, var(--chirpui-bg) 88%, var(--chirpui-bg-subtle));
+    --ops-shell-line: color-mix(in srgb, var(--chirpui-border) 78%, transparent);
+    --ops-shell-wash: color-mix(in srgb, var(--chirpui-accent) 7%, transparent);
+  }
+
+  .ops-shell-page > .chirpui-stack {
+    gap: var(--chirpui-spacing-md);
+  }
+
+  .ops-shell-surface {
+    display: grid;
+    gap: var(--chirpui-spacing);
+  }
+
+  .ops-shell-search {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .ops-shell-search .chirpui-field__input {
+    border-color: var(--ops-shell-line);
+    background: var(--chirpui-bg);
+  }
+
+  .ops-shell-hints {
+    position: relative;
+    width: 100%;
+  }
+
+  .ops-shell-pending {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--chirpui-control-block-size-sm);
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-font-xs);
+    font-weight: var(--chirpui-font-weight-semibold);
+    opacity: 0;
+    transition: opacity 120ms ease;
+  }
+
+  .ops-shell-pending::before {
+    width: .45rem;
+    height: .45rem;
+    margin-right: var(--chirpui-spacing-2xs);
+    border-radius: 999px;
+    background: var(--chirpui-accent);
+    content: "";
+  }
+
+  .ops-shell-pending.htmx-request,
+  .ops-shell-surface.is-pending .ops-shell-pending {
+    opacity: 1;
+  }
+
+  .ops-shell-scope-label {
+    color: var(--chirpui-text);
+    font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-font-weight-bold);
+  }
+
+  .ops-shell-frame-wrap,
+  .ops-shell-frame,
+  .ops-shell-workspace,
+  .ops-shell-workspace-main,
+  .ops-shell-inspector {
+    min-width: 0;
+  }
+
+  .ops-shell-frame {
+    grid-template-columns: minmax(8rem, 11rem) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .ops-shell-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem);
+    gap: var(--chirpui-spacing);
+    align-items: start;
+  }
+
+  .ops-shell-rail,
+  .ops-shell-spotlight,
+  .ops-shell-inspector-card {
+    border: 1px solid var(--ops-shell-line);
+    background: var(--ops-shell-panel);
+  }
+
+  .ops-shell-rail {
+    position: sticky;
+    top: calc(var(--chirpui-spacing-xl) + var(--chirpui-spacing-sm));
+    display: grid;
+    gap: var(--chirpui-spacing-xs);
+    max-height: calc(100vh - 7rem);
+    overflow: auto;
+    border-radius: var(--chirpui-radius-lg);
+    padding: var(--chirpui-spacing-xs);
+    background:
+      linear-gradient(180deg, var(--ops-shell-wash), transparent 15rem),
+      var(--ops-shell-panel);
+  }
+
+  .ops-shell-rail-heading {
+    display: grid;
+    justify-items: center;
+    gap: var(--chirpui-spacing-2xs);
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-font-xs);
+    font-weight: var(--chirpui-font-weight-bold);
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .ops-shell-rail-heading span,
+  .ops-shell-rail-link span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--ops-shell-line);
+    background: color-mix(in srgb, var(--chirpui-bg) 92%, var(--chirpui-bg-subtle));
+    color: var(--chirpui-accent);
+    font-size: var(--chirpui-font-xs);
+    font-weight: var(--chirpui-font-weight-bold);
+  }
+
+  .ops-shell-rail-heading span {
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 999px;
+  }
+
+  .ops-shell-rail-list {
+    display: grid;
+    gap: var(--chirpui-spacing-xs);
+  }
+
+  .ops-shell-rail-link {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: var(--chirpui-spacing-xs);
+    min-height: 4.25rem;
+    border: 1px solid transparent;
+    border-radius: var(--chirpui-radius-md);
+    color: var(--chirpui-text);
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .ops-shell-rail-link span {
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: var(--chirpui-radius-sm);
+  }
+
+  .ops-shell-rail-link small {
+    position: absolute;
+    inset-block-start: var(--chirpui-spacing-xs);
+    inset-inline-end: var(--chirpui-spacing-xs);
+    min-width: 1.15rem;
+    border: 1px solid var(--ops-shell-line);
+    border-radius: 999px;
+    background: var(--chirpui-bg);
+    color: var(--chirpui-text-muted);
+    font-size: .65rem;
+    font-weight: var(--chirpui-font-weight-bold);
+  }
+
+  .ops-shell-rail-link:hover,
+  .ops-shell-rail-link:focus-visible,
+  .ops-shell-rail-link.is-active {
+    border-color: color-mix(in srgb, var(--chirpui-accent) 44%, var(--ops-shell-line));
+    background: color-mix(in srgb, var(--chirpui-accent) 8%, var(--chirpui-bg));
+  }
+
+  .ops-shell-workspace-main {
+    display: grid;
+    gap: var(--chirpui-spacing);
+  }
+
+  .ops-shell-spotlight {
+    display: grid;
+    gap: var(--chirpui-spacing-sm);
+    border-radius: var(--chirpui-radius-md);
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--chirpui-accent) 8%, var(--chirpui-bg)), var(--chirpui-bg));
+  }
+
+  .ops-shell-spotlight-head,
+  .ops-shell-metrics,
+  .ops-shell-workload-measures,
+  .ops-shell-card-grid,
+  .ops-shell-event-list,
+  .ops-shell-inspector-list {
+    min-width: 0;
+  }
+
+  .ops-shell-spotlight-head {
+    display: flex;
+    gap: var(--chirpui-spacing-sm);
+    align-items: start;
+    justify-content: space-between;
+  }
+
+  .ops-shell-kicker,
+  .ops-shell-payoff-copy {
+    margin: 0;
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-font-sm);
+  }
+
+  .ops-shell-kicker {
+    font-size: var(--chirpui-font-xs);
+    font-weight: var(--chirpui-font-weight-bold);
+    text-transform: uppercase;
+  }
+
+  .ops-shell-spotlight h2 {
+    margin: 0;
+    font-size: var(--chirpui-font-xl);
+    line-height: var(--chirpui-line-height-tight);
+  }
+
+  .ops-shell-spotlight.chirpui-panel {
+    display: flex;
+    gap: 0;
+  }
+
+  .ops-shell-spotlight .chirpui-panel__title {
+    font-size: var(--chirpui-font-xl);
+    line-height: var(--chirpui-line-height-tight);
+  }
+
+  .ops-shell-spotlight .chirpui-panel__subtitle {
+    font-size: var(--chirpui-font-xs);
+    font-weight: var(--chirpui-font-weight-bold);
+    text-transform: uppercase;
+  }
+
+  .ops-shell-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--chirpui-spacing-xs);
+  }
+
+  .ops-shell-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--chirpui-spacing);
+  }
+
+  .ops-shell-workload-measures {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--chirpui-spacing-xs);
+  }
+
+  .ops-shell-workload-measures span,
+  .ops-shell-event-list p,
+  .ops-shell-inspector-list div {
+    border: 1px solid var(--ops-shell-line);
+    border-radius: var(--chirpui-radius-sm);
+    background: color-mix(in srgb, var(--chirpui-bg) 82%, var(--chirpui-bg-subtle));
+    padding: var(--chirpui-spacing-xs);
+  }
+
+  .ops-shell-workload-measures strong,
+  .ops-shell-workload-measures small,
+  .ops-shell-inspector-list dt,
+  .ops-shell-inspector-list dd {
+    display: block;
+    min-width: 0;
+  }
+
+  .ops-shell-workload-measures small,
+  .ops-shell-inspector-list dt {
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-font-xs);
+    font-weight: var(--chirpui-font-weight-semibold);
+  }
+
+  .ops-shell-inspector {
+    position: sticky;
+    top: calc(var(--chirpui-spacing-xl) + var(--chirpui-spacing-sm));
+  }
+
+  .ops-shell-inspector-list,
+  .ops-shell-event-list {
+    display: grid;
+    gap: var(--chirpui-spacing-xs);
+  }
+
+  .ops-shell-inspector-list {
+    margin: 0;
+  }
+
+  .ops-shell-inspector-list dd,
+  .ops-shell-event-list p {
+    margin: 0;
+  }
+
+  @media (max-width: 78rem) {
+    .ops-shell-frame,
+    .ops-shell-workspace {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ops-shell-rail,
+    .ops-shell-inspector {
+      position: static;
+      max-height: none;
+    }
+
+    .ops-shell-rail-list {
+      display: flex;
+      overflow-x: auto;
+      padding-bottom: var(--chirpui-spacing-2xs);
+    }
+
+    .ops-shell-rail-link {
+      min-width: 7rem;
+    }
+  }
+
+  @media (max-width: 42rem) {
+    .ops-shell-card-grid,
+    .ops-shell-workload-measures {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ops-shell-hints .chirpui-btn {
+      flex: 1 1 calc(50% - var(--chirpui-spacing-xs));
+      justify-content: center;
+    }
+
+    .ops-shell-spotlight-head {
+      flex-direction: column;
+    }
+  }
+
+</style>
