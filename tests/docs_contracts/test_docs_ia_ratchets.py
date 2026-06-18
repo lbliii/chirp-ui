@@ -5,6 +5,7 @@ ROADMAP = ROOT / "docs" / "strategy" / "roadmap-pre-1.0.md"
 PLANS = ROOT / "docs" / "plans"
 
 EXPECTED_ACTIVE_PLANS = [
+    "PLAN-ai-chat-agent-ui-saga.md",
     "PLAN-application-chrome-system.md",
     "PLAN-bengal-chirpui-library-contract.md",
     "PLAN-chirp-theme-content-parity.md",
@@ -33,7 +34,7 @@ def test_active_plan_count_stays_intentional() -> None:
     active_plans = sorted(path.name for path in PLANS.glob("PLAN-*.md"))
 
     assert active_plans == EXPECTED_ACTIVE_PLANS
-    assert len(active_plans) <= 11
+    assert len(active_plans) <= 12
 
 
 def test_archived_plans_do_not_claim_active_or_draft_status() -> None:

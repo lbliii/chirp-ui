@@ -432,6 +432,7 @@ parallel backlog.
 
 | Plan | Roadmap workstream |
 |---|---|
+| `PLAN-ai-chat-agent-ui-saga.md` | Screen Catalog And Taste Floor |
 | `PLAN-application-chrome-system.md` | Application Chrome System |
 | `PLAN-bengal-chirpui-library-contract.md` | Bengal And chirp-theme Integration |
 | `PLAN-chirp-theme-content-parity.md` | Bengal And chirp-theme Integration |
