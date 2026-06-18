@@ -10,7 +10,6 @@ import os
 from pathlib import Path
 
 from chirp import App, AppConfig, Fragment, Request, Response, use_chirp_ui
-
 from routes import components, demos, screens, shells
 from showcase.search import search_index_json
 

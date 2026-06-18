@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from chirp import App, Request, Template
-
 from fixtures.ops import ops_context
 from fixtures.support import support_context
 from showcase.helpers import page

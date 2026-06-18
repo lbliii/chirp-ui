@@ -164,7 +164,7 @@ PAGES: tuple[ShowcasePage, ...] = (
         section="Components",
         description=(
             "workspace_shell, split_layout, file_tree, shell_region, safe_region — "
-            "plus how <code>app_shell_layout</code> maps to Chirp’s shell."
+            "plus how <code>app_shell_layout</code> maps to Chirp's shell."
         ),
         nav_order=40,
         index_card=True,

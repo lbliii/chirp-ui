@@ -138,7 +138,7 @@ def test_nav_sections_preserve_sidebar_groups() -> None:
 
 def test_search_index_serializes_visible_pages() -> None:
     sys.path.insert(0, str(SHOWCASE_DIR))
-    from showcase.search import filter_search_index, search_index  # noqa: E402
+    from showcase.search import filter_search_index, search_index
 
     index = search_index()
     assert len(index) <= 55

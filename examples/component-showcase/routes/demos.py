@@ -19,7 +19,6 @@ from chirp import (
     Template,
     ValidationError,
 )
-
 from fixtures.roster import PAGE_SIZE, TABLE_DATA, filter_table_data
 from showcase.helpers import page, query_list
 

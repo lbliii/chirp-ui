@@ -15,10 +15,9 @@ from chirp import (
     ShellActionZone,
     Template,
 )
+from showcase.helpers import page
 
 from chirp_ui.theme_packs import get_theme_pack, list_theme_packs
-
-from showcase.helpers import page
 
 
 def register(app: App) -> None:
