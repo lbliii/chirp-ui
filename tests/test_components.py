@@ -2055,8 +2055,7 @@ class TestStreaming:
 
     def test_prose_macro(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/streaming.html" import prose %}'
-            '{{ prose("<p>Hello</p>") }}'
+            '{% from "chirpui/streaming.html" import prose %}{{ prose("<p>Hello</p>") }}'
         ).render()
         assert "chirpui-prose" in html
         assert "<p>Hello</p>" in html
