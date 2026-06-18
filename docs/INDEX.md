@@ -10,6 +10,17 @@ evidence docs own proof and decision history, and plans own remaining work.
 
 ---
 
+## Integration (standalone & frameworks)
+
+Adoption guides for using chirp-ui **without Chirp** — shared core plus
+per-framework glue. Part of saga [#284](https://github.com/lbliii/chirp-ui/issues/284).
+
+- [standalone-core.md](integration/standalone-core.md) — Bare kida bootstrap, static assets, Alpine.safeData shim, CSRF, checklist
+- [capability-matrix.md](integration/capability-matrix.md) — Chirp (free) vs standalone (hand-roll) vs lost/degraded
+- [flask.md](integration/flask.md) — Flask integration guide *(#286)*
+- [fastapi.md](integration/fastapi.md) — FastAPI integration guide *(#287)*
+- [django.md](integration/django.md) — Django integration guide *(#288)*
+
 ## Orientation
 
 - [VISION.md](strategy/vision.md) — Product philosophy, registry-first thesis, and decision lens

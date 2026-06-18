@@ -216,14 +216,25 @@ Named Alpine controllers live in `chirpui-alpine.js` and register through
 `Alpine.safeData()`, so htmx swaps can initialize behavior safely. Component
 templates do not ship inline `<script>` tags.
 
-## Standalone Kida
+## Standalone Kida (without Chirp)
 
-You can use chirp-ui without Chirp by adding its loader to a Kida environment.
+chirp-ui works in Flask, FastAPI, Django, or bare kida — Chirp is optional.
+The only hard dependency is `kida-templates`; filters like `bem` and
+`field_errors` ship in chirp-ui itself via `register_filters()`.
+
+**Start here:** [Standalone core guide](docs/integration/standalone-core.md) —
+kida bootstrap, static assets, the `Alpine.safeData` shim, CSRF bridge, and
+dev checklist. See [capability matrix](docs/integration/capability-matrix.md)
+for an honest Chirp vs hand-roll comparison.
+
+Per-framework guides: [Flask](docs/integration/flask.md),
+[FastAPI](docs/integration/fastapi.md), [Django](docs/integration/django.md).
 
 ```python
 from kida import ChoiceLoader, Environment, FileSystemLoader
-from chirp_ui import get_loader
+from chirp_ui import get_loader, register_filters, static_path
 
+# See docs/integration/standalone-core.md for the full bootstrap + Alpine wiring.
 env = Environment(
     loader=ChoiceLoader([
         FileSystemLoader("templates"),
@@ -231,10 +242,6 @@ env = Environment(
     ])
 )
 ```
-
-In standalone setups, register equivalent filters/globals and serve
-`chirpui.css`, `chirpui.js`, `chirpui-alpine.js`, themes, and pattern assets
-from `chirp_ui.static_path()`.
 
 ## Bengal Theme (chirp-theme)
 

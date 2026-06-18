@@ -1,0 +1,5 @@
+{% from "chirpui/alert.html" import alert %}
+
+{% call alert(variant="info", title="Hello") %}
+  htmx swapped this fragment for {{ name }}.
+{% endcall %}
