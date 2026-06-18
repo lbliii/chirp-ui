@@ -22,7 +22,8 @@
   justify-self: end;
 }
 
-.nav-links a {
+/* Legacy bare-anchor nav links only — terminal page-nav cards own their chrome. */
+.nav-links:not(:has(.chirpui-resource-card)) a {
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -36,7 +37,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.nav-links a:hover {
+.nav-links:not(:has(.chirpui-resource-card)) a:hover {
   border-color: var(--color-primary);
   background: var(--color-bg-secondary);
   transform: translate3d(0, calc(-1 * var(--motion-distance-2)), 0);
@@ -44,7 +45,7 @@
 }
 
 @supports (color: color-mix(in srgb, white, black)) {
-  .nav-links a:hover {
+  .nav-links:not(:has(.chirpui-resource-card)) a:hover {
     background: color-mix(in srgb, var(--color-bg-secondary) 95%, var(--color-primary));
   }
 }
@@ -83,7 +84,7 @@
     gap: 1rem;
   }
 
-  .nav-links a {
+  .nav-links:not(:has(.chirpui-resource-card)) a {
     padding: 0.75rem;
   }
 
@@ -111,7 +112,7 @@
     text-align: start;
   }
 
-  .nav-links a {
+  .nav-links:not(:has(.chirpui-resource-card)) a {
     width: 100%;
   }
 

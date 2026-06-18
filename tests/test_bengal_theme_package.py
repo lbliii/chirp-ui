@@ -990,6 +990,12 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert "chirp-theme-doc-toc__context-count" in navigation
     assert "chirp-theme-doc-toc__count-pill" in navigation
     assert "chirp-theme-doc-toc__mark" in navigation
+    assert "chirp-theme-page-nav-card--prev" in navigation
+    assert "chirp-theme-page-nav-card--next" in navigation
+    assert "top_meta_title='Previous page'" in navigation
+    assert "top_meta_title='Next page'" in navigation
+    assert ".chirp-theme-page-nav-card--prev" in css
+    assert "$ cd ../" in css
     assert "chirpui/workspace_primitives.html" in docs_nav
     assert "chirp-theme-doc-catalog" in docs_nav
     assert "chirp-theme-doc-catalog-rail" in docs_nav

@@ -116,15 +116,15 @@ Intelligently chooses navigation scope based on content type:
 {% if prev_link or next_link %}
 <nav class="page-navigation" aria-label="Previous and next pages">
   {% call grid(cols=2, gap='md', cls='nav-links') %}
-    {% with prev_link as prev %}
+    {% if prev_link %}
     <div class="nav-previous">
-      {{ resource_card(prev.href ?? prev._path, prev.title, top_meta='Previous', cls='chirp-theme-page-nav-card', link_mode='main') }}
+      {{ resource_card(prev_link.href ?? prev_link._path, prev_link.title, top_meta='../', top_meta_title='Previous page', cls='chirp-theme-page-nav-card chirp-theme-page-nav-card--prev', link_mode='main') }}
     </div>
     {% end %}
 
-    {% with next_link as next %}
+    {% if next_link %}
     <div class="nav-next">
-      {{ resource_card(next.href ?? next._path, next.title, top_meta='Next', cls='chirp-theme-page-nav-card', link_mode='main') }}
+      {{ resource_card(next_link.href ?? next_link._path, next_link.title, top_meta='→', top_meta_title='Next page', cls='chirp-theme-page-nav-card chirp-theme-page-nav-card--next', link_mode='main') }}
     </div>
     {% end %}
   {% end %}
