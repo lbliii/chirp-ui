@@ -1287,6 +1287,8 @@ The bar is `position: fixed`, `z-index: 9999`, and uses `aria-hidden="true"` (pu
 
 `chirpui/streaming.html` provides components for LLM chat interfaces and SSE-driven UIs: message bubbles with role and state awareness, streaming blocks with animated cursors, copy buttons, and model cards.
 
+**Streaming event vocabulary:** See [patterns/sse-events.md](patterns/sse-events.md) for the canonical SSE event-name table, the terminal-done rule (dropped connections must stop the shimmer), and persist-vs-ephemeral guidance. Complements #260 live-region semantics (`role="log"`, load sentinel).
+
 ```jinja
 {% from "chirpui/streaming.html" import streaming_bubble, streaming_block, copy_btn, model_card %}
 
@@ -3808,6 +3810,24 @@ Action Strip component
 - **Maturity:** `stable`
 - **Role:** `primitive`
 - **Authoring:** `preferred`
+
+### `advanced-params`
+
+Parameter override controls
+
+- **Template:** `chirpui/param_override.html`
+- **Macro:** `advanced_params`
+- **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label` | no | (has default) |
+| `open` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `alert`
 
@@ -7736,6 +7756,34 @@ Panel component
 | `scroll_body` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `param`
+
+Parameter override controls
+
+- **Template:** `chirpui/param_override.html`
+- **Macro:** `param_field`
+- **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `value` | no | (has default) |
+| `default` | no | (has default) |
+| `widget` | no | (has default) |
+| `label` | no | (has default) |
+| `choices` | no | (has default) |
+| `min` | no | (has default) |
+| `max` | no | (has default) |
+| `step` | no | (has default) |
+| `errors` | no | (has default) |
+| `hint` | no | (has default) |
+| `locked` | no | (has default) |
+| `locked_reason` | no | (has default) |
+
 ### `params-table`
 
 Params table component
@@ -8246,6 +8294,24 @@ Scanline Overlay
 | Param | Required | Default |
 |-------|----------|---------|
 | `variant` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `scope-indicator`
+
+Parameter override controls
+
+- **Template:** `chirpui/param_override.html`
+- **Macro:** `scope_indicator`
+- **Category:** `form`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Modifiers:** `override`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `scope` | no | (has default) |
+| `source` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `scope-switcher`
@@ -9097,7 +9163,7 @@ Streaming and AI components
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
-- **Requires:** `htmx`
+- **Requires:** `alpine`, `htmx`
 - **Slots:** `(default)`
 - **Variants:** `error`, `thinking`
 - **Provides:** `_streaming_role`

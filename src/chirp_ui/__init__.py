@@ -29,6 +29,12 @@ from chirp_ui.alpine import (
     check_alpine_runtime,
 )
 from chirp_ui.components import DesignSystemReport, DesignSystemStats, design_system_report
+from chirp_ui.config_schema import (
+    Field,
+    ProjectedField,
+    Widget,
+    project_fields,
+)
 from chirp_ui.filters import TemplateFilterApp, register_colors, reset_colors
 from chirp_ui.grid_state import (
     Column,
@@ -70,11 +76,14 @@ __all__ = [
     "ColumnSort",
     "DesignSystemReport",
     "DesignSystemStats",
+    "Field",
     "GridSort",
     "LibraryAsset",
     "LibraryContract",
+    "ProjectedField",
     "SelectionState",
     "ThemePack",
+    "Widget",
     "check_alpine_runtime",
     "column_aria_sort",
     "design_system_report",
@@ -85,6 +94,7 @@ __all__ = [
     "list_theme_packs",
     "load_manifest",
     "parse_sort",
+    "project_fields",
     "register_colors",
     "register_filters",
     "reset_colors",

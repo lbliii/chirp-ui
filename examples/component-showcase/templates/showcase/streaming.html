@@ -3,6 +3,7 @@
 {% block main %}
 {% from "chirpui/layout.html" import container, grid, stack, block, page_header %}
 {% from "chirpui/streaming.html" import streaming_bubble, streaming_block, copy_btn, model_card %}
+{% from "chirpui/param_override.html" import param_field, advanced_params, scope_indicator %}
 {% from "chirpui/sse_status.html" import sse_status, sse_retry %}
 
 {% call container() %}
@@ -123,6 +124,20 @@ Connection lost. Please try again.
   <span class="chirpui-text-muted chirpui-font-sm">Disconnected. Retry fetches a mock recovery fragment.</span>
   {{ sse_retry("/streaming/retry", label="Reconnect", target="#streaming-retry-status", swap="innerHTML") }}
 </div>
+{% end %}
+
+<h2>Parameter Overrides</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Tri-state Default/Custom controls for per-chat model parameters. Pair with
+  <code>config_form()</code> for schema-driven settings.
+</p>
+{% call block() %}
+{{ scope_indicator(scope="default", source="model") }}
+{{ scope_indicator(scope="override", source="chat") }}
+{% call advanced_params(label="Advanced parameters", open=true) %}
+  {{ param_field("temperature", value=0.9, default=0.7, widget="range", min=0, max=2, step=0.1, label="Temperature") }}
+  {{ param_field("model", value=none, default="gpt-4o", widget="text", label="Model") }}
+{% end %}
 {% end %}
 
 <h2>Try it — Live SSE Demo</h2>

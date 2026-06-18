@@ -966,6 +966,14 @@ def register_filters(app: TemplateFilterApp) -> None:
         tg("selection_state")(selection_state)
         tg("column_aria_sort")(column_aria_sort)
         tg("sort_query")(sort_query)
+        from chirp_ui.config_schema import Field, Widget, project_fields
+
+        # Config-form server-state projection — registered beside sort_columns
+        # so config_form can render widget/value/choices it never derives.
+        # See chirp_ui.config_schema.
+        tg("project_fields")(project_fields)
+        tg("config_field")(Field)
+        tg("Widget")(Widget)
     else:
         warnings.warn(
             "chirp-ui: app has no template_global(); "

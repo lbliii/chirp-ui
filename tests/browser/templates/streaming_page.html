@@ -12,4 +12,8 @@
 {% call streaming_bubble(role="user", state="", streaming=false) %}
   <p data-testid="user-bubble-content">Hello from the user.</p>
 {% end %}
+
+{% call streaming_bubble(sse_connect="/streaming-test", streaming=true) %}
+  <p data-testid="sse-bubble-content">Live stream slot.</p>
+{% end %}
 {% end %}

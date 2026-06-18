@@ -1,0 +1,97 @@
+{#- chirp-ui: Parameter override controls
+    Tri-state per-parameter override for AI chat/agent params. Each param either
+    inherits a model/agent default (value = null/absent) or carries a custom
+    override. Pairs with config_schema.project_fields for the inner control.
+
+    Usage:
+        {% from "chirpui/param_override.html" import param_field, advanced_params, scope_indicator %}
+
+        {% call advanced_params() %}
+            {{ param_field("temperature", value=0.9, default=0.7, widget="range",
+                           min=0, max=2, step=0.1, label="Temperature") }}
+            {{ param_field("model", value=none, default="gpt-4o", widget="select",
+                           choices=models, label="Model",
+                           locked=true, locked_reason="Set by your workspace admin") }}
+        {% end %}
+-#}
+
+{# One overridable parameter. value=none -> inherit default; any value -> custom.
+   locked=true renders the control disabled with a lock badge + reason tooltip. #}
+{% def param_field(name, value=none, default=none, widget="text", label=none, choices=none,
+                   min=0, max=100, step=1, errors=none, hint=none,
+                   locked=false, locked_reason="") %}
+{% set _label = label if label is not none else name %}
+{% set _overridden = value is not none %}
+<div class="chirpui-param" id="field-{{ name }}"
+     x-data="chirpuiParamOverride({ overridden: {{ "true" if _overridden else "false" }} })">
+    <div class="chirpui-param__head">
+        <span class="chirpui-param__label">{{ _label }}</span>
+        {% if locked %}
+            {% from "chirpui/badge.html" import badge %}
+            {% from "chirpui/tooltip.html" import tooltip %}
+            {% call tooltip(locked_reason or "Locked", position="left") %}
+                {{ badge("Locked", variant="muted", icon="lock") }}
+            {% end %}
+        {% end %}
+    </div>
+    <div class="chirpui-param__mode" role="radiogroup" aria-label="{{ _label }} source">
+        <label class="chirpui-param__mode-opt">
+            <input type="radio" name="{{ name }}__mode" value="default"
+                   {% if not _overridden %}checked{% end %}
+                   {% if locked %}disabled{% end %}
+                   @change="overridden = false">
+            <span>Default <span class="chirpui-param__default-val">{{ default }}</span></span>
+        </label>
+        <label class="chirpui-param__mode-opt">
+            <input type="radio" name="{{ name }}__mode" value="custom"
+                   {% if _overridden %}checked{% end %}
+                   {% if locked %}disabled{% end %}
+                   @change="overridden = true">
+            <span>Custom</span>
+        </label>
+    </div>
+    <div class="chirpui-param__custom" x-show="overridden" x-cloak>
+        {% from "chirpui/forms.html" import text_field, select_field, range_field, toggle_field %}
+        {% if widget == "select" %}
+            {{ select_field(name, options=(choices or []), selected=(value or default),
+                            label=none, errors=errors) }}
+        {% elif widget == "range" %}
+            {{ range_field(name, value=(value if value is not none else default),
+                           min=min, max=max, step=step, label=none, errors=errors,
+                           show_value=true) }}
+        {% elif widget == "toggle" %}
+            {{ toggle_field(name, checked=(value if value is not none else default),
+                            label=none, errors=errors) }}
+        {% else %}
+            {{ text_field(name, value=(value if value is not none else default),
+                          label=none, errors=errors) }}
+        {% end %}
+    </div>
+    {% if hint %}<span class="chirpui-field__hint">{{ hint }}</span>{% end %}
+</div>
+{% end %}
+
+{# Collapsible advanced-parameters disclosure. Wrap param_field calls. #}
+{% def advanced_params(label="Advanced parameters", open=false, cls="") %}
+<details class="chirpui-advanced-params{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
+    <summary class="chirpui-advanced-params__summary">{{ label }}</summary>
+    <div class="chirpui-advanced-params__body">
+        {% slot %}
+    </div>
+</details>
+{% end %}
+
+{# Scope indicator — communicates whether a value is inherited or overridden.
+   scope: "default" | "override". source labels the origin (e.g. "model", "chat"). #}
+{% def scope_indicator(scope="default", source="", cls="") %}
+{% set _override = scope == "override" %}
+<span class="chirpui-scope-indicator chirpui-scope-indicator--{{ "override" if _override else "default" }}{{ " " ~ cls if cls else "" }}"
+      role="status">
+    <span class="chirpui-scope-indicator__dot" aria-hidden="true"></span>
+    {% if _override %}
+        Overridden{% if source %} for this {{ source }}{% end %}
+    {% else %}
+        Using {{ source or "model" }} default
+    {% end %}
+</span>
+{% end %}

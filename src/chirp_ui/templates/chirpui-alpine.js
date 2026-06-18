@@ -1206,6 +1206,67 @@
         };
     });
 
+    // Rule 1 (terminal-done): ANY stream close — a clean `done` event, a
+    // connection error, or a dropped socket — must clear aria-busy and stop
+    // the shimmer. htmx's SSE extension fires htmx:sseClose when the
+    // EventSource closes (including via sse-close="done") and htmx:sseError on
+    // a connection error. We listen for both (plus the kebab spellings htmx
+    // also dispatches and the send-error siblings) and run cleanup exactly
+    // once. The streaming block stays mounted across token appends
+    // (hx-swap="beforeend"), so this attaches in init() scoped to this.$root
+    // and detaches in destroy(); it never re-fires per token. Without it a
+    // dropped connection strands chirpui-streaming-block--active (infinite
+    // cursor) and aria-busy="true" (screen reader stuck on "busy") forever.
+    register("chirpuiStreamLifecycle", function () {
+        var EVENTS = [
+            "htmx:sseClose",
+            "htmx:sseError",
+            "htmx:sse-close",
+            "htmx:sse-error",
+            "htmx:sendError",
+            "htmx:send-error",
+        ];
+        return {
+            done: false,
+            init: function () {
+                var self = this;
+                this._finish = function () {
+                    self.finish();
+                };
+                EVENTS.forEach(function (name) {
+                    self.$root.addEventListener(name, self._finish);
+                });
+            },
+            finish: function () {
+                if (this.done) {
+                    return;
+                }
+                this.done = true;
+                this.$root.classList.remove("chirpui-streaming-block--active");
+                this.$root.removeAttribute("aria-busy");
+                var bubble = this.$root.closest(
+                    ".chirpui-streaming-bubble, .chirpui-message-bubble"
+                );
+                if (bubble) {
+                    bubble.removeAttribute("aria-busy");
+                }
+            },
+            destroy: function () {
+                var self = this;
+                EVENTS.forEach(function (name) {
+                    self.$root.removeEventListener(name, self._finish);
+                });
+            },
+        };
+    });
+
+    register("chirpuiParamOverride", function (cfg) {
+        cfg = cfg || {};
+        return {
+            overridden: !!cfg.overridden,
+        };
+    });
+
     register("chirpuiThemeToggle", function () {
         return {
             theme: "system",

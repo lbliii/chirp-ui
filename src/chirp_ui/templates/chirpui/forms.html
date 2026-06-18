@@ -825,3 +825,54 @@
     {% slot %}
 </div>
 {% end %}
+
+{# Schema-driven config form. `fields` is a list of ProjectedField (from
+   chirp_ui.config_schema.project_fields) or plain dicts with the same shape.
+   Dispatches each field to the matching forms.html macro by `.widget`.
+   Pass `values=` only if you projected without values and want late binding;
+   normally project on the server: project_fields(SCHEMA, values=stored).
+
+   Usage (Chirp route already called project_fields):
+       {{ config_form(fields, action="/settings", method="post") }}
+#}
+{% def config_form(fields, action="", method="post", submit_label="Save", errors=none, cls="") %}
+{% call form(action, method=method, cls=("chirpui-config-form" ~ (" " ~ cls if cls else ""))) %}
+    {% for f in fields %}
+        {% set _name = f.get("name") if f is mapping else f.name %}
+        {% set _widget = (f.get("widget", "text") if f is mapping else f.widget) %}
+        {% set _label = (f.get("label", _name) if f is mapping else f.label) %}
+        {% set _value = (f.get("value") if f is mapping else f.value) %}
+        {% set _hint = (f.get("description", "") if f is mapping else f.description) %}
+        {% set _choices = (f.get("choices", []) if f is mapping else f.choices) %}
+        {% set _req = (f.get("required", false) if f is mapping else f.required) %}
+        {% if _widget == "select" %}
+            {{ select_field(_name, options=_choices, selected=_value, label=_label,
+                            errors=errors, required=_req, hint=_hint) }}
+        {% elif _widget == "toggle" %}
+            {{ toggle_field(_name, checked=_value, label=_label, errors=errors) }}
+        {% elif _widget == "range" %}
+            {{ range_field(_name, value=_value,
+                           min=(f.get("min", 0) if f is mapping else (f.min if f.min is not none else 0)),
+                           max=(f.get("max", 100) if f is mapping else (f.max if f.max is not none else 100)),
+                           step=(f.get("step", 1) if f is mapping else (f.step if f.step is not none else 1)),
+                           label=_label, errors=errors, hint=_hint, show_value=true) }}
+        {% elif _widget == "number" %}
+            {{ text_field(_name, value=_value, label=_label, type="number",
+                          errors=errors, required=_req, hint=_hint) }}
+        {% elif _widget == "password" %}
+            {{ password_field(_name, value="", label=_label, errors=errors,
+                              required=_req, hint=_hint) }}
+        {% elif _widget == "textarea" %}
+            {{ textarea_field(_name, value=_value, label=_label, errors=errors,
+                              required=_req, hint=_hint) }}
+        {% else %}
+            {{ text_field(_name, value=_value, label=_label, errors=errors,
+                          required=_req, hint=_hint) }}
+        {% end %}
+    {% end %}
+    {% call form_actions(align="end") %}
+        {% from "chirpui/button.html" import btn %}
+        {{ btn(submit_label, type="submit", variant="primary") }}
+    {% end %}
+{% end %}
+{% end %}

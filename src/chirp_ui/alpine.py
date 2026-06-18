@@ -97,6 +97,11 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
         macros=("sse_status",),
         conditional="sse_retry()",
     ),
+    "chirpuiStreamLifecycle": AlpineRequirement(
+        factory="chirpuiStreamLifecycle",
+        macros=("streaming",),
+        conditional="sse_connect or sse_swap_target",
+    ),
     "chirpuiSidebar": AlpineRequirement(
         factory="chirpuiSidebar",
         macros=("app_shell", "app_shell_layout"),
@@ -127,6 +132,10 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
     "chirpuiDatePicker": AlpineRequirement(
         factory="chirpuiDatePicker",
         macros=("date_picker",),
+    ),
+    "chirpuiParamOverride": AlpineRequirement(
+        factory="chirpuiParamOverride",
+        macros=("param_override",),
     ),
 }
 

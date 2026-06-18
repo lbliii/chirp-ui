@@ -30,7 +30,7 @@ surface with a preferred replacement. Components the manifest marks `internal`
 (Chirp UI composition infrastructure) are intentionally omitted.
 
 <!-- chirpui:generated:start -->
-_358 public components across 17 categories._
+_361 public components across 17 categories._
 
 ## Layout
 
@@ -174,10 +174,11 @@ _23 components._
 
 ## Form
 
-_21 components._
+_24 components._
 
 | Macro | Maturity | Description |
 |-------|----------|-------------|
+| `advanced_params` | stable | Parameter override controls |
 | `chat_input` | stable | Chat Input component |
 | `combobox` | experimental | Combobox / autocomplete |
 | `composer_shell` | experimental | Composer shell |
@@ -193,6 +194,8 @@ _21 components._
 | `key-value-form` *(CSS / utility)* | stable | - |
 | `ui_label` | stable | Label |
 | `number-scale` *(CSS / utility)* | experimental | - |
+| `param_field` | stable | Parameter override controls |
+| `scope_indicator` | stable | Parameter override controls |
 | `search_bar` | stable | Form field macros |
 | `tag_input` | stable | Tag input component |
 | `tag_input` | stable | Tag input component |
