@@ -2681,10 +2681,10 @@
    * `.chirp-theme-page-nav-card` so taxonomy and section cards stay generic.
    * ------------------------------------------------------------------ */
   .page-navigation {
-    --chirp-theme-page-nav-prompt: color-mix(in srgb, var(--chirpui-accent) 72%, var(--chirpui-text-muted));
-    --chirp-theme-page-nav-dot-close: #ef6b5e;
-    --chirp-theme-page-nav-dot-minimize: #f5bd4f;
-    --chirp-theme-page-nav-dot-maximize: #4cae4f;
+    --chirpui-page-nav-prompt: color-mix(in srgb, var(--chirpui-accent) 72%, var(--chirpui-text-muted));
+    --chirpui-page-nav-dot-close: #ef6b5e;
+    --chirpui-page-nav-dot-minimize: #f5bd4f;
+    --chirpui-page-nav-dot-maximize: #4cae4f;
   }
 
   .page-navigation .nav-previous,
@@ -2731,10 +2731,10 @@
     inline-size: 0.62rem;
     block-size: 0.62rem;
     border-radius: var(--chirpui-radius-full);
-    background: var(--chirp-theme-page-nav-dot-close);
+    background: var(--chirpui-page-nav-dot-close);
     box-shadow:
-      0.96rem 0 0 var(--chirp-theme-page-nav-dot-minimize),
-      1.92rem 0 0 var(--chirp-theme-page-nav-dot-maximize);
+      0.96rem 0 0 var(--chirpui-page-nav-dot-minimize),
+      1.92rem 0 0 var(--chirpui-page-nav-dot-maximize);
     margin-inline-end: 1.45rem;
   }
 
@@ -2792,7 +2792,7 @@
 
   .page-navigation .chirp-theme-page-nav-card .chirpui-card__header-content::before {
     flex: 0 0 auto;
-    color: var(--chirp-theme-page-nav-prompt);
+    color: var(--chirpui-page-nav-prompt);
     font-weight: var(--weight-semibold);
     white-space: pre;
   }
