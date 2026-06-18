@@ -118,13 +118,13 @@ Intelligently chooses navigation scope based on content type:
   {% call grid(cols=2, gap='md', cls='nav-links') %}
     {% if prev_link %}
     <div class="nav-previous">
-      {{ resource_card(prev_link.href ?? prev_link._path, prev_link.title, top_meta='../', top_meta_title='Previous page', cls='chirp-theme-page-nav-card chirp-theme-page-nav-card--prev', link_mode='main') }}
+      {{ resource_card(prev_link.href ?? prev_link._path, prev_link.title, top_meta='cd ../' ~ (prev_link.slug ?? ''), top_meta_title='Previous page', cls='chirp-theme-page-nav-card chirp-theme-page-nav-card--prev', link_mode='main') }}
     </div>
     {% end %}
 
     {% if next_link %}
     <div class="nav-next">
-      {{ resource_card(next_link.href ?? next_link._path, next_link.title, top_meta='→', top_meta_title='Next page', cls='chirp-theme-page-nav-card chirp-theme-page-nav-card--next', link_mode='main') }}
+      {{ resource_card(next_link.href ?? next_link._path, next_link.title, top_meta='cd ../' ~ (next_link.slug ?? ''), top_meta_title='Next page', cls='chirp-theme-page-nav-card chirp-theme-page-nav-card--next', link_mode='main') }}
     </div>
     {% end %}
   {% end %}

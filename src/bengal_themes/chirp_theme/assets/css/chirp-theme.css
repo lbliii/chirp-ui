@@ -2679,7 +2679,10 @@
    * Reuses the notebook chrome vocabulary (traffic-light dots, mono prompt
    * line) without the full dark code-block treatment. Scoped to
    * `.chirp-theme-page-nav-card` so taxonomy and section cards stay generic.
-   * ------------------------------------------------------------------ */
+   * Tokens stay on the shared `--chirpui-*` vocabulary ratchet rather than a
+   * bespoke theme-prefixed namespace. The prompt colour is a desaturated
+   * accent; the dots are the literal macOS traffic-light hues (deliberately
+   * brand-literal, not theme colours). -------------------------------------- */
   .page-navigation {
     --chirpui-page-nav-prompt: color-mix(in srgb, var(--chirpui-accent) 72%, var(--chirpui-text-muted));
     --chirpui-page-nav-dot-close: #ef6b5e;
@@ -2711,10 +2714,16 @@
       0 0 0 1px color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
   }
 
+  /* Terminal chrome: a thin title strip (macOS traffic lights, top-left) above
+     the `$ cd ../<slug>` prompt line. The chirp-ui base sets this region to
+     `flex-direction: column`, so the dots sit on the first row and the prompt
+     on the second — both pinned to the inline-start edge like a real terminal
+     (never centred). Chrome stays left-oriented on both cards; only the body
+     mirrors for direction. */
   .page-navigation .chirp-theme-page-nav-card .chirpui-card__top-meta {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    align-items: flex-start;
+    gap: 0.45rem;
     min-width: 0;
     padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
     background: var(--chirpui-surface-alt);
@@ -2738,18 +2747,24 @@
     margin-inline-end: 1.45rem;
   }
 
+  /* The window-title slot holds the real command: `$ cd ../<slug>`. A sibling
+     page lives at `../<slug>` (up to the shared parent, then into the sibling),
+     so the path is honest for both prev and next — direction is carried by the
+     body eyebrow/arrow, not by the path. The `$` prompt is a styled ::before so
+     it can take the accent without colouring the command text. */
   .page-navigation .chirp-theme-page-nav-card .chirpui-card__top-meta > span {
     min-width: 0;
     overflow: hidden;
-    color: var(--chirpui-text);
-    font-weight: var(--weight-medium);
+    color: var(--chirpui-text-muted);
+    font-weight: var(--weight-normal);
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .page-navigation .chirp-theme-page-nav-card--next .chirpui-card__top-meta > span {
-    margin-inline-start: auto;
-    color: var(--chirpui-accent);
+  .page-navigation .chirp-theme-page-nav-card .chirpui-card__top-meta > span::before {
+    content: "$ ";
+    color: var(--chirpui-page-nav-prompt);
+    font-weight: var(--weight-semibold);
   }
 
   .page-navigation .chirp-theme-page-nav-card .chirpui-card__main-link {
@@ -2782,35 +2797,49 @@
     font-weight: var(--weight-normal);
   }
 
+  /* Body reads as terminal output: a PREV/NEXT eyebrow above the human title.
+     The eyebrow ::before carries the direction arrow + word so direction is not
+     a tiny glyph in the chrome bar. Next mirrors to the inline-end edge. */
   .page-navigation .chirp-theme-page-nav-card .chirpui-card__header-content {
     display: flex;
-    align-items: baseline;
-    gap: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
     min-width: 0;
     flex: 1 1 auto;
   }
 
+  .page-navigation .chirp-theme-page-nav-card--next .chirpui-card__header-content {
+    align-items: flex-end;
+    text-align: end;
+  }
+
   .page-navigation .chirp-theme-page-nav-card .chirpui-card__header-content::before {
+    order: -1;
     flex: 0 0 auto;
     color: var(--chirpui-page-nav-prompt);
+    font-size: 0.66rem;
     font-weight: var(--weight-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     white-space: pre;
   }
 
   .page-navigation .chirp-theme-page-nav-card--prev .chirpui-card__header-content::before {
-    content: "$ cd ../";
+    content: "\2190  prev";
   }
 
   .page-navigation .chirp-theme-page-nav-card--next .chirpui-card__header-content::before {
-    content: "$ cd ";
+    content: "next  \2192";
   }
 
   .page-navigation .chirp-theme-page-nav-card .chirpui-card__title {
+    max-width: 100%;
     min-width: 0;
     overflow: hidden;
     color: var(--chirpui-text);
     font-family: inherit;
-    font-size: inherit;
+    font-size: 0.92rem;
     font-weight: var(--weight-medium);
     line-height: 1.35;
     text-overflow: ellipsis;
