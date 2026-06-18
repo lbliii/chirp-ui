@@ -249,6 +249,63 @@
       "trim_emits": [],
       "variants": []
     },
+    "advanced-params": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "advanced-params",
+      "category": "form",
+      "composes": [],
+      "consumes": [],
+      "description": "Parameter override controls\n    Tri-state per-parameter override for AI chat/agent params. Each param either\n    inherits a model/agent default (value = null/absent) or carries a custom\n    override. Pairs with config_schema.project_fields for the inner control.\n\n    Usage:\n        {% from \"chirpui/param_override.html\" import param_field, advanced_params, scope_indicator %}\n\n        {% call advanced_params() %}\n            {{ param_field(\"temperature\", value=0.9, default=0.7, widget=\"range\",\n                           min=0, max=2, step=0.1, label=\"Temperature\") }}\n            {{ param_field(\"model\", value=none, default=\"gpt-4o\", widget=\"select\",\n                           choices=models, label=\"Model\",\n                           locked=true, locked_reason=\"Set by your workspace admin\") }}\n        {% end %}",
+      "elements": [
+        "body",
+        "summary"
+      ],
+      "emits": [
+        "chirpui-advanced-params",
+        "chirpui-advanced-params__body",
+        "chirpui-advanced-params__summary"
+      ],
+      "extra_emits": [],
+      "lineno": 75,
+      "macro": "advanced_params",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "open"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "param_override.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "alert": {
       "appearances": [
         "filled",
@@ -15848,6 +15905,119 @@
       "trim_emits": [],
       "variants": []
     },
+    "param": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "param",
+      "category": "form",
+      "composes": [],
+      "consumes": [],
+      "description": "Parameter override controls\n    Tri-state per-parameter override for AI chat/agent params. Each param either\n    inherits a model/agent default (value = null/absent) or carries a custom\n    override. Pairs with config_schema.project_fields for the inner control.\n\n    Usage:\n        {% from \"chirpui/param_override.html\" import param_field, advanced_params, scope_indicator %}\n\n        {% call advanced_params() %}\n            {{ param_field(\"temperature\", value=0.9, default=0.7, widget=\"range\",\n                           min=0, max=2, step=0.1, label=\"Temperature\") }}\n            {{ param_field(\"model\", value=none, default=\"gpt-4o\", widget=\"select\",\n                           choices=models, label=\"Model\",\n                           locked=true, locked_reason=\"Set by your workspace admin\") }}\n        {% end %}",
+      "elements": [
+        "custom",
+        "default-val",
+        "head",
+        "label",
+        "mode",
+        "mode-opt"
+      ],
+      "emits": [
+        "chirpui-param",
+        "chirpui-param__custom",
+        "chirpui-param__default-val",
+        "chirpui-param__head",
+        "chirpui-param__label",
+        "chirpui-param__mode",
+        "chirpui-param__mode-opt"
+      ],
+      "extra_emits": [],
+      "lineno": 20,
+      "macro": "param_field",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "value"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "default"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "widget"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "choices"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "min"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "max"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "step"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "errors"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hint"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "locked"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "locked_reason"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "param_override.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "params-table": {
       "appearances": [],
       "authoring": "available",
@@ -17816,6 +17986,60 @@
         "crt",
         "heavy"
       ]
+    },
+    "scope-indicator": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "scope-indicator",
+      "category": "form",
+      "composes": [],
+      "consumes": [],
+      "description": "Parameter override controls\n    Tri-state per-parameter override for AI chat/agent params. Each param either\n    inherits a model/agent default (value = null/absent) or carries a custom\n    override. Pairs with config_schema.project_fields for the inner control.\n\n    Usage:\n        {% from \"chirpui/param_override.html\" import param_field, advanced_params, scope_indicator %}\n\n        {% call advanced_params() %}\n            {{ param_field(\"temperature\", value=0.9, default=0.7, widget=\"range\",\n                           min=0, max=2, step=0.1, label=\"Temperature\") }}\n            {{ param_field(\"model\", value=none, default=\"gpt-4o\", widget=\"select\",\n                           choices=models, label=\"Model\",\n                           locked=true, locked_reason=\"Set by your workspace admin\") }}\n        {% end %}",
+      "elements": [
+        "dot"
+      ],
+      "emits": [
+        "chirpui-scope-indicator",
+        "chirpui-scope-indicator--override",
+        "chirpui-scope-indicator__dot"
+      ],
+      "extra_emits": [],
+      "lineno": 86,
+      "macro": "scope_indicator",
+      "maturity": "stable",
+      "modifiers": [
+        "override"
+      ],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "scope"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "source"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "param_override.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
     },
     "scope-switcher": {
       "appearances": [],
@@ -24636,7 +24860,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 309,
+      "available": 312,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -24650,7 +24874,7 @@
       "data-display": 38,
       "effect": 46,
       "feedback": 26,
-      "form": 21,
+      "form": 24,
       "infrastructure": 2,
       "interactive": 9,
       "layout": 50,
@@ -24665,22 +24889,22 @@
       "experimental": 105,
       "internal": 2,
       "legacy": 39,
-      "stable": 214
+      "stable": 217
     },
     "component_requirements": {
-      "alpine": 31,
+      "alpine": 32,
       "htmx": 27
     },
     "component_roles": {
-      "component": 192,
+      "component": 195,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 22,
       "primitive": 112
     },
     "components_with_consumes": 20,
-    "components_with_description": 255,
-    "components_with_params": 255,
+    "components_with_description": 258,
+    "components_with_params": 258,
     "components_with_provides": 12,
     "manifest_quality": {
       "missing_description": 0,
@@ -24688,7 +24912,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 253
+      "public_templated_components": 256
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -24711,7 +24935,7 @@
       "spacing": 30,
       "typography": 46
     },
-    "total_components": 360,
+    "total_components": 363,
     "total_theme_packs": 3,
     "total_tokens": 440
   },
