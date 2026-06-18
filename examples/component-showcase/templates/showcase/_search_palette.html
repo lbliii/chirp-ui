@@ -70,7 +70,7 @@
   function renderResults(matches) {
     if (!resultsEl) return;
     if (!matches.length) {
-      resultsEl.innerHTML = '<div class="chirpui-command-palette__empty">No results</div>';
+      resultsEl.innerHTML = '<div class="chirpui-command-palette__group-title">No results</div>';
       return;
     }
     resultsEl.innerHTML = matches.map(function (entry) {
