@@ -16,7 +16,7 @@ wheels = [
 
 [[package]]
 name = "bengal"
-version = "0.3.3"
+version = "0.5.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "bengal-pounce" },
@@ -36,9 +36,9 @@ dependencies = [
     { name = "uvloop", marker = "sys_platform != 'win32'" },
     { name = "watchfiles" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f9/73/a73d0c200f82a34c2441216959f91219abf2907274c13605a81a51e31a7a/bengal-0.3.3.tar.gz", hash = "sha256:1b031cf86584c6ca73dacf2f9f0207b3762cbb4be7cb9d830277de2e867bd7c6", size = 3314360, upload-time = "2026-05-23T20:04:52.842Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d8/66/d3b56e566ea8fd737f6cbbef3031e154c0aa3f6ed8c23123deb232b01275/bengal-0.5.1.tar.gz", hash = "sha256:f34c7f3d204a1711d51e031f7e9be1ff40c58335528754a51d465be3492f193b", size = 3429903, upload-time = "2026-06-17T19:39:23.131Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/de/44/2f2f1966065c6ed72781ab8832bb9d82ee1c4a03d05fe1729dcabbfe0cf4/bengal-0.3.3-py3-none-any.whl", hash = "sha256:6a0ed40154c12d09b0be2f82ca324bc9bdc6e6632a2daedf895acd6ce93918bf", size = 4022314, upload-time = "2026-05-23T20:04:50.332Z" },
+    { url = "https://files.pythonhosted.org/packages/01/fa/346981ba9be9d637428a3472f24aecfd8ec3d72482ea6ade5dc6516418ea/bengal-0.5.1-py3-none-any.whl", hash = "sha256:f2c91bd4b29223b52672c8cbd9b04fdad789bda46e59bf413fbf85c2d2e88e4b", size = 4124944, upload-time = "2026-06-17T19:39:21.263Z" },
 ]
 
 [[package]]
@@ -134,12 +134,12 @@ provides-extras = ["showcase"]
 [package.metadata.requires-dev]
 browser = [
     { name = "bengal-chirp", specifier = ">=0.8.0" },
-    { name = "bengal-pounce", specifier = ">=0.2.1" },
+    { name = "bengal-pounce", specifier = ">=0.8.0" },
     { name = "playwright", specifier = ">=1.50.0" },
     { name = "pytest-asyncio", specifier = ">=0.25.0" },
 ]
 dev = [
-    { name = "bengal", specifier = ">=0.3.3" },
+    { name = "bengal", specifier = ">=0.5.1" },
     { name = "poethepoet", specifier = ">=0.32.0" },
     { name = "pre-commit", specifier = ">=4.0.0" },
     { name = "pytest", specifier = ">=9.0.2" },
@@ -152,7 +152,7 @@ dev = [
     { name = "ty", specifier = ">=0.0.11" },
 ]
 docs = [
-    { name = "bengal", specifier = ">=0.3.3" },
+    { name = "bengal", specifier = ">=0.5.1" },
     { name = "lunr", specifier = ">=0.7.0" },
 ]
 

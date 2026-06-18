@@ -187,12 +187,12 @@ exclude_lines = [
 
 [dependency-groups]
 docs = [
-    "bengal>=0.3.3",
+    "bengal>=0.5.1",
     "lunr>=0.7.0",
 ]
 dev = [
     # Bengal-backed theme packaging/build tests run in the normal test suite
-    "bengal>=0.3.3",
+    "bengal>=0.5.1",
     # Task runner (poe tasks in [tool.poe.tasks])
     "poethepoet>=0.32.0",
     # Testing
@@ -215,7 +215,7 @@ browser = [
     "bengal-chirp>=0.8.0",
     "playwright>=1.50.0",
     "pytest-asyncio>=0.25.0",
-    "bengal-pounce>=0.2.1",
+    "bengal-pounce>=0.8.0",
 ]
 
 # =============================================================================
