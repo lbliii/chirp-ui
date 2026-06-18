@@ -69,6 +69,7 @@ new public APIs unless a linked plan or design record says so.
 
 - [NAVIGATION.md](patterns/navigation.md) — Navigation layer model, component decision matrix, and dense chrome guidance
 - [DATA-GRID.md](patterns/data-grid.md) — Server-driven data grid: the `grid_state` typed helper, sort/selection/sticky/load-more wiring, and the `data_table` vs `data_grid` decision lens
+- [SSE-EVENTS.md](patterns/sse-events.md) — SSE event vocabulary, terminal-done rule, and persist-vs-ephemeral doctrine for chat/agent streaming
 - [DENSE-NAVIGATION-RECIPES.md](patterns/dense-navigation-recipes.md) — Copyable dense navigation recipes and layer model
 - [DENSE-NAVIGATION-SYNTHESIS.md](patterns/dense-navigation-synthesis.md) — Dense navigation recipe synthesis, primitive candidates, and anti-decisions
 - [SEARCH-SHELL-RECIPES.md](patterns/search-shell-recipes.md) — Dense catalog/search shells, scoped counts, responsive command surfaces, and HTMX/Alpine contracts

@@ -11,7 +11,7 @@
 
         {% call copy_btn(text="Copy", copy_text=answer_text) %}
 
-        <div class="chirpui-prose">{{ content | markdown | safe(reason="markdown output") }}</div>
+        {{ prose(content | markdown | safe(reason="markdown output")) }}
 -#}
 
 {% def streaming_bubble(role="assistant", state="", streaming=true, sse_swap_target=false, sse_connect=none, sse_close="done", cls="") %}
@@ -25,7 +25,7 @@
 <article class="chirpui-message-bubble{{ role_class }}{{ state_class }}{{ " " ~ cls if cls else "" }}"
          {% if sse_connect %}hx-ext="sse" sse-connect="{{ sse_connect }}" sse-close="{{ sse_close }}" hx-disinherit="hx-target hx-swap" {% end %}aria-label="{{ _aria_labels[role_valid] if role_valid in _aria_labels else "message" }}"{% if _state == "error" %} role="alert"{% end %}{% if _state == "thinking" %} aria-busy="true"{% end %}>
     <div class="chirpui-streaming-block{{ " chirpui-streaming-block--active" if streaming else "" }}"
-         {% if sse_connect or sse_swap_target %}sse-swap="fragment" hx-target="this" hx-swap="beforeend" {% endif %}role="log" aria-relevant="additions text">
+         {% if sse_connect or sse_swap_target %}x-data="chirpuiStreamLifecycle()" sse-swap="fragment" hx-target="this" hx-swap="beforeend" {% endif %}role="log" aria-relevant="additions text">
         {% try %}
         {% slot %}
         {% if _state == "thinking" %}
@@ -45,7 +45,7 @@
 
 {% def streaming_block(streaming=false, sse_swap_target=false, cls="") %}
 <div class="chirpui-streaming-block{{ " chirpui-streaming-block--active" if streaming else "" }}{{ " " ~ cls if cls else "" }}"
-     {% if sse_swap_target %}sse-swap="fragment" hx-target="this" {% endif %}role="log"
+     {% if sse_swap_target %}x-data="chirpuiStreamLifecycle()" sse-swap="fragment" hx-target="this" {% endif %}role="log"
      aria-relevant="additions text">
     {% try %}
     {% slot %}
@@ -110,4 +110,10 @@
      aria-label="{{ label }}"{% if busy %} aria-busy="true"{% end %}>
     <span class="chirpui-load-sentinel__label">{{ label }}</span>
 </div>
+{% end %}
+
+{% def prose(content, cls="") %}
+{#- Thin wrapper for markdown-rendered assistant content. Prefer rendered_content()
+    when you need a slot; use prose() for a one-liner with pre-rendered HTML. -#}
+<div class="chirpui-prose{{ " " ~ cls if cls else "" }}">{{ content | safe(reason="prose content pre-rendered by caller") }}</div>
 {% end %}

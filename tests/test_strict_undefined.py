@@ -290,6 +290,24 @@ def test_select_field_minimal_option(env: Environment) -> None:
     assert "<option" in out
 
 
+def test_config_form_minimal_field(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/forms.html" import config_form %}'
+        '{{ config_form([{"name": "x", "widget": "text"}], action="/save") }}',
+    )
+    assert 'name="x"' in out
+
+
+def test_param_field_minimal(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/param_override.html" import param_field %}'
+        '{{ param_field(name="temperature") }}',
+    )
+    assert "chirpui-param" in out
+
+
 def test_radio_field_minimal_option(env: Environment) -> None:
     out = _render(
         env,

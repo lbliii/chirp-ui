@@ -2037,6 +2037,29 @@ class TestStreaming:
         assert html.count('sse-swap="fragment"') == 1
         assert 'hx-swap="beforeend"' in html
         assert 'aria-label="assistant response"' in html
+        assert 'x-data="chirpuiStreamLifecycle()"' in html
+
+    def test_streaming_block_sse_lifecycle_opt_in(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_block %}'
+            "{% call streaming_block(streaming=true, sse_swap_target=true) %}{% end %}"
+        ).render()
+        assert 'x-data="chirpuiStreamLifecycle()"' in html
+
+    def test_streaming_block_static_no_lifecycle(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import streaming_block %}'
+            "{% call streaming_block(streaming=true) %}Partial{% end %}"
+        ).render()
+        assert "chirpuiStreamLifecycle" not in html
+
+    def test_prose_macro(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/streaming.html" import prose %}'
+            '{{ prose("<p>Hello</p>") }}'
+        ).render()
+        assert "chirpui-prose" in html
+        assert "<p>Hello</p>" in html
 
     def test_streaming_block(self, env: Environment) -> None:
         html = env.from_string(
@@ -4346,6 +4369,62 @@ class TestForms:
         assert 'hx-select="#page-content"' in html
         assert 'hx-target="#main"' in html
         assert "hx-disinherit" not in html
+
+    def test_config_form_text_field(self, env: Environment) -> None:
+        from chirp_ui.config_schema import Field, project_fields
+
+        fields = project_fields([Field("name", label="Name", default="Ada")])
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import config_form %}'
+            "{{ config_form(fields, action='/settings') }}"
+        ).render(fields=fields)
+        assert "chirpui-config-form" in html
+        assert 'name="name"' in html
+        assert 'value="Ada"' in html
+        assert "chirpui-field__input" in html
+
+    def test_config_form_select_and_secret(self, env: Environment) -> None:
+        from chirp_ui.config_schema import Field, project_fields
+
+        schema = [
+            Field("model", choices=(("a", "A"),), default="a"),
+            Field("api_key", secret=True),
+        ]
+        fields = project_fields(schema, {"api_key": "sk-secret"})
+        html = env.from_string(
+            '{% from "chirpui/forms.html" import config_form %}'
+            "{{ config_form(fields, action='/settings') }}"
+        ).render(fields=fields)
+        assert "<select" in html
+        assert 'type="password"' in html
+        assert "sk-secret" not in html
+
+    def test_param_field_default_mode(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/param_override.html" import param_field %}'
+            '{{ param_field("temperature", default=0.7) }}'
+        ).render()
+        assert "chirpui-param" in html
+        assert 'value="default"' in html
+        assert "chirpuiParamOverride" in html
+
+    def test_param_field_locked(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/param_override.html" import param_field %}'
+            '{{ param_field("model", default="gpt-4o", locked=true, locked_reason="Admin locked") }}'
+        ).render()
+        assert "Locked" in html
+        assert "disabled" in html
+        assert "Admin locked" in html
+
+    def test_scope_indicator(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/param_override.html" import scope_indicator %}'
+            '{{ scope_indicator(scope="override", source="chat") }}'
+        ).render()
+        assert "chirpui-scope-indicator--override" in html
+        assert 'role="status"' in html
+        assert "Overridden for this chat" in html
 
     def test_search_field_preserves_explicit_search_attrs(self, env: Environment) -> None:
         html = env.from_string(

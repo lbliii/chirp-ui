@@ -320,6 +320,11 @@ def env() -> Environment:
     e.add_global("selection_state", selection_state)
     e.add_global("column_aria_sort", column_aria_sort)
     e.add_global("sort_query", sort_query)
+    from chirp_ui.config_schema import Field, Widget, project_fields
+
+    e.add_global("project_fields", project_fields)
+    e.add_global("config_field", Field)
+    e.add_global("Widget", Widget)
     e.add_global("tab_is_active", tab_is_active)
     e.add_global("nav_pill_inline_style", nav_pill_inline_style)
     e.add_global("segmented_pill_inline_style", segmented_pill_inline_style)
@@ -375,6 +380,11 @@ def theme_env() -> Environment:
     e.add_global("selection_state", selection_state)
     e.add_global("column_aria_sort", column_aria_sort)
     e.add_global("sort_query", sort_query)
+    from chirp_ui.config_schema import Field, Widget, project_fields
+
+    e.add_global("project_fields", project_fields)
+    e.add_global("config_field", Field)
+    e.add_global("Widget", Widget)
     e.add_global(
         "csrf_field",
         lambda: Markup('<input type="hidden" name="_csrf_token" value="test-csrf">'),

@@ -1287,6 +1287,8 @@ The bar is `position: fixed`, `z-index: 9999`, and uses `aria-hidden="true"` (pu
 
 `chirpui/streaming.html` provides components for LLM chat interfaces and SSE-driven UIs: message bubbles with role and state awareness, streaming blocks with animated cursors, copy buttons, and model cards.
 
+**Streaming event vocabulary:** See [patterns/sse-events.md](patterns/sse-events.md) for the canonical SSE event-name table, the terminal-done rule (dropped connections must stop the shimmer), and persist-vs-ephemeral guidance. Complements #260 live-region semantics (`role="log"`, load sentinel).
+
 ```jinja
 {% from "chirpui/streaming.html" import streaming_bubble, streaming_block, copy_btn, model_card %}
 

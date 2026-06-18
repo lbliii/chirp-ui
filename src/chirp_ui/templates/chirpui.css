@@ -22961,3 +22961,107 @@ a.chirpui-chip:focus-visible {
     }
 }
 }
+
+/* === partials/174_param-override.css === */
+/* ==========================================================================
+   Parameter override — tri-state Default/Custom controls for AI chat params.
+   @scope + @layer envelope (see docs/plans/PLAN-css-scope-and-layer.md).
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-param) to (.chirpui-param .chirpui-param) {
+        :scope {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing-xs);
+            min-width: 0;
+        }
+
+        .chirpui-param__head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--chirpui-spacing-sm);
+        }
+
+        .chirpui-param__label {
+            font-size: var(--chirpui-font-sm);
+            font-weight: 600;
+        }
+
+        .chirpui-param__mode {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--chirpui-spacing-sm);
+        }
+
+        .chirpui-param__mode-opt {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--chirpui-spacing-xs);
+            font-size: var(--chirpui-font-sm);
+            cursor: pointer;
+        }
+
+        .chirpui-param__default-val {
+            color: var(--chirpui-text-muted);
+            font-weight: 400;
+        }
+
+        .chirpui-param__custom {
+            margin-top: var(--chirpui-spacing-xs);
+        }
+    }
+
+    @scope (.chirpui-advanced-params) to (.chirpui-advanced-params .chirpui-advanced-params) {
+        :scope {
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius-sm);
+            padding: var(--chirpui-spacing-sm);
+        }
+
+        .chirpui-advanced-params__summary {
+            cursor: pointer;
+            font-size: var(--chirpui-font-sm);
+            font-weight: 600;
+            list-style: none;
+        }
+
+        .chirpui-advanced-params__summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .chirpui-advanced-params__body {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing);
+            margin-top: var(--chirpui-spacing-sm);
+            transition: opacity var(--chirpui-duration-fast) var(--chirpui-easing-standard);
+        }
+    }
+
+    @scope (.chirpui-scope-indicator) to (.chirpui-scope-indicator .chirpui-scope-indicator) {
+        :scope {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--chirpui-spacing-xs);
+            font-size: var(--chirpui-font-xs);
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-scope-indicator__dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background: var(--chirpui-text-muted);
+        }
+
+        :scope.chirpui-scope-indicator--override {
+            color: var(--chirpui-accent);
+        }
+
+        :scope.chirpui-scope-indicator--override .chirpui-scope-indicator__dot {
+            background: var(--chirpui-accent);
+        }
+    }
+}
