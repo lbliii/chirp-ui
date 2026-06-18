@@ -31,6 +31,8 @@ from chirp import (
 
 from chirp_ui.theme_packs import get_theme_pack, list_theme_packs
 
+from showcase.registry import index_cards, nav_sections, visible_pages
+
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 
 # Use source chirp-ui templates (many components not yet in installed package)
@@ -52,6 +54,9 @@ use_chirp_ui(app)
 def _page(request: Request, template: str, **context: object) -> Template:
     """Render a full showcase page with route context for shell navigation."""
     context.setdefault("current_path", request.path)
+    context.setdefault("showcase_nav_sections", nav_sections())
+    context.setdefault("showcase_index_cards", index_cards())
+    context.setdefault("showcase_pages", visible_pages())
     return Template(template, **context)
 
 

@@ -1085,58 +1085,13 @@
 {% slot topbar_end %}{{ theme_toggle() }}{% end %}
 {% slot sidebar %}
 {% call sidebar(cls="chirpui-sidebar--responsive-dropdowns", current_path=current_path | default(""), aria_label="Showcase sections") %}
-
-{% call sidebar_section("Core", collapsible=true) %}
-{{ sidebar_link("/", "Home", icon="sources", match="exact") }}
-{{ sidebar_link("/demo", "Quick Demo", icon="run", match="prefix") }}
+{% for section_name, pages in showcase_nav_sections %}
+{% call sidebar_section(section_name, collapsible=true) %}
+{% for page in pages %}
+{{ sidebar_link(page.path, page.title, icon=page.icon, match=page.match) }}
+{% endfor %}
 {% end %}
-
-{% call sidebar_section("Components", collapsible=true) %}
-{{ sidebar_link("/htmx", "HTMX Patterns", match="prefix") }}
-{{ sidebar_link("/navigation", "Navigation", match="prefix") }}
-{{ sidebar_link("/layout", "Layout", match="prefix") }}
-{{ sidebar_link("/chrome", "App chrome & regions", match="prefix") }}
-{{ sidebar_link("/shell-actions", "Shell Actions", match="prefix") }}
-{{ sidebar_link("/sections", "Sections", match="prefix") }}
-{{ sidebar_link("/carousel", "Carousel", match="prefix") }}
-{{ sidebar_link("/cards", "Cards & Alerts", match="prefix") }}
-{{ sidebar_link("/forms", "Forms", match="prefix") }}
-{{ sidebar_link("/appearance-tone", "Appearance & Tone", match="prefix") }}
-{{ sidebar_link("/theme-packs", "Theme Packs", match="prefix") }}
-{{ sidebar_link("/ui", "UI Components", match="prefix") }}
-{% end %}
-
-{% call sidebar_section("Data", collapsible=true) %}
-{{ sidebar_link("/data-display", "Data Display", match="prefix") }}
-{{ sidebar_link("/data", "Team Roster", match="exact") }}
-{{ sidebar_link("/catalog-shell", "Catalog Shell", match="prefix") }}
-{{ sidebar_link("/operations-shell", "Operations Shell", match="exact") }}
-{{ sidebar_link("/operations-shell-workspace", "Operations Shell WS", match="prefix") }}
-{{ sidebar_link("/support-shell", "Support Shell", match="prefix") }}
-{{ sidebar_link("/calendar", "Calendar", match="prefix") }}
-{{ sidebar_link("/dashboard", "Dashboard", match="prefix") }}
-{% end %}
-
-{% call sidebar_section("Effects", collapsible=true) %}
-{{ sidebar_link("/effects", "Visual Effects", match="prefix") }}
-{{ sidebar_link("/typography", "Typography", match="prefix") }}
-{{ sidebar_link("/animation", "Animation", match="prefix") }}
-{% end %}
-
-{% call sidebar_section("ASCII", collapsible=true) %}
-{{ sidebar_link("/ascii", "ASCII Icons", match="exact") }}
-{{ sidebar_link("/ascii-primitives", "ASCII Primitives", match="prefix") }}
-{% end %}
-
-{% call sidebar_section("Rich", collapsible=true) %}
-{{ sidebar_link("/buttons", "Buttons & Cards", match="prefix") }}
-{{ sidebar_link("/streaming", "Streaming & AI", match="prefix") }}
-{{ sidebar_link("/islands", "Islands", match="prefix") }}
-{{ sidebar_link("/messenger", "Messenger", match="prefix") }}
-{{ sidebar_link("/social", "Social Media", match="prefix") }}
-{{ sidebar_link("/video", "Video Platform", match="prefix") }}
-{% end %}
-
+{% endfor %}
 {% end %}
 {% end %}
 
