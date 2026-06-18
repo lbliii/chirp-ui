@@ -1,0 +1,103 @@
+<div x-data="chirpuiCommandPalette()"
+     @keydown.window.meta.k.prevent="open()"
+     @keydown.window.ctrl.k.prevent="open()">
+<dialog id="showcase-command-palette" x-ref="dialog" class="chirpui-command-palette" closedby="any">
+    <div class="chirpui-command-palette__inner">
+        <input type="search" class="chirpui-command-palette__input"
+               x-ref="input" role="combobox" aria-autocomplete="list"
+               aria-controls="showcase-command-palette-results"
+               :aria-expanded="hasOptions ? 'true' : 'false'"
+               :aria-activedescendant="activeId"
+               placeholder="Search pages…"
+               autocomplete="off" autofocus
+               @input="window.chirpuiShowcaseSearchFilter($event.target.value)"
+               @keydown.down.prevent="move(1)"
+               @keydown.up.prevent="move(-1)"
+               @keydown.enter.prevent="activate()">
+        <div id="showcase-command-palette-results" x-ref="results" role="listbox"
+             aria-label="Search pages…"
+             class="chirpui-command-palette__results"></div>
+    </div>
+</dialog>
+</div>
+
+<script type="application/json" id="showcase-page-index">{{ showcase_search_index_json | safe(reason="server-generated JSON index") }}</script>
+<script nonce="{{ csp_nonce() }}">
+(function () {
+  var indexNode = document.getElementById("showcase-page-index");
+  if (!indexNode) return;
+
+  var pages = JSON.parse(indexNode.textContent || "[]");
+  var resultsEl = document.getElementById("showcase-command-palette-results");
+  var boostString = {{ showcase_palette_boost_attrs | tojson }};
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function slug(path) {
+    return path.replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "home";
+  }
+
+  function haystack(entry) {
+    return [
+      entry.title || "",
+      entry.section || "",
+      entry.description || "",
+      (entry.tags || []).join(" "),
+    ].join(" ").toLowerCase();
+  }
+
+  function filterPages(query) {
+    var needle = String(query || "").trim().toLowerCase();
+    if (!needle) return pages;
+    return pages.filter(function (entry) {
+      return haystack(entry).indexOf(needle) !== -1;
+    });
+  }
+
+  function paletteRoot() {
+    var dialog = document.getElementById("showcase-command-palette");
+    return dialog && dialog.parentElement && dialog.parentElement._x_dataStack
+      ? dialog.parentElement._x_dataStack[0]
+      : null;
+  }
+
+  function renderResults(matches) {
+    if (!resultsEl) return;
+    if (!matches.length) {
+      resultsEl.innerHTML = '<div class="chirpui-command-palette__group-title">No results</div>';
+      return;
+    }
+    resultsEl.innerHTML = matches.map(function (entry) {
+      var id = "showcase-cmd-" + slug(entry.path);
+      var hint = entry.section || entry.path;
+      return (
+        '<a class="chirpui-command-palette__item" id="' + id + '" role="option" aria-selected="false" '
+        + 'href="' + escapeHtml(entry.path) + '" ' + boostString + '>'
+        + '<span class="chirpui-command-palette__item-label">' + escapeHtml(entry.title) + "</span>"
+        + '<span class="chirpui-command-palette__item-hint">' + escapeHtml(hint) + "</span>"
+        + "</a>"
+      );
+    }).join("");
+  }
+
+  window.chirpuiShowcaseSearchFilter = function (query) {
+    renderResults(filterPages(query));
+    var palette = paletteRoot();
+    if (palette && typeof palette.refresh === "function") {
+      palette.refresh();
+    }
+  };
+
+  renderResults(pages);
+  var palette = paletteRoot();
+  if (palette && typeof palette.refresh === "function") {
+    palette.refresh();
+  }
+})();
+</script>

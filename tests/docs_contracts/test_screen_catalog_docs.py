@@ -4,6 +4,10 @@ ROOT = REPO_ROOT
 SCREENS = ROOT / "docs" / "screens"
 PLAN = ROOT / "docs" / "plans" / "PLAN-visual-taste-floor-saga.md"
 SHOWCASE_APP = ROOT / "examples" / "component-showcase" / "app.py"
+SHOWCASE_ROUTE_SOURCES = (
+    SHOWCASE_APP,
+    ROOT / "examples" / "component-showcase" / "routes" / "screens.py",
+)
 INDEX = ROOT / "docs" / "INDEX.md"
 
 SCREEN_DOCS = {
@@ -144,7 +148,7 @@ def test_screen_promotion_ledger_keeps_public_api_boundary() -> None:
 
 
 def test_screen_docs_pin_fixture_routes_profiles_and_proof() -> None:
-    app_text = SHOWCASE_APP.read_text(encoding="utf-8")
+    app_text = "\n".join(source.read_text(encoding="utf-8") for source in SHOWCASE_ROUTE_SOURCES)
 
     for filename, metadata in SCREEN_DOCS.items():
         text = (SCREENS / filename).read_text(encoding="utf-8")

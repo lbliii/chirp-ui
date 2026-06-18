@@ -81,6 +81,7 @@ SHOWCASE_ROUTE_SMOKE_PATHS = (
 
 SHOWCASE_FRAGMENT_OR_ACTION_ROUTES = {
     "/toast",
+    "/showcase/pages.json",
     "/demo/submit",
     "/demo/stream",
     "/forms/demo",
@@ -97,12 +98,20 @@ SHOWCASE_FRAGMENT_OR_ACTION_ROUTES = {
 
 def _showcase_route_patterns() -> set[str]:
     patterns: set[str] = set()
-    for line in _SHOWCASE_APP.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line.startswith("@app.route("):
-            continue
-        expr = ast.parse(line[1:]).body[0].value
-        patterns.add(ast.literal_eval(expr.args[0]))
+    route_sources = (
+        _SHOWCASE_APP,
+        _SHOWCASE_DIR / "routes" / "components.py",
+        _SHOWCASE_DIR / "routes" / "demos.py",
+        _SHOWCASE_DIR / "routes" / "shells.py",
+        _SHOWCASE_DIR / "routes" / "screens.py",
+    )
+    for source in route_sources:
+        for line in source.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line.startswith("@app.route("):
+                continue
+            expr = ast.parse(line[1:]).body[0].value
+            patterns.add(ast.literal_eval(expr.args[0]))
     return patterns
 
 
