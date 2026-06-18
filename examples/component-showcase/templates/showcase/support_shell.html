@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block head_extra %}
+{{ super() }}
+{% include "showcase/_css/support_shell.css.html" %}
+{% end %}
+
 {% block main %}
 {% from "chirpui/layout.html" import container, stack, page_header %}
 {% from "chirpui/button.html" import btn %}
