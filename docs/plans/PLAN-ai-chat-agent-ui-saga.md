@@ -9,8 +9,8 @@ Derived from an audit of **open-webui** (a SvelteKit + Tailwind LLM chat UI) run
 ## What chirp-ui already matches/exceeds
 chirp-ui ships a structurally strong chat surface today: `message_bubble` + `message_thread`, `streaming.html` (`streaming_bubble`/`streaming_block`/`copy_btn`/`model_card`/`load_sentinel`), `chat_input` + `composer_shell` + `chat_layout`, `conversation_list` + `conversation_item`, and `sse_status`. On the *hard* parts we are ahead of the audited target: the streaming region is `role=\"log\"` with `aria-relevant=\"additions text\"`; motion is capped under `prefers-reduced-motion` at the base layer; overlays use native `<dialog>`; Cmd+K is a real, single-authority palette. This saga therefore closes compositions, not mechanisms.
 
-## Phase ordering (across epics)
-Two cross-cutting bets go **first** because they have the broadest blast radius and unblock the rest:
+## Recommended Execution Order
+Phase ordering across epics. Two cross-cutting bets go **first** because they have the broadest blast radius and unblock the rest:
 - **Phase 1 — keystone + cheapest-broadest:** *Server-state projection* (schema-driven config forms + parameter overrides) is the keystone — it unblocks param-overrides *and* slash-command forms once a typed schema can project into `forms.html`/`config_row`/`slider`/`toggle_group`. *SSE event-vocabulary doctrine* is the cheapest, widest-reach change — a named terminal/error/heartbeat grammar so a dropped stream stops shimmering forever.
 - **Phase 2 — turn surface + ergonomics:** *Message turn surface* (per-turn actions, meta, reasoning, tool-call, citations) rides on the projection + SSE grammar. *Shortcut catalog + guarded handler + a11y/theming polish* hardens keyboard ergonomics around the new surfaces.
 - **Phase 3 — composer:** *Real composer* (auto-grow, IME-safe send, send/stop cancellation, attachments, suggestions) lands last, consuming the SSE cancellation grammar and the projected slash-command forms.
