@@ -1,0 +1,26 @@
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/forms.html" import form, text_field, form_actions, csrf_hidden %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/alert.html" import alert %}
+{% from "chirpui/theme_toggle.html" import theme_toggle %}
+
+{% call card(title="Django + chirp-ui", subtitle="Most glue — kida in the view") %}
+  <p>Django templates wrap kida HTML from the view. Do not mix Django and kida template tags in one file.</p>
+  <div style="margin-top: var(--chirpui-spacing-sm);">
+    {{ theme_toggle() }}
+  </div>
+{% endcall %}
+
+{% if saved %}
+  {% call alert(variant="success", title="Saved") %}
+    Django CSRF middleware verified the post; errors map into ``field_errors``.
+  {% endcall %}
+{% end %}
+
+{% call form("", method="post") %}
+  {{ csrf_hidden() }}
+  {{ text_field("name", label="Name", value=name_value, errors=errors, required=true) }}
+  {% call form_actions() %}
+    {{ btn("Save", type="submit", variant="primary") }}
+  {% endcall %}
+{% endcall %}

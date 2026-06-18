@@ -1,0 +1,36 @@
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/forms.html" import form, text_field, form_actions, csrf_hidden %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/alert.html" import alert %}
+{% from "chirpui/theme_toggle.html" import theme_toggle %}
+
+{% call card(title="FastAPI + chirp-ui", subtitle="HTMLResponse from kida") %}
+  <p>Routes are async; kida renders synchronously inside them. Static files mount at <code>/static</code>.</p>
+  <div style="margin-top: var(--chirpui-spacing-sm);">
+    {{ theme_toggle() }}
+  </div>
+{% endcall %}
+
+{% if saved %}
+  {% call alert(variant="success", title="Saved") %}
+    Form posted with session-backed CSRF (swap for starlette-csrf in production).
+  {% endcall %}
+{% end %}
+
+{% call form("/submit", method="post") %}
+  {{ csrf_hidden() }}
+  {{ text_field("name", label="Name", value=name_value, errors=errors, required=true) }}
+  {% call form_actions() %}
+    {{ btn("Save", type="submit", variant="primary") }}
+  {% endcall %}
+{% endcall %}
+
+{% call card(title="htmx swap (hand-rolled)", subtitle="POST /htmx/greet") %}
+  {% call form("/htmx/greet", method="post", hx={"post": "/htmx/greet", "target": "#greet-target", "swap": "innerHTML"}) %}
+    {{ text_field("name", label="Name for greeting") }}
+    {% call form_actions() %}
+      {{ btn("Greet", type="submit", variant="secondary") }}
+    {% endcall %}
+  {% endcall %}
+  <div id="greet-target" style="margin-top: var(--chirpui-spacing-sm);"></div>
+{% endcall %}

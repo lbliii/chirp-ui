@@ -34,6 +34,9 @@ ENV/
 env/
 .env
 
+# Integration example artifacts
+examples/integrations/django/db.sqlite3
+
 # Testing
 .pytest_cache/
 # Browser gauntlet screenshot artifacts (transient; regenerated on failing runs)
