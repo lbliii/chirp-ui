@@ -30,11 +30,11 @@ surface with a preferred replacement. Components the manifest marks `internal`
 (Chirp UI composition infrastructure) are intentionally omitted.
 
 <!-- chirpui:generated:start -->
-_372 public components across 17 categories._
+_374 public components across 17 categories._
 
 ## Layout
 
-_58 components._
+_59 components._
 
 | Macro | Maturity | Description |
 |-------|----------|-------------|
@@ -49,6 +49,7 @@ _58 components._
 | `clamp-3` *(CSS / utility)* | legacy | - |
 | `cluster` | stable | Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block. |
 | `container` | stable | Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block. |
+| `density` *(CSS / utility)* | stable | - |
 | `description_list` | stable | Description list component |
 | `detail_header` | experimental | Detail header |
 | `divider` | stable | Divider component |
@@ -152,7 +153,7 @@ _30 components._
 
 ## Control
 
-_24 components._
+_25 components._
 
 | Macro | Maturity | Description |
 |-------|----------|-------------|
@@ -163,6 +164,7 @@ _24 components._
 | `bulk-bar` *(CSS / utility)* | experimental | - |
 | `command-bar` *(CSS / utility)* | stable | - |
 | `copy_button` | stable | Copy button |
+| `fab` | stable | Floating Action Button |
 | `facet_chip` | experimental | Facet chip |
 | `filter_group` | stable | Filter chips — radiogroup + pill chips (named colors / HTMX) |
 | `filter_row` | stable | Filter Bar composite |

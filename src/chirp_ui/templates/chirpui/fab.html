@@ -1,0 +1,61 @@
+{#- chirp-ui: Floating Action Button
+    Fixed-position circular action button for mobile-primary affordances.
+
+    Usage:
+        from "chirpui/fab.html" import fab
+
+        fab("search", aria_label="Search", href="/search")
+        fab("plus", aria_label="Create", variant="primary", corner="bottom-end",
+            visibility="mobile-only", hx={"post": "/new", "target": "#main"})
+
+    `target` wires the FAB to open a native ``<dialog>`` via ``chirpuiDialogTarget()``
+    (focus returns to the FAB on close). Pair with ``command_palette_fab()`` for
+    mobile command-palette access.
+
+    hx={...} — preferred for htmx attributes on button FABs.
+-#}
+
+{% def fab(icon, aria_label, variant="primary", corner="bottom-end", visibility="always",
+           target=none, href=none, type="button", disabled=false, cls="",
+           hx=none, hx_get=none, hx_post=none, hx_put=none, hx_patch=none, hx_delete=none,
+           hx_target=none, hx_swap=none, hx_sync=none, hx_disabled_elt=none) %}
+{% set _variant = variant | validate_variant(("", "primary", "ghost", "danger"), "primary") %}
+{% set _corner = corner | validate_variant(
+    ("bottom-end", "bottom-start", "top-end", "top-start"), "bottom-end") %}
+{% set _visibility = visibility | validate_variant(("", "always", "mobile-only", "desktop-only"), "always") %}
+{% set _disabled = disabled %}
+{% set variant_class = " chirpui-fab--" ~ _variant if _variant else "" %}
+{% set corner_class = " chirpui-fab--" ~ _corner %}
+{% set visibility_class = " chirpui-fab--" ~ _visibility if _visibility and _visibility != "always" else "" %}
+{% set base = "chirpui-fab" ~ variant_class ~ corner_class ~ visibility_class ~ (" " ~ cls if cls else "") %}
+{% set _hx_dict = build_hx_attrs(hx=hx, hx_get=hx_get, hx_post=hx_post, hx_put=hx_put, hx_patch=hx_patch,
+    hx_delete=hx_delete, hx_target=hx_target, hx_swap=hx_swap) %}
+{% set _link_has_hx_request = _hx_dict.get("hx-get") or _hx_dict.get("hx-post") or _hx_dict.get("hx-put") or _hx_dict.get("hx-patch") or _hx_dict.get("hx-delete") %}
+{% set _link_has_hx_mutation = _hx_dict.get("hx-post") or _hx_dict.get("hx-put") or _hx_dict.get("hx-patch") or _hx_dict.get("hx-delete") %}
+{% set _link_has_hx_config = _hx_dict | length > 0 %}
+{% set _explicit_hx_select = _hx_dict.get("hx-select") %}
+{% set _hx_sync_from_dict = _hx_dict.get("hx-sync") %}
+{% set _hx_disabled_from_dict = _hx_dict.get("hx-disabled-elt") %}
+{% set _default_hx_select = "unset" if _link_has_hx_request and not _explicit_hx_select else none %}
+{% set _default_hx_sync = hx_sync if hx_sync is not none else ("this:drop" if _link_has_hx_mutation and not _hx_sync_from_dict else none) %}
+{% set _default_hx_disabled = hx_disabled_elt if hx_disabled_elt is not none else ("this" if _link_has_hx_mutation and not href and not _hx_disabled_from_dict else none) %}
+{% set _route_attrs = route_link_attrs(href) if href and not _link_has_hx_config and not _disabled else {} %}
+{% if href %}
+<a{% if not _disabled %} href="{{ href }}"{% end %} class="{{ base }}" aria-label="{{ aria_label }}"
+   {% if _disabled %}aria-disabled="true" tabindex="-1"{% end %}
+   {% if not _disabled and _link_has_hx_request %}hx-boost="false"{% end %}
+   {% if not _disabled %}{{ build_hx_attrs(hx_select=_default_hx_select, hx_sync=_default_hx_sync) | html_attrs }}{% end %}
+   {% if not _disabled %}{{ _route_attrs | html_attrs }}{% end %}
+   {% if not _disabled %}{{ _hx_dict | html_attrs }}{% end %}>
+    <span class="chirpui-fab__icon">{{ icon | icon }}</span>
+</a>
+{% else %}
+<button type="{{ type }}" class="{{ base }}" aria-label="{{ aria_label }}"
+        {% if _disabled %}disabled{% end %}
+        {% if target %}x-data="chirpuiDialogTarget()" data-dialog-target="{{ target }}" @click="open()"{% end %}
+        {{ build_hx_attrs(hx_select=_default_hx_select, hx_sync=_default_hx_sync, hx_disabled_elt=_default_hx_disabled) | html_attrs }}
+        {{ _hx_dict | html_attrs }}>
+    <span class="chirpui-fab__icon">{{ icon | icon }}</span>
+</button>
+{% end %}
+{% end %}

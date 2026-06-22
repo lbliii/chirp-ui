@@ -38,6 +38,23 @@ SCREEN_DOCS = {
 }
 
 
+SHOWCASE_LIVE = "https://chirp-ui-showcase-production.up.railway.app"
+
+
+def test_screen_docs_link_live_showcase_urls() -> None:
+    for filename, metadata in SCREEN_DOCS.items():
+        text = (SCREENS / filename).read_text(encoding="utf-8")
+        live_url = f"{SHOWCASE_LIVE}{metadata['route']}"
+        assert live_url in text, f"{filename} must link to the live Railway fixture"
+
+
+def test_screen_catalog_indexes_live_showcase() -> None:
+    readme = (SCREENS / "README.md").read_text(encoding="utf-8")
+    assert SHOWCASE_LIVE in readme
+    for metadata in SCREEN_DOCS.values():
+        assert f"{SHOWCASE_LIVE}{metadata['route']}" in readme
+
+
 def test_screen_catalog_indexes_all_golden_screens() -> None:
     readme = (SCREENS / "README.md").read_text(encoding="utf-8")
 

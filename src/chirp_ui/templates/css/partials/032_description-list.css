@@ -56,11 +56,11 @@
 }
 
 .chirpui-dl--compact .chirpui-dl__row {
-    margin-bottom: var(--chirpui-spacing-xs);
+    margin-bottom: var(--chirpui-density-list-row-gap);
 }
 
 .chirpui-dl--compact .chirpui-dl__term {
-    font-size: var(--chirpui-font-xs);
+    font-size: var(--chirpui-density-cell-font-size, var(--chirpui-font-xs));
 }
 
 .chirpui-dl__detail--url,

@@ -11,7 +11,8 @@ path
 title
     Human label for nav and search.
 section
-    Sidebar group: Core, Components, Data, Effects, ASCII, or Rich.
+    Sidebar group: Core, Golden screens, Shell recipes, Components, Data,
+    Effects, ASCII, or Rich.
 description
     Short blurb for index cards and search snippets. May contain safe HTML.
 tags
@@ -49,8 +50,12 @@ from typing import Literal
 
 MatchMode = Literal["exact", "prefix"]
 
+SHOWCASE_LIVE_URL = "https://chirp-ui-showcase-production.up.railway.app"
+
 SECTION_ORDER: tuple[str, ...] = (
     "Core",
+    "Golden screens",
+    "Shell recipes",
     "Components",
     "Data",
     "Effects",
@@ -334,36 +339,41 @@ PAGES: tuple[ShowcasePage, ...] = (
         hidden=True,
         show_in_sidebar=False,
     ),
+    # --- Shell recipes ---
     ShowcasePage(
         path="/catalog-shell",
         title="Catalog Shell",
-        section="Data",
-        nav_order=30,
+        section="Shell recipes",
+        description=("Atlas search catalog — filters, results rail, and selected-object detail."),
+        nav_order=10,
         shell_recipe=True,
         tags=("catalog", "search", "atlas"),
     ),
     ShowcasePage(
         path="/operations-shell",
         title="Operations Shell",
-        section="Data",
-        nav_order=40,
+        section="Shell recipes",
+        description=("Ops command surface — metrics, queues, incidents, and activity rail."),
+        nav_order=20,
         match="exact",
         shell_recipe=True,
-        tags=("operations", "ops", "compute"),
+        tags=("operations", "ops", "compute", "atlas"),
     ),
     ShowcasePage(
         path="/operations-shell-workspace",
         title="Operations Shell WS",
-        section="Data",
-        nav_order=50,
+        section="Shell recipes",
+        description="Workspace variant of the operations shell with split layout.",
+        nav_order=30,
         shell_recipe=True,
-        tags=("operations", "workspace"),
+        tags=("operations", "workspace", "atlas"),
     ),
     ShowcasePage(
         path="/support-shell",
         title="Support Shell",
-        section="Data",
-        nav_order=60,
+        section="Shell recipes",
+        description="Sage inbox triage — filter rail, result collection, and inspector.",
+        nav_order=40,
         shell_recipe=True,
         tags=("support", "sage", "inbox"),
     ),
@@ -394,36 +404,48 @@ PAGES: tuple[ShowcasePage, ...] = (
         index_order=200,
         tags=("dashboard", "stat_card", "chart"),
     ),
-    # --- Golden screens (registered, sidebar deferred to Epic 5) ---
+    # --- Golden screens ---
     ShowcasePage(
         path="/screen-command-center",
-        title="Command center screen",
+        title="Command Center",
+        section="Golden screens",
+        description=(
+            "Atlas profile — metrics, queues, incidents, activity, and selected-object inspection."
+        ),
+        nav_order=10,
         golden_screen=True,
-        show_in_sidebar=False,
         shell_recipe=True,
-        tags=("command-center", "golden-screen", "operations"),
+        tags=("command-center", "golden-screen", "operations", "atlas"),
     ),
     ShowcasePage(
         path="/screen-review-queue",
-        title="Review queue screen",
+        title="Review Queue",
+        section="Golden screens",
+        description=(
+            "Sage profile — filter rail, result collection, inspector, and state-rich review items."
+        ),
+        nav_order=20,
         golden_screen=True,
-        show_in_sidebar=False,
         shell_recipe=True,
-        tags=("review-queue", "golden-screen", "support"),
+        tags=("review-queue", "golden-screen", "support", "sage"),
     ),
     ShowcasePage(
         path="/screen-agent-run-monitor",
-        title="Agent run monitor screen",
+        title="Agent Run Monitor",
+        section="Golden screens",
+        description=("Signal profile — live run state, artifacts, logs, and retry context."),
+        nav_order=30,
         golden_screen=True,
-        show_in_sidebar=False,
-        tags=("agent-run-monitor", "golden-screen"),
+        tags=("agent-run-monitor", "golden-screen", "signal"),
     ),
     ShowcasePage(
         path="/screen-product-docs-home",
-        title="Product docs home screen",
+        title="Product Docs Home",
+        section="Golden screens",
+        description=("Ember profile — identity, proof band, lifecycle, entry points, and CTA."),
+        nav_order=40,
         golden_screen=True,
-        show_in_sidebar=False,
-        tags=("product-docs", "golden-screen"),
+        tags=("product-docs", "golden-screen", "ember"),
     ),
     # --- Effects ---
     ShowcasePage(
@@ -675,7 +697,34 @@ def nav_sections() -> tuple[tuple[str, tuple[ShowcasePage, ...]], ...]:
 
 
 def index_cards() -> tuple[ShowcasePage, ...]:
-    """Home page card grid entries in display order."""
+    """Home page component gallery card grid entries in display order."""
     return tuple(
         sorted((page for page in PAGES if page.index_card), key=lambda item: item.index_order)
+    )
+
+
+def golden_screen_pages() -> tuple[ShowcasePage, ...]:
+    """Golden-screen archetype fixtures for nav, search, and the home index."""
+    return tuple(
+        sorted(
+            (page for page in PAGES if page.golden_screen and not page.hidden),
+            key=lambda item: (item.nav_order, item.path),
+        )
+    )
+
+
+def shell_recipe_pages() -> tuple[ShowcasePage, ...]:
+    """Standalone shell recipe demos (excludes golden-screen fixtures)."""
+    return tuple(
+        sorted(
+            (
+                page
+                for page in PAGES
+                if page.shell_recipe
+                and not page.golden_screen
+                and not page.hidden
+                and page.show_in_sidebar
+            ),
+            key=lambda item: (item.nav_order, item.path),
+        )
     )

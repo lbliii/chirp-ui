@@ -3,6 +3,7 @@
 Status: golden screen fixture
 Profile: `ember`
 Fixture route: `/screen-product-docs-home`
+Live demo: https://chirp-ui-showcase-production.up.railway.app/screen-product-docs-home
 Source template:
 `examples/component-showcase/templates/showcase/screen_product_docs_home.html`
 Proof: `tests/test_data_integration.py`,

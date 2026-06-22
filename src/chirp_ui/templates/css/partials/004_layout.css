@@ -578,10 +578,10 @@
 }
 
 .chirpui-page-header--compact {
-    --chirpui-page-header-padding: 0.6rem 1.25rem;
-    --chirpui-page-header-gap: var(--chirpui-space-control-gap);
-    --chirpui-page-header-title-size: var(--chirpui-ui-base);
-    --chirpui-page-header-title-weight: var(--chirpui-ui-font-weight-semibold);
+    --chirpui-page-header-padding: var(--chirpui-density-header-padding);
+    --chirpui-page-header-gap: var(--chirpui-density-header-gap);
+    --chirpui-page-header-title-size: var(--chirpui-density-header-title-size);
+    --chirpui-page-header-title-weight: var(--chirpui-density-header-title-weight);
     --chirpui-page-header-bg: var(--chirpui-bg-subtle);
     --chirpui-page-header-border: 1px solid var(--chirpui-border-subtle);
     flex-direction: row;

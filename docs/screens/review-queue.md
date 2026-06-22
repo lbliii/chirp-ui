@@ -3,6 +3,7 @@
 Status: golden screen fixture
 Profile: `sage`
 Fixture route: `/screen-review-queue`
+Live demo: https://chirp-ui-showcase-production.up.railway.app/screen-review-queue
 Source template: `examples/component-showcase/templates/showcase/support_shell.html`
 Proof: `tests/test_data_integration.py`,
 `tests/browser/test_golden_screen_fixtures.py`

@@ -122,6 +122,12 @@
     font-size: var(--chirpui-font-xs);
 }
 
+@media (max-width: 48rem) {
+    .chirpui-command-palette-trigger--desktop-only {
+        display: none;
+    }
+}
+
 .chirpui-command-palette__trigger:hover {
     color: var(--chirpui-text);
     border-color: var(--chirpui-text-muted);

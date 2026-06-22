@@ -5784,6 +5784,14 @@ Date / range picker
 | `id` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `density`
+
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `infrastructure`
+- **Authoring:** `available`
+- **Variants:** `compact`, `dense`
+
 ### `description_list`
 
 Description list component
@@ -6109,6 +6117,42 @@ Entity header (dashboard-grade)
 | `meta` | no | (has default) |
 | `icon` | no | (has default) |
 | `cls` | no | (has default) |
+
+### `fab`
+
+Floating Action Button
+
+- **Template:** `chirpui/fab.html`
+- **Macro:** `fab`
+- **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`, `htmx`
+- **Variants:** `(default)`, `danger`, `ghost`, `primary`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `icon` | yes | — |
+| `aria_label` | yes | — |
+| `variant` | no | (has default) |
+| `corner` | no | (has default) |
+| `visibility` | no | (has default) |
+| `target` | no | (has default) |
+| `href` | no | (has default) |
+| `type` | no | (has default) |
+| `disabled` | no | (has default) |
+| `cls` | no | (has default) |
+| `hx` | no | (has default) |
+| `hx_get` | no | (has default) |
+| `hx_post` | no | (has default) |
+| `hx_put` | no | (has default) |
+| `hx_patch` | no | (has default) |
+| `hx_delete` | no | (has default) |
+| `hx_target` | no | (has default) |
+| `hx_swap` | no | (has default) |
+| `hx_sync` | no | (has default) |
+| `hx_disabled_elt` | no | (has default) |
 
 ### `facet-chip`
 

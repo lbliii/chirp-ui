@@ -1391,9 +1391,20 @@
         return {
             open: function () {
                 var dialog = resolveDialogTarget(this.$el);
-                if (dialog && typeof dialog.showModal === "function") {
+                if (!dialog || typeof dialog.showModal !== "function") {
+                    return;
+                }
+                var trigger = this.$el;
+                if (!dialog.open) {
                     dialog.showModal();
                 }
+                function restoreFocus() {
+                    dialog.removeEventListener("close", restoreFocus);
+                    if (trigger && typeof trigger.focus === "function") {
+                        trigger.focus({ preventScroll: true });
+                    }
+                }
+                dialog.addEventListener("close", restoreFocus);
             },
         };
     });

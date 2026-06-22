@@ -28,12 +28,15 @@ not public token names or utility classes.
 
 ## Available Golden Screens
 
-| Screen | Profile | Fixture | Use When |
-|---|---|---|---|
-| [Command Center](command-center.md) | `atlas` | `/screen-command-center` | Operational dashboards need metrics, queues, incident state, activity, and selected-object inspection. |
-| [Review Queue](review-queue.md) | `sage` | `/screen-review-queue` | Triage/review tools need filters, a result collection, selected-object inspector, and state-rich items. |
-| [Agent Run Monitor](agent-run-monitor.md) | `signal` candidate | `/screen-agent-run-monitor` | Agent, automation, build, import, or evaluation jobs need live state, artifacts, logs, and retry context. |
-| [Product/Docs Home](product-docs-home.md) | `ember` | `/screen-product-docs-home` | Product and docs entry pages need identity, proof, lifecycle explanation, entry points, and CTA. |
+Live showcase: https://chirp-ui-showcase-production.up.railway.app — use ⌘K / Ctrl+K
+to jump to any golden screen or shell recipe.
+
+| Screen | Profile | Fixture | Live demo | Use When |
+|---|---|---|---|---|
+| [Command Center](command-center.md) | `atlas` | `/screen-command-center` | [open](https://chirp-ui-showcase-production.up.railway.app/screen-command-center) | Operational dashboards need metrics, queues, incident state, activity, and selected-object inspection. |
+| [Review Queue](review-queue.md) | `sage` | `/screen-review-queue` | [open](https://chirp-ui-showcase-production.up.railway.app/screen-review-queue) | Triage/review tools need filters, a result collection, selected-object inspector, and state-rich items. |
+| [Agent Run Monitor](agent-run-monitor.md) | `signal` candidate | `/screen-agent-run-monitor` | [open](https://chirp-ui-showcase-production.up.railway.app/screen-agent-run-monitor) | Agent, automation, build, import, or evaluation jobs need live state, artifacts, logs, and retry context. |
+| [Product/Docs Home](product-docs-home.md) | `ember` | `/screen-product-docs-home` | [open](https://chirp-ui-showcase-production.up.railway.app/screen-product-docs-home) | Product and docs entry pages need identity, proof, lifecycle explanation, entry points, and CTA. |
 
 ## Agent Selection Rule
 

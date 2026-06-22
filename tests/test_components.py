@@ -6744,16 +6744,54 @@ class TestCommandPalette:
     def test_command_palette_trigger_dense_chrome_options(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/command_palette.html" import command_palette_trigger %}'
-            '{{ command_palette_trigger("palette", label="Search project", placeholder="Search or jump", shortcut="/", icon="search", density="sm") }}'
+            '{{ command_palette_trigger("palette", label="Search project", placeholder="Search or jump", shortcut="/", icon="search", density="sm", desktop_only=true) }}'
         ).render()
         assert "chirpui-command-palette-trigger--sm" in html
+        assert "chirpui-command-palette-trigger--desktop-only" in html
         assert "chirpui-command-palette__trigger-icon" in html
         assert "chirpui-command-palette__trigger-label" in html
         assert "Search or jump" in html
         assert "<kbd" in html
         assert ">/" in html
-        assert 'aria-label="Search project"' in html
 
+    def test_command_palette_fab_wires_mobile_dialog_trigger(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/command_palette.html" import command_palette_fab %}'
+            '{{ command_palette_fab("palette") }}'
+        ).render()
+        assert "chirpui-fab" in html
+        assert "chirpui-fab--mobile-only" in html
+        assert 'data-dialog-target="palette"' in html
+        assert 'aria-label="Open command palette"' in html
+        assert 'x-data="chirpuiDialogTarget()"' in html
+
+
+class TestFab:
+    def test_fab_renders_fixed_circular_control(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/fab.html" import fab %}'
+            '{{ fab("plus", aria_label="Create item", variant="primary", corner="bottom-start") }}'
+        ).render()
+        assert "chirpui-fab chirpui-fab--primary chirpui-fab--bottom-start" in html
+        assert 'aria-label="Create item"' in html
+        assert "chirpui-fab__icon" in html
+
+    def test_fab_supports_dialog_target_and_href(self, env: Environment) -> None:
+        dialog_html = env.from_string(
+            '{% from "chirpui/fab.html" import fab %}'
+            '{{ fab("search", aria_label="Open search", target="palette") }}'
+        ).render()
+        assert 'data-dialog-target="palette"' in dialog_html
+        assert '@click="open()"' in dialog_html
+
+        link_html = env.from_string(
+            '{% from "chirpui/fab.html" import fab %}'
+            '{{ fab("plus", aria_label="New", href="/new") }}'
+        ).render()
+        assert 'href="/new"' in link_html
+
+
+class TestCommandPaletteCombobox:
     def test_command_palette_combobox_contract(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/command_palette.html" import command_palette %}'

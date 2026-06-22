@@ -13,7 +13,15 @@ BASE_HTML = SHOWCASE_DIR / "templates" / "base.html"
 
 sys.path.insert(0, str(SHOWCASE_DIR))
 
-from showcase.registry import PAGES, index_cards, nav_sections, page_by_path  # noqa: E402
+from showcase.registry import (  # noqa: E402
+    PAGES,
+    SHOWCASE_LIVE_URL,
+    golden_screen_pages,
+    index_cards,
+    nav_sections,
+    page_by_path,
+    shell_recipe_pages,
+)
 
 ROUTE_RE = re.compile(
     r'@app\.route\("([^"]+)"(?:,\s*template="[^"]+")?(?:,\s*methods=\[([^\]]+)\])?\)'
@@ -128,6 +136,8 @@ def test_nav_sections_preserve_sidebar_groups() -> None:
     sections = nav_sections()
     assert [name for name, _pages in sections] == [
         "Core",
+        "Golden screens",
+        "Shell recipes",
         "Components",
         "Data",
         "Effects",
@@ -136,9 +146,57 @@ def test_nav_sections_preserve_sidebar_groups() -> None:
     ]
     core_paths = [page.path for page in sections[0][1]]
     assert core_paths == ["/", "/demo"]
-    data_paths = [page.path for page in sections[2][1]]
-    assert "/catalog-shell" in data_paths
+    golden_paths = [page.path for page in sections[1][1]]
+    assert golden_paths == [
+        "/screen-command-center",
+        "/screen-review-queue",
+        "/screen-agent-run-monitor",
+        "/screen-product-docs-home",
+    ]
+    shell_paths = [page.path for page in sections[2][1]]
+    assert shell_paths == [
+        "/catalog-shell",
+        "/operations-shell",
+        "/operations-shell-workspace",
+        "/support-shell",
+    ]
+    data_paths = [page.path for page in sections[4][1]]
+    assert "/catalog-shell" not in data_paths
     assert "/screen-command-center" not in data_paths
+
+
+def test_golden_screens_and_shell_recipes_grouped_for_home_index() -> None:
+    golden = golden_screen_pages()
+    recipes = shell_recipe_pages()
+    assert [page.path for page in golden] == [
+        "/screen-command-center",
+        "/screen-review-queue",
+        "/screen-agent-run-monitor",
+        "/screen-product-docs-home",
+    ]
+    assert [page.path for page in recipes] == [
+        "/catalog-shell",
+        "/operations-shell",
+        "/operations-shell-workspace",
+        "/support-shell",
+    ]
+    assert all(page.section == "Golden screens" for page in golden)
+    assert all(page.section == "Shell recipes" for page in recipes)
+
+
+def test_home_index_template_uses_registry_sections() -> None:
+    index = (SHOWCASE_DIR / "templates" / "index.html").read_text(encoding="utf-8")
+    assert "showcase_golden_screens" in index
+    assert "showcase_shell_recipes" in index
+    assert "showcase_index_cards" in index
+    assert "Golden screens" in index
+    assert "Shell recipes" in index
+    assert "Component gallery" in index
+
+
+def test_showcase_live_url_is_documented() -> None:
+    readme = (SHOWCASE_DIR / "README.md").read_text(encoding="utf-8")
+    assert SHOWCASE_LIVE_URL in readme
 
 
 def test_search_index_serializes_visible_pages() -> None:
@@ -152,8 +210,18 @@ def test_search_index_serializes_visible_pages() -> None:
         entry for entry in filter_search_index("catalog") if entry["path"] == "/catalog-shell"
     ]
     streaming = [entry for entry in filter_search_index("stream") if entry["path"] == "/streaming"]
+    ops = [entry for entry in filter_search_index("ops") if entry["path"] == "/operations-shell"]
+    golden = [
+        entry
+        for entry in filter_search_index("command-center")
+        if entry["path"] == "/screen-command-center"
+    ]
     assert catalog
     assert streaming
+    assert ops
+    assert golden
+    assert catalog[0]["section"] == "Shell recipes"
+    assert golden[0]["section"] == "Golden screens"
 
 
 SHELL_CSS_DIR = SHOWCASE_DIR / "templates" / "showcase" / "_css"
@@ -180,13 +248,17 @@ def _style_block(text: str) -> str:
 def test_base_html_style_block_is_showcase_copy_only() -> None:
     """Gallery pages must not download catalog/ops/support shell CSS (#269)."""
     base = BASE_HTML.read_text(encoding="utf-8")
-    style = _style_block(base)
+    head_styles = (
+        SHOWCASE_DIR / "templates" / "showcase" / "_showcase_head_styles.html"
+    ).read_text(encoding="utf-8")
+    style = _style_block(head_styles)
+    assert "showcase/_showcase_head_styles.html" in base
     assert style
     assert "showcase-copy" in style
     for prefix in SHELL_CSS_PREFIXES:
-        assert prefix not in style, f"base.html still defines {prefix}* rules"
+        assert prefix not in style, f"shared head styles still define {prefix}* rules"
     style_lines = len(style.splitlines())
-    assert style_lines < 400, f"base.html style block should be <400 lines, got {style_lines}"
+    assert style_lines < 400, f"shared head styles should be <400 lines, got {style_lines}"
 
 
 def test_shell_css_partials_are_scoped() -> None:

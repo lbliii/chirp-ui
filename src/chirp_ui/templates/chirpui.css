@@ -125,6 +125,8 @@ body {
     --chirpui-control-block-size: 2.5rem;
     --chirpui-control-block-size-sm: 2rem;
     --chirpui-control-touch-target: 2.5rem;
+    --chirpui-fab-size: 3.5rem;
+    --chirpui-fab-inset: var(--chirpui-spacing);
     --chirpui-measure-sm: 22rem;
     --chirpui-measure-md: 32rem;
     --chirpui-measure-lg: 48rem;
@@ -508,6 +510,7 @@ body {
     --chirpui-z-popover: 20;
     --chirpui-z-sticky-col: 40;
     --chirpui-z-sticky: 50;
+    --chirpui-z-fab: 55;
     --chirpui-z-sticky-corner: 60;
     --chirpui-z-toast: 100;
     --chirpui-z-tray: 1100;
@@ -1326,10 +1329,10 @@ html {
 }
 
 .chirpui-page-header--compact {
-    --chirpui-page-header-padding: 0.6rem 1.25rem;
-    --chirpui-page-header-gap: var(--chirpui-space-control-gap);
-    --chirpui-page-header-title-size: var(--chirpui-ui-base);
-    --chirpui-page-header-title-weight: var(--chirpui-ui-font-weight-semibold);
+    --chirpui-page-header-padding: var(--chirpui-density-header-padding);
+    --chirpui-page-header-gap: var(--chirpui-density-header-gap);
+    --chirpui-page-header-title-size: var(--chirpui-density-header-title-size);
+    --chirpui-page-header-title-weight: var(--chirpui-density-header-title-weight);
     --chirpui-page-header-bg: var(--chirpui-bg-subtle);
     --chirpui-page-header-border: 1px solid var(--chirpui-border-subtle);
     flex-direction: row;
@@ -4266,11 +4269,11 @@ a.chirpui-mention:focus-visible {
 }
 
 .chirpui-dl--compact .chirpui-dl__row {
-    margin-bottom: var(--chirpui-spacing-xs);
+    margin-bottom: var(--chirpui-density-list-row-gap);
 }
 
 .chirpui-dl--compact .chirpui-dl__term {
-    font-size: var(--chirpui-font-xs);
+    font-size: var(--chirpui-density-cell-font-size, var(--chirpui-font-xs));
 }
 
 .chirpui-dl__detail--url,
@@ -4585,21 +4588,21 @@ a.chirpui-mention:focus-visible {
 }
 
 .chirpui-timeline--compact {
-    --chirpui-timeline-marker-size: 0.5rem;
-    --chirpui-timeline-content-gap: var(--chirpui-spacing-sm);
+    --chirpui-timeline-marker-size: var(--chirpui-density-timeline-marker-size);
+    --chirpui-timeline-content-gap: var(--chirpui-density-timeline-content-gap);
 }
 
 .chirpui-timeline--compact .chirpui-timeline__item {
-    padding-bottom: var(--chirpui-spacing);
+    padding-bottom: var(--chirpui-density-timeline-item-padding);
 }
 
 .chirpui-timeline--spacious {
-    --chirpui-timeline-marker-size: 0.75rem;
-    --chirpui-timeline-content-gap: var(--chirpui-spacing-lg);
+    --chirpui-timeline-marker-size: var(--chirpui-density-timeline-marker-size);
+    --chirpui-timeline-content-gap: var(--chirpui-density-timeline-content-gap);
 }
 
 .chirpui-timeline--spacious .chirpui-timeline__item {
-    padding-bottom: var(--chirpui-spacing-xl);
+    padding-bottom: var(--chirpui-density-timeline-item-padding);
 }
 
 .chirpui-timeline--cards .chirpui-timeline__content {
@@ -8626,8 +8629,8 @@ a.chirpui-tag:active {
 
         &.chirpui-table--compact .chirpui-table__th,
         &.chirpui-table--compact .chirpui-table__td {
-            padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
-            font-size: var(--chirpui-font-sm);
+            padding: var(--chirpui-density-cell-padding-y) var(--chirpui-density-cell-padding-x);
+            font-size: var(--chirpui-density-cell-font-size);
         }
 
         /* Per-column alignment utilities */
@@ -10078,21 +10081,17 @@ button.chirpui-pagination__link {
 }
 
 .chirpui-field {
-    margin-bottom: var(--chirpui-spacing);
-}
-
-.chirpui-field--dense {
-    margin-bottom: var(--chirpui-spacing-xs);
+    margin-bottom: var(--chirpui-density-field-margin-bottom);
 }
 
 .chirpui-field--dense .chirpui-field__label {
-    margin-bottom: 2px;
-    font-size: var(--chirpui-font-xs);
+    margin-bottom: var(--chirpui-density-field-label-gap);
+    font-size: var(--chirpui-density-field-font-size, var(--chirpui-font-xs));
 }
 
 .chirpui-field--dense .chirpui-field__input {
-    padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
-    font-size: var(--chirpui-font-sm);
+    padding: var(--chirpui-density-field-input-padding-y) var(--chirpui-density-field-input-padding-x);
+    font-size: var(--chirpui-density-field-font-size);
 }
 
 .chirpui-field--file,
@@ -14175,6 +14174,12 @@ body.htmx-request .chirpui-nav-progress::after {
     min-block-size: var(--chirpui-control-block-size-sm);
     padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-sm);
     font-size: var(--chirpui-font-xs);
+}
+
+@media (max-width: 48rem) {
+    .chirpui-command-palette-trigger--desktop-only {
+        display: none;
+    }
 }
 
 .chirpui-command-palette__trigger:hover {
@@ -19248,13 +19253,13 @@ body.htmx-request .chirpui-nav-progress::after {
 
 /* --- Shared: relaxed density --- */
 .chirpui-dl--relaxed .chirpui-dl__row {
-    margin-bottom: var(--chirpui-spacing);
+    margin-bottom: var(--chirpui-density-list-row-gap);
 }
 .chirpui-config-row-list--relaxed {
-    row-gap: var(--chirpui-spacing);
+    row-gap: var(--chirpui-density-list-row-gap);
 }
 .chirpui-settings-row-list--relaxed {
-    row-gap: var(--chirpui-spacing);
+    row-gap: var(--chirpui-density-list-row-gap);
 }
 
 /* Settings row: surface/card-aware — adapt hover bg on non-default contexts */
@@ -22317,7 +22322,7 @@ a.chirpui-chip:focus-visible {
     }
 
     :scope(.chirpui-data-table--compact) {
-      gap: var(--chirpui-spacing-sm);
+      gap: var(--chirpui-density-grid-gap);
     }
 
     .chirpui-data-table__header {
@@ -22445,7 +22450,7 @@ a.chirpui-chip:focus-visible {
         }
 
         &.chirpui-data-grid--compact {
-            gap: var(--chirpui-spacing-xs);
+            gap: var(--chirpui-density-grid-gap);
         }
     }
 }
@@ -23663,4 +23668,238 @@ a.chirpui-chip:focus-visible {
             background: var(--chirpui-primary-muted);
         }
     }
+}
+
+/* === partials/182_fab.css === */
+@layer chirpui.component {
+/* ==========================================================================
+   Floating action button (#256)
+   ========================================================================== */
+
+.chirpui-fab {
+    position: fixed;
+    z-index: var(--chirpui-z-fab);
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--chirpui-fab-size);
+    block-size: var(--chirpui-fab-size);
+    min-inline-size: var(--chirpui-control-touch-target);
+    min-block-size: var(--chirpui-control-touch-target);
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--chirpui-radius-full, 9999px);
+    box-shadow: var(--chirpui-shadow-lg);
+    cursor: pointer;
+    font: inherit;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+        background var(--chirpui-transition),
+        color var(--chirpui-transition),
+        border-color var(--chirpui-transition),
+        box-shadow var(--chirpui-transition),
+        transform var(--chirpui-transition-fast);
+}
+
+.chirpui-fab:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-fab__icon {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 1.35em;
+    block-size: 1.35em;
+    font-size: 1.25rem;
+}
+
+.chirpui-fab--primary {
+    color: var(--chirpui-on-accent);
+    background: var(--chirpui-accent);
+    border-color: color-mix(in srgb, var(--chirpui-accent) 88%, black);
+}
+
+.chirpui-fab--primary:hover {
+    background: color-mix(in srgb, var(--chirpui-accent) 92%, white);
+}
+
+.chirpui-fab--ghost {
+    color: var(--chirpui-text);
+    background: var(--chirpui-surface);
+    border-color: var(--chirpui-border);
+}
+
+.chirpui-fab--ghost:hover {
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-fab--danger {
+    color: var(--chirpui-on-danger, var(--chirpui-on-accent));
+    background: var(--chirpui-danger);
+    border-color: color-mix(in srgb, var(--chirpui-danger) 88%, black);
+}
+
+.chirpui-fab--bottom-end {
+    inset-block-end: var(--chirpui-fab-inset);
+    inset-inline-end: var(--chirpui-fab-inset);
+}
+
+.chirpui-fab--bottom-start {
+    inset-block-end: var(--chirpui-fab-inset);
+    inset-inline-start: var(--chirpui-fab-inset);
+}
+
+.chirpui-fab--top-end {
+    inset-block-start: var(--chirpui-fab-inset);
+    inset-inline-end: var(--chirpui-fab-inset);
+}
+
+.chirpui-fab--top-start {
+    inset-block-start: var(--chirpui-fab-inset);
+    inset-inline-start: var(--chirpui-fab-inset);
+}
+
+@media (max-width: 48rem) {
+    .chirpui-fab--desktop-only {
+        display: none;
+    }
+}
+
+@media (min-width: 48rem) {
+    .chirpui-fab--mobile-only {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .chirpui-fab:active {
+        transform: scale(0.96);
+    }
+}
+}
+
+/* === partials/183_density-scale.css === */
+@layer chirpui.component {
+/* ==========================================================================
+   Unified density scale (#258)
+   Comfortable default; compact/dense cascade via data-density or utility class.
+   Per-component --compact / --dense / --relaxed modifiers alias the same tokens.
+   ========================================================================== */
+
+:root {
+    --chirpui-density-cell-padding-y: var(--chirpui-spacing-sm);
+    --chirpui-density-cell-padding-x: var(--chirpui-spacing);
+    --chirpui-density-cell-font-size: inherit;
+    --chirpui-density-field-margin-bottom: var(--chirpui-spacing);
+    --chirpui-density-field-label-gap: var(--chirpui-spacing-xs);
+    --chirpui-density-field-input-padding-y: var(--chirpui-spacing-sm);
+    --chirpui-density-field-input-padding-x: var(--chirpui-spacing);
+    --chirpui-density-field-font-size: inherit;
+    --chirpui-density-header-padding: var(--chirpui-page-header-padding);
+    --chirpui-density-header-gap: var(--chirpui-page-header-gap);
+    --chirpui-density-header-title-size: var(--chirpui-page-header-title-size);
+    --chirpui-density-header-title-weight: var(--chirpui-page-header-title-weight);
+    --chirpui-density-list-row-gap: var(--chirpui-spacing-sm);
+    --chirpui-density-section-gap: var(--chirpui-spacing-md);
+    --chirpui-density-grid-gap: var(--chirpui-spacing-md);
+    --chirpui-density-timeline-item-padding: var(--chirpui-spacing-lg);
+    --chirpui-density-timeline-marker-size: 0.625rem;
+    --chirpui-density-timeline-content-gap: var(--chirpui-spacing);
+}
+
+[data-density="compact"],
+.chirpui-density--compact {
+    --chirpui-density-cell-padding-y: var(--chirpui-spacing-xs);
+    --chirpui-density-cell-padding-x: var(--chirpui-spacing-sm);
+    --chirpui-density-cell-font-size: var(--chirpui-font-sm);
+    --chirpui-density-field-margin-bottom: var(--chirpui-spacing-xs);
+    --chirpui-density-field-label-gap: 2px;
+    --chirpui-density-field-input-padding-y: var(--chirpui-spacing-xs);
+    --chirpui-density-field-input-padding-x: var(--chirpui-spacing-sm);
+    --chirpui-density-field-font-size: var(--chirpui-font-sm);
+    --chirpui-density-header-padding: 0.6rem 1.25rem;
+    --chirpui-density-header-gap: var(--chirpui-space-control-gap);
+    --chirpui-density-header-title-size: var(--chirpui-ui-base);
+    --chirpui-density-header-title-weight: var(--chirpui-ui-font-weight-semibold);
+    --chirpui-density-list-row-gap: var(--chirpui-spacing-xs);
+    --chirpui-density-section-gap: var(--chirpui-spacing-sm);
+    --chirpui-density-grid-gap: var(--chirpui-spacing-xs);
+    --chirpui-density-timeline-item-padding: var(--chirpui-spacing);
+    --chirpui-density-timeline-marker-size: 0.5rem;
+    --chirpui-density-timeline-content-gap: var(--chirpui-spacing-sm);
+}
+
+[data-density="dense"],
+.chirpui-density--dense {
+    --chirpui-density-cell-padding-y: var(--chirpui-spacing-2xs);
+    --chirpui-density-cell-padding-x: var(--chirpui-spacing-xs);
+    --chirpui-density-cell-font-size: var(--chirpui-font-xs);
+    --chirpui-density-field-margin-bottom: var(--chirpui-spacing-2xs);
+    --chirpui-density-field-label-gap: 2px;
+    --chirpui-density-field-input-padding-y: var(--chirpui-spacing-2xs);
+    --chirpui-density-field-input-padding-x: var(--chirpui-spacing-xs);
+    --chirpui-density-field-font-size: var(--chirpui-font-xs);
+    --chirpui-density-header-padding: 0.45rem 1rem;
+    --chirpui-density-header-gap: var(--chirpui-spacing-2xs);
+    --chirpui-density-header-title-size: var(--chirpui-ui-sm);
+    --chirpui-density-header-title-weight: var(--chirpui-ui-font-weight-semibold);
+    --chirpui-density-list-row-gap: var(--chirpui-spacing-2xs);
+    --chirpui-density-section-gap: var(--chirpui-spacing-xs);
+    --chirpui-density-grid-gap: var(--chirpui-spacing-2xs);
+    --chirpui-density-timeline-item-padding: var(--chirpui-spacing-sm);
+    --chirpui-density-timeline-marker-size: 0.4375rem;
+    --chirpui-density-timeline-content-gap: var(--chirpui-spacing-xs);
+}
+
+/* Per-component modifiers alias the shared scale (backward compatible). */
+
+.chirpui-table--compact,
+.chirpui-data-grid--compact .chirpui-data-grid__table {
+    --chirpui-density-cell-padding-y: var(--chirpui-spacing-xs);
+    --chirpui-density-cell-padding-x: var(--chirpui-spacing-sm);
+    --chirpui-density-cell-font-size: var(--chirpui-font-sm);
+}
+
+.chirpui-field--dense {
+    --chirpui-density-field-margin-bottom: var(--chirpui-spacing-xs);
+    --chirpui-density-field-label-gap: 2px;
+    --chirpui-density-field-input-padding-y: var(--chirpui-spacing-xs);
+    --chirpui-density-field-input-padding-x: var(--chirpui-spacing-sm);
+    --chirpui-density-field-font-size: var(--chirpui-font-sm);
+}
+
+.chirpui-page-header--compact {
+    --chirpui-density-header-padding: 0.6rem 1.25rem;
+    --chirpui-density-header-gap: var(--chirpui-space-control-gap);
+    --chirpui-density-header-title-size: var(--chirpui-ui-base);
+    --chirpui-density-header-title-weight: var(--chirpui-ui-font-weight-semibold);
+}
+
+.chirpui-timeline--compact {
+    --chirpui-density-timeline-marker-size: 0.5rem;
+    --chirpui-density-timeline-content-gap: var(--chirpui-spacing-sm);
+    --chirpui-density-timeline-item-padding: var(--chirpui-spacing);
+}
+
+.chirpui-timeline--spacious {
+    --chirpui-density-timeline-marker-size: 0.75rem;
+    --chirpui-density-timeline-content-gap: var(--chirpui-spacing-lg);
+    --chirpui-density-timeline-item-padding: var(--chirpui-spacing-xl);
+}
+
+.chirpui-dl--compact {
+    --chirpui-density-list-row-gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-dl--relaxed,
+.chirpui-config-row-list--relaxed,
+.chirpui-settings-row-list--relaxed {
+    --chirpui-density-list-row-gap: var(--chirpui-spacing);
+}
+
+.chirpui-data-table--compact,
+.chirpui-data-grid--compact {
+    --chirpui-density-grid-gap: var(--chirpui-spacing-sm);
+}
 }
