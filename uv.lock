@@ -108,9 +108,11 @@ browser = [
 ]
 dev = [
     { name = "bengal" },
+    { name = "bengal-chirp" },
     { name = "poethepoet" },
     { name = "pre-commit" },
     { name = "pytest" },
+    { name = "pytest-asyncio" },
     { name = "pytest-cov" },
     { name = "pytest-timeout" },
     { name = "pytest-xdist" },
@@ -140,9 +142,11 @@ browser = [
 ]
 dev = [
     { name = "bengal", specifier = ">=0.5.1" },
+    { name = "bengal-chirp", specifier = ">=0.8.0" },
     { name = "poethepoet", specifier = ">=0.32.0" },
     { name = "pre-commit", specifier = ">=4.0.0" },
     { name = "pytest", specifier = ">=9.0.2" },
+    { name = "pytest-asyncio", specifier = ">=0.25.0" },
     { name = "pytest-cov", specifier = ">=6.0.0" },
     { name = "pytest-timeout", specifier = ">=2.3.0" },
     { name = "pytest-xdist", specifier = ">=3.6.0" },

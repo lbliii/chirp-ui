@@ -35,6 +35,10 @@ Atlas, Ember, and Sage token packs across light, dark, and system modes.
 > auto-wiring via `use_chirp_ui`) and `kida-templates>=0.9.0`. If you see
 > `ModuleNotFoundError`, ensure you're using the same Python environment where
 > the showcase extra was installed.
+>
+> **CI parity:** `uv sync --group dev` installs the same Chirp + pytest-asyncio
+> deps CI uses for showcase HTTP integration (`tests/test_data_integration.py`).
+> No hidden `--group browser` requirement for route smoke.
 
 ## Optional: Holy Light theme
 
@@ -74,6 +78,12 @@ fixture data lives in `examples/component-showcase/fixtures/`. The entrypoint
 POST handlers, HTMX fragments, and SSE streams use `hidden=True` and
 `show_in_sidebar=False` in the registry.
 
+**Fragment routes:** `Fragment("template.html", "block_name", ...)` requires a
+matching `{% block block_name %}` in that template. Kida does not implement
+`{{ super() }}` — use `{% include "partial.html" %}` for shared head/body markup.
+See [`docs/fundamentals/composition.md`](../../docs/fundamentals/composition.md#kida-block-inheritance--override-only-no-super).
+Ratchets: `tests/test_kida_template_contracts.py`.
+
 ## Railway smoke checklist
 
 After deploying to https://chirp-ui-showcase-production.up.railway.app:
@@ -82,10 +92,27 @@ After deploying to https://chirp-ui-showcase-production.up.railway.app:
    sections render.
 2. **Search** — ⌘K / Ctrl+K opens the palette; filter `catalog` → navigate to
    `/catalog-shell`; filter `command` → navigate to `/screen-command-center`.
-3. **Shell recipe** — `/catalog-shell` loads without CSP console errors.
-4. **Interactive demo** — `/demo` loads and submits without CSP console errors.
-5. **Golden screen** — `/screen-command-center` loads with shell CSS scoped to
+3. **Shell recipes** — each returns **200** (not 500) with no CSP console errors:
+   - `/catalog-shell`
+   - `/support-shell`
+   - `/operations-shell`
+4. **Composer page** — `/composer` loads; browser console has no
+   `chirpuiComposer is not defined` (hard-refresh if `chirpui-alpine.js` is stale
+   after deploy).
+5. **Composer POST** — `POST /composer/send` with `message=hello` returns **200**
+   and HTML containing `chirpui-message-bubble--right` (not 500 / missing block).
+6. **Interactive demo** — `/demo` loads and submits without CSP console errors.
+7. **Golden screen** — `/screen-command-center` loads with shell CSS scoped to
    the page (no missing-style flash).
+
+**Automated curl gate** (copy-paste after deploy):
+
+```bash
+./scripts/showcase_deploy_smoke.sh
+# local: SHOWCASE_URL=http://127.0.0.1:8000 ./scripts/showcase_deploy_smoke.sh
+```
 
 If any step fails, check the browser console for CSP nonce violations and confirm
 the deploy image installed `bengal-chirp>=0.8.0` via `pip install ".[showcase]"`.
+Browser proof for composer Enter-to-send:
+`uv sync --group browser && playwright install chromium && pytest tests/browser/test_composer_gauntlet.py -q`.

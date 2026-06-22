@@ -1677,9 +1677,26 @@
             },
             send: function () {
                 var form = this.$refs.field ? this.$refs.field.closest("form") : null;
-                if (form && typeof form.requestSubmit === "function") {
+                if (!form || !this.canSend) {
+                    return;
+                }
+                this.generating = true;
+                var post = form.getAttribute("hx-post") || form.getAttribute("action");
+                if (typeof htmx !== "undefined" && post) {
+                    var values = {};
+                    if (this.$refs.field && this.$refs.field.name) {
+                        values[this.$refs.field.name] = this.value;
+                    }
+                    htmx.ajax("POST", post, {
+                        target: form.getAttribute("hx-target"),
+                        swap: form.getAttribute("hx-swap") || "beforeend",
+                        values: values,
+                    });
+                    return;
+                }
+                if (typeof form.requestSubmit === "function") {
                     form.requestSubmit();
-                } else if (form) {
+                } else {
                     form.submit();
                 }
             },
