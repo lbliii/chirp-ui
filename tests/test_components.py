@@ -4467,7 +4467,7 @@ class TestForms:
     def test_reasoning_block_pending_shimmer(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/reasoning.html" import reasoning_block %}'
-            '{% call reasoning_block(done=false) %}Thought{% end %}'
+            "{% call reasoning_block(done=false) %}Thought{% end %}"
         ).render()
         assert "chirpui-reasoning--pending" in html
         assert "chirpui-reasoning__shimmer" in html
@@ -4511,14 +4511,16 @@ class TestForms:
             '{{ citation_chip(1, "Doc", "https://x.test/doc", chunk="exact quote") }}'
         ).render()
         assert "chirpui-citation" in html
-        assert '#:~:text=' in html
+        assert "#:~:text=" in html
         assert 'aria-label="Citation 1: Doc"' in html
 
     def test_sources_summary_overflow(self, env: Environment) -> None:
-        sources = [{"id": f"s{i}", "title": f"T{i}", "href": f"/{i}", "relevance": "high"} for i in range(6)]
+        sources = [
+            {"id": f"s{i}", "title": f"T{i}", "href": f"/{i}", "relevance": "high"}
+            for i in range(6)
+        ]
         html = env.from_string(
-            '{% from "chirpui/citations.html" import sources_summary %}'
-            "{{ sources_summary(items) }}"
+            '{% from "chirpui/citations.html" import sources_summary %}{{ sources_summary(items) }}'
         ).render(items=sources)
         assert "chirpui-avatar-stack" in html
         assert "chirpui-avatar-stack__more" in html

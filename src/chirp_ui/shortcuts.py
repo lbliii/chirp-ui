@@ -50,10 +50,25 @@ class Shortcut:
 
 DEFAULT_SHORTCUTS: tuple[Shortcut, ...] = (
     Shortcut("help", ("?",), "Show keyboard shortcuts", "open-help", "General", key="?"),
-    Shortcut("palette", ("⌘", "K"), "Open command palette", "open-palette", "General", mod=True, key="k"),
-    Shortcut("focus-composer", ("/",), "Focus the message composer", "focus-composer", "Chat", key="/"),
-    Shortcut("send", ("⌘", "↵"), "Send message", "send", "Chat", mod=True, key="enter", allow_in_input=True),
-    Shortcut("escape", ("Esc",), "Close / cancel", "escape", "General", key="escape", allow_in_input=True),
+    Shortcut(
+        "palette", ("⌘", "K"), "Open command palette", "open-palette", "General", mod=True, key="k"
+    ),
+    Shortcut(
+        "focus-composer", ("/",), "Focus the message composer", "focus-composer", "Chat", key="/"
+    ),
+    Shortcut(
+        "send",
+        ("⌘", "↵"),
+        "Send message",
+        "send",
+        "Chat",
+        mod=True,
+        key="enter",
+        allow_in_input=True,
+    ),
+    Shortcut(
+        "escape", ("Esc",), "Close / cancel", "escape", "General", key="escape", allow_in_input=True
+    ),
 )
 
 

@@ -26,8 +26,7 @@ def test_shortcuts_json_round_trip_fields() -> None:
 
 def test_shortcuts_help_renders_catalog_rows(env: Environment) -> None:
     html = env.from_string(
-        '{% from "chirpui/shortcuts_help.html" import shortcuts_help %}'
-        "{{ shortcuts_help() }}"
+        '{% from "chirpui/shortcuts_help.html" import shortcuts_help %}{{ shortcuts_help() }}'
     ).render()
     for sc in DEFAULT_SHORTCUTS:
         assert f'data-shortcut-id="{sc.id}"' in html

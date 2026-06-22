@@ -339,8 +339,7 @@ def test_status_step_minimal(env: Environment) -> None:
 def test_sources_summary_empty_item(env: Environment) -> None:
     out = _render(
         env,
-        '{% from "chirpui/citations.html" import sources_summary %}'
-        "{{ sources_summary([{}]) }}",
+        '{% from "chirpui/citations.html" import sources_summary %}{{ sources_summary([{}]) }}',
     )
     assert "chirpui-sources-summary" in out
 
@@ -348,8 +347,7 @@ def test_sources_summary_empty_item(env: Environment) -> None:
 def test_shortcuts_help_minimal(env: Environment) -> None:
     out = _render(
         env,
-        '{% from "chirpui/shortcuts_help.html" import shortcuts_help %}'
-        "{{ shortcuts_help() }}",
+        '{% from "chirpui/shortcuts_help.html" import shortcuts_help %}{{ shortcuts_help() }}',
     )
     assert "chirpui-shortcuts-help" in out
 
