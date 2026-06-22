@@ -72,6 +72,12 @@
             border-color: var(--chirpui-alert-error-border);
         }
 
+        &.chirpui-attachment-chip--uploading,
+        &.chirpui-attachment-chip--processing,
+        &.chirpui-attachment-chip--ready {
+            border-color: var(--chirpui-border);
+        }
+
         &.chirpui-attachment-chip--row {
             display: flex;
             width: 100%;

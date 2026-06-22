@@ -151,8 +151,7 @@ def test_attachment_chip_minimal(env: Environment) -> None:
 def test_suggestion_chips_minimal_item(env: Environment) -> None:
     out = _render(
         env,
-        '{% from "chirpui/follow_ups.html" import suggestion_chips %}'
-        "{{ suggestion_chips([{}]) }}",
+        '{% from "chirpui/follow_ups.html" import suggestion_chips %}{{ suggestion_chips([{}]) }}',
     )
     assert "chirpui-follow-ups" in out
 
@@ -160,8 +159,7 @@ def test_suggestion_chips_minimal_item(env: Environment) -> None:
 def test_composer_minimal(env: Environment) -> None:
     out = _render(
         env,
-        '{% from "chirpui/chat_input.html" import composer %}'
-        "{% call composer() %}{% end %}",
+        '{% from "chirpui/chat_input.html" import composer %}{% call composer() %}{% end %}',
     )
     assert "chirpui-composer" in out
 

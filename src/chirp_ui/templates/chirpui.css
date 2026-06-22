@@ -2986,6 +2986,11 @@ a.chirpui-action-bar__item {
             align-items: center;
         }
 
+        .chirpui-composer__send,
+        .chirpui-composer__stop {
+            flex-shrink: 0;
+        }
+
         /* Sticky composer dock — pad past the home indicator on notched phones. */
         &.chirpui-chat-input--dock {
             position: sticky;
@@ -23127,6 +23132,12 @@ a.chirpui-chip:focus-visible {
 
         &.chirpui-attachment-chip--error {
             border-color: var(--chirpui-alert-error-border);
+        }
+
+        &.chirpui-attachment-chip--uploading,
+        &.chirpui-attachment-chip--processing,
+        &.chirpui-attachment-chip--ready {
+            border-color: var(--chirpui-border);
         }
 
         &.chirpui-attachment-chip--row {

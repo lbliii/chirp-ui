@@ -80,6 +80,11 @@
             align-items: center;
         }
 
+        .chirpui-composer__send,
+        .chirpui-composer__stop {
+            flex-shrink: 0;
+        }
+
         /* Sticky composer dock — pad past the home indicator on notched phones. */
         &.chirpui-chat-input--dock {
             position: sticky;

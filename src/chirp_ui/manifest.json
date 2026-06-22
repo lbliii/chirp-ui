@@ -5769,24 +5769,26 @@
         "chirpui-chat-input__composer",
         "chirpui-chat-input__field",
         "chirpui-chat-input__footer",
-        "composer--dragover",
-        "composer__attachments",
-        "composer__drop-overlay",
-        "composer__field",
-        "composer__file",
-        "composer__send",
-        "composer__stop",
-        "composer__suggestions"
+        "chirpui-composer--dragover",
+        "chirpui-composer__attachments",
+        "chirpui-composer__drop-overlay",
+        "chirpui-composer__field",
+        "chirpui-composer__file",
+        "chirpui-composer__file-input--visible",
+        "chirpui-composer__send",
+        "chirpui-composer__stop",
+        "chirpui-composer__suggestions"
       ],
       "extra_emits": [
-        "composer--dragover",
-        "composer__attachments",
-        "composer__drop-overlay",
-        "composer__field",
-        "composer__file",
-        "composer__send",
-        "composer__stop",
-        "composer__suggestions"
+        "chirpui-composer--dragover",
+        "chirpui-composer__attachments",
+        "chirpui-composer__drop-overlay",
+        "chirpui-composer__field",
+        "chirpui-composer__file",
+        "chirpui-composer__file-input--visible",
+        "chirpui-composer__send",
+        "chirpui-composer__stop",
+        "chirpui-composer__suggestions"
       ],
       "lineno": 50,
       "macro": "composer",
@@ -5890,7 +5892,6 @@
       "sizes": [],
       "slot_forwards": [],
       "slots": [
-        "",
         "attachments",
         "footer",
         "suggestions"
@@ -10594,9 +10595,12 @@
       "description": "Follow-up / suggestion chips\n    Suggestion chips for chat empty-states and post-stream follow-ups.\n    mode='prefill' fills the composer (focus, no send); mode='send' submits.\n    Dedupe by stable key so an OOB refresh never double-renders a suggestion.",
       "elements": [],
       "emits": [
+        "chirpui-chip--suggestion",
         "chirpui-follow-ups"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-chip--suggestion"
+      ],
       "lineno": 9,
       "macro": "suggestion_chips",
       "maturity": "experimental",
@@ -25778,8 +25782,8 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 132,
-      "explicit_extra_classes": 561,
+      "explicit_extra_blocks": 133,
+      "explicit_extra_classes": 563,
       "explicit_trim_blocks": 69,
       "explicit_trim_classes": 96
     },

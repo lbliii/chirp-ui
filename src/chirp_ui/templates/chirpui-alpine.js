@@ -1635,7 +1635,7 @@
                 this.files = chips.length;
                 this.uploadPending = pending.length > 0;
             },
-            get canSend: function () {
+            get canSend() {
                 return !this.uploadPending && (this.value.trim() !== "" || this.files > 0);
             },
             onCompositionStart: function () {
