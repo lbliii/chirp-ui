@@ -203,6 +203,28 @@
         document.addEventListener("htmx:afterSettle", runAlpineHealthCheck);
     }
 
+    function initAlpineOnHtmxSettle(event) {
+        if (!window.Alpine || typeof window.Alpine.initTree !== "function") {
+            return;
+        }
+        var target = event && event.detail ? event.detail.target : null;
+        if (target) {
+            window.Alpine.initTree(target);
+        }
+    }
+
+    if (document.body) {
+        document.body.addEventListener("htmx:afterSettle", initAlpineOnHtmxSettle);
+    } else {
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+                document.body.addEventListener("htmx:afterSettle", initAlpineOnHtmxSettle);
+            },
+            { once: true }
+        );
+    }
+
     function register(name, factory) {
         if (_registeredComponents[name]) {
             return;
@@ -1907,6 +1929,146 @@
             clear: function () {
                 this.selected = new Set();
                 this.recompute();
+            },
+        };
+    });
+
+    register("chirpuiToast", function (config) {
+        config = config || {};
+        var dismissMs = parseInteger(config.duration, 0);
+        return {
+            dismissing: false,
+            dragging: false,
+            startX: 0,
+            startY: 0,
+            _autoTimer: null,
+            init: function () {
+                var self = this;
+                var close = this.$el.querySelector(".chirpui-toast__close");
+                if (close) {
+                    close.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        self.dismiss();
+                    });
+                }
+                this._onPointerDown = function (event) {
+                    self.onPointerDown(event);
+                };
+                this._onPointerMove = function (event) {
+                    self.onPointerMove(event);
+                };
+                this._onPointerUp = function (event) {
+                    self.onPointerUp(event);
+                };
+                this.$el.addEventListener("pointerdown", this._onPointerDown);
+                this.$el.addEventListener("pointermove", this._onPointerMove);
+                this.$el.addEventListener("pointerup", this._onPointerUp);
+                this.$el.addEventListener("pointercancel", this._onPointerUp);
+                if (dismissMs > 0) {
+                    this._autoTimer = window.setTimeout(function () {
+                        self.dismiss();
+                    }, dismissMs);
+                }
+            },
+            destroy: function () {
+                if (this._autoTimer) {
+                    window.clearTimeout(this._autoTimer);
+                    this._autoTimer = null;
+                }
+                if (this._onPointerDown) {
+                    this.$el.removeEventListener("pointerdown", this._onPointerDown);
+                    this.$el.removeEventListener("pointermove", this._onPointerMove);
+                    this.$el.removeEventListener("pointerup", this._onPointerUp);
+                    this.$el.removeEventListener("pointercancel", this._onPointerUp);
+                }
+            },
+            dismiss: function () {
+                if (this.dismissing) {
+                    return;
+                }
+                this.dismissing = true;
+                if (this._autoTimer) {
+                    window.clearTimeout(this._autoTimer);
+                    this._autoTimer = null;
+                }
+                this.$el.classList.add("chirpui-toast--dismissing");
+                var self = this;
+                window.setTimeout(function () {
+                    self.$el.remove();
+                }, 200);
+            },
+            onPointerDown: function (event) {
+                if (event.pointerType === "mouse" && event.button !== 0) {
+                    return;
+                }
+                if (event.target.closest(".chirpui-toast__close")) {
+                    return;
+                }
+                this.dragging = true;
+                this.startX = event.clientX;
+                this.startY = event.clientY;
+                this.$el.setPointerCapture(event.pointerId);
+            },
+            onPointerMove: function (event) {
+                if (!this.dragging) {
+                    return;
+                }
+                var dx = event.clientX - this.startX;
+                var dy = event.clientY - this.startY;
+                this.$el.style.transform =
+                    "translate(" + dx + "px, " + dy + "px)";
+                var distance = Math.max(Math.abs(dx), Math.abs(dy));
+                this.$el.style.opacity = String(Math.max(0.35, 1 - distance / 140));
+            },
+            onPointerUp: function (event) {
+                if (!this.dragging) {
+                    return;
+                }
+                this.dragging = false;
+                try {
+                    this.$el.releasePointerCapture(event.pointerId);
+                } catch (e) {}
+                var dx = event.clientX - this.startX;
+                var dy = event.clientY - this.startY;
+                if (Math.max(Math.abs(dx), Math.abs(dy)) > 80) {
+                    this.dismiss();
+                    return;
+                }
+                this.$el.style.transform = "";
+                this.$el.style.opacity = "";
+            },
+        };
+    });
+
+    register("chirpuiToastStack", function (config) {
+        config = config || {};
+        var limit = parseInteger(config.limit, 5);
+        return {
+            _observer: null,
+            init: function () {
+                this.enforceLimit();
+                var self = this;
+                this._observer = new MutationObserver(function () {
+                    self.enforceLimit();
+                });
+                this._observer.observe(this.$el, { childList: true });
+            },
+            destroy: function () {
+                if (this._observer) {
+                    this._observer.disconnect();
+                    this._observer = null;
+                }
+            },
+            enforceLimit: function () {
+                var toasts = this.$el.querySelectorAll(
+                    ".chirpui-toast:not(.chirpui-toast--dismissing)"
+                );
+                while (toasts.length > limit) {
+                    toasts[0].remove();
+                    toasts = this.$el.querySelectorAll(
+                        ".chirpui-toast:not(.chirpui-toast--dismissing)"
+                    );
+                }
             },
         };
     });

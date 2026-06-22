@@ -5,9 +5,25 @@
 
 <button data-testid="trigger-toast"
         hx-get="/toast/send"
-        hx-target="#chirpui-toasts"
-        hx-select="unset"
-        hx-swap="beforeend">
+        hx-swap="none">
     Show Toast
+</button>
+
+<button data-testid="trigger-stack"
+        hx-get="/toast/stack"
+        hx-swap="none">
+    Show Stack
+</button>
+
+<button data-testid="trigger-status"
+        hx-get="/toast/pending"
+        hx-swap="none">
+    Start Status Toast
+</button>
+
+<button data-testid="trigger-status-resolve"
+        hx-get="/toast/resolve"
+        hx-swap="none">
+    Resolve Status Toast
 </button>
 {% end %}

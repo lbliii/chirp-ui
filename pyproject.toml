@@ -274,7 +274,7 @@ deploy-gate = { sequence = ["verify-generated", "theme-guards"], help = "Gate th
 escape-audit = { cmd = "python scripts/escape_audit.py", help = "Print Kida escape audit for trusted markup sites" }
 css-check = { cmd = "pytest tests/test_css_syntax.py -q", help = "Validate CSS parses cleanly" }
 css-contract-check = { cmd = "pytest tests/test_template_css_contract.py -q", help = "Check template classes exist in CSS" }
-css-transition-check = { cmd = "pytest tests/test_transition_tokens.py -q", help = "Check transitions use motion tokens" }
+css-transition-check = { cmd = "pytest tests/test_motion_tokens.py -q", help = "Check transitions and animations use motion tokens" }
 css-concat-check = { cmd = "pytest tests/test_chirpui_css_concat.py -q", help = "Check chirpui.css matches partials" }
 
 # Documentation

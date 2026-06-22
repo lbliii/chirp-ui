@@ -11,6 +11,7 @@
     flex-direction: column;
     gap: var(--chirpui-spacing-sm);
     max-width: var(--chirpui-toast-width);
+    pointer-events: none;
 }
 
 .chirpui-toast {
@@ -25,22 +26,52 @@
     font-size: var(--chirpui-font-sm);
     line-height: var(--chirpui-line-height-normal);
     box-shadow: var(--chirpui-shadow-md);
-    transition: opacity var(--chirpui-transition), transform var(--chirpui-transition);
+    pointer-events: auto;
+    touch-action: pan-y;
+    transition:
+        opacity var(--chirpui-transition),
+        transform var(--chirpui-transition-emphasized);
     @starting-style {
         opacity: 0;
         transform: translateY(8px);
     }
 }
 
+.chirpui-toast--dismissing {
+    opacity: 0;
+    transform: translateX(110%);
+}
+
 .chirpui-toast--info    { border-color: var(--chirpui-alert-info-border); background: var(--chirpui-alert-info-bg); }
 .chirpui-toast--success { border-color: var(--chirpui-alert-success-border); background: var(--chirpui-alert-success-bg); }
 .chirpui-toast--warning { border-color: var(--chirpui-alert-warning-border); background: var(--chirpui-alert-warning-bg); }
-.chirpui-toast--error   { border-color: var(--chirpui-alert-error-border); background: var(--chirpui-alert-error-bg); }
+.chirpui-toast--error,
+.chirpui-toast--danger  { border-color: var(--chirpui-alert-error-border); background: var(--chirpui-alert-error-bg); }
+
+.chirpui-toast--loading {
+    border-color: var(--chirpui-border);
+    background: var(--chirpui-surface);
+}
 
 .chirpui-toast__message {
     flex: 1;
     min-width: 0;
     overflow-wrap: anywhere;
+}
+
+.chirpui-toast__spinner {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    margin-block-start: 0.125rem;
+    border: 2px solid var(--chirpui-border);
+    border-top-color: var(--chirpui-accent);
+    border-radius: 50%;
+    animation: chirpui-toast-spin var(--chirpui-motion-base) linear infinite;
+}
+
+@keyframes chirpui-toast-spin {
+    to { transform: rotate(360deg); }
 }
 
 .chirpui-toast__close {
@@ -57,4 +88,16 @@
 .chirpui-toast__close:focus-visible {
     outline: var(--chirpui-state-focus-outline);
     outline-offset: var(--chirpui-state-focus-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-toast {
+        transition: none;
+    }
+
+    .chirpui-toast__spinner {
+        animation: none;
+        border-top-color: var(--chirpui-accent);
+        opacity: 0.7;
+    }
 }

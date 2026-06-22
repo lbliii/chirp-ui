@@ -131,19 +131,22 @@ a.chirpui-btn {
     background: var(--chirpui-border);
 }
 
-/* Danger variant */
-.chirpui-btn--danger {
+/* Danger variant (destructive — ``error`` is an alias) */
+.chirpui-btn--danger,
+.chirpui-btn--error {
     background: var(--chirpui-danger);
     border-color: var(--chirpui-danger);
     color: var(--chirpui-on-accent);
 }
 
-.chirpui-btn--danger:hover:not(:disabled) {
+.chirpui-btn--danger:hover:not(:disabled),
+.chirpui-btn--error:hover:not(:disabled) {
     background: color-mix(in srgb, var(--chirpui-danger) 85%, black);
     border-color: color-mix(in srgb, var(--chirpui-danger) 85%, black);
 }
 
-.chirpui-btn--danger:active:not(:disabled) {
+.chirpui-btn--danger:active:not(:disabled),
+.chirpui-btn--error:active:not(:disabled) {
     background: color-mix(in srgb, var(--chirpui-danger) 75%, black);
     border-color: color-mix(in srgb, var(--chirpui-danger) 75%, black);
 }

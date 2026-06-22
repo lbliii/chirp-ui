@@ -1,8 +1,9 @@
 {#- chirp-ui: Toast component
-    htmx OOB toast notifications.
+    htmx OOB toast notifications with stacking, swipe-dismiss, and
+    server-driven loading→success/error updates (sonner-grade feedback).
 
     Usage:
-        from "chirpui/toast.html" import toast, toast_container
+        from "chirpui/toast.html" import toast, toast_container, toast_pending, toast_resolve
 
         Place the container once in your base template:
             toast_container()
@@ -10,26 +11,60 @@
         Return a toast from any htmx response (OOB swap):
             toast("Item saved successfully!", variant="success")
             toast("Something went wrong.", variant="error", dismissible=true)
+
+        Server-driven status flow (HTMX-native promise pattern):
+            # 1) POST handler returns pending toast with stable id
+            toast_pending("Saving…", id="save-item-42")
+            # 2) follow-up response replaces the same toast by id
+            toast_resolve("Saved!", id="save-item-42", variant="success")
+            toast_resolve("Save failed.", id="save-item-42", variant="error")
 -#}
 
-{% def toast_container(id="chirpui-toasts", cls="") %}
-<div id="{{ id }}" class="chirpui-toast-container{{ " " ~ cls if cls else "" }}" aria-live="polite">
+{% def toast_container(id="chirpui-toasts", cls="", limit=5) %}
+<div id="{{ id }}"
+     class="chirpui-toast-container{{ " " ~ cls if cls else "" }}"
+     aria-live="polite"
+     aria-relevant="additions text"
+     x-data="chirpuiToastStack({ limit: {{ limit | int }} })">
 </div>
 {% end %}
 
-{% def toast(message, variant="info", id=none, dismissible=true, oob=true, container_id="chirpui-toasts", cls="") %}
-{% set variant = variant | validate_variant(("info","success","warning","error"), "info") %}
-<div {% if oob %}hx-swap-oob="beforeend:#{{ container_id }}"{% end %}>
-    <div {% if id %}id="{{ id }}"{% end %}
-         class="chirpui-toast chirpui-toast--{{ variant }}{{ " " ~ cls if cls else "" }}"
-         role="alert" x-data>
-        <span class="chirpui-toast__message">{{ message }}</span>
-        {% if dismissible %}
-            <button class="chirpui-toast__close"
-                    type="button"
-                    aria-label="Dismiss"
-                    @click="$el.parentElement.remove()">&times;</button>
-        {% end %}
-    </div>
+{% def _toast_inner(message, variant, id=none, dismissible=true, cls="", duration=none, oob_swap=none) %}
+{% set variant = variant | validate_variant(("info","success","warning","error","danger","loading"), "info") %}
+{% set _duration = duration if duration is not none else "" %}
+<div {% if id %}id="{{ id }}"{% endif %}
+     {% if oob_swap %}hx-swap-oob="{{ oob_swap }}"{% endif %}
+     class="chirpui-toast chirpui-toast--{{ variant }}{{ " " ~ cls if cls else "" }}"
+     role="alert"
+     x-data="chirpuiToast({{ "{ duration: " ~ (_duration | int) ~ " }" if _duration else "" }})">
+    {% if variant == "loading" %}
+        <span class="chirpui-toast__spinner" aria-hidden="true"></span>
+    {% endif %}
+    <span class="chirpui-toast__message">{{ message }}</span>
+    {% if dismissible %}
+        <button class="chirpui-toast__close"
+                type="button"
+                aria-label="Dismiss">&times;</button>
+    {% endif %}
 </div>
+{% end %}
+
+{% def toast(message, variant="info", id=none, dismissible=true, oob=true, replace=false, container_id="chirpui-toasts", cls="", duration=none) %}
+{% if replace and id %}
+{{ _toast_inner(message, variant, id=id, dismissible=dismissible, cls=cls, duration=duration, oob_swap="true") }}
+{% elif oob %}
+<div hx-swap-oob="beforeend:#{{ container_id }}">
+    {{ _toast_inner(message, variant, id=id, dismissible=dismissible, cls=cls, duration=duration) }}
+</div>
+{% else %}
+{{ _toast_inner(message, variant, id=id, dismissible=dismissible, cls=cls, duration=duration) }}
+{% end %}
+{% end %}
+
+{% def toast_pending(message, id, dismissible=false, container_id="chirpui-toasts", cls="") %}
+{{ toast(message, variant="loading", id=id, dismissible=dismissible, container_id=container_id, cls=cls) }}
+{% end %}
+
+{% def toast_resolve(message, id, variant="success", dismissible=true, duration=5000, cls="") %}
+{{ toast(message, variant=variant, id=id, dismissible=dismissible, replace=true, duration=duration, cls=cls) }}
 {% end %}

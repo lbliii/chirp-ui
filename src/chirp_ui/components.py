@@ -372,7 +372,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "toast": ComponentDescriptor(
         block="toast",
-        variants=("info", "success", "warning", "error"),
+        variants=("info", "success", "warning", "error", "danger", "loading"),
         template="toast.html",
         extra_emits=(
             "chirpui-toast__close",
