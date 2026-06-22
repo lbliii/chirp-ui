@@ -1,0 +1,46 @@
+{#- chirp-ui: Message actions
+    Per-message toolbar for a chat/agent turn. Composes action_bar.
+    Content-aware copy reads data-copy-text (chirpuiCopy has no strip selector).
+    Destructive delete confirms by default; Shift-click bypasses the dialog.
+
+    Usage:
+        {% from "chirpui/message_actions.html" import message_actions %}
+        {% call message_actions(is_last=true, copy_text=raw_markdown,
+                                can_delete=true, delete_url="/m/42", delete_target="#m-42") %}
+            {{ action_bar_item(icon="up", label="Good answer") }}
+            {{ action_bar_item(icon="refresh", label="Regenerate") }}
+        {% end %}
+-#}
+{% from "chirpui/action_bar.html" import action_bar, action_bar_item %}
+{% from "chirpui/confirm.html" import confirm_dialog %}
+
+{% def message_actions(is_last=false, can_delete=false, copy_text="", delete_url=none,
+                       delete_target=none, confirm_id="chirpui-msg-del", cls="") %}
+<div class="chirpui-message-actions{{ " chirpui-message-actions--last" if is_last else "" }}{{ " " ~ cls if cls else "" }}"
+     {% if is_last %}data-last{% end %}>
+  <div class="chirpui-scroll-x">
+    {% call action_bar() %}
+      <button type="button" class="chirpui-action-bar__item" aria-label="Copy message" title="Copy"
+              x-data="chirpuiCopy()" data-copy-text="{{ copy_text | e }}" @click="copy()">
+        <span class="chirpui-action-bar__icon" x-text="copied ? '✓' : '⧉'">⧉</span>
+      </button>
+      {% slot %}{% end %}
+      {% if can_delete %}
+      <button type="button" class="chirpui-action-bar__item chirpui-action-bar__item--danger"
+              aria-label="Delete message" title="Delete (Shift-click to skip confirm)"
+              x-data
+              data-confirm-target="{{ confirm_id }}"
+              @click="if ($event.shiftKey) { var f = $el.closest('form'); if (f) f.requestSubmit(); } else { var d = document.getElementById($el.dataset.confirmTarget); if (d) d.showModal(); }">
+        <span class="chirpui-action-bar__icon">🗑</span>
+      </button>
+      {% end %}
+    {% end %}
+  </div>
+  {% if can_delete and delete_url %}
+  {{ confirm_dialog(confirm_id, title="Delete message?", message="This cannot be undone.",
+                    confirm_label="Delete", variant="danger",
+                    confirm_url=delete_url, confirm_method="DELETE",
+                    hx_target=delete_target, hx_swap="outerHTML") }}
+  {% end %}
+</div>
+{% end %}

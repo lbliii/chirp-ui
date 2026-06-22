@@ -308,6 +308,50 @@ def test_param_field_minimal(env: Environment) -> None:
     assert "chirpui-param" in out
 
 
+def test_message_meta_empty_usage(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/message_meta.html" import message_meta %}'
+        '{{ message_meta(model="gpt-4o", usage={}) }}',
+    )
+    assert "gpt-4o" in out
+    assert "chirpui-message-meta__usage" not in out
+
+
+def test_tool_call_card_empty_args(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/reasoning.html" import tool_call_card %}'
+        '{{ tool_call_card("run", args=[{}], files=[]) }}',
+    )
+    assert "chirpui-tool-call" in out
+
+
+def test_status_step_minimal(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/status_timeline.html" import status_step %}'
+        '{{ status_step(action_type="x", label="y") }}',
+    )
+    assert "chirpui-status-step" in out
+
+
+def test_sources_summary_empty_item(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/citations.html" import sources_summary %}{{ sources_summary([{}]) }}',
+    )
+    assert "chirpui-sources-summary" in out
+
+
+def test_shortcuts_help_minimal(env: Environment) -> None:
+    out = _render(
+        env,
+        '{% from "chirpui/shortcuts_help.html" import shortcuts_help %}{{ shortcuts_help() }}',
+    )
+    assert "chirpui-shortcuts-help" in out
+
+
 def test_radio_field_minimal_option(env: Environment) -> None:
     out = _render(
         env,

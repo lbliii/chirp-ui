@@ -328,6 +328,12 @@ def env() -> Environment:
     e.add_global("tab_is_active", tab_is_active)
     e.add_global("nav_pill_inline_style", nav_pill_inline_style)
     e.add_global("segmented_pill_inline_style", segmented_pill_inline_style)
+    from chirp_ui.shortcuts import shortcuts_by_category, shortcuts_json
+    from chirp_ui.text_fragment import build_text_fragment_url
+
+    e.add_global("shortcuts_by_category", shortcuts_by_category)
+    e.add_global("shortcuts_json", shortcuts_json)
+    e.add_global("build_text_fragment_url", build_text_fragment_url)
     e.add_global(
         "csrf_field",
         lambda: Markup('<input type="hidden" name="_csrf_token" value="test-csrf">'),

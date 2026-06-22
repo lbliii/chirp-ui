@@ -79,10 +79,12 @@
         "chirpui-action-bar__icon",
         "chirpui-action-bar__item",
         "chirpui-action-bar__item--active",
+        "chirpui-action-bar__item--danger",
         "chirpui-action-bar__item--disabled"
       ],
       "extra_emits": [
         "chirpui-action-bar__item--active",
+        "chirpui-action-bar__item--danger",
         "chirpui-action-bar__item--disabled"
       ],
       "lineno": 14,
@@ -5666,6 +5668,7 @@
       ],
       "emits": [
         "chirpui-chat-input",
+        "chirpui-chat-input--dock",
         "chirpui-chat-input__composer",
         "chirpui-chat-input__field",
         "chirpui-chat-input__footer"
@@ -5674,7 +5677,9 @@
       "lineno": 15,
       "macro": "chat_input",
       "maturity": "stable",
-      "modifiers": [],
+      "modifiers": [
+        "dock"
+      ],
       "params": [
         {
           "has_default": true,
@@ -5863,7 +5868,8 @@
         "chirpui-chip",
         "chirpui-chip--custom",
         "chirpui-chip--muted",
-        "chirpui-chip--selected"
+        "chirpui-chip--selected",
+        "chirpui-chip--sm"
       ],
       "extra_emits": [],
       "lineno": 12,
@@ -5909,7 +5915,9 @@
       "provides": [],
       "requires": [],
       "role": "component",
-      "sizes": [],
+      "sizes": [
+        "sm"
+      ],
       "slot_forwards": [],
       "slots": [],
       "slots_extracted": [],
@@ -5962,6 +5970,72 @@
       ],
       "slots_yielded": [],
       "template": "chip_group.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "citation": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "citation",
+      "category": "layout",
+      "composes": [],
+      "consumes": [],
+      "description": "Citations\n    citation_chip: inline numbered <sup><a> linking to a source (text-fragment aware).\n    sources_summary: compact stacked source pills (reuses avatar_stack overflow CSS).\n    citation_modal: full source detail over modal.html.\n\n    Usage:\n        {% from \"chirpui/citations.html\" import citation_chip, sources_summary, citation_modal %}\n        {{ citation_chip(index=1, title=\"Scope spec\", href=\"https://x.test/doc\",\n                         source_id=\"src-1\") }}\n        {{ sources_summary(sources=[{\"id\": \"src-1\", \"title\": \"Scope spec\",\n                                     \"href\": \"https://x.test/doc\", \"relevance\": \"high\"}]) }}",
+      "elements": [
+        "link"
+      ],
+      "emits": [
+        "chirpui-citation",
+        "chirpui-citation__link"
+      ],
+      "extra_emits": [],
+      "lineno": 15,
+      "macro": "citation_chip",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "index"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "title"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "source_id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "chunk"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "citations.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -13956,6 +14030,142 @@
       "trim_emits": [],
       "variants": []
     },
+    "message-actions": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "message-actions",
+      "category": "layout",
+      "composes": [],
+      "consumes": [],
+      "description": "Message actions\n    Per-message toolbar for a chat/agent turn. Composes action_bar.\n    Content-aware copy reads data-copy-text (chirpuiCopy has no strip selector).\n    Destructive delete confirms by default; Shift-click bypasses the dialog.\n\n    Usage:\n        {% from \"chirpui/message_actions.html\" import message_actions %}\n        {% call message_actions(is_last=true, copy_text=raw_markdown,\n                                can_delete=true, delete_url=\"/m/42\", delete_target=\"#m-42\") %}\n            {{ action_bar_item(icon=\"up\", label=\"Good answer\") }}\n            {{ action_bar_item(icon=\"refresh\", label=\"Regenerate\") }}\n        {% end %}",
+      "elements": [],
+      "emits": [
+        "chirpui-message-actions",
+        "chirpui-message-actions--last"
+      ],
+      "extra_emits": [],
+      "lineno": 17,
+      "macro": "message_actions",
+      "maturity": "stable",
+      "modifiers": [
+        "last"
+      ],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "is_last"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "can_delete"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "copy_text"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "delete_url"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "delete_target"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "confirm_id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine",
+        "htmx"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "message_actions.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "message-meta": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "message-meta",
+      "category": "layout",
+      "composes": [],
+      "consumes": [],
+      "description": "Message meta\n    Provenance row for an assistant turn: model, timestamp, optional token usage.\n    usage is a caller dict; fields are .get()-guarded for strict-undefined (kida 0.7.0).\n\n    Usage:\n        {% from \"chirpui/message_meta.html\" import message_meta %}\n        {{ message_meta(\"claude-opus-4-8\", \"2:34 PM\",\n                        usage={\"input\": 1820, \"output\": 412, \"total\": 2232}) }}",
+      "elements": [
+        "model",
+        "time",
+        "usage",
+        "usage-detail"
+      ],
+      "emits": [
+        "chirpui-message-meta",
+        "chirpui-message-meta__model",
+        "chirpui-message-meta__time",
+        "chirpui-message-meta__usage",
+        "chirpui-message-meta__usage-detail"
+      ],
+      "extra_emits": [],
+      "lineno": 14,
+      "macro": "message_meta",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "model"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "timestamp"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "usage"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "message_meta.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "message-reactions": {
       "appearances": [],
       "authoring": "available",
@@ -14037,7 +14247,7 @@
       "category": "layout",
       "composes": [],
       "consumes": [],
-      "description": "Message Bubble component\n    Single message with sender, timestamp, status (sent/read/pending).\n\n    Usage:\n        from \"chirpui/message_bubble.html\" import message_bubble\n\n        call message_bubble(align=\"left\", status=\"read\")\n            call avatar_slot()\n                avatar(src=\"...\", alt=\"Alice\", size=\"sm\")\n            end\n            <p>Hello! How are you?</p>\n            <time>2:34 PM</time>\n        end",
+      "description": "Message Bubble component\n    Single message with sender, timestamp, status (sent/read/pending).\n\n    Usage:\n        from \"chirpui/message_bubble.html\" import message_bubble\n\n        call message_bubble(align=\"left\", status=\"read\")\n            call avatar_slot()\n                avatar(src=\"...\", alt=\"Alice\", size=\"sm\")\n            end\n            <p>Hello! How are you?</p>\n            <time>2:34 PM</time>\n            {% slot actions %}{{ message_actions(is_last=true, copy_text=\"Hello!\") }}{% end %}\n        end",
       "elements": [],
       "emits": [
         "chirpui-message-bubble",
@@ -14057,7 +14267,7 @@
         "chirpui-message-bubble--right",
         "chirpui-message-bubble--sent"
       ],
-      "lineno": 16,
+      "lineno": 17,
       "macro": "message_bubble",
       "maturity": "stable",
       "modifiers": [],
@@ -14089,10 +14299,12 @@
       "sizes": [],
       "slot_forwards": [],
       "slots": [
-        ""
+        "",
+        "actions"
       ],
       "slots_extracted": [
-        ""
+        "",
+        "actions"
       ],
       "slots_yielded": [],
       "template": "message_bubble.html",
@@ -17018,6 +17230,70 @@
       "trim_emits": [],
       "variants": []
     },
+    "reasoning": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "reasoning",
+      "category": "layout",
+      "composes": [],
+      "consumes": [],
+      "description": "Reasoning + tool-call disclosure\n    reasoning_block: collapsible chain-of-thought; shimmers while pending.\n    tool_call_card: collapsible tool invocation with args/result/files.\n    Both compose collapse.html. args is a caller dict-list (description_list, .get()-guarded).\n\n    Usage:\n        {% from \"chirpui/reasoning.html\" import reasoning_block, tool_call_card %}\n        {% call reasoning_block(label_pending=\"Thinking…\", label_done=\"Thought for 4s\", done=true) %}\n            <p>First I checked the schema…</p>\n        {% end %}\n        {{ tool_call_card(\"search_docs\", status=\"done\",\n                          args=[{\"term\": \"query\", \"detail\": \"css scope\"}],\n                          result=\"3 matches\", files=[\"docs/CSS.md\"]) }}",
+      "elements": [
+        "shimmer"
+      ],
+      "emits": [
+        "chirpui-reasoning",
+        "chirpui-reasoning--pending",
+        "chirpui-reasoning__shimmer"
+      ],
+      "extra_emits": [],
+      "lineno": 19,
+      "macro": "reasoning_block",
+      "maturity": "stable",
+      "modifiers": [
+        "pending"
+      ],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label_pending"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label_done"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "done"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "open"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "reasoning.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "rendered-content": {
       "appearances": [],
       "authoring": "available",
@@ -19228,6 +19504,72 @@
         "primary"
       ]
     },
+    "shortcuts-help": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "shortcuts-help",
+      "category": "control",
+      "composes": [],
+      "consumes": [],
+      "description": "Keyboard shortcuts help\n    A modal listing all keyboard shortcuts, rendered from the declarative\n    shortcuts.py catalog. The same catalog drives the chirpuiShortcuts handler\n    (via shortcuts_json), so the modal can never advertise a binding the handler\n    does not run (open-webui #17015).\n\n    Usage:\n        {% from \"chirpui/shortcuts_help.html\" import shortcuts_help, shortcuts_help_trigger %}\n        {{ shortcuts_help_trigger() }}\n        {{ shortcuts_help() }}",
+      "elements": [
+        "category",
+        "close",
+        "group",
+        "header",
+        "inner",
+        "keys",
+        "label",
+        "list",
+        "row",
+        "title"
+      ],
+      "emits": [
+        "chirpui-shortcuts-help",
+        "chirpui-shortcuts-help__category",
+        "chirpui-shortcuts-help__close",
+        "chirpui-shortcuts-help__group",
+        "chirpui-shortcuts-help__header",
+        "chirpui-shortcuts-help__inner",
+        "chirpui-shortcuts-help__keys",
+        "chirpui-shortcuts-help__label",
+        "chirpui-shortcuts-help__list",
+        "chirpui-shortcuts-help__row",
+        "chirpui-shortcuts-help__title"
+      ],
+      "extra_emits": [],
+      "lineno": 15,
+      "macro": "shortcuts_help",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "dialog_id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "title"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "shortcuts_help.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "sidebar": {
       "appearances": [],
       "authoring": "available",
@@ -20002,6 +20344,73 @@
       ],
       "slots_yielded": [],
       "template": "sortable_list.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "sources-summary": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "sources-summary",
+      "category": "layout",
+      "composes": [],
+      "consumes": [],
+      "description": "Citations\n    citation_chip: inline numbered <sup><a> linking to a source (text-fragment aware).\n    sources_summary: compact stacked source pills (reuses avatar_stack overflow CSS).\n    citation_modal: full source detail over modal.html.\n\n    Usage:\n        {% from \"chirpui/citations.html\" import citation_chip, sources_summary, citation_modal %}\n        {{ citation_chip(index=1, title=\"Scope spec\", href=\"https://x.test/doc\",\n                         source_id=\"src-1\") }}\n        {{ sources_summary(sources=[{\"id\": \"src-1\", \"title\": \"Scope spec\",\n                                     \"href\": \"https://x.test/doc\", \"relevance\": \"high\"}]) }}",
+      "elements": [
+        "chip",
+        "index",
+        "stack"
+      ],
+      "emits": [
+        "chirpui-relevance--high",
+        "chirpui-relevance--low",
+        "chirpui-relevance--med",
+        "chirpui-sources-summary",
+        "chirpui-sources-summary__chip",
+        "chirpui-sources-summary__index",
+        "chirpui-sources-summary__stack"
+      ],
+      "extra_emits": [
+        "chirpui-relevance--high",
+        "chirpui-relevance--low",
+        "chirpui-relevance--med"
+      ],
+      "lineno": 25,
+      "macro": "sources_summary",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "sources"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "max_visible"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "citations.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -20993,6 +21402,127 @@
         "success",
         "warning"
       ]
+    },
+    "status-step": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "status-step",
+      "category": "layout",
+      "composes": [],
+      "consumes": [],
+      "description": "Status timeline\n    Vertical agentic step list: each step has an action type, label, done state,\n    optional query chips and a result count. Server owns step state.\n\n    Usage:\n        {% from \"chirpui/status_timeline.html\" import status_timeline, status_step %}\n        {% call status_timeline() %}\n            {{ status_step(action_type=\"search\", label=\"Searched docs\", done=true,\n                           query_chips=[\"css scope\", \"@layer\"], count=12) }}\n            {{ status_step(action_type=\"read\", label=\"Reading results\", done=false) }}\n        {% end %}",
+      "elements": [
+        "body",
+        "chips",
+        "count",
+        "label",
+        "marker"
+      ],
+      "emits": [
+        "chirpui-status-step",
+        "chirpui-status-step--active",
+        "chirpui-status-step--done",
+        "chirpui-status-step__body",
+        "chirpui-status-step__chips",
+        "chirpui-status-step__count",
+        "chirpui-status-step__label",
+        "chirpui-status-step__marker"
+      ],
+      "extra_emits": [
+        "chirpui-status-step--active",
+        "chirpui-status-step--done"
+      ],
+      "lineno": 20,
+      "macro": "status_step",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "action_type"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "done"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "query_chips"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "count"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "status_timeline.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "status-timeline": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "status-timeline",
+      "category": "layout",
+      "composes": [],
+      "consumes": [],
+      "description": "Status timeline\n    Vertical agentic step list: each step has an action type, label, done state,\n    optional query chips and a result count. Server owns step state.\n\n    Usage:\n        {% from \"chirpui/status_timeline.html\" import status_timeline, status_step %}\n        {% call status_timeline() %}\n            {{ status_step(action_type=\"search\", label=\"Searched docs\", done=true,\n                           query_chips=[\"css scope\", \"@layer\"], count=12) }}\n            {{ status_step(action_type=\"read\", label=\"Reading results\", done=false) }}\n        {% end %}",
+      "elements": [],
+      "emits": [
+        "chirpui-status-timeline"
+      ],
+      "extra_emits": [],
+      "lineno": 14,
+      "macro": "status_timeline",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        ""
+      ],
+      "slots_extracted": [
+        ""
+      ],
+      "slots_yielded": [],
+      "template": "status_timeline.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
     },
     "stepper": {
       "appearances": [],
@@ -23411,6 +23941,92 @@
       "trim_emits": [],
       "variants": []
     },
+    "tool-call": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "tool-call",
+      "category": "layout",
+      "composes": [],
+      "consumes": [],
+      "description": "Reasoning + tool-call disclosure\n    reasoning_block: collapsible chain-of-thought; shimmers while pending.\n    tool_call_card: collapsible tool invocation with args/result/files.\n    Both compose collapse.html. args is a caller dict-list (description_list, .get()-guarded).\n\n    Usage:\n        {% from \"chirpui/reasoning.html\" import reasoning_block, tool_call_card %}\n        {% call reasoning_block(label_pending=\"Thinking…\", label_done=\"Thought for 4s\", done=true) %}\n            <p>First I checked the schema…</p>\n        {% end %}\n        {{ tool_call_card(\"search_docs\", status=\"done\",\n                          args=[{\"term\": \"query\", \"detail\": \"css scope\"}],\n                          result=\"3 matches\", files=[\"docs/CSS.md\"]) }}",
+      "elements": [
+        "file",
+        "files",
+        "result",
+        "status"
+      ],
+      "emits": [
+        "chirpui-tool-call",
+        "chirpui-tool-call--done",
+        "chirpui-tool-call--error",
+        "chirpui-tool-call--pending",
+        "chirpui-tool-call--running",
+        "chirpui-tool-call__file",
+        "chirpui-tool-call__files",
+        "chirpui-tool-call__result",
+        "chirpui-tool-call__status"
+      ],
+      "extra_emits": [],
+      "lineno": 31,
+      "macro": "tool_call_card",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "status"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "args"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "result"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "files"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "open"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "reasoning.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": [
+        "done",
+        "error",
+        "pending",
+        "running"
+      ]
+    },
     "tooltip": {
       "appearances": [],
       "authoring": "available",
@@ -24860,7 +25476,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 312,
+      "available": 321,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -24870,14 +25486,14 @@
       "composite": 1,
       "container": 9,
       "content": 11,
-      "control": 23,
+      "control": 24,
       "data-display": 38,
       "effect": 46,
       "feedback": 26,
       "form": 24,
       "infrastructure": 2,
       "interactive": 9,
-      "layout": 50,
+      "layout": 58,
       "marketing": 11,
       "media": 6,
       "navigation": 30,
@@ -24889,22 +25505,22 @@
       "experimental": 105,
       "internal": 2,
       "legacy": 39,
-      "stable": 217
+      "stable": 226
     },
     "component_requirements": {
-      "alpine": 32,
-      "htmx": 27
+      "alpine": 34,
+      "htmx": 28
     },
     "component_roles": {
-      "component": 195,
+      "component": 204,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 22,
       "primitive": 112
     },
     "components_with_consumes": 20,
-    "components_with_description": 258,
-    "components_with_params": 258,
+    "components_with_description": 267,
+    "components_with_params": 267,
     "components_with_provides": 12,
     "manifest_quality": {
       "missing_description": 0,
@@ -24912,7 +25528,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 256
+      "public_templated_components": 265
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -24920,8 +25536,8 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 129,
-      "explicit_extra_classes": 547,
+      "explicit_extra_blocks": 131,
+      "explicit_extra_classes": 553,
       "explicit_trim_blocks": 69,
       "explicit_trim_classes": 96
     },
@@ -24935,7 +25551,7 @@
       "spacing": 30,
       "typography": 46
     },
-    "total_components": 363,
+    "total_components": 372,
     "total_theme_packs": 3,
     "total_tokens": 440
   },

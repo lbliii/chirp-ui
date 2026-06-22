@@ -1,0 +1,81 @@
+/* ==========================================================================
+   Reasoning + tool-call disclosure
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-reasoning) to (.chirpui-reasoning .chirpui-reasoning) {
+        :scope {
+            position: relative;
+        }
+
+        &.chirpui-reasoning--pending {
+            position: relative;
+        }
+
+        .chirpui-reasoning__shimmer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            border-radius: var(--chirpui-radius-md);
+        }
+
+        .chirpui-reasoning__shimmer::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                90deg,
+                var(--chirpui-shimmer-from),
+                var(--chirpui-shimmer-via),
+                var(--chirpui-shimmer-to)
+            );
+            animation: chirpui-shimmer 2s var(--chirpui-ease-standard) infinite;
+        }
+    }
+
+    @scope (.chirpui-tool-call) to (.chirpui-tool-call .chirpui-tool-call) {
+        :scope {
+            margin-block: var(--chirpui-spacing-xs);
+        }
+
+        .chirpui-tool-call__status {
+            font-size: var(--chirpui-font-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        &.chirpui-tool-call--done .chirpui-tool-call__status {
+            color: var(--chirpui-success);
+        }
+
+        &.chirpui-tool-call--error .chirpui-tool-call__status {
+            color: var(--chirpui-danger);
+        }
+
+        &.chirpui-tool-call--running .chirpui-tool-call__status,
+        &.chirpui-tool-call--pending .chirpui-tool-call__status {
+            color: var(--chirpui-accent);
+        }
+
+        .chirpui-tool-call__result {
+            margin-block-start: var(--chirpui-spacing-sm);
+        }
+
+        .chirpui-tool-call__files {
+            margin: var(--chirpui-spacing-sm) 0 0;
+            padding-inline-start: var(--chirpui-spacing-lg);
+            font-size: var(--chirpui-font-sm);
+        }
+
+        .chirpui-tool-call__file {
+            margin-block: var(--chirpui-spacing-xs);
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-reasoning__shimmer::after {
+        animation: none;
+    }
+}

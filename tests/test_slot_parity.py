@@ -67,7 +67,6 @@ KNOWN_DRIFT: frozenset[str] = frozenset(
         "infinite-scroll",
         "install-snippet",
         "message-thread",
-        "message_bubble",
         "meteor",
         "metric-grid",
         "nav-tree",

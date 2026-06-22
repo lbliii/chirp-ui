@@ -5113,6 +5113,7 @@ Chat Input component
 - **Role:** `component`
 - **Authoring:** `available`
 - **Slots:** `(default)`
+- **Modifiers:** `dock`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -5159,6 +5160,7 @@ Chip group
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
+- **Sizes:** `sm`
 - **Modifiers:** `custom`, `muted`, `selected`
 
 | Param | Required | Default |
@@ -5185,6 +5187,26 @@ Chip group
 | Param | Required | Default |
 |-------|----------|---------|
 | `label` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `citation`
+
+Citations
+
+- **Template:** `chirpui/citations.html`
+- **Macro:** `citation_chip`
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `index` | yes | — |
+| `title` | yes | — |
+| `href` | yes | — |
+| `source_id` | no | (has default) |
+| `chunk` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `clamp-2`
@@ -7247,6 +7269,47 @@ Mention component
 | `href` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `message-actions`
+
+Message actions
+
+- **Template:** `chirpui/message_actions.html`
+- **Macro:** `message_actions`
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`, `htmx`
+- **Modifiers:** `last`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `is_last` | no | (has default) |
+| `can_delete` | no | (has default) |
+| `copy_text` | no | (has default) |
+| `delete_url` | no | (has default) |
+| `delete_target` | no | (has default) |
+| `confirm_id` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `message-meta`
+
+Message meta
+
+- **Template:** `chirpui/message_meta.html`
+- **Macro:** `message_meta`
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `model` | yes | — |
+| `timestamp` | no | (has default) |
+| `usage` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `message-reactions`
 
 - **Category:** `content`
@@ -7280,7 +7343,7 @@ Message Bubble component
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
-- **Slots:** `(default)`
+- **Slots:** `(default)`, `actions`
 - **Variants:** `assistant`, `default`, `system`, `user`
 
 | Param | Required | Default |
@@ -8033,6 +8096,26 @@ Reaction Pill component
 | `active` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `reasoning`
+
+Reasoning + tool-call disclosure
+
+- **Template:** `chirpui/reasoning.html`
+- **Macro:** `reasoning_block`
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Modifiers:** `pending`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `label_pending` | no | (has default) |
+| `label_done` | no | (has default) |
+| `done` | no | (has default) |
+| `open` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `rendered-content`
 
 Rendered content
@@ -8639,6 +8722,23 @@ Shimmer Button
 | `attrs_map` | no | (has default) |
 | `disabled` | no | (has default) |
 
+### `shortcuts-help`
+
+Keyboard shortcuts help
+
+- **Template:** `chirpui/shortcuts_help.html`
+- **Macro:** `shortcuts_help`
+- **Category:** `control`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `dialog_id` | no | (has default) |
+| `title` | no | (has default) |
+
 ### `sidebar`
 
 Sidebar component
@@ -8839,6 +8939,24 @@ Sortable list macros
 | `cls` | no | (has default) |
 | `attrs` | no | (has default) |
 | `attrs_unsafe` | no | (has default) |
+
+### `sources-summary`
+
+Citations
+
+- **Template:** `chirpui/citations.html`
+- **Macro:** `sources_summary`
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `sources` | yes | — |
+| `max_visible` | no | (has default) |
+| `label` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `sparkle`
 
@@ -9094,6 +9212,42 @@ Status Indicator component
 | `pulse` | no | (has default) |
 | `cls` | no | (has default) |
 | `color` | no | (has default) |
+
+### `status-step`
+
+Status timeline
+
+- **Template:** `chirpui/status_timeline.html`
+- **Macro:** `status_step`
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `action_type` | yes | — |
+| `label` | yes | — |
+| `done` | no | (has default) |
+| `query_chips` | no | (has default) |
+| `count` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `status-timeline`
+
+Status timeline
+
+- **Template:** `chirpui/status_timeline.html`
+- **Macro:** `status_timeline`
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Slots:** `(default)`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `cls` | no | (has default) |
 
 ### `stepper`
 
@@ -9671,6 +9825,28 @@ Token input
 | `label` | no | (has default) |
 | `input_id` | no | (has default) |
 | `placeholder` | no | (has default) |
+| `cls` | no | (has default) |
+
+### `tool-call`
+
+Reasoning + tool-call disclosure
+
+- **Template:** `chirpui/reasoning.html`
+- **Macro:** `tool_call_card`
+- **Category:** `layout`
+- **Maturity:** `stable`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Variants:** `done`, `error`, `pending`, `running`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `status` | no | (has default) |
+| `args` | no | (has default) |
+| `result` | no | (has default) |
+| `files` | no | (has default) |
+| `open` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `tooltip`

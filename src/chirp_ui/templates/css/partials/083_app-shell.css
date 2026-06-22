@@ -59,6 +59,8 @@ html {
     flex-wrap: nowrap;
     gap: var(--chirpui-spacing);
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    padding-inline-start: max(var(--chirpui-spacing), env(safe-area-inset-left));
+    padding-inline-end: max(var(--chirpui-spacing), env(safe-area-inset-right));
     border-bottom: 1px solid var(--chirpui-border);
     background: var(--chirpui-surface);
     position: sticky;
@@ -314,6 +316,7 @@ html {
     min-width: 0;
     overflow-x: clip;
     padding: var(--chirpui-spacing-lg);
+    padding-block-end: max(var(--chirpui-spacing-lg), env(safe-area-inset-bottom));
 }
 
 /* Full-height main: flex column so #page-content can flex:1; inner panels own scroll.

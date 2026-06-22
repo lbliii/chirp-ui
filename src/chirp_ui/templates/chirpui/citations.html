@@ -1,0 +1,55 @@
+{#- chirp-ui: Citations
+    citation_chip: inline numbered <sup><a> linking to a source (text-fragment aware).
+    sources_summary: compact stacked source pills (reuses avatar_stack overflow CSS).
+    citation_modal: full source detail over modal.html.
+
+    Usage:
+        {% from "chirpui/citations.html" import citation_chip, sources_summary, citation_modal %}
+        {{ citation_chip(index=1, title="Scope spec", href="https://x.test/doc",
+                         source_id="src-1") }}
+        {{ sources_summary(sources=[{"id": "src-1", "title": "Scope spec",
+                                     "href": "https://x.test/doc", "relevance": "high"}]) }}
+-#}
+{% from "chirpui/modal.html" import modal %}
+
+{% def citation_chip(index, title, href, source_id="", chunk=none, cls="") %}
+{% set _href = build_text_fragment_url(href, chunk) if chunk else href %}
+<sup class="chirpui-citation{{ " " ~ cls if cls else "" }}">
+  <a class="chirpui-citation__link" href="{{ _href }}"
+     {% if source_id %}data-source-id="{{ source_id }}"{% end %}
+     aria-label="Citation {{ index }}: {{ title }}" title="{{ title }}"
+     target="_blank" rel="noopener">{{ index }}</a>
+</sup>
+{% end %}
+
+{% def sources_summary(sources, max_visible=4, label="Sources", cls="") %}
+{% set _total = sources | length %}
+<div class="chirpui-sources-summary{{ " " ~ cls if cls else "" }}" aria-label="{{ label }}">
+  <span class="chirpui-avatar-stack chirpui-sources-summary__stack">
+    {% for s in sources %}
+    {% if loop.index <= max_visible %}
+    <a class="chirpui-sources-summary__chip{{ " chirpui-relevance--" ~ s.relevance if s.get("relevance") in ("high", "med", "low") else "" }}"
+       href="{{ s.get("href") | default("#") }}" title="{{ s.get("title") | default("") }}"
+       data-source-id="{{ s.get("id") | default("") }}">
+      <span class="chirpui-sources-summary__index">{{ loop.index }}</span>
+    </a>
+    {% end %}
+    {% end %}
+    {% if _total > max_visible %}
+    <span class="chirpui-avatar-stack__more">+{{ _total - max_visible }}</span>
+    {% end %}
+  </span>
+</div>
+{% end %}
+
+{% def citation_modal(source, cls="") %}
+{% set _id = "citation-" ~ (source.get("id") | default("src")) %}
+{% call modal(_id, title=source.get("title") | default("Source"), size="md", cls=cls) %}
+  <div class="chirpui-prose">
+    {% if source.get("href") %}
+    <p><a href="{{ source.href }}" target="_blank" rel="noopener">{{ source.href }}</a></p>
+    {% end %}
+    {% if source.get("excerpt") %}<blockquote>{{ source.excerpt }}</blockquote>{% end %}
+  </div>
+{% end %}
+{% end %}

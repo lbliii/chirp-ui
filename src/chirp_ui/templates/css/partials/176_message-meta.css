@@ -1,0 +1,36 @@
+/* ==========================================================================
+   Message meta — provenance row for assistant turns
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-message-meta) to (.chirpui-message-meta .chirpui-message-meta) {
+        :scope {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+            font-size: var(--chirpui-font-xs);
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-message-meta__model {
+            font-weight: 600;
+        }
+
+        .chirpui-message-meta__time {
+            font-variant-numeric: var(--chirpui-nums-tabular);
+        }
+
+        .chirpui-message-meta__usage {
+            display: inline-flex;
+        }
+
+        .chirpui-message-meta__usage-detail {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+        }
+    }
+}

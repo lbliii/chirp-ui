@@ -4425,6 +4425,117 @@ class TestForms:
         assert 'role="status"' in html
         assert "Overridden for this chat" in html
 
+    def test_message_bubble_actions_slot(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/message_bubble.html" import message_bubble %}'
+            "{% call message_bubble() %}Body{% slot actions %}Actions{% end %}{% end %}"
+        ).render()
+        assert "<article" in html
+        assert "Body" in html
+        assert "Actions" in html
+
+    def test_message_actions_copy_and_delete(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/message_actions.html" import message_actions %}'
+            "{% call message_actions(is_last=true, copy_text='raw', can_delete=true,"
+            " delete_url='/m/1', delete_target='#m-1', confirm_id='del-1') %}{% end %}"
+        ).render()
+        assert 'data-copy-text="raw"' in html
+        assert "chirpui-action-bar__item--danger" in html
+        assert 'id="del-1"' in html
+        assert 'hx-delete="/m/1"' in html
+        assert "data-last" in html
+
+    def test_message_actions_no_delete_without_flag(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/message_actions.html" import message_actions %}'
+            "{% call message_actions(copy_text='x', delete_url='/m/1') %}{% end %}"
+        ).render()
+        assert "chirpui-action-bar__item--danger" not in html
+        assert "chirpui-confirm" not in html
+
+    def test_message_meta_with_usage(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/message_meta.html" import message_meta %}'
+            '{{ message_meta("gpt-4o", "2:34 PM", usage={"input": 10, "output": 5, "total": 15}) }}'
+        ).render()
+        assert "chirpui-message-meta" in html
+        assert "gpt-4o" in html
+        assert "2:34 PM" in html
+        assert 'aria-label="Token usage:' in html
+
+    def test_reasoning_block_pending_shimmer(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/reasoning.html" import reasoning_block %}'
+            "{% call reasoning_block(done=false) %}Thought{% end %}"
+        ).render()
+        assert "chirpui-reasoning--pending" in html
+        assert "chirpui-reasoning__shimmer" in html
+        assert "Thought" in html
+
+    def test_reasoning_block_done_no_shimmer(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/reasoning.html" import reasoning_block %}'
+            '{% call reasoning_block(done=true, label_done="Done") %}Thought{% end %}'
+        ).render()
+        assert "chirpui-reasoning__shimmer" not in html
+        assert "Done" in html
+
+    def test_tool_call_card(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/reasoning.html" import tool_call_card %}'
+            '{{ tool_call_card("search", status="done", args=[{"term": "q", "detail": "css"}],'
+            ' result="3 hits", files=["a.md"]) }}'
+        ).render()
+        assert "chirpui-tool-call--done" in html
+        assert "chirpui-dl" in html
+        assert "3 hits" in html
+        assert "a.md" in html
+
+    def test_status_step_active_and_done(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/status_timeline.html" import status_timeline, status_step %}'
+            "{% call status_timeline() %}"
+            '{{ status_step("search", "Searching", done=false, query_chips=["css"], count=3) }}'
+            '{{ status_step("read", "Done", done=true) }}'
+            "{% end %}"
+        ).render()
+        assert "chirpui-status-step--active" in html
+        assert 'aria-busy="true"' in html
+        assert "chirpui-status-step--done" in html
+        assert "chirpui-chip" in html
+
+    def test_citation_chip_text_fragment(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/citations.html" import citation_chip %}'
+            '{{ citation_chip(1, "Doc", "https://x.test/doc", chunk="exact quote") }}'
+        ).render()
+        assert "chirpui-citation" in html
+        assert "#:~:text=" in html
+        assert 'aria-label="Citation 1: Doc"' in html
+
+    def test_sources_summary_overflow(self, env: Environment) -> None:
+        sources = [
+            {"id": f"s{i}", "title": f"T{i}", "href": f"/{i}", "relevance": "high"}
+            for i in range(6)
+        ]
+        html = env.from_string(
+            '{% from "chirpui/citations.html" import sources_summary %}{{ sources_summary(items) }}'
+        ).render(items=sources)
+        assert "chirpui-avatar-stack" in html
+        assert "chirpui-avatar-stack__more" in html
+        assert "+2" in html
+        assert "chirpui-relevance--high" in html
+
+    def test_citation_modal(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/citations.html" import citation_modal %}'
+            '{{ citation_modal({"id": "src-1", "title": "Spec", "href": "https://x.test", "excerpt": "Quote"}) }}'
+        ).render()
+        assert "chirpui-modal" in html
+        assert "chirpui-prose" in html
+        assert "Quote" in html
+
     def test_search_field_preserves_explicit_search_attrs(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/forms.html" import search_field %}'

@@ -1267,15 +1267,89 @@
         };
     });
 
+    register("chirpuiShortcuts", function () {
+        return {
+            _shortcuts: [],
+            init: function () {
+                var raw = this.$refs.catalog ? this.$refs.catalog.textContent : "[]";
+                try {
+                    this._shortcuts = JSON.parse(raw) || [];
+                } catch (e) {
+                    this._shortcuts = [];
+                    console.warn("chirp-ui: invalid shortcuts catalog JSON:", e.message);
+                }
+                var self = this;
+                this._onKey = function (ev) {
+                    self._handle(ev);
+                };
+                document.addEventListener("keydown", this._onKey);
+            },
+            destroy: function () {
+                if (this._onKey) {
+                    document.removeEventListener("keydown", this._onKey);
+                }
+            },
+            _inInput: function () {
+                var el = document.activeElement;
+                if (!el) {
+                    return false;
+                }
+                var tag = el.tagName;
+                if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") {
+                    return true;
+                }
+                return el.isContentEditable === true;
+            },
+            _handle: function (ev) {
+                var mod = ev.ctrlKey || ev.metaKey;
+                var key = (ev.key || "").toLowerCase();
+                var inInput = this._inInput();
+                for (var i = 0; i < this._shortcuts.length; i++) {
+                    var sc = this._shortcuts[i];
+                    if (sc.key !== key) {
+                        continue;
+                    }
+                    if (Boolean(sc.mod) !== mod) {
+                        continue;
+                    }
+                    if (Boolean(sc.shift) !== ev.shiftKey) {
+                        continue;
+                    }
+                    if (inInput && !sc.allowInInput) {
+                        return;
+                    }
+                    ev.preventDefault();
+                    if (sc.action === "open-help") {
+                        this._openDialog();
+                    } else {
+                        document.dispatchEvent(
+                            new CustomEvent("chirpui:shortcut:" + sc.action, {
+                                bubbles: true,
+                                detail: { id: sc.id },
+                            })
+                        );
+                    }
+                    return;
+                }
+            },
+            _openDialog: function () {
+                var d = this.$refs.dialog;
+                if (d && typeof d.showModal === "function" && !d.open) {
+                    d.showModal();
+                }
+            },
+        };
+    });
+
     register("chirpuiThemeToggle", function () {
         return {
             theme: "system",
-            icons: { light: "\u25CB", dark: "\u25CF", system: "\u25D0" },
+            icons: { light: "\u25CB", dark: "\u25CF", system: "\u25D0", oled: "\u2B24" },
             init: function () {
                 this.theme = readDocumentPreference("data-theme", "system");
             },
             cycle: function () {
-                var order = ["system", "light", "dark"];
+                var order = ["system", "light", "dark", "oled"];
                 var index = (order.indexOf(this.theme) + 1) % order.length;
                 this.theme = order[index];
                 writeDocumentPreference("data-theme", "chirpui-theme", this.theme);

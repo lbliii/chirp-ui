@@ -1,0 +1,33 @@
+{#- chirp-ui: Message meta
+    Provenance row for an assistant turn: model, timestamp, optional token usage.
+    usage is a caller dict; fields are .get()-guarded for strict-undefined (kida 0.7.0).
+
+    Usage:
+        {% from "chirpui/message_meta.html" import message_meta %}
+        {{ message_meta("claude-opus-4-8", "2:34 PM",
+                        usage={"input": 1820, "output": 412, "total": 2232}) }}
+-#}
+{% from "chirpui/icon_btn.html" import icon_btn %}
+{% from "chirpui/tooltip.html" import tooltip %}
+{% from "chirpui/label_overline.html" import label_overline %}
+
+{% def message_meta(model, timestamp=none, usage=none, cls="") %}
+<div class="chirpui-message-meta{{ " " ~ cls if cls else "" }}">
+  <span class="chirpui-message-meta__model">{{ label_overline(model) }}</span>
+  {% if timestamp %}<time class="chirpui-message-meta__time">{{ timestamp }}</time>{% end %}
+  {% if usage %}
+  {% set _usage_tip = "in " ~ (usage.get("input") | default("0")) ~ ", out " ~ (usage.get("output") | default("0")) ~ ", total " ~ (usage.get("total") | default("0")) %}
+  {% call tooltip(_usage_tip, position="top") %}
+    <span class="chirpui-message-meta__usage" role="img"
+          aria-label="Token usage: {{ usage.get('input') | default('0') }} in, {{ usage.get('output') | default('0') }} out">
+      {{ icon_btn("ℹ", variant="ghost", size="sm", aria_label="Token usage details") }}
+    </span>
+  {% end %}
+  <span class="chirpui-message-meta__usage-detail chirpui-visually-hidden">
+    {% if usage.get("input") is not none %}in {{ usage.input }} · {% end %}
+    {% if usage.get("output") is not none %}out {{ usage.output }} · {% end %}
+    {% if usage.get("total") is not none %}total {{ usage.total }}{% end %}
+  </span>
+  {% end %}
+</div>
+{% end %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/shortcuts_help.html" import shortcuts_help %}
+<div id="shortcuts-fixture">
+  <textarea id="composer" data-testid="composer">hello</textarea>
+  {{ shortcuts_help() }}
+</div>
+{% end %}

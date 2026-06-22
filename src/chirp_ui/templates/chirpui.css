@@ -2965,6 +2965,15 @@ a.chirpui-action-bar__item {
     gap: var(--chirpui-spacing-sm);
 }
 
+/* Sticky composer dock — pad past the home indicator on notched phones. */
+.chirpui-chat-input--dock {
+    position: sticky;
+    bottom: 0;
+    z-index: var(--chirpui-z-sticky);
+    background: var(--chirpui-surface);
+    padding-block-end: max(var(--chirpui-spacing), env(safe-area-inset-bottom));
+}
+
 }
 
 /* === partials/019_conversation-list-and-item.css === */
@@ -9514,6 +9523,13 @@ button.chirpui-pagination__link {
     }
 }
 
+[data-theme="oled"] {
+    color-scheme: dark;
+    --chirpui-bg: color-mix(in oklab, var(--chirpui-bg) 12%, black);
+    --chirpui-surface: color-mix(in oklab, var(--chirpui-surface) 30%, black);
+    --chirpui-surface-alt: color-mix(in oklab, var(--chirpui-surface-alt) 30%, black);
+}
+
 }
 
 /* === partials/069_data-style-support.css === */
@@ -12964,6 +12980,8 @@ html {
     flex-wrap: nowrap;
     gap: var(--chirpui-spacing);
     padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+    padding-inline-start: max(var(--chirpui-spacing), env(safe-area-inset-left));
+    padding-inline-end: max(var(--chirpui-spacing), env(safe-area-inset-right));
     border-bottom: 1px solid var(--chirpui-border);
     background: var(--chirpui-surface);
     position: sticky;
@@ -13219,6 +13237,7 @@ html {
     min-width: 0;
     overflow-x: clip;
     padding: var(--chirpui-spacing-lg);
+    padding-block-end: max(var(--chirpui-spacing-lg), env(safe-area-inset-bottom));
 }
 
 /* Full-height main: flex column so #page-content can flex:1; inner panels own scroll.
@@ -23062,6 +23081,390 @@ a.chirpui-chip:focus-visible {
 
         :scope.chirpui-scope-indicator--override .chirpui-scope-indicator__dot {
             background: var(--chirpui-accent);
+        }
+    }
+}
+
+/* === partials/175_message-actions.css === */
+/* ==========================================================================
+   Message actions — per-turn toolbar (reveal on hover/focus-within)
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-message-actions) to (.chirpui-message-actions .chirpui-message-actions) {
+        :scope {
+            opacity: 0;
+            transition: opacity var(--chirpui-duration-fast) var(--chirpui-ease-standard);
+        }
+
+        .chirpui-message-bubble:hover > &,
+        .chirpui-message-bubble:focus-within > &,
+        :scope:focus-within {
+            opacity: 1;
+        }
+
+        &[data-last],
+        &.chirpui-message-actions--last {
+            opacity: 1;
+        }
+
+        .chirpui-action-bar__item--danger {
+            color: var(--chirpui-danger);
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-message-actions {
+        transition: none;
+    }
+}
+
+/* === partials/176_message-meta.css === */
+/* ==========================================================================
+   Message meta — provenance row for assistant turns
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-message-meta) to (.chirpui-message-meta .chirpui-message-meta) {
+        :scope {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
+            font-size: var(--chirpui-font-xs);
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-message-meta__model {
+            font-weight: 600;
+        }
+
+        .chirpui-message-meta__time {
+            font-variant-numeric: var(--chirpui-nums-tabular);
+        }
+
+        .chirpui-message-meta__usage {
+            display: inline-flex;
+        }
+
+        .chirpui-message-meta__usage-detail {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+        }
+    }
+}
+
+/* === partials/177_reasoning.css === */
+/* ==========================================================================
+   Reasoning + tool-call disclosure
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-reasoning) to (.chirpui-reasoning .chirpui-reasoning) {
+        :scope {
+            position: relative;
+        }
+
+        &.chirpui-reasoning--pending {
+            position: relative;
+        }
+
+        .chirpui-reasoning__shimmer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            border-radius: var(--chirpui-radius-md);
+        }
+
+        .chirpui-reasoning__shimmer::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                90deg,
+                var(--chirpui-shimmer-from),
+                var(--chirpui-shimmer-via),
+                var(--chirpui-shimmer-to)
+            );
+            animation: chirpui-shimmer 2s var(--chirpui-ease-standard) infinite;
+        }
+    }
+
+    @scope (.chirpui-tool-call) to (.chirpui-tool-call .chirpui-tool-call) {
+        :scope {
+            margin-block: var(--chirpui-spacing-xs);
+        }
+
+        .chirpui-tool-call__status {
+            font-size: var(--chirpui-font-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        &.chirpui-tool-call--done .chirpui-tool-call__status {
+            color: var(--chirpui-success);
+        }
+
+        &.chirpui-tool-call--error .chirpui-tool-call__status {
+            color: var(--chirpui-danger);
+        }
+
+        &.chirpui-tool-call--running .chirpui-tool-call__status,
+        &.chirpui-tool-call--pending .chirpui-tool-call__status {
+            color: var(--chirpui-accent);
+        }
+
+        .chirpui-tool-call__result {
+            margin-block-start: var(--chirpui-spacing-sm);
+        }
+
+        .chirpui-tool-call__files {
+            margin: var(--chirpui-spacing-sm) 0 0;
+            padding-inline-start: var(--chirpui-spacing-lg);
+            font-size: var(--chirpui-font-sm);
+        }
+
+        .chirpui-tool-call__file {
+            margin-block: var(--chirpui-spacing-xs);
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-reasoning__shimmer::after {
+        animation: none;
+    }
+}
+
+/* === partials/178_status-timeline.css === */
+/* ==========================================================================
+   Status timeline — agentic step list
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-status-timeline) to (.chirpui-status-timeline .chirpui-status-timeline) {
+        :scope {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing-sm);
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+    }
+
+    @scope (.chirpui-status-step) to (.chirpui-status-step .chirpui-status-step) {
+        :scope {
+            display: flex;
+            gap: var(--chirpui-spacing-sm);
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .chirpui-status-step__marker {
+            flex-shrink: 0;
+            inline-size: 1.25rem;
+            text-align: center;
+            color: var(--chirpui-text-muted);
+        }
+
+        &.chirpui-status-step--done .chirpui-status-step__marker {
+            color: var(--chirpui-success);
+        }
+
+        &.chirpui-status-step--active .chirpui-status-step__marker {
+            color: var(--chirpui-accent);
+        }
+
+        .chirpui-status-step__body {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing-xs);
+            min-width: 0;
+        }
+
+        .chirpui-status-step__label {
+            font-weight: 500;
+        }
+
+        .chirpui-status-step__count {
+            margin-inline-start: var(--chirpui-spacing-xs);
+            font-variant-numeric: var(--chirpui-nums-tabular);
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-status-step__chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--chirpui-spacing-xs);
+        }
+
+        .chirpui-chip--sm {
+            font-size: var(--chirpui-font-xs);
+            padding: 0.1em 0.45em;
+        }
+    }
+}
+
+/* === partials/179_citations.css === */
+/* ==========================================================================
+   Citations — inline chips, sources summary, relevance ramp
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-citation) to (.chirpui-citation .chirpui-citation) {
+        :scope {
+            line-height: 0;
+        }
+
+        .chirpui-citation__link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-inline-size: 1.1em;
+            padding-inline: 0.15em;
+            font-size: var(--chirpui-font-xs);
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--chirpui-accent);
+            border-radius: var(--chirpui-radius-sm);
+        }
+
+        .chirpui-citation__link:hover {
+            background: color-mix(in srgb, var(--chirpui-accent) 12%, transparent);
+        }
+    }
+
+    .chirpui-relevance--high .chirpui-sources-summary__chip {
+        border-color: var(--chirpui-success);
+    }
+
+    .chirpui-relevance--med .chirpui-sources-summary__chip {
+        border-color: var(--chirpui-accent);
+    }
+
+    .chirpui-relevance--low .chirpui-sources-summary__chip {
+        border-color: var(--chirpui-text-muted);
+    }
+
+    @scope (.chirpui-sources-summary) to (.chirpui-sources-summary .chirpui-sources-summary) {
+        :scope {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .chirpui-sources-summary__stack {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .chirpui-sources-summary__chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            inline-size: 1.75rem;
+            block-size: 1.75rem;
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius-full);
+            background: var(--chirpui-surface);
+            color: var(--chirpui-text);
+            text-decoration: none;
+            font-size: var(--chirpui-font-xs);
+            font-weight: 600;
+        }
+
+        .chirpui-sources-summary__index {
+            font-variant-numeric: var(--chirpui-nums-tabular);
+        }
+    }
+}
+
+/* === partials/180_shortcuts-help.css === */
+/* ==========================================================================
+   Keyboard shortcuts help modal
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-shortcuts-help) to (.chirpui-shortcuts-help .chirpui-shortcuts-help) {
+        :scope {
+            margin: auto;
+            max-inline-size: min(32rem, 92vw);
+            padding: 0;
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius);
+            background: var(--chirpui-surface);
+            color: var(--chirpui-text);
+            box-shadow: var(--chirpui-elevation-overlay);
+        }
+
+        :scope::backdrop {
+            background: var(--chirpui-smoke-bg);
+        }
+
+        .chirpui-shortcuts-help__inner {
+            padding: var(--chirpui-spacing-lg);
+        }
+
+        .chirpui-shortcuts-help__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-block-end: var(--chirpui-spacing);
+        }
+
+        .chirpui-shortcuts-help__group {
+            margin-block-end: var(--chirpui-spacing);
+        }
+
+        .chirpui-shortcuts-help__title {
+            margin: 0;
+            font-size: var(--chirpui-font-lg);
+        }
+
+        .chirpui-shortcuts-help__close {
+            border: 0;
+            background: transparent;
+            color: var(--chirpui-text-muted);
+            font-size: var(--chirpui-font-xl);
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .chirpui-shortcuts-help__close:hover {
+            color: var(--chirpui-text);
+        }
+
+        .chirpui-shortcuts-help__list {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: var(--chirpui-spacing-xs) var(--chirpui-spacing);
+            margin: 0;
+        }
+
+        .chirpui-shortcuts-help__row {
+            display: contents;
+        }
+
+        .chirpui-shortcuts-help__label {
+            margin: 0;
+        }
+
+        .chirpui-shortcuts-help__category {
+            margin-block: var(--chirpui-spacing) var(--chirpui-spacing-xs);
+            font-size: var(--chirpui-font-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-shortcuts-help__keys {
+            justify-self: end;
+            margin: 0;
         }
     }
 }
