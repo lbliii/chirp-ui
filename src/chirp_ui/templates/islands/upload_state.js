@@ -9,7 +9,6 @@ function mount(payload, api) {
   const start = root.querySelector("[data-upload-start]");
   const progress = root.querySelector("[data-upload-progress]");
   const status = root.querySelector("[data-upload-status]");
-  let timer = null;
 
   const write = (percent, message) => {
     if (progress) {
@@ -27,30 +26,34 @@ function mount(payload, api) {
     });
   };
 
-  const run = () => {
-    const fileCount = input?.files ? input.files.length : 0;
-    if (fileCount === 0) {
+  const run = async () => {
+    const files = input?.files ? Array.from(input.files) : [];
+    if (!files.length) {
       setAction(payload, api, "upload", "error", { reason: "no_files" });
       write(0, "Select at least one file.");
       return;
     }
-    let percent = 0;
     start?.setAttribute("disabled", "disabled");
-    setAction(payload, api, "upload", "pending", { endpoint, files: fileCount });
-    write(percent, "Uploading...");
-    timer = window.setInterval(() => {
-      percent = Math.min(100, percent + 15);
-      write(percent, `Uploading... ${percent}%`);
-      if (percent >= 100) {
-        if (timer) {
-          window.clearInterval(timer);
-          timer = null;
+    setAction(payload, api, "upload", "pending", { endpoint, files: files.length });
+    write(0, "Uploading...");
+    try {
+      for (const file of files) {
+        const body = new FormData();
+        body.append("file", file);
+        const res = await fetch(endpoint, { method: "POST", body });
+        const html = await res.text();
+        if (window.htmx && typeof window.htmx.swap === "function") {
+          window.htmx.swap(document.body, html, { swapStyle: "none" });
         }
-        start?.removeAttribute("disabled");
-        write(100, `Uploaded to ${endpoint}`);
-        setAction(payload, api, "upload", "success", { endpoint, files: fileCount });
       }
-    }, 120);
+      write(100, `Uploaded to ${endpoint}`);
+      setAction(payload, api, "upload", "success", { endpoint, files: files.length });
+    } catch (error) {
+      write(0, "Upload failed.");
+      setAction(payload, api, "upload", "error", { reason: "network_error" });
+    } finally {
+      start?.removeAttribute("disabled");
+    }
   };
 
   start?.addEventListener("click", run);
@@ -58,9 +61,6 @@ function mount(payload, api) {
 
   return () => {
     start?.removeEventListener("click", run);
-    if (timer) {
-      window.clearInterval(timer);
-    }
   };
 }
 

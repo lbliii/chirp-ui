@@ -5,13 +5,14 @@ let mount;
 let islands;
 
 beforeEach(() => {
-  vi.useFakeTimers();
   islands = mockChirpIslands();
+  global.fetch = vi.fn();
+  global.htmx = { swap: vi.fn() };
 });
 
 afterEach(() => {
-  vi.useRealTimers();
   islands.teardown();
+  vi.restoreAllMocks();
 });
 
 async function getMountFn() {
@@ -36,10 +37,13 @@ function createUploadDOM() {
 }
 
 function setFiles(root, count) {
-  // Mock the files property on the file input
   const input = root.querySelector("[data-upload-input]");
+  const files = Array.from(
+    { length: count },
+    (_, i) => new File(["content"], `file-${i}.txt`, { type: "text/plain" })
+  );
   Object.defineProperty(input, "files", {
-    value: { length: count },
+    value: files,
     writable: true,
     configurable: true,
   });
@@ -82,144 +86,68 @@ describe("upload_state", () => {
     );
   });
 
-  it("starts upload with pending action when files exist", async () => {
+  it("POSTs each file and applies OOB HTML from the server", async () => {
     const fn = await getMountFn();
     const root = createUploadDOM();
     const api = createMockApi();
+
+    fetch.mockResolvedValue({
+      text: async () => '<div id="attachment-1" hx-swap-oob="outerHTML"></div>',
+    });
 
     fn(createPayload(root, { endpoint: "/api/upload" }), api);
     setFiles(root, 2);
     api.emitAction.mockClear();
 
     root.querySelector("[data-upload-start]").click();
-
-    expect(api.emitAction).toHaveBeenCalledWith("upload", "pending", {
+    await vi.waitFor(() => {
+      expect(fetch).toHaveBeenCalledTimes(2);
+      expect(global.htmx.swap).toHaveBeenCalledTimes(2);
+    });
+    expect(api.emitAction).toHaveBeenCalledWith("upload", "success", {
       endpoint: "/api/upload",
       files: 2,
     });
-    expect(
-      root.querySelector("[data-upload-start]").hasAttribute("disabled")
-    ).toBe(true);
-  });
-
-  it("progress increments by 15 every 120ms", async () => {
-    const fn = await getMountFn();
-    const root = createUploadDOM();
-    const api = createMockApi();
-
-    fn(createPayload(root, {}), api);
-    setFiles(root, 1);
-
-    root.querySelector("[data-upload-start]").click();
-
-    vi.advanceTimersByTime(120); // +15 → 15
-    expect(root.querySelector("[data-upload-progress]").value).toBe(15);
-
-    vi.advanceTimersByTime(120); // +15 → 30
-    expect(root.querySelector("[data-upload-progress]").value).toBe(30);
-  });
-
-  it("progress is capped at 100", async () => {
-    const fn = await getMountFn();
-    const root = createUploadDOM();
-    const api = createMockApi();
-
-    fn(createPayload(root, {}), api);
-    setFiles(root, 1);
-
-    root.querySelector("[data-upload-start]").click();
-
-    // 7 ticks × 15 = 105, but capped to 100
-    // Tick at: 15, 30, 45, 60, 75, 90, 100 (cap)
-    vi.advanceTimersByTime(120 * 7);
-
-    expect(root.querySelector("[data-upload-progress]").value).toBe(100);
-  });
-
-  it("emits success action on completion", async () => {
-    const fn = await getMountFn();
-    const root = createUploadDOM();
-    const api = createMockApi();
-
-    fn(createPayload(root, { endpoint: "/files" }), api);
-    setFiles(root, 1);
-
-    root.querySelector("[data-upload-start]").click();
-    api.emitAction.mockClear();
-
-    // Run enough ticks to reach 100
-    vi.advanceTimersByTime(120 * 7);
-
-    expect(api.emitAction).toHaveBeenCalledWith("upload", "success", {
-      endpoint: "/files",
-      files: 1,
-    });
-  });
-
-  it("re-enables button after completion", async () => {
-    const fn = await getMountFn();
-    const root = createUploadDOM();
-    const api = createMockApi();
-
-    fn(createPayload(root, {}), api);
-    setFiles(root, 1);
-
-    const btn = root.querySelector("[data-upload-start]");
-    btn.click();
-    expect(btn.hasAttribute("disabled")).toBe(true);
-
-    vi.advanceTimersByTime(120 * 7);
-    expect(btn.hasAttribute("disabled")).toBe(false);
-  });
-
-  it("shows final message with endpoint", async () => {
-    const fn = await getMountFn();
-    const root = createUploadDOM();
-    const api = createMockApi();
-
-    fn(createPayload(root, { endpoint: "/api/v2" }), api);
-    setFiles(root, 1);
-
-    root.querySelector("[data-upload-start]").click();
-    vi.advanceTimersByTime(120 * 7);
-
     expect(root.querySelector("[data-upload-status]").textContent).toBe(
-      "Uploaded to /api/v2"
+      "Uploaded to /api/upload"
     );
   });
 
-  it("cleanup clears interval and removes listener", async () => {
+  it("disables the start button while uploading", async () => {
+    const fn = await getMountFn();
+    const root = createUploadDOM();
+    const api = createMockApi();
+    let resolveFetch;
+    fetch.mockReturnValue(
+      new Promise((resolve) => {
+        resolveFetch = resolve;
+      })
+    );
+
+    fn(createPayload(root, {}), api);
+    setFiles(root, 1);
+    const btn = root.querySelector("[data-upload-start]");
+
+    const pending = root.querySelector("[data-upload-start]").click();
+    expect(btn.hasAttribute("disabled")).toBe(true);
+
+    resolveFetch({ text: async () => "" });
+    await pending;
+    await Promise.resolve();
+
+    expect(btn.hasAttribute("disabled")).toBe(false);
+  });
+
+  it("cleanup removes listener", async () => {
     const fn = await getMountFn();
     const root = createUploadDOM();
     const api = createMockApi();
 
     const cleanup = fn(createPayload(root, {}), api);
-    setFiles(root, 1);
-    root.querySelector("[data-upload-start]").click();
-
-    // Partially through upload
-    vi.advanceTimersByTime(120 * 2); // 30%
-
     cleanup();
-    api.emitState.mockClear();
 
-    // Advance more — should NOT continue ticking
-    vi.advanceTimersByTime(120 * 10);
-    expect(api.emitState).not.toHaveBeenCalled();
-  });
-
-  it("uses default endpoint /upload and stateKey upload", async () => {
-    const fn = await getMountFn();
-    const root = createUploadDOM();
-    const api = createMockApi();
-
-    fn(createPayload(root, {}), api);
-
-    expect(api.emitState).toHaveBeenCalledWith(
-      expect.objectContaining({
-        stateKey: "upload",
-        endpoint: "/upload",
-      })
-    );
+    api.emitAction.mockClear();
+    root.querySelector("[data-upload-start]").click();
+    expect(api.emitAction).not.toHaveBeenCalled();
   });
 });

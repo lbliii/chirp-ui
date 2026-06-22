@@ -1578,6 +1578,157 @@
         };
     });
 
+    register("chirpuiComposer", function () {
+        return {
+            value: "",
+            generating: false,
+            uploadPending: false,
+            files: 0,
+            dragover: false,
+            _composing: false,
+            _compositionEndedAt: 0,
+            sendKey: "enter",
+            LARGE_PASTE_CHARS: 2000,
+            init: function () {
+                var self = this;
+                this.sendKey = this.$root.dataset.sendKey || "enter";
+                this.value = this.$refs.field ? this.$refs.field.value : "";
+                this._onAttach = function () {
+                    self.syncAttachments();
+                };
+                this.$root.addEventListener("chirpui:attachment-changed", this._onAttach);
+                this.syncAttachments();
+                this._onDone = function () {
+                    self.generating = false;
+                };
+                this.$root.addEventListener("chirpui:generation-done", this._onDone);
+                this._onSuggestion = function (e) {
+                    var d = e.detail || {};
+                    self.value = d.prompt || "";
+                    if (self.$refs.field) {
+                        self.$refs.field.value = self.value;
+                        self.$refs.field.focus();
+                    }
+                    if (d.mode === "send" && self.canSend) {
+                        self.send();
+                    }
+                };
+                window.addEventListener("chirpui:suggestion", this._onSuggestion);
+            },
+            destroy: function () {
+                if (this._onAttach) {
+                    this.$root.removeEventListener("chirpui:attachment-changed", this._onAttach);
+                }
+                if (this._onDone) {
+                    this.$root.removeEventListener("chirpui:generation-done", this._onDone);
+                }
+                if (this._onSuggestion) {
+                    window.removeEventListener("chirpui:suggestion", this._onSuggestion);
+                }
+            },
+            syncAttachments: function () {
+                var chips = this.$root.querySelectorAll(".chirpui-attachment-chip");
+                var pending = this.$root.querySelectorAll(
+                    '.chirpui-attachment-chip[data-status="uploading"],' +
+                        '.chirpui-attachment-chip[data-status="processing"]'
+                );
+                this.files = chips.length;
+                this.uploadPending = pending.length > 0;
+            },
+            get canSend: function () {
+                return !this.uploadPending && (this.value.trim() !== "" || this.files > 0);
+            },
+            onCompositionStart: function () {
+                this._composing = true;
+            },
+            onCompositionEnd: function () {
+                this._composing = false;
+                this._compositionEndedAt = Date.now();
+            },
+            onEnter: function (e) {
+                if (e.shiftKey) {
+                    return;
+                }
+                if (this.sendKey === "mod-enter" && !(e.metaKey || e.ctrlKey)) {
+                    return;
+                }
+                if (e.isComposing || e.keyCode === 229) {
+                    return;
+                }
+                if (Date.now() - this._compositionEndedAt < 500) {
+                    return;
+                }
+                if (!this.canSend) {
+                    return;
+                }
+                e.preventDefault();
+                this.send();
+            },
+            send: function () {
+                var form = this.$refs.field ? this.$refs.field.closest("form") : null;
+                if (form && typeof form.requestSubmit === "function") {
+                    form.requestSubmit();
+                } else if (form) {
+                    form.submit();
+                }
+            },
+            stop: function () {
+                this.generating = false;
+            },
+            onSend: function (event) {
+                var elt = event && event.detail ? event.detail.elt : null;
+                if (elt && elt.classList && elt.classList.contains("chirpui-composer__stop")) {
+                    return;
+                }
+                if (elt && elt.classList && elt.classList.contains("chirpui-composer__send")) {
+                    this.generating = true;
+                    return;
+                }
+                if (elt && elt.type === "submit") {
+                    this.generating = true;
+                }
+            },
+            onPaste: function (e) {
+                var text = (e.clipboardData || window.clipboardData).getData("text");
+                if (text && text.length > this.LARGE_PASTE_CHARS) {
+                    e.preventDefault();
+                    var file = new File([text], "pasted.txt", { type: "text/plain" });
+                    this.addFiles([file]);
+                }
+            },
+            onDragOver: function (e) {
+                e.preventDefault();
+                this.dragover = true;
+            },
+            onDragLeave: function () {
+                this.dragover = false;
+            },
+            onDrop: function (e) {
+                e.preventDefault();
+                this.dragover = false;
+                if (e.dataTransfer && e.dataTransfer.files) {
+                    this.addFiles(Array.from(e.dataTransfer.files));
+                }
+            },
+            addFiles: function (files) {
+                var dt = new DataTransfer();
+                var input = this.$refs.file;
+                if (input && input.files) {
+                    Array.prototype.forEach.call(input.files, function (f) {
+                        dt.items.add(f);
+                    });
+                }
+                files.forEach(function (f) {
+                    dt.items.add(f);
+                });
+                if (input) {
+                    input.files = dt.files;
+                    input.dispatchEvent(new Event("change", { bubbles: true }));
+                }
+            },
+        };
+    });
+
     register("chirpuiGridSelection", function () {
         return {
             selected: new Set(),

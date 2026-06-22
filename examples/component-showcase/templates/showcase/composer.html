@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/chat_layout.html" import chat_layout %}
+{% from "chirpui/chat_input.html" import composer %}
+{% from "chirpui/follow_ups.html" import suggestion_chips %}
+{% from "chirpui/file_item.html" import attachment_chip %}
+{% from "chirpui/message_thread.html" import message_thread %}
+{% from "chirpui/message_bubble.html" import message_bubble %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("Real composer", subtitle="IME-safe Enter, send/stop abort contract, OOB attachment status, suggestion chips.") }}
+
+{% call block() %}
+<div style="height: 420px; border: 1px solid var(--chirpui-border); border-radius: var(--chirpui-radius-lg); overflow: hidden;">
+{% call chat_layout(fill=true) %}
+{% slot messages %}
+<div class="chirpui-chat-layout__messages-body">
+  <div id="composer-thread">
+    {% call message_thread() %}
+    {% call message_bubble(align="left") %}
+    <div>
+      <p>Try Enter to send, Shift+Enter for newline, suggestion chips below, or attach a file.</p>
+    </div>
+    {% end %}
+    {% end %}
+  </div>
+  {{ suggestion_chips([
+    {"label": "Say hi", "prompt": "Hello!", "key": "hi"},
+    {"label": "Summarize", "prompt": "Summarize this thread.", "key": "sum"},
+  ], mode="prefill") }}
+</div>
+{% end %}
+{% slot input %}
+{% call composer(action="/composer/send", stop_action="/composer/abort",
+                 hx_post="/composer/send", hx_target="#composer-thread",
+                 hx_swap="beforeend", attach=true) %}
+{% slot attachments %}
+{{ attachment_chip(id="demo", name="brief.txt", status="ready", dismiss_url="/composer/dismiss/demo") }}
+{% end %}
+{% end %}
+{% end %}
+{% end %}
+</div>
+<p class="showcase-copy showcase-copy--spaced">
+  Stop POSTs <code>/composer/abort</code> (stub 204). Attachments update via OOB swaps — no fake progress timers.
+  See <code>docs/patterns/ai-chat.md</code>.
+</p>
+{% end %}
+
+{% end %}
+{% end %}
+{% end %}

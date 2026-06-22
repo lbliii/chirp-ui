@@ -1,0 +1,49 @@
+{% from "chirpui/spinner.html" import spinner %}
+
+{#- chirp-ui: File item / attachment chip
+    Id-addressable attachment chip for the composer. Status (uploading /
+    processing / ready / error) is server-authoritative and delivered by
+    OOB swaps targeting #attachment-{id} (NO fake client timers — see
+    docs/patterns/ai-chat.md). Doc-icon morphs to a spinner while pending.
+-#}
+
+{% def attachment_chip(id, name, status="uploading", size=none, href=none,
+                       preview_url=none, dismiss_url=none, cls="") %}
+{% set _status = status | validate_variant(
+    ("uploading", "processing", "ready", "error"), "uploading") %}
+{% set _pending = _status in ("uploading", "processing") %}
+<span class="chirpui-attachment-chip chirpui-attachment-chip--{{ _status }}{{ " " ~ cls if cls else "" }}"
+      id="attachment-{{ id }}"
+      data-status="{{ _status }}"
+      x-init="$root.dispatchEvent(new CustomEvent('chirpui:attachment-changed', {bubbles:true}))"
+      {% if _status == "error" %}role="alert"{% end %}>
+    <span class="chirpui-attachment-chip__icon" aria-hidden="true">
+        {% if _pending %}{{ spinner(size="sm") }}
+        {% elif _status == "error" %}{{ "alert" | icon }}
+        {% else %}{{ "file" | icon }}{% end %}
+    </span>
+    {% if preview_url %}
+    <button type="button" class="chirpui-attachment-chip__name"
+            x-data="chirpuiDialogTarget()" data-target="attachment-preview-{{ id }}"
+            @click="open()">{{ name }}</button>
+    {% elif href %}
+    <a class="chirpui-attachment-chip__name" href="{{ href }}">{{ name }}</a>
+    {% else %}
+    <span class="chirpui-attachment-chip__name">{{ name }}</span>
+    {% end %}
+    {% if size %}<span class="chirpui-attachment-chip__size">{{ size }}</span>{% end %}
+    {% if dismiss_url %}
+    <button type="button" class="chirpui-attachment-chip__dismiss"
+            aria-label="Remove {{ name }}"
+            {{ build_hx_attrs(hx_post=dismiss_url, hx_target="#attachment-" ~ id,
+                              hx_swap="outerHTML") | html_attrs }}
+            hx-boost="false">{{ "x" | icon }}</button>
+    {% end %}
+</span>
+{% end %}
+
+
+{% def file_item(id, name, status="ready", size=none, href=none, cls="") %}
+{{ attachment_chip(id=id, name=name, status=status, size=size, href=href,
+                   cls="chirpui-attachment-chip--row " ~ cls) }}
+{% end %}

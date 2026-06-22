@@ -11107,6 +11107,64 @@ class TestStructuralDrawer:
         assert "Settings" in html
 
 
+class TestComposer:
+    """Real chat composer — IME-safe send, send/stop toggle, attachments."""
+
+    def test_composer_renders_alpine_factory(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/chat_input.html" import composer %}'
+            '{% call composer(action="/send", stop_action="/abort", send_key="mod-enter") %}'
+            "{% end %}"
+        ).render()
+        assert 'x-data="chirpuiComposer()"' in html
+        assert 'data-send-key="mod-enter"' in html
+        assert_element(html, "textarea", {"class": None})
+        assert "@keydown.enter" in html
+        assert "@compositionstart" in html
+        assert "@compositionend" in html
+
+    def test_composer_send_stop_buttons(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/chat_input.html" import composer %}'
+            '{% call composer(action="/send", stop_action="/abort", hx_post="/send", hx_target="#thread") %}'
+            "{% end %}"
+        ).render()
+        assert_element(html, "button", {"type": "submit", "class": None})
+        assert "chirpui-composer__send" in html
+        assert "chirpui-composer__stop" in html
+        assert 'hx-post="/abort"' in html
+
+    def test_chat_input_back_compat_renders_form(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/chat_input.html" import chat_input %}'
+            '{% from "chirpui/button.html" import btn %}'
+            '{% call chat_input(action="/messenger", name="message") %}'
+            '{{ btn("Send", variant="primary", type="submit") }}'
+            "{% end %}"
+        ).render()
+        assert_element(html, "form", {"class": None, "method": "post"})
+        assert "chirpui-chat-input" in html
+        assert "Send" in html
+
+    def test_attachment_chip_status_and_id(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/file_item.html" import attachment_chip %}'
+            '{{ attachment_chip(id="doc-1", name="notes.txt", status="uploading") }}'
+        ).render()
+        assert_element(html, "span", {"id": "attachment-doc-1", "data-status": "uploading"})
+
+    def test_suggestion_chips_dedupe(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/follow_ups.html" import suggestion_chips %}'
+            "{{ suggestion_chips(["
+            '{"label":"A","prompt":"one","key":"a"},'
+            '{"label":"A dup","prompt":"one","key":"a"}'
+            "], mode='prefill') }}"
+        ).render()
+        assert html.count("chirpui-chip--suggestion") == 1
+        assert 'data-prompt="one"' in html
+
+
 class TestStructuralSurface:
     """Surface renders as <div> (or <section>) with class."""
 
