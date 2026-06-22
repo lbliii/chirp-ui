@@ -1,0 +1,29 @@
+{#- chirp-ui: Follow-up / suggestion chips
+    Suggestion chips for chat empty-states and post-stream follow-ups.
+    mode='prefill' fills the composer (focus, no send); mode='send' submits.
+    Dedupe by stable key so an OOB refresh never double-renders a suggestion.
+-#}
+
+{% from "chirpui/chip_group.html" import chip_group %}
+
+{% def suggestion_chips(suggestions, mode="prefill", target=".chirpui-composer",
+                        label="Suggestions", id="follow-ups", cls="") %}
+{% set _mode = mode | validate_variant(("prefill", "send"), "prefill") %}
+{% set _seen = [] %}
+<div class="chirpui-follow-ups{{ " " ~ cls if cls else "" }}" id="{{ id }}">
+  {% call chip_group(label=label) %}
+    {% for item in suggestions %}
+      {% set _key = item.get("key") or item.get("prompt") or "" %}
+      {% if _key and _key not in _seen %}
+        {% set _ = _seen.append(_key) %}
+        <button type="button"
+                class="chirpui-chip chirpui-chip--suggestion"
+                data-prompt="{{ item.get('prompt') | default('') | e }}"
+                @click="$dispatch('chirpui:suggestion', {prompt: $el.dataset.prompt, mode: '{{ _mode }}'})">
+          {{ item.get("label") or item.get("prompt") | default("") }}
+        </button>
+      {% end %}
+    {% endfor %}
+  {% end %}
+</div>
+{% end %}

@@ -85,6 +85,28 @@ def register(app: App) -> None:
     async def message_turn(request: Request) -> Template:
         return page(request, "showcase/message_turn.html")
 
+    @app.route("/composer", template="showcase/composer.html")
+    async def composer_demo(request: Request) -> Template:
+        return page(request, "showcase/composer.html")
+
+    @app.route("/composer/send", methods=["POST"])
+    async def composer_send(request: Request) -> Fragment:
+        form = await request.form()
+        message = (form.get("message") or "").strip() or "(empty)"
+        return Fragment(
+            "showcase/_composer_turn.html",
+            "composer_turn",
+            message=message,
+        )
+
+    @app.route("/composer/abort", methods=["POST"])
+    async def composer_abort(request: Request) -> Response:
+        return Response(status_code=204)
+
+    @app.route("/composer/dismiss/{file_id}", methods=["POST"])
+    async def composer_dismiss(request: Request, file_id: str) -> Response:
+        return Response("", status_code=200)
+
     @app.route("/streaming/demo", methods=["GET"])
     async def streaming_demo(request: Request) -> EventStream:
         """Mock SSE stream: yields fragments word-by-word, no LLM required."""

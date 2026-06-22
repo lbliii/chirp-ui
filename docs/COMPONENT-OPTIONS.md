@@ -4612,6 +4612,31 @@ Aspect Ratio
 | `cls` | no | (has default) |
 | `attrs_map` | no | (has default) |
 
+### `attachment-chip`
+
+File item / attachment chip
+
+- **Template:** `chirpui/file_item.html`
+- **Macro:** `attachment_chip`
+- **Category:** `form`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`, `htmx`
+- **Variants:** `error`, `processing`, `ready`, `uploading`
+- **Modifiers:** `row`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `id` | yes | — |
+| `name` | yes | — |
+| `status` | no | (has default) |
+| `size` | no | (has default) |
+| `href` | no | (has default) |
+| `preview_url` | no | (has default) |
+| `dismiss_url` | no | (has default) |
+| `cls` | no | (has default) |
+
 ### `aura`
 
 Aura — chromatic halo behind stacked content (glass surfaces, cards, etc.)
@@ -5104,15 +5129,16 @@ Chapter List component
 
 ### `chat-input`
 
-Chat Input component
+Chat Input / Composer
 
 - **Template:** `chirpui/chat_input.html`
-- **Macro:** `chat_input`
+- **Macro:** `composer`
 - **Category:** `form`
-- **Maturity:** `stable`
+- **Maturity:** `experimental`
 - **Role:** `component`
 - **Authoring:** `available`
-- **Slots:** `(default)`
+- **Requires:** `alpine`, `htmx`
+- **Slots:** `attachments`, `footer`, `suggestions`
 - **Modifiers:** `dock`
 
 | Param | Required | Default |
@@ -5122,6 +5148,17 @@ Chat Input component
 | `placeholder` | no | (has default) |
 | `rows` | no | (has default) |
 | `maxlength` | no | (has default) |
+| `send_key` | no | (has default) |
+| `stop_action` | no | (has default) |
+| `attach` | no | (has default) |
+| `send_label` | no | (has default) |
+| `stop_label` | no | (has default) |
+| `send_disabled_reason` | no | (has default) |
+| `show_send_stop` | no | (has default) |
+| `hx` | no | (has default) |
+| `hx_post` | no | (has default) |
+| `hx_target` | no | (has default) |
+| `hx_swap` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `chat-layout`
@@ -6294,6 +6331,27 @@ Filter Bar composite
 - **Maturity:** `legacy`
 - **Role:** `primitive`
 - **Authoring:** `compatibility`
+
+### `follow-ups`
+
+Follow-up / suggestion chips
+
+- **Template:** `chirpui/follow_ups.html`
+- **Macro:** `suggestion_chips`
+- **Category:** `form`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `suggestions` | yes | — |
+| `mode` | no | (has default) |
+| `target` | no | (has default) |
+| `label` | no | (has default) |
+| `id` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `font-2xl`
 

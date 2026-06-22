@@ -141,6 +141,10 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
         factory="chirpuiShortcuts",
         macros=("shortcuts_help",),
     ),
+    "chirpuiComposer": AlpineRequirement(
+        factory="chirpuiComposer",
+        macros=("chat_input",),
+    ),
 }
 
 

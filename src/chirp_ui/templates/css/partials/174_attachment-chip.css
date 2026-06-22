@@ -1,0 +1,87 @@
+/* ==========================================================================
+   Attachment chip — composer file items
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-attachment-chip) to (.chirpui-attachment-chip .chirpui-attachment-chip) {
+        :scope {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--chirpui-spacing-2xs);
+            max-width: 100%;
+            min-width: 0;
+            padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-xs);
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius-pill);
+            background: var(--chirpui-surface);
+        }
+
+        .chirpui-attachment-chip__icon {
+            display: inline-flex;
+            flex-shrink: 0;
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-attachment-chip__name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0;
+            border: 0;
+            background: transparent;
+            padding: 0;
+            font: inherit;
+            color: inherit;
+            cursor: pointer;
+            text-align: start;
+        }
+
+        .chirpui-attachment-chip__name:hover {
+            text-decoration: underline;
+        }
+
+        .chirpui-attachment-chip__size {
+            flex-shrink: 0;
+            font-size: var(--chirpui-font-xs);
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-attachment-chip__dismiss {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 0;
+            background: transparent;
+            color: var(--chirpui-text-muted);
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity var(--chirpui-transition);
+        }
+
+        :scope:hover .chirpui-attachment-chip__dismiss,
+        :scope:focus-within .chirpui-attachment-chip__dismiss {
+            opacity: 1;
+        }
+
+        .chirpui-attachment-chip__dismiss:hover {
+            color: var(--chirpui-text);
+        }
+
+        &.chirpui-attachment-chip--error {
+            border-color: var(--chirpui-alert-error-border);
+        }
+
+        &.chirpui-attachment-chip--uploading,
+        &.chirpui-attachment-chip--processing,
+        &.chirpui-attachment-chip--ready {
+            border-color: var(--chirpui-border);
+        }
+
+        &.chirpui-attachment-chip--row {
+            display: flex;
+            width: 100%;
+            border-radius: var(--chirpui-radius-sm);
+        }
+    }
+}

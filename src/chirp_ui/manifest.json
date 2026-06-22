@@ -3570,6 +3570,103 @@
       "trim_emits": [],
       "variants": []
     },
+    "attachment-chip": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "attachment-chip",
+      "category": "form",
+      "composes": [],
+      "consumes": [],
+      "description": "File item / attachment chip\n    Id-addressable attachment chip for the composer. Status (uploading /\n    processing / ready / error) is server-authoritative and delivered by\n    OOB swaps targeting #attachment-{id} (NO fake client timers — see\n    docs/patterns/ai-chat.md). Doc-icon morphs to a spinner while pending.",
+      "elements": [
+        "dismiss",
+        "icon",
+        "name",
+        "size"
+      ],
+      "emits": [
+        "chirpui-attachment-chip",
+        "chirpui-attachment-chip--error",
+        "chirpui-attachment-chip--processing",
+        "chirpui-attachment-chip--ready",
+        "chirpui-attachment-chip--row",
+        "chirpui-attachment-chip--uploading",
+        "chirpui-attachment-chip__dismiss",
+        "chirpui-attachment-chip__icon",
+        "chirpui-attachment-chip__name",
+        "chirpui-attachment-chip__size"
+      ],
+      "extra_emits": [],
+      "lineno": 10,
+      "macro": "attachment_chip",
+      "maturity": "experimental",
+      "modifiers": [
+        "row"
+      ],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "id"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "status"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "size"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "preview_url"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "dismiss_url"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine",
+        "htmx"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "file_item.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": [
+        "error",
+        "processing",
+        "ready",
+        "uploading"
+      ]
+    },
     "aura": {
       "appearances": [],
       "authoring": "available",
@@ -5660,7 +5757,7 @@
       "category": "form",
       "composes": [],
       "consumes": [],
-      "description": "Chat Input component\n    Composer with optional attach button, character count.\n\n    Usage:\n        from \"chirpui/chat_input.html\" import chat_input\n\n        call chat_input(action=\"/send\", name=\"message\", placeholder=\"Type a message...\")\n            <button type=\"submit\" class=\"chirpui-btn chirpui-btn--primary\">Send</button>\n        end\n\n        Or without footer:\n        chat_input(action=\"/send\", name=\"message\", placeholder=\"Type a message...\")",
+      "description": "Chat Input / Composer\n    A working chat composer: auto-grow textarea, IME-safe Enter-to-send\n    (send_key 'enter' | 'mod-enter'), a send/stop toggle bound to live\n    upload + generation state, an optional attach control, and slots for\n    attachment chips and suggestion chips.\n\n    Server contract: form `hx-post`s the message; `stop_action` MUST be an\n    endpoint that ABORTS the upstream generation task (not merely close the\n    SSE listener). See docs/patterns/ai-chat.md.\n\n    Usage:\n        {% from \"chirpui/chat_input.html\" import composer %}\n        {% call composer(action=\"/send\", name=\"message\", send_key=\"enter\",\n                         stop_action=\"/abort\", hx_target=\"#thread\",\n                         hx_swap=\"beforeend\") %}\n            {% slot attachments %}{% end %}\n            {% slot suggestions %}{% end %}\n        {% end %}",
       "elements": [
         "composer",
         "field",
@@ -5671,12 +5768,31 @@
         "chirpui-chat-input--dock",
         "chirpui-chat-input__composer",
         "chirpui-chat-input__field",
-        "chirpui-chat-input__footer"
+        "chirpui-chat-input__footer",
+        "chirpui-composer--dragover",
+        "chirpui-composer__attachments",
+        "chirpui-composer__drop-overlay",
+        "chirpui-composer__field",
+        "chirpui-composer__file",
+        "chirpui-composer__file-input--visible",
+        "chirpui-composer__send",
+        "chirpui-composer__stop",
+        "chirpui-composer__suggestions"
       ],
-      "extra_emits": [],
-      "lineno": 15,
-      "macro": "chat_input",
-      "maturity": "stable",
+      "extra_emits": [
+        "chirpui-composer--dragover",
+        "chirpui-composer__attachments",
+        "chirpui-composer__drop-overlay",
+        "chirpui-composer__field",
+        "chirpui-composer__file",
+        "chirpui-composer__file-input--visible",
+        "chirpui-composer__send",
+        "chirpui-composer__stop",
+        "chirpui-composer__suggestions"
+      ],
+      "lineno": 50,
+      "macro": "composer",
+      "maturity": "experimental",
       "modifiers": [
         "dock"
       ],
@@ -5709,19 +5825,81 @@
         {
           "has_default": true,
           "is_required": false,
+          "name": "send_key"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "stop_action"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "attach"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "send_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "stop_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "send_disabled_reason"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "show_send_stop"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_post"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_target"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_swap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
           "name": "cls"
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine",
+        "htmx"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
       "slots": [
-        ""
+        "attachments",
+        "footer",
+        "suggestions"
       ],
       "slots_extracted": [
-        ""
+        "attachments",
+        "footer",
+        "suggestions"
       ],
       "slots_yielded": [],
       "template": "chat_input.html",
@@ -10402,6 +10580,74 @@
       "slots_extracted": [],
       "slots_yielded": [],
       "template": "",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "follow-ups": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "follow-ups",
+      "category": "form",
+      "composes": [],
+      "consumes": [],
+      "description": "Follow-up / suggestion chips\n    Suggestion chips for chat empty-states and post-stream follow-ups.\n    mode='prefill' fills the composer (focus, no send); mode='send' submits.\n    Dedupe by stable key so an OOB refresh never double-renders a suggestion.",
+      "elements": [],
+      "emits": [
+        "chirpui-chip--suggestion",
+        "chirpui-follow-ups"
+      ],
+      "extra_emits": [
+        "chirpui-chip--suggestion"
+      ],
+      "lineno": 9,
+      "macro": "suggestion_chips",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "suggestions"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "mode"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "target"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "follow_ups.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -25476,7 +25722,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 321,
+      "available": 323,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -25490,7 +25736,7 @@
       "data-display": 38,
       "effect": 46,
       "feedback": 26,
-      "form": 24,
+      "form": 26,
       "infrastructure": 2,
       "interactive": 9,
       "layout": 58,
@@ -25502,25 +25748,25 @@
       "typography": 30
     },
     "component_maturity": {
-      "experimental": 105,
+      "experimental": 108,
       "internal": 2,
       "legacy": 39,
-      "stable": 226
+      "stable": 225
     },
     "component_requirements": {
-      "alpine": 34,
-      "htmx": 28
+      "alpine": 37,
+      "htmx": 30
     },
     "component_roles": {
-      "component": 204,
+      "component": 206,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 22,
       "primitive": 112
     },
     "components_with_consumes": 20,
-    "components_with_description": 267,
-    "components_with_params": 267,
+    "components_with_description": 269,
+    "components_with_params": 269,
     "components_with_provides": 12,
     "manifest_quality": {
       "missing_description": 0,
@@ -25528,7 +25774,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 265
+      "public_templated_components": 267
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -25536,8 +25782,8 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 131,
-      "explicit_extra_classes": 553,
+      "explicit_extra_blocks": 133,
+      "explicit_extra_classes": 563,
       "explicit_trim_blocks": 69,
       "explicit_trim_classes": 96
     },
@@ -25551,7 +25797,7 @@
       "spacing": 30,
       "typography": 46
     },
-    "total_components": 372,
+    "total_components": 374,
     "total_theme_packs": 3,
     "total_tokens": 440
   },

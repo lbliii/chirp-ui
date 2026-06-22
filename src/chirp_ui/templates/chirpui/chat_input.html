@@ -1,29 +1,124 @@
-{#- chirp-ui: Chat Input component
-    Composer with optional attach button, character count.
+{#- chirp-ui: Chat Input / Composer
+    A working chat composer: auto-grow textarea, IME-safe Enter-to-send
+    (send_key 'enter' | 'mod-enter'), a send/stop toggle bound to live
+    upload + generation state, an optional attach control, and slots for
+    attachment chips and suggestion chips.
+
+    Server contract: form `hx-post`s the message; `stop_action` MUST be an
+    endpoint that ABORTS the upstream generation task (not merely close the
+    SSE listener). See docs/patterns/ai-chat.md.
 
     Usage:
-        from "chirpui/chat_input.html" import chat_input
-
-        call chat_input(action="/send", name="message", placeholder="Type a message...")
-            <button type="submit" class="chirpui-btn chirpui-btn--primary">Send</button>
-        end
-
-        Or without footer:
-        chat_input(action="/send", name="message", placeholder="Type a message...")
+        {% from "chirpui/chat_input.html" import composer %}
+        {% call composer(action="/send", name="message", send_key="enter",
+                         stop_action="/abort", hx_target="#thread",
+                         hx_swap="beforeend") %}
+            {% slot attachments %}{% end %}
+            {% slot suggestions %}{% end %}
+        {% end %}
 -#}
 
-{% def chat_input(action="", name="message", placeholder="Type a message...", rows=2, maxlength=none, cls="") %}
-<form class="chirpui-chat-input{{ " " ~ cls if cls else "" }}" action="{{ action }}" method="post">
+{% def composer_send_stop(send_label="Send", stop_label="Stop", stop_action="",
+                          send_disabled_reason="Type a message or attach a file",
+                          hx_target=none) %}
+<span class="chirpui-tooltip chirpui-tooltip--top" data-chirpui-tooltip
+      x-show="!generating"
+      :data-tooltip="canSend ? '' : '{{ send_disabled_reason | e }}'">
+    <button type="submit"
+            class="chirpui-btn chirpui-btn--primary chirpui-composer__send"
+            :disabled="!canSend"
+            :aria-disabled="!canSend ? 'true' : 'false'"
+            aria-label="{{ send_label }}">
+        <span class="chirpui-btn__icon" aria-hidden="true">{{ "send" | icon }}</span>
+        <span class="chirpui-btn__label">{{ send_label }}</span>
+    </button>
+</span>
+<button type="button"
+        class="chirpui-btn chirpui-btn--danger chirpui-composer__stop"
+        x-show="generating" x-cloak
+        @click="stop()"
+        {{ build_hx_attrs(hx_post=stop_action, hx_target=hx_target,
+                          hx_swap="none") | html_attrs }}
+        hx-boost="false" hx-select="unset" hx-disinherit="hx-select"
+        aria-label="{{ stop_label }}">
+    <span class="chirpui-btn__icon" aria-hidden="true">{{ "stop" | icon }}</span>
+    <span class="chirpui-btn__label">{{ stop_label }}</span>
+</button>
+{% end %}
+
+
+{% def composer(action="", name="message", placeholder="Type a message...",
+                rows=2, maxlength=none, send_key="enter", stop_action="",
+                attach=false, send_label="Send", stop_label="Stop",
+                send_disabled_reason="Type a message or attach a file",
+                show_send_stop=true,
+                hx=none, hx_post=none, hx_target=none, hx_swap=none, cls="") %}
+{% set _send_key = send_key | validate_variant(("enter", "mod-enter"), "enter") %}
+{% set _post = hx_post or action %}
+{% set _form_hx = build_hx_attrs(hx=hx, hx_post=_post, hx_target=hx_target,
+                                 hx_swap=(hx_swap or "beforeend")) %}
+<form class="chirpui-chat-input chirpui-composer{{ " " ~ cls if cls else "" }}"
+      x-data="chirpuiComposer()"
+      data-send-key="{{ _send_key }}"
+      action="{{ action }}" method="post"
+      {{ _form_hx | html_attrs }}
+      {% if _form_hx.get("hx-target") %}hx-boost="false"{% endif %}
+      @htmx:before-request="onSend($event)"
+      @paste="onPaste($event)"
+      @dragover="onDragOver($event)"
+      @dragleave="onDragLeave()"
+      @drop="onDrop($event)"
+      :class="{'chirpui-composer--dragover': dragover}">
+    <div class="chirpui-composer__drop-overlay" x-show="dragover" x-cloak aria-hidden="true">
+        Drop files to attach
+    </div>
+    <div class="chirpui-composer__attachments" x-show="files > 0" x-cloak>
+        {% try %}{% slot attachments %}{% fallback %}{% end %}
+    </div>
     <div class="chirpui-chat-input__composer">
-        <textarea class="chirpui-chat-input__field" name="{{ name }}" rows="{{ rows }}"
+        <input type="file" multiple
+               class="chirpui-composer__file{{ ' chirpui-composer__file-input--visible' if attach else '' }}"
+               x-ref="file"
+               name="{{ name }}_files"
+               aria-label="Attach files"
+               @change="syncAttachments()">
+        <textarea class="chirpui-chat-input__field chirpui-composer__field"
+            name="{{ name }}" rows="{{ rows }}"
+            x-ref="field" x-model="value"
             placeholder="{{ placeholder }}"
             {% if maxlength %}maxlength="{{ maxlength }}"{% end %}
+            @compositionstart="onCompositionStart()"
+            @compositionend="onCompositionEnd()"
+            @keydown.enter="onEnter($event)"
             aria-label="{{ placeholder }}"></textarea>
     </div>
-    {% if caller is defined %}
+    <div class="chirpui-composer__suggestions">
+        {% try %}{% slot suggestions %}{% fallback %}{% end %}
+    </div>
     <footer class="chirpui-chat-input__footer">
-        {% slot %}
+        {% slot footer %}
+        {% if show_send_stop %}
+        {{ composer_send_stop(send_label=send_label, stop_label=stop_label,
+                              stop_action=stop_action,
+                              send_disabled_reason=send_disabled_reason,
+                              hx_target=hx_target) }}
+        {% end %}
     </footer>
-    {% end %}
 </form>
+{% end %}
+
+
+{# Back-compat: the old bare-form signature forwards to composer(). #}
+{% def chat_input(action="", name="message", placeholder="Type a message...",
+                  rows=2, maxlength=none, cls="") %}
+{% if caller is defined %}
+{% call composer(action=action, name=name, placeholder=placeholder,
+                 rows=rows, maxlength=maxlength, cls=cls, show_send_stop=false) %}
+{% slot footer %}{{ caller() }}{% end %}
+{% end %}
+{% else %}
+{% call composer(action=action, name=name, placeholder=placeholder,
+                 rows=rows, maxlength=maxlength, cls=cls) %}
+{% end %}
+{% end %}
 {% end %}

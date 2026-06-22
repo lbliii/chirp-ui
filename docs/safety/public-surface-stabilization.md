@@ -167,6 +167,7 @@ missing before a component can change maturity or authoring status.
 | Social recipe proof | Social/forum patterns stay recipe-first until repeated app usage proves a macro. | `FORUM-SITE-PATTERNS.md`, visual audit/social examples. |
 | Form interaction proof | Render tests plus keyboard/focus/browser proof for interactive editing or token-input behavior. | Form/component tests, browser tests when focus or overflow matters. |
 | Control interaction proof | State, invalid fallback, ARIA, keyboard, and layout proof for controls. | Focused render tests plus browser proof for pointer/keyboard behavior. |
+| Chat composer proof | Render tests for composer, attachments, and suggestions; IME-safe send/stop and attach browser proof on the `/composer` showcase. | `docs/patterns/ai-chat.md`, `/composer` showcase, render + strict-undefined tests, browser gauntlet for send/stop/attach. |
 
 ## Closure Batches
 
@@ -245,6 +246,7 @@ vocabulary.
 | Component | Decision | Track |
 | --- | --- | --- |
 | `animated-counter` | Keep experimental | Motion/effects visual proof. |
+| `attachment-chip` | Keep experimental | Chat composer proof; OOB-driven upload status chips (#298) with render + strict-undefined coverage — promote after `/composer` showcase gauntlet lands. |
 | `answer-card` | Recipe-only | Social recipe proof; promote only after repeated app use. |
 | `aura` | Keep experimental | Motion/effects visual proof. |
 | `aurora` | Keep experimental | Motion/effects visual proof. |
@@ -252,6 +254,7 @@ vocabulary.
 | `border-beam` | Keep experimental | Motion/effects visual proof. |
 | `catalog-rail` | Recipe-only | Media recipe proof; promote only after repeated app use. |
 | `combobox` | Keep experimental | Control interaction proof; typeahead role=combobox over a filtered listbox (#201) with aria-activedescendant roving + Escape/click-outside and axe coverage via the combobox browser gauntlet — promote in a later deliberate hardening PR once the gauntlet stabilizes. |
+| `chat-input` | Keep experimental | Chat composer proof; `composer()` + `chirpuiComposer` IME-safe send/stop (#298) with render tests and `/composer` showcase — promote after browser gauntlet. |
 | `composer-shell` | Keep experimental | Form interaction proof. |
 | `confetti` | Keep experimental | Motion/effects visual proof. |
 | `constellation` | Keep experimental | Motion/effects visual proof. |
@@ -263,6 +266,7 @@ vocabulary.
 | `detail-header` | Recipe-only | Layout recipe proof; promote only after repeated app use. |
 | `dock` | Keep experimental | Motion/effects visual proof. |
 | `facet-chip` | Keep experimental | Control interaction proof. |
+| `follow-ups` | Keep experimental | Chat composer proof; suggestion chips via `chirpui:apply-suggestion` (#298) with render tests — promote after `/composer` browser gauntlet. |
 | `feature-section` | Keep experimental | Marketing pattern proof. |
 | `feature-stack` | Keep experimental | Marketing pattern proof. |
 | `glitch` | Keep experimental | Motion/effects visual proof. |

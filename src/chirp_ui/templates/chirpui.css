@@ -2904,76 +2904,154 @@ a.chirpui-action-bar__item {
 }
 
 /* === partials/018_chat-input.css === */
-@layer chirpui.component {
 /* ==========================================================================
-   Chat Input
+   Chat Input / Composer
    ========================================================================== */
 
-.chirpui-chat-input {
-    display: flex;
-    flex-direction: column;
-    gap: var(--chirpui-spacing-sm);
-    padding: var(--chirpui-spacing);
-    background: var(--chirpui-surface);
-    border: 1px solid var(--chirpui-border);
-    border-radius: var(--chirpui-radius);
-}
+@layer chirpui.component {
+    @scope (.chirpui-chat-input) to (.chirpui-chat-input .chirpui-chat-input) {
+        :scope {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing-sm);
+            padding: var(--chirpui-spacing);
+            background: var(--chirpui-surface);
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius);
+            position: relative;
+        }
 
-.chirpui-chat-input__composer {
-    display: flex;
-    gap: var(--chirpui-spacing-sm);
-}
+        .chirpui-chat-input__composer {
+            display: flex;
+            gap: var(--chirpui-spacing-sm);
+            align-items: flex-end;
+        }
 
-.chirpui-chat-input__field {
-    flex: 1;
-    padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
-    border: 1px solid var(--chirpui-border);
-    border-radius: var(--chirpui-radius-sm);
-    font: inherit;
-    background: var(--chirpui-surface);
-    color: var(--chirpui-text);
-    resize: none;
-    transition: border-color var(--chirpui-transition);
-}
+        .chirpui-chat-input__field,
+        .chirpui-composer__field {
+            flex: 1;
+            padding: var(--chirpui-spacing-sm) var(--chirpui-spacing);
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius-sm);
+            font: inherit;
+            background: var(--chirpui-surface);
+            color: var(--chirpui-text);
+            resize: vertical;
+            transition: border-color var(--chirpui-transition);
+        }
 
-.chirpui-chat-input__field:focus {
-    outline: none;
-    border-color: var(--chirpui-accent);
-    box-shadow: 0 0 0 3px var(--chirpui-focus-ring);
-}
+        .chirpui-chat-input__field:focus,
+        .chirpui-composer__field:focus {
+            outline: none;
+            border-color: var(--chirpui-accent);
+            box-shadow: 0 0 0 3px var(--chirpui-focus-ring);
+        }
 
-.chirpui-chat-input__field:disabled,
-.chirpui-chat-input__field[readonly] {
-    background: var(--chirpui-bg-subtle);
-    color: var(--chirpui-text-muted);
-    cursor: not-allowed;
-    border-color: var(--chirpui-border);
-}
+        .chirpui-chat-input__field:disabled,
+        .chirpui-chat-input__field[readonly],
+        .chirpui-composer__field:disabled,
+        .chirpui-composer__field[readonly] {
+            background: var(--chirpui-bg-subtle);
+            color: var(--chirpui-text-muted);
+            cursor: not-allowed;
+            border-color: var(--chirpui-border);
+        }
 
-.chirpui-chat-input__field[readonly] {
-    cursor: default;
-    opacity: 1;
-}
+        .chirpui-chat-input__field[readonly],
+        .chirpui-composer__field[readonly] {
+            cursor: default;
+            opacity: 1;
+        }
 
-.chirpui-chat-input__field:disabled {
-    opacity: 0.5;
-}
+        .chirpui-chat-input__field:disabled,
+        .chirpui-composer__field:disabled {
+            opacity: 0.5;
+        }
 
-.chirpui-chat-input__footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--chirpui-spacing-sm);
-}
+        @supports (field-sizing: content) {
+            .chirpui-chat-input__field,
+            .chirpui-composer__field {
+                field-sizing: content;
+                resize: none;
+                min-height: 3lh;
+                max-height: 40vh;
+                overflow-y: auto;
+            }
+        }
 
-/* Sticky composer dock — pad past the home indicator on notched phones. */
-.chirpui-chat-input--dock {
-    position: sticky;
-    bottom: 0;
-    z-index: var(--chirpui-z-sticky);
-    background: var(--chirpui-surface);
-    padding-block-end: max(var(--chirpui-spacing), env(safe-area-inset-bottom));
-}
+        .chirpui-chat-input__footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--chirpui-spacing-sm);
+            align-items: center;
+        }
 
+        .chirpui-composer__send,
+        .chirpui-composer__stop {
+            flex-shrink: 0;
+        }
+
+        /* Sticky composer dock — pad past the home indicator on notched phones. */
+        &.chirpui-chat-input--dock {
+            position: sticky;
+            bottom: 0;
+            z-index: var(--chirpui-z-sticky);
+            background: var(--chirpui-surface);
+            padding-block-end: max(var(--chirpui-spacing), env(safe-area-inset-bottom));
+        }
+
+        .chirpui-composer__attachments {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--chirpui-spacing-xs);
+        }
+
+        .chirpui-composer__suggestions {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing-xs);
+        }
+
+        .chirpui-composer__file {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .chirpui-composer__file-input--visible {
+            position: static;
+            width: auto;
+            height: auto;
+            margin: 0;
+            clip: auto;
+            overflow: visible;
+        }
+
+        .chirpui-composer__drop-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: inherit;
+            border: 2px dashed var(--chirpui-accent);
+            background: color-mix(in oklab, var(--chirpui-accent) 12%, transparent);
+            color: var(--chirpui-text);
+            font-size: var(--chirpui-font-sm);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        &.chirpui-composer--dragover {
+            border-color: var(--chirpui-accent);
+        }
+    }
 }
 
 /* === partials/019_conversation-list-and-item.css === */
@@ -22981,6 +23059,95 @@ a.chirpui-chip:focus-visible {
 }
 }
 
+/* === partials/174_attachment-chip.css === */
+/* ==========================================================================
+   Attachment chip — composer file items
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-attachment-chip) to (.chirpui-attachment-chip .chirpui-attachment-chip) {
+        :scope {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--chirpui-spacing-2xs);
+            max-width: 100%;
+            min-width: 0;
+            padding: var(--chirpui-spacing-2xs) var(--chirpui-spacing-xs);
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius-pill);
+            background: var(--chirpui-surface);
+        }
+
+        .chirpui-attachment-chip__icon {
+            display: inline-flex;
+            flex-shrink: 0;
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-attachment-chip__name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0;
+            border: 0;
+            background: transparent;
+            padding: 0;
+            font: inherit;
+            color: inherit;
+            cursor: pointer;
+            text-align: start;
+        }
+
+        .chirpui-attachment-chip__name:hover {
+            text-decoration: underline;
+        }
+
+        .chirpui-attachment-chip__size {
+            flex-shrink: 0;
+            font-size: var(--chirpui-font-xs);
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-attachment-chip__dismiss {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 0;
+            background: transparent;
+            color: var(--chirpui-text-muted);
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity var(--chirpui-transition);
+        }
+
+        :scope:hover .chirpui-attachment-chip__dismiss,
+        :scope:focus-within .chirpui-attachment-chip__dismiss {
+            opacity: 1;
+        }
+
+        .chirpui-attachment-chip__dismiss:hover {
+            color: var(--chirpui-text);
+        }
+
+        &.chirpui-attachment-chip--error {
+            border-color: var(--chirpui-alert-error-border);
+        }
+
+        &.chirpui-attachment-chip--uploading,
+        &.chirpui-attachment-chip--processing,
+        &.chirpui-attachment-chip--ready {
+            border-color: var(--chirpui-border);
+        }
+
+        &.chirpui-attachment-chip--row {
+            display: flex;
+            width: 100%;
+            border-radius: var(--chirpui-radius-sm);
+        }
+    }
+}
+
 /* === partials/174_param-override.css === */
 /* ==========================================================================
    Parameter override — tri-state Default/Custom controls for AI chat params.
@@ -23465,6 +23632,35 @@ a.chirpui-chip:focus-visible {
         .chirpui-shortcuts-help__keys {
             justify-self: end;
             margin: 0;
+        }
+    }
+}
+
+/* === partials/181_follow-ups.css === */
+/* ==========================================================================
+   Follow-up / suggestion chips
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-follow-ups) to (.chirpui-follow-ups .chirpui-follow-ups) {
+        :scope {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing-xs);
+        }
+
+        .chirpui-chip--suggestion {
+            cursor: pointer;
+            border: 1px solid var(--chirpui-border);
+            background: var(--chirpui-bg-subtle);
+            transition:
+                background-color var(--chirpui-transition),
+                border-color var(--chirpui-transition);
+        }
+
+        .chirpui-chip--suggestion:hover {
+            border-color: var(--chirpui-accent);
+            background: var(--chirpui-primary-muted);
         }
     }
 }
