@@ -38,9 +38,7 @@ _TRUTHY = frozenset({"1", "true", "yes", "on"})
 
 _chirpui_strict: ContextVar[bool] = ContextVar("chirpui_strict", default=False)
 
-VARIANT_SEMANTIC_GROUPS: tuple[frozenset[str], ...] = (
-    frozenset({"error", "danger"}),
-)
+VARIANT_SEMANTIC_GROUPS: tuple[frozenset[str], ...] = (frozenset({"error", "danger"}),)
 
 
 def _semantic_variant_aliases(value: str) -> frozenset[str]:

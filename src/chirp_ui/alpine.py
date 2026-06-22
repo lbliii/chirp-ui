@@ -145,6 +145,14 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
         factory="chirpuiComposer",
         macros=("chat_input",),
     ),
+    "chirpuiToast": AlpineRequirement(
+        factory="chirpuiToast",
+        macros=("toast",),
+    ),
+    "chirpuiToastStack": AlpineRequirement(
+        factory="chirpuiToastStack",
+        macros=("toast",),
+    ),
 }
 
 

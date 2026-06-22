@@ -50,7 +50,6 @@ from chirp_ui.validation import (
     SIZE_REGISTRY,
     TONE_REGISTRY,
     VARIANT_REGISTRY,
-    VARIANT_SEMANTIC_GROUPS,
     ChirpUIDeprecationWarning,
     ChirpUIValidationWarning,
     ChirpUIWarning,

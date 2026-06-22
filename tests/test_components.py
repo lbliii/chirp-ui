@@ -3333,8 +3333,7 @@ class TestToast:
 
     def test_toast_stack_container(self, env: Environment) -> None:
         html = env.from_string(
-            '{% from "chirpui/toast.html" import toast_container %}'
-            '{{ toast_container(limit=3) }}'
+            '{% from "chirpui/toast.html" import toast_container %}{{ toast_container(limit=3) }}'
         ).render()
         assert "chirpuiToastStack" in html
         assert "limit: 3" in html

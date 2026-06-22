@@ -4711,6 +4711,7 @@
       "emits": [
         "chirpui-btn",
         "chirpui-btn--danger",
+        "chirpui-btn--error",
         "chirpui-btn--filled",
         "chirpui-btn--ghost",
         "chirpui-btn--loading",
@@ -4931,6 +4932,7 @@
       "variants": [
         "",
         "danger",
+        "error",
         "ghost",
         "primary",
         "secondary",
@@ -23974,22 +23976,28 @@
       "category": "feedback",
       "composes": [],
       "consumes": [],
-      "description": "Toast component\n    htmx OOB toast notifications.\n\n    Usage:\n        from \"chirpui/toast.html\" import toast, toast_container\n\n        Place the container once in your base template:\n            toast_container()\n\n        Return a toast from any htmx response (OOB swap):\n            toast(\"Item saved successfully!\", variant=\"success\")\n            toast(\"Something went wrong.\", variant=\"error\", dismissible=true)",
+      "description": "Toast component\n    htmx OOB toast notifications with stacking, swipe-dismiss, and\n    server-driven loading→success/error updates (sonner-grade feedback).\n\n    Usage:\n        from \"chirpui/toast.html\" import toast, toast_container, toast_pending, toast_resolve\n\n        Place the container once in your base template:\n            toast_container()\n\n        Return a toast from any htmx response (OOB swap):\n            toast(\"Item saved successfully!\", variant=\"success\")\n            toast(\"Something went wrong.\", variant=\"error\", dismissible=true)\n\n        Server-driven status flow (HTMX-native promise pattern):\n            # 1) POST handler returns pending toast with stable id\n            toast_pending(\"Saving…\", id=\"save-item-42\")\n            # 2) follow-up response replaces the same toast by id\n            toast_resolve(\"Saved!\", id=\"save-item-42\", variant=\"success\")\n            toast_resolve(\"Save failed.\", id=\"save-item-42\", variant=\"error\")",
       "elements": [],
       "emits": [
         "chirpui-toast",
+        "chirpui-toast--danger",
+        "chirpui-toast--dismissing",
         "chirpui-toast--error",
         "chirpui-toast--info",
+        "chirpui-toast--loading",
         "chirpui-toast--success",
         "chirpui-toast--warning",
         "chirpui-toast__close",
-        "chirpui-toast__message"
+        "chirpui-toast__message",
+        "chirpui-toast__spinner"
       ],
       "extra_emits": [
+        "chirpui-toast--dismissing",
         "chirpui-toast__close",
-        "chirpui-toast__message"
+        "chirpui-toast__message",
+        "chirpui-toast__spinner"
       ],
-      "lineno": 20,
+      "lineno": 52,
       "macro": "toast",
       "maturity": "stable",
       "modifiers": [],
@@ -24022,12 +24030,22 @@
         {
           "has_default": true,
           "is_required": false,
+          "name": "replace"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
           "name": "container_id"
         },
         {
           "has_default": true,
           "is_required": false,
           "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "duration"
         }
       ],
       "provides": [],
@@ -24046,8 +24064,10 @@
       "tones": [],
       "trim_emits": [],
       "variants": [
+        "danger",
         "error",
         "info",
+        "loading",
         "success",
         "warning"
       ]
@@ -26003,7 +26023,7 @@
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
       "explicit_extra_blocks": 134,
-      "explicit_extra_classes": 570,
+      "explicit_extra_classes": 572,
       "explicit_trim_blocks": 70,
       "explicit_trim_classes": 97
     },

@@ -25,7 +25,11 @@ ANIMATION_PROPERTIES = ("animation", "animation-duration", "animation-delay")
 def _uses_motion_tokens(value: str) -> bool:
     if "none" in value or "inherit" in value:
         return True
-    return "var(--chirpui-transition" in value or "var(--chirpui-motion-" in value or "var(--chirpui-anim-" in value
+    return (
+        "var(--chirpui-transition" in value
+        or "var(--chirpui-motion-" in value
+        or "var(--chirpui-anim-" in value
+    )
 
 
 def _transition_violations(css: str) -> list[str]:

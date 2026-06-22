@@ -7,6 +7,7 @@ Each route exercises a specific nesting/interaction pattern.
 
 import asyncio
 import os
+from pathlib import Path
 
 from chirp import App, AppConfig, ShellAction, ShellActions, ShellActionZone
 from chirp.ext.chirp_ui import use_chirp_ui
@@ -14,9 +15,6 @@ from chirp.http.request import Request
 from chirp.http.response import Response
 from chirp.pages.shell_actions import ShellMenuItem
 from chirp.templating.returns import Template
-
-from pathlib import Path
-
 from kida import Environment, FileSystemLoader
 
 from chirp_ui import Column, parse_sort, selection_state, sort_columns
