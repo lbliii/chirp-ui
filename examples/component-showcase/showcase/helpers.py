@@ -4,7 +4,13 @@ from __future__ import annotations
 
 from chirp import Request, Template
 
-from showcase.registry import golden_screen_pages, index_cards, nav_sections, shell_recipe_pages, visible_pages
+from showcase.registry import (
+    golden_screen_pages,
+    index_cards,
+    nav_sections,
+    shell_recipe_pages,
+    visible_pages,
+)
 from showcase.search import search_index_json
 
 SHOWCASE_PALETTE_BOOST_ATTRS = (

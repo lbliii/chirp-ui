@@ -30,6 +30,7 @@
 {% from "chirpui/empty.html" import empty_state %}
 {% from "chirpui/reveal_on_scroll.html" import reveal_on_scroll %}
 {% from "chirpui/infinite_scroll.html" import infinite_scroll %}
+{% from "chirpui/fab.html" import fab %}
 
 {% call container() %}
 {% call stack() %}
@@ -300,6 +301,18 @@ Go to Settings → Profile to edit your name, email, and preferences.
 <p class="showcase-copy showcase-copy--spaced">
   Fade/slide in on scroll using IntersectionObserver. Wrap any content.
 </p>
+{% end %}
+
+<h2>Floating action button</h2>
+{% call block() %}
+<p class="showcase-copy showcase-copy--block">
+  Every showcase page also mounts a mobile-only command-palette FAB via
+  <code>command_palette_fab()</code>. This static example shows the primary variant.
+</p>
+<div style="position: relative; min-block-size: 5.5rem;">
+<style>.showcase-fab-demo { position: absolute; inset: auto 0.75rem 0.75rem auto; }</style>
+{{ fab("plus", aria_label="Create item", variant="primary", corner="bottom-end", visibility="always", cls="showcase-fab-demo") }}
+</div>
 {% end %}
 
 <h2>Infinite Scroll</h2>

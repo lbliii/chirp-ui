@@ -40,7 +40,6 @@
 {% set _default_hx_sync = hx_sync if hx_sync is not none else ("this:drop" if _link_has_hx_mutation and not _hx_sync_from_dict else none) %}
 {% set _default_hx_disabled = hx_disabled_elt if hx_disabled_elt is not none else ("this" if _link_has_hx_mutation and not href and not _hx_disabled_from_dict else none) %}
 {% set _route_attrs = route_link_attrs(href) if href and not _link_has_hx_config and not _disabled else {} %}
-{% set _dialog_attrs = 'x-data="chirpuiDialogTarget()" data-dialog-target="' ~ target ~ '" @click="open()"' if target else "" %}
 {% if href %}
 <a{% if not _disabled %} href="{{ href }}"{% end %} class="{{ base }}" aria-label="{{ aria_label }}"
    {% if _disabled %}aria-disabled="true" tabindex="-1"{% end %}
@@ -53,7 +52,7 @@
 {% else %}
 <button type="{{ type }}" class="{{ base }}" aria-label="{{ aria_label }}"
         {% if _disabled %}disabled{% end %}
-        {% if _dialog_attrs %}{{ _dialog_attrs | safe }}{% end %}
+        {% if target %}x-data="chirpuiDialogTarget()" data-dialog-target="{{ target }}" @click="open()"{% end %}
         {{ build_hx_attrs(hx_select=_default_hx_select, hx_sync=_default_hx_sync, hx_disabled_elt=_default_hx_disabled) | html_attrs }}
         {{ _hx_dict | html_attrs }}>
     <span class="chirpui-fab__icon">{{ icon | icon }}</span>

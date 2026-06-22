@@ -291,6 +291,14 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         category="control",
         maturity="stable",
     ),
+    "density": ComponentDescriptor(
+        block="density",
+        variants=("compact", "dense"),
+        trim_emits=("chirpui-density",),
+        category="layout",
+        maturity="stable",
+        role="infrastructure",
+    ),
     "shimmer-btn": ComponentDescriptor(
         block="shimmer-btn",
         variants=("", "default", "primary"),

@@ -344,9 +344,7 @@ PAGES: tuple[ShowcasePage, ...] = (
         path="/catalog-shell",
         title="Catalog Shell",
         section="Shell recipes",
-        description=(
-            "Atlas search catalog — filters, results rail, and selected-object detail."
-        ),
+        description=("Atlas search catalog — filters, results rail, and selected-object detail."),
         nav_order=10,
         shell_recipe=True,
         tags=("catalog", "search", "atlas"),
@@ -355,9 +353,7 @@ PAGES: tuple[ShowcasePage, ...] = (
         path="/operations-shell",
         title="Operations Shell",
         section="Shell recipes",
-        description=(
-            "Ops command surface — metrics, queues, incidents, and activity rail."
-        ),
+        description=("Ops command surface — metrics, queues, incidents, and activity rail."),
         nav_order=20,
         match="exact",
         shell_recipe=True,
@@ -414,8 +410,7 @@ PAGES: tuple[ShowcasePage, ...] = (
         title="Command Center",
         section="Golden screens",
         description=(
-            "Atlas profile — metrics, queues, incidents, activity, and "
-            "selected-object inspection."
+            "Atlas profile — metrics, queues, incidents, activity, and selected-object inspection."
         ),
         nav_order=10,
         golden_screen=True,
@@ -427,8 +422,7 @@ PAGES: tuple[ShowcasePage, ...] = (
         title="Review Queue",
         section="Golden screens",
         description=(
-            "Sage profile — filter rail, result collection, inspector, and "
-            "state-rich review items."
+            "Sage profile — filter rail, result collection, inspector, and state-rich review items."
         ),
         nav_order=20,
         golden_screen=True,
@@ -439,9 +433,7 @@ PAGES: tuple[ShowcasePage, ...] = (
         path="/screen-agent-run-monitor",
         title="Agent Run Monitor",
         section="Golden screens",
-        description=(
-            "Signal profile — live run state, artifacts, logs, and retry context."
-        ),
+        description=("Signal profile — live run state, artifacts, logs, and retry context."),
         nav_order=30,
         golden_screen=True,
         tags=("agent-run-monitor", "golden-screen", "signal"),
@@ -450,9 +442,7 @@ PAGES: tuple[ShowcasePage, ...] = (
         path="/screen-product-docs-home",
         title="Product Docs Home",
         section="Golden screens",
-        description=(
-            "Ember profile — identity, proof band, lifecycle, entry points, and CTA."
-        ),
+        description=("Ember profile — identity, proof band, lifecycle, entry points, and CTA."),
         nav_order=40,
         golden_screen=True,
         tags=("product-docs", "golden-screen", "ember"),

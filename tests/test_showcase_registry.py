@@ -13,7 +13,7 @@ BASE_HTML = SHOWCASE_DIR / "templates" / "base.html"
 
 sys.path.insert(0, str(SHOWCASE_DIR))
 
-from showcase.registry import (
+from showcase.registry import (  # noqa: E402
     PAGES,
     SHOWCASE_LIVE_URL,
     golden_screen_pages,
@@ -21,7 +21,7 @@ from showcase.registry import (
     nav_sections,
     page_by_path,
     shell_recipe_pages,
-)  # noqa: E402
+)
 
 ROUTE_RE = re.compile(
     r'@app\.route\("([^"]+)"(?:,\s*template="[^"]+")?(?:,\s*methods=\[([^\]]+)\])?\)'
@@ -248,13 +248,17 @@ def _style_block(text: str) -> str:
 def test_base_html_style_block_is_showcase_copy_only() -> None:
     """Gallery pages must not download catalog/ops/support shell CSS (#269)."""
     base = BASE_HTML.read_text(encoding="utf-8")
-    style = _style_block(base)
+    head_styles = (
+        SHOWCASE_DIR / "templates" / "showcase" / "_showcase_head_styles.html"
+    ).read_text(encoding="utf-8")
+    style = _style_block(head_styles)
+    assert "showcase/_showcase_head_styles.html" in base
     assert style
     assert "showcase-copy" in style
     for prefix in SHELL_CSS_PREFIXES:
-        assert prefix not in style, f"base.html still defines {prefix}* rules"
+        assert prefix not in style, f"shared head styles still define {prefix}* rules"
     style_lines = len(style.splitlines())
-    assert style_lines < 400, f"base.html style block should be <400 lines, got {style_lines}"
+    assert style_lines < 400, f"shared head styles should be <400 lines, got {style_lines}"
 
 
 def test_shell_css_partials_are_scoped() -> None:

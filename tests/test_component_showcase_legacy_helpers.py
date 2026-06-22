@@ -4,6 +4,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SHOWCASE_TEMPLATES = REPO_ROOT / "examples" / "component-showcase" / "templates"
 BASE = SHOWCASE_TEMPLATES / "base.html"
+HEAD_STYLES = SHOWCASE_TEMPLATES / "showcase" / "_showcase_head_styles.html"
 
 HIGH_VISIBILITY_TEMPLATES = [
     SHOWCASE_TEMPLATES / "showcase" / "navigation.html",
@@ -49,7 +50,7 @@ def test_component_showcase_templates_do_not_use_legacy_spacing_helpers() -> Non
 
 
 def test_component_showcase_defines_local_copy_chrome() -> None:
-    text = BASE.read_text(encoding="utf-8")
+    text = HEAD_STYLES.read_text(encoding="utf-8")
 
     for required in [
         ".showcase-copy",
@@ -58,3 +59,4 @@ def test_component_showcase_defines_local_copy_chrome() -> None:
         ".showcase-copy--rhythm",
     ]:
         assert required in text
+    assert 'include "showcase/_showcase_head_styles.html"' in BASE.read_text(encoding="utf-8")
