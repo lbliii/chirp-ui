@@ -53,6 +53,7 @@ from chirp_ui.validation import (
     ChirpUIDeprecationWarning,
     ChirpUIValidationWarning,
     ChirpUIWarning,
+    _variant_is_allowed,
     _warn,
 )
 
@@ -451,8 +452,11 @@ def validate_variant(
 
     Always emits :class:`~chirp_ui.validation.ChirpUIValidationWarning`
     on fallback (raises ``ValueError`` in strict mode).
+
+    Semantic alias groups (e.g. ``error`` / ``danger``) are accepted when the
+    block's allowed tuple includes any member of the same group.
     """
-    if value in allowed:
+    if _variant_is_allowed(value, allowed):
         return value
     result = default if default in allowed else (allowed[0] if allowed else "")
     if value:  # don't warn on empty string — common "no variant" case

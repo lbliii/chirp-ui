@@ -4896,7 +4896,7 @@ Button component. Use chirpui-btn with variants. Supports loading state for htmx
 - **Authoring:** `available`
 - **Requires:** `htmx`
 - **Slots:** `(default)`
-- **Variants:** `(default)`, `danger`, `ghost`, `primary`, `secondary`, `success`, `warning`
+- **Variants:** `(default)`, `danger`, `error`, `ghost`, `primary`, `secondary`, `success`, `warning`
 - **Appearances:** `filled`, `ghost`, `outlined`, `tonal`
 - **Tones:** `danger`, `neutral`, `primary`, `secondary`, `success`, `warning`
 - **Sizes:** `(default)`, `lg`, `md`, `sm`
@@ -9837,7 +9837,7 @@ Toast component
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `alpine`, `htmx`
-- **Variants:** `error`, `info`, `success`, `warning`
+- **Variants:** `danger`, `error`, `info`, `loading`, `success`, `warning`
 
 | Param | Required | Default |
 |-------|----------|---------|
@@ -9846,8 +9846,10 @@ Toast component
 | `id` | no | (has default) |
 | `dismissible` | no | (has default) |
 | `oob` | no | (has default) |
+| `replace` | no | (has default) |
 | `container_id` | no | (has default) |
 | `cls` | no | (has default) |
+| `duration` | no | (has default) |
 
 ### `toast-container`
 

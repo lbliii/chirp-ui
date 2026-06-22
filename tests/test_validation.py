@@ -4,6 +4,7 @@ import threading
 
 import pytest
 
+from chirp_ui.filters import validate_variant
 from chirp_ui.validation import (
     APPEARANCE_REGISTRY,
     CHIRP_UI_DEV_ENV,
@@ -237,6 +238,29 @@ class TestVariantRegistry:
     def test_no_duplicate_variants(self) -> None:
         for block, variants in VARIANT_REGISTRY.items():
             assert len(variants) == len(set(variants)), f"{block} has duplicate variants"
+
+    def test_destructive_variant_aliases(self) -> None:
+        assert validate_variant("error", VARIANT_REGISTRY["btn"], "") == "error"
+        assert validate_variant("danger", VARIANT_REGISTRY["toast"], "") == "danger"
+
+    def test_no_disjoint_semantic_variant_names(self) -> None:
+        """Destructive semantics must not split across disjoint variant names."""
+        from chirp_ui.validation import VARIANT_SEMANTIC_GROUPS
+
+        for group in VARIANT_SEMANTIC_GROUPS:
+            blocks_with_alias: dict[str, set[str]] = {
+                alias: {block for block, variants in VARIANT_REGISTRY.items() if alias in variants}
+                for alias in group
+            }
+            used_aliases = {alias for alias, blocks in blocks_with_alias.items() if blocks}
+            if len(used_aliases) < 2:
+                continue
+            union_blocks = set().union(*blocks_with_alias.values())
+            for block in sorted(union_blocks):
+                block_variants = set(VARIANT_REGISTRY[block])
+                assert block_variants & group, f"{block} missing destructive variant"
+                for alias in group:
+                    assert validate_variant(alias, VARIANT_REGISTRY[block], "") == alias
 
 
 class TestAppearanceToneRegistry:

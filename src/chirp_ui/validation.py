@@ -25,6 +25,7 @@ __all__ = [
     "SIZE_REGISTRY",
     "TONE_REGISTRY",
     "VARIANT_REGISTRY",
+    "VARIANT_SEMANTIC_GROUPS",
     "ChirpUIDeprecationWarning",
     "ChirpUIValidationWarning",
     "ChirpUIWarning",
@@ -36,6 +37,24 @@ CHIRP_UI_DEV_ENV = "CHIRP_UI_DEV"
 _TRUTHY = frozenset({"1", "true", "yes", "on"})
 
 _chirpui_strict: ContextVar[bool] = ContextVar("chirpui_strict", default=False)
+
+VARIANT_SEMANTIC_GROUPS: tuple[frozenset[str], ...] = (frozenset({"error", "danger"}),)
+
+
+def _semantic_variant_aliases(value: str) -> frozenset[str]:
+    """Return the semantic alias group containing *value*, or a singleton."""
+    for group in VARIANT_SEMANTIC_GROUPS:
+        if value in group:
+            return group
+    return frozenset({value})
+
+
+def _variant_is_allowed(value: str, allowed: tuple[str, ...]) -> bool:
+    if value in allowed:
+        return True
+    allowed_set = set(allowed)
+    return bool(_semantic_variant_aliases(value) & allowed_set)
+
 
 VARIANT_REGISTRY: dict[str, tuple[str, ...]] = {
     name: desc.variants for name, desc in COMPONENTS.items() if desc.variants

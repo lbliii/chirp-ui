@@ -20,8 +20,11 @@
 .chirpui-alert--info    { --chirpui-alert-accent: var(--chirpui-info); background: var(--chirpui-alert-info-bg); }
 .chirpui-alert--success { --chirpui-alert-accent: var(--chirpui-success); background: var(--chirpui-alert-success-bg); }
 .chirpui-alert--warning { --chirpui-alert-accent: var(--chirpui-warning); background: var(--chirpui-alert-warning-bg); }
-.chirpui-alert--error   { --chirpui-alert-accent: var(--chirpui-error); background: var(--chirpui-alert-error-bg); }
-.chirpui-alert--danger  { --chirpui-alert-accent: var(--chirpui-danger); background: color-mix(in srgb, var(--chirpui-danger) 10%, transparent); }
+.chirpui-alert--error,
+.chirpui-alert--danger {
+    --chirpui-alert-accent: var(--chirpui-error);
+    background: var(--chirpui-alert-error-bg);
+}
 
 /* Appearance axis */
 .chirpui-alert--tonal {

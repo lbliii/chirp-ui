@@ -3297,6 +3297,47 @@ class TestToast:
         ).render()
         assert 'id="my-toast"' in html
 
+    def test_toast_loading_variant(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/toast.html" import toast %}'
+            '{{ toast("Working…", variant="loading", dismissible=false) }}'
+        ).render()
+        assert "chirpui-toast--loading" in html
+        assert "chirpui-toast__spinner" in html
+        assert "chirpui-toast__close" not in html
+
+    def test_toast_replace_oob(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/toast.html" import toast %}'
+            '{{ toast("Done", id="job-1", replace=true, variant="success") }}'
+        ).render()
+        assert 'id="job-1"' in html
+        assert 'hx-swap-oob="true"' in html
+        assert "beforeend" not in html
+
+    def test_toast_pending_and_resolve(self, env: Environment) -> None:
+        pending = env.from_string(
+            '{% from "chirpui/toast.html" import toast_pending %}'
+            '{{ toast_pending("Saving…", id="save-1") }}'
+        ).render()
+        assert "chirpui-toast--loading" in pending
+        assert 'id="save-1"' in pending
+        assert 'hx-swap-oob="beforeend:#chirpui-toasts"' in pending
+
+        resolved = env.from_string(
+            '{% from "chirpui/toast.html" import toast_resolve %}'
+            '{{ toast_resolve("Saved!", id="save-1", variant="success") }}'
+        ).render()
+        assert "chirpui-toast--success" in resolved
+        assert 'hx-swap-oob="true"' in resolved
+
+    def test_toast_stack_container(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/toast.html" import toast_container %}{{ toast_container(limit=3) }}'
+        ).render()
+        assert "chirpuiToastStack" in html
+        assert "limit: 3" in html
+
     def test_toast_role_alert(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/toast.html" import toast %}{{ toast("Error!", variant="error") }}'

@@ -240,7 +240,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     # -- Controls -----------------------------------------------------------
     "btn": ComponentDescriptor(
         block="btn",
-        variants=("", "primary", "secondary", "ghost", "danger", "success", "warning"),
+        variants=("", "primary", "secondary", "ghost", "danger", "error", "success", "warning"),
         appearances=("filled", "tonal", "outlined", "ghost"),
         tones=("neutral", "primary", "secondary", "success", "warning", "danger"),
         sizes=("", "sm", "md", "lg"),
@@ -372,11 +372,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "toast": ComponentDescriptor(
         block="toast",
-        variants=("info", "success", "warning", "error"),
+        variants=("info", "success", "warning", "error", "danger", "loading"),
         template="toast.html",
         extra_emits=(
             "chirpui-toast__close",
             "chirpui-toast__message",
+            "chirpui-toast__spinner",
+            "chirpui-toast--dismissing",
         ),
         category="feedback",
         maturity="stable",

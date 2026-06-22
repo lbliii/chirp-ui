@@ -7,6 +7,7 @@ Each route exercises a specific nesting/interaction pattern.
 
 import asyncio
 import os
+from pathlib import Path
 
 from chirp import App, AppConfig, ShellAction, ShellActions, ShellActionZone
 from chirp.ext.chirp_ui import use_chirp_ui
@@ -14,9 +15,20 @@ from chirp.http.request import Request
 from chirp.http.response import Response
 from chirp.pages.shell_actions import ShellMenuItem
 from chirp.templating.returns import Template
+from kida import Environment, FileSystemLoader
 
 from chirp_ui import Column, parse_sort, selection_state, sort_columns
+from chirp_ui.filters import validate_variant
 from chirp_ui.theme_packs import get_theme_pack
+
+_CHIRPUI_TEMPLATES = Path(__file__).resolve().parents[2] / "src" / "chirp_ui" / "templates"
+_TOAST_ENV = Environment(loader=FileSystemLoader(str(_CHIRPUI_TEMPLATES)))
+_TOAST_ENV.update_filters({"validate_variant": validate_variant})
+
+
+def _render_toast(template: str) -> str:
+    return str(_TOAST_ENV.from_string(template).render())
+
 
 GAUNTLET_NAV_ITEMS = [
     {
@@ -1214,12 +1226,40 @@ def create_app() -> App:
     @app.route("/toast/send")
     async def toast_send(request: Request):
         return Response(
-            '<div class="chirpui-toast chirpui-toast--success" role="alert"'
-            ' data-testid="toast-item">'
-            '<span class="chirpui-toast__message">Operation successful</span>'
-            '<button class="chirpui-toast__close" x-data'
-            ' @click="$el.parentElement.remove()" aria-label="Dismiss">&times;</button>'
-            "</div>"
+            _render_toast(
+                '{% from "chirpui/toast.html" import toast %}'
+                '{{ toast("Operation successful", variant="success", cls="qa-toast") }}'
+            )
+        )
+
+    @app.route("/toast/stack")
+    async def toast_stack(request: Request):
+        parts = []
+        for idx, variant in enumerate(("info", "success", "warning"), start=1):
+            parts.append(
+                _render_toast(
+                    '{% from "chirpui/toast.html" import toast %}'
+                    f'{{{{ toast("Stack toast {idx}", variant="{variant}") }}}}'
+                )
+            )
+        return Response("".join(parts))
+
+    @app.route("/toast/pending")
+    async def toast_pending_route(request: Request):
+        return Response(
+            _render_toast(
+                '{% from "chirpui/toast.html" import toast_pending %}'
+                '{{ toast_pending("Saving…", id="status-toast") }}'
+            )
+        )
+
+    @app.route("/toast/resolve")
+    async def toast_resolve_route(request: Request):
+        return Response(
+            _render_toast(
+                '{% from "chirpui/toast.html" import toast_resolve %}'
+                '{{ toast_resolve("Saved!", id="status-toast", variant="success", duration=0) }}'
+            )
         )
 
     # ── Copy button ───────────────────────────────────────────────────
