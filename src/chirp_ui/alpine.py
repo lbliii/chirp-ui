@@ -86,7 +86,7 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
     ),
     "chirpuiCopy": AlpineRequirement(
         factory="chirpuiCopy",
-        macros=("code", "copy_button", "streaming"),
+        macros=("code", "copy_button", "streaming", "message_actions"),
     ),
     "chirpuiFader": AlpineRequirement(
         factory="chirpuiFader",
@@ -136,6 +136,10 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
     "chirpuiParamOverride": AlpineRequirement(
         factory="chirpuiParamOverride",
         macros=("param_override",),
+    ),
+    "chirpuiShortcuts": AlpineRequirement(
+        factory="chirpuiShortcuts",
+        macros=("shortcuts_help",),
     ),
 }
 

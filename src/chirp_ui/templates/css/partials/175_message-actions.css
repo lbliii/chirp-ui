@@ -1,0 +1,33 @@
+/* ==========================================================================
+   Message actions — per-turn toolbar (reveal on hover/focus-within)
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-message-actions) to (.chirpui-message-actions .chirpui-message-actions) {
+        :scope {
+            opacity: 0;
+            transition: opacity var(--chirpui-duration-fast) var(--chirpui-ease-standard);
+        }
+
+        .chirpui-message-bubble:hover > &,
+        .chirpui-message-bubble:focus-within > &,
+        :scope:focus-within {
+            opacity: 1;
+        }
+
+        &[data-last],
+        &.chirpui-message-actions--last {
+            opacity: 1;
+        }
+
+        .chirpui-action-bar__item--danger {
+            color: var(--chirpui-danger);
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-message-actions {
+        transition: none;
+    }
+}

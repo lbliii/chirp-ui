@@ -48,6 +48,13 @@ from chirp_ui.grid_state import (
     sort_query,
 )
 from chirp_ui.library import LIBRARY_CONTRACT, LibraryAsset, LibraryContract, get_library_contract
+from chirp_ui.shortcuts import (
+    DEFAULT_SHORTCUTS,
+    Shortcut,
+    shortcuts_by_category,
+    shortcuts_json,
+)
+from chirp_ui.text_fragment import build_text_fragment_url
 from chirp_ui.theme_packs import THEME_PACKS, ThemePack, get_theme_pack, list_theme_packs
 from chirp_ui.validation import (
     ChirpUIDeprecationWarning,
@@ -64,6 +71,7 @@ __version__ = "0.10.0"
 
 __all__ = [
     "ALPINE_REQUIRED_COMPONENTS",
+    "DEFAULT_SHORTCUTS",
     "LIBRARY_CONTRACT",
     "MANIFEST_PATH",
     "THEME_PACKS",
@@ -82,8 +90,10 @@ __all__ = [
     "LibraryContract",
     "ProjectedField",
     "SelectionState",
+    "Shortcut",
     "ThemePack",
     "Widget",
+    "build_text_fragment_url",
     "check_alpine_runtime",
     "column_aria_sort",
     "design_system_report",
@@ -100,6 +110,8 @@ __all__ = [
     "reset_colors",
     "selection_state",
     "set_strict",
+    "shortcuts_by_category",
+    "shortcuts_json",
     "sort_columns",
     "sort_query",
     "static_path",

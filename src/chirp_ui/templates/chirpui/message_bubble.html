@@ -10,6 +10,7 @@
             end
             <p>Hello! How are you?</p>
             <time>2:34 PM</time>
+            {% slot actions %}{{ message_actions(is_last=true, copy_text="Hello!") }}{% end %}
         end
 -#}
 
@@ -20,5 +21,6 @@
 {% set status_class = " chirpui-message-bubble--" ~ status if status else "" %}
 <article class="chirpui-message-bubble{{ align_class }}{{ role_class }}{{ status_class }}{{ " " ~ cls if cls else "" }}">
     {% slot %}
+    {% slot actions %}
 </article>
 {% end %}

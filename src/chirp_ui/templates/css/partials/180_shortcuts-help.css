@@ -1,0 +1,83 @@
+/* ==========================================================================
+   Keyboard shortcuts help modal
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-shortcuts-help) to (.chirpui-shortcuts-help .chirpui-shortcuts-help) {
+        :scope {
+            margin: auto;
+            max-inline-size: min(32rem, 92vw);
+            padding: 0;
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius);
+            background: var(--chirpui-surface);
+            color: var(--chirpui-text);
+            box-shadow: var(--chirpui-elevation-overlay);
+        }
+
+        :scope::backdrop {
+            background: var(--chirpui-smoke-bg);
+        }
+
+        .chirpui-shortcuts-help__inner {
+            padding: var(--chirpui-spacing-lg);
+        }
+
+        .chirpui-shortcuts-help__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-block-end: var(--chirpui-spacing);
+        }
+
+        .chirpui-shortcuts-help__group {
+            margin-block-end: var(--chirpui-spacing);
+        }
+
+        .chirpui-shortcuts-help__title {
+            margin: 0;
+            font-size: var(--chirpui-font-lg);
+        }
+
+        .chirpui-shortcuts-help__close {
+            border: 0;
+            background: transparent;
+            color: var(--chirpui-text-muted);
+            font-size: var(--chirpui-font-xl);
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .chirpui-shortcuts-help__close:hover {
+            color: var(--chirpui-text);
+        }
+
+        .chirpui-shortcuts-help__list {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: var(--chirpui-spacing-xs) var(--chirpui-spacing);
+            margin: 0;
+        }
+
+        .chirpui-shortcuts-help__row {
+            display: contents;
+        }
+
+        .chirpui-shortcuts-help__label {
+            margin: 0;
+        }
+
+        .chirpui-shortcuts-help__category {
+            margin-block: var(--chirpui-spacing) var(--chirpui-spacing-xs);
+            font-size: var(--chirpui-font-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-shortcuts-help__keys {
+            justify-self: end;
+            margin: 0;
+        }
+    }
+}

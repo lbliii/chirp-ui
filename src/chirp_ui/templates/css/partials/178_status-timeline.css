@@ -1,0 +1,68 @@
+/* ==========================================================================
+   Status timeline — agentic step list
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-status-timeline) to (.chirpui-status-timeline .chirpui-status-timeline) {
+        :scope {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing-sm);
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+    }
+
+    @scope (.chirpui-status-step) to (.chirpui-status-step .chirpui-status-step) {
+        :scope {
+            display: flex;
+            gap: var(--chirpui-spacing-sm);
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .chirpui-status-step__marker {
+            flex-shrink: 0;
+            inline-size: 1.25rem;
+            text-align: center;
+            color: var(--chirpui-text-muted);
+        }
+
+        &.chirpui-status-step--done .chirpui-status-step__marker {
+            color: var(--chirpui-success);
+        }
+
+        &.chirpui-status-step--active .chirpui-status-step__marker {
+            color: var(--chirpui-accent);
+        }
+
+        .chirpui-status-step__body {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chirpui-spacing-xs);
+            min-width: 0;
+        }
+
+        .chirpui-status-step__label {
+            font-weight: 500;
+        }
+
+        .chirpui-status-step__count {
+            margin-inline-start: var(--chirpui-spacing-xs);
+            font-variant-numeric: tabular-nums;
+            color: var(--chirpui-text-muted);
+        }
+
+        .chirpui-status-step__chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--chirpui-spacing-xs);
+        }
+
+        .chirpui-chip--sm {
+            font-size: var(--chirpui-font-xs);
+            padding: 0.1em 0.45em;
+        }
+    }
+}

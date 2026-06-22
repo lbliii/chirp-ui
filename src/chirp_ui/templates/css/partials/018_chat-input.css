@@ -58,3 +58,12 @@
     gap: var(--chirpui-spacing-sm);
 }
 
+/* Sticky composer dock — pad past the home indicator on notched phones. */
+.chirpui-chat-input--dock {
+    position: sticky;
+    bottom: 0;
+    z-index: var(--chirpui-z-sticky);
+    background: var(--chirpui-surface);
+    padding-block-end: max(var(--chirpui-spacing), env(safe-area-inset-bottom));
+}
+

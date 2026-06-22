@@ -19,3 +19,10 @@
     }
 }
 
+[data-theme="oled"] {
+    color-scheme: dark;
+    --chirpui-bg: color-mix(in oklab, var(--chirpui-bg) 12%, black);
+    --chirpui-surface: color-mix(in oklab, var(--chirpui-surface) 30%, black);
+    --chirpui-surface-alt: color-mix(in oklab, var(--chirpui-surface-alt) 30%, black);
+}
+

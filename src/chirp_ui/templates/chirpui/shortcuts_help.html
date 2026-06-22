@@ -1,0 +1,51 @@
+{#- chirp-ui: Keyboard shortcuts help
+    A modal listing all keyboard shortcuts, rendered from the declarative
+    shortcuts.py catalog. The same catalog drives the chirpuiShortcuts handler
+    (via shortcuts_json), so the modal can never advertise a binding the handler
+    does not run (open-webui #17015).
+
+    Usage:
+        {% from "chirpui/shortcuts_help.html" import shortcuts_help, shortcuts_help_trigger %}
+        {{ shortcuts_help_trigger() }}
+        {{ shortcuts_help() }}
+-#}
+
+{% from "chirpui/kbd.html" import kbd %}
+
+{% def shortcuts_help(dialog_id="shortcuts-help", title="Keyboard shortcuts") %}
+<div x-data="chirpuiShortcuts()" x-init="init()" data-shortcuts-host>
+    <script type="application/json" x-ref="catalog">{{ shortcuts_json() | safe }}</script>
+    <dialog id="{{ dialog_id }}" x-ref="dialog" class="chirpui-shortcuts-help" closedby="any"
+            aria-labelledby="{{ dialog_id }}-title">
+        <div class="chirpui-shortcuts-help__inner">
+            <header class="chirpui-shortcuts-help__header">
+                <h2 id="{{ dialog_id }}-title" class="chirpui-shortcuts-help__title">{{ title }}</h2>
+                <button type="button" class="chirpui-shortcuts-help__close"
+                        aria-label="Close" @click="$refs.dialog.close()">×</button>
+            </header>
+            {% for category, items in shortcuts_by_category().items() %}
+            <section class="chirpui-shortcuts-help__group">
+                <h3 class="chirpui-shortcuts-help__category">{{ category }}</h3>
+                <dl class="chirpui-shortcuts-help__list">
+                    {% for sc in items %}
+                    <div class="chirpui-shortcuts-help__row" data-shortcut-id="{{ sc.id }}">
+                        <dt class="chirpui-shortcuts-help__label">{{ sc.label }}</dt>
+                        <dd class="chirpui-shortcuts-help__keys">{{ kbd(sc.keys, size="sm") }}</dd>
+                    </div>
+                    {% end %}
+                </dl>
+            </section>
+            {% end %}
+        </div>
+    </dialog>
+</div>
+{% end %}
+
+{% def shortcuts_help_trigger(target="shortcuts-help", label="Keyboard shortcuts", cls="") %}
+<button type="button"
+        class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm chirpui-shortcuts-help-trigger{{ " " ~ cls if cls else "" }}"
+        x-data="chirpuiDialogTarget()" data-dialog-target="{{ target }}"
+        @click="open()" aria-label="{{ label }}">
+    {{ kbd("?", size="sm") }}
+</button>
+{% end %}

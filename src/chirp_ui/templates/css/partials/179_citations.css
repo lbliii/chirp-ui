@@ -1,0 +1,71 @@
+/* ==========================================================================
+   Citations — inline chips, sources summary, relevance ramp
+   ========================================================================== */
+
+@layer chirpui.component {
+    @scope (.chirpui-citation) to (.chirpui-citation .chirpui-citation) {
+        :scope {
+            line-height: 0;
+        }
+
+        .chirpui-citation__link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-inline-size: 1.1em;
+            padding-inline: 0.15em;
+            font-size: var(--chirpui-font-xs);
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--chirpui-accent);
+            border-radius: var(--chirpui-radius-sm);
+        }
+
+        .chirpui-citation__link:hover {
+            background: color-mix(in srgb, var(--chirpui-accent) 12%, transparent);
+        }
+    }
+
+    .chirpui-relevance--high .chirpui-sources-summary__chip {
+        border-color: var(--chirpui-success);
+    }
+
+    .chirpui-relevance--med .chirpui-sources-summary__chip {
+        border-color: var(--chirpui-accent);
+    }
+
+    .chirpui-relevance--low .chirpui-sources-summary__chip {
+        border-color: var(--chirpui-text-muted);
+    }
+
+    @scope (.chirpui-sources-summary) to (.chirpui-sources-summary .chirpui-sources-summary) {
+        :scope {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .chirpui-sources-summary__stack {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .chirpui-sources-summary__chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            inline-size: 1.75rem;
+            block-size: 1.75rem;
+            border: 1px solid var(--chirpui-border);
+            border-radius: var(--chirpui-radius-full);
+            background: var(--chirpui-surface);
+            color: var(--chirpui-text);
+            text-decoration: none;
+            font-size: var(--chirpui-font-xs);
+            font-weight: 600;
+        }
+
+        .chirpui-sources-summary__index {
+            font-variant-numeric: tabular-nums;
+        }
+    }
+}

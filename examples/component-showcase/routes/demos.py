@@ -81,6 +81,10 @@ def register(app: App) -> None:
     async def streaming(request: Request) -> Template:
         return page(request, "showcase/streaming.html")
 
+    @app.route("/message-turn", template="showcase/message_turn.html")
+    async def message_turn(request: Request) -> Template:
+        return page(request, "showcase/message_turn.html")
+
     @app.route("/streaming/demo", methods=["GET"])
     async def streaming_demo(request: Request) -> EventStream:
         """Mock SSE stream: yields fragments word-by-word, no LLM required."""

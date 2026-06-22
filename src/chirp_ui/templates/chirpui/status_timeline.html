@@ -1,0 +1,35 @@
+{#- chirp-ui: Status timeline
+    Vertical agentic step list: each step has an action type, label, done state,
+    optional query chips and a result count. Server owns step state.
+
+    Usage:
+        {% from "chirpui/status_timeline.html" import status_timeline, status_step %}
+        {% call status_timeline() %}
+            {{ status_step(action_type="search", label="Searched docs", done=true,
+                           query_chips=["css scope", "@layer"], count=12) }}
+            {{ status_step(action_type="read", label="Reading results", done=false) }}
+        {% end %}
+-#}
+
+{% def status_timeline(cls="") %}
+<ol class="chirpui-status-timeline{{ " " ~ cls if cls else "" }}" role="list">
+  {% slot %}
+</ol>
+{% end %}
+
+{% def status_step(action_type, label, done=false, query_chips=none, count=none, cls="") %}
+<li class="chirpui-status-step chirpui-status-step--{{ action_type }}{{ " chirpui-status-step--done" if done else " chirpui-status-step--active" }}{{ " " ~ cls if cls else "" }}"
+    {% if not done %}aria-busy="true"{% end %}>
+  <span class="chirpui-status-step__marker" aria-hidden="true">{{ "✓" if done else "•" }}</span>
+  <div class="chirpui-status-step__body">
+    <span class="chirpui-status-step__label">{{ label }}
+      {% if count is not none %}<span class="chirpui-status-step__count">{{ count }}</span>{% end %}
+    </span>
+    {% if query_chips %}
+    <span class="chirpui-status-step__chips">
+      {% for chip in query_chips %}<span class="chirpui-chip chirpui-chip--sm">{{ chip }}</span>{% end %}
+    </span>
+    {% end %}
+  </div>
+</li>
+{% end %}

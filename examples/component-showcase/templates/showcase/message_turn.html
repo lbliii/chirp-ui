@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, stack, block, page_header %}
+{% from "chirpui/message_bubble.html" import message_bubble %}
+{% from "chirpui/message_actions.html" import message_actions %}
+{% from "chirpui/action_bar.html" import action_bar_item %}
+{% from "chirpui/message_meta.html" import message_meta %}
+{% from "chirpui/reasoning.html" import reasoning_block, tool_call_card %}
+{% from "chirpui/status_timeline.html" import status_timeline, status_step %}
+{% from "chirpui/citations.html" import citation_chip, sources_summary, citation_modal %}
+{% from "chirpui/shortcuts_help.html" import shortcuts_help, shortcuts_help_trigger %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header("Message turn surface", subtitle="Assistant-turn chrome: actions, meta, reasoning, tool calls, citations, shortcuts.") }}
+
+<h2>Full assistant turn</h2>
+{% call block() %}
+{% call message_bubble(align="left", role="assistant") %}
+{{ message_meta("gpt-4o", "2:34 PM", usage={"input": 120, "output": 48, "total": 168}) }}
+{% call reasoning_block(label_pending="Thinking…", label_done="Thought for 2s", done=true) %}
+<p>Checked the schema and prior messages.</p>
+{% end %}
+{{ tool_call_card("search_docs", status="done", args=[{"term": "query", "detail": "css scope"}], result="3 matches") }}
+<p>Here is the answer with a citation{{ citation_chip(1, "Scope spec", "https://example.com/docs", source_id="src-1") }}.</p>
+{{ sources_summary([{"id": "src-1", "title": "Scope spec", "href": "https://example.com/docs", "relevance": "high"}]) }}
+{% slot actions %}
+{% call message_actions(is_last=true, copy_text="Here is the answer.") %}
+{{ action_bar_item(icon="refresh", label="Regenerate") }}
+{% end %}
+{% end %}
+{% end %}
+{% end %}
+
+<h2>Status timeline</h2>
+{% call block() %}
+{% call status_timeline() %}
+{{ status_step("search", "Searched docs", done=true, query_chips=["css"], count=3) }}
+{{ status_step("read", "Reading results", done=false) }}
+{% end %}
+{% end %}
+
+<h2>Keyboard shortcuts</h2>
+{% call block() %}
+{{ shortcuts_help_trigger() }}
+{{ shortcuts_help() }}
+{% end %}
+
+{% end %}
+{% end %}
+{% end %}

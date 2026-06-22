@@ -1262,6 +1262,10 @@ def create_app() -> App:
     async def streaming_page(request: Request):
         return Template("streaming_page.html", page_title="Streaming")
 
+    @app.route("/shortcuts")
+    async def shortcuts_page(request: Request):
+        return Template("shortcuts_page.html", page_title="Shortcuts")
+
     @app.route("/page-actions-candidate")
     async def page_actions_candidate_page(request: Request):
         return Template(

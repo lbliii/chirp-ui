@@ -1,0 +1,48 @@
+{#- chirp-ui: Reasoning + tool-call disclosure
+    reasoning_block: collapsible chain-of-thought; shimmers while pending.
+    tool_call_card: collapsible tool invocation with args/result/files.
+    Both compose collapse.html. args is a caller dict-list (description_list, .get()-guarded).
+
+    Usage:
+        {% from "chirpui/reasoning.html" import reasoning_block, tool_call_card %}
+        {% call reasoning_block(label_pending="Thinking…", label_done="Thought for 4s", done=true) %}
+            <p>First I checked the schema…</p>
+        {% end %}
+        {{ tool_call_card("search_docs", status="done",
+                          args=[{"term": "query", "detail": "css scope"}],
+                          result="3 matches", files=["docs/CSS.md"]) }}
+-#}
+{% from "chirpui/collapse.html" import collapse %}
+{% from "chirpui/description_list.html" import description_list %}
+{% from "chirpui/spinner.html" import spinner_thinking %}
+
+{% def reasoning_block(label_pending="Thinking…", label_done="Reasoning", done=false, open=false, cls="") %}
+{% set _label = label_done if done else label_pending %}
+<div class="chirpui-reasoning{{ " chirpui-reasoning--pending" if not done else "" }}{{ " " ~ cls if cls else "" }}">
+  {% call collapse(trigger=_label, open=open) %}
+    {% slot %}{% end %}
+  {% end %}
+  {% if not done %}
+  <span class="chirpui-reasoning__shimmer" aria-hidden="true"></span>
+  {% end %}
+</div>
+{% end %}
+
+{% def tool_call_card(name, status="pending", args=none, result=none, files=none, open=false, cls="") %}
+{% set _status = status | validate_variant(("pending", "running", "done", "error"), "pending") %}
+<div class="chirpui-tool-call chirpui-tool-call--{{ _status }}{{ " " ~ cls if cls else "" }}">
+  {% call collapse(trigger=name ~ " — " ~ _status, open=open) %}
+    {% slot header_actions %}
+      {% if _status in ("pending", "running") %}{{ spinner_thinking(size="sm") }}{% end %}
+      <span class="chirpui-tool-call__status" aria-label="Status: {{ _status }}">{{ _status }}</span>
+    {% end %}
+    {% if args %}{{ description_list(items=args, variant="horizontal", compact=true) }}{% end %}
+    {% if result %}<div class="chirpui-tool-call__result chirpui-rendered-content">{{ result }}</div>{% end %}
+    {% if files %}
+    <ul class="chirpui-tool-call__files">
+      {% for f in files %}<li class="chirpui-tool-call__file">{{ f }}</li>{% end %}
+    </ul>
+    {% end %}
+  {% end %}
+</div>
+{% end %}

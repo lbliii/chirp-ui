@@ -974,6 +974,12 @@ def register_filters(app: TemplateFilterApp) -> None:
         tg("project_fields")(project_fields)
         tg("config_field")(Field)
         tg("Widget")(Widget)
+        from chirp_ui.shortcuts import shortcuts_by_category, shortcuts_json
+        from chirp_ui.text_fragment import build_text_fragment_url
+
+        tg("shortcuts_by_category")(shortcuts_by_category)
+        tg("shortcuts_json")(shortcuts_json)
+        tg("build_text_fragment_url")(build_text_fragment_url)
     else:
         warnings.warn(
             "chirp-ui: app has no template_global(); "
