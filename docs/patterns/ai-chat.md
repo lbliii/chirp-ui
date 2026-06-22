@@ -34,7 +34,7 @@ async def abort(chat_id: str):
     task = GENERATIONS.pop(chat_id, None)
     if task is not None:
         task.cancel()
-    return Response(status_code=204)  # hx-swap="none"; UI already toggled
+    return Response(status=204)  # hx-swap="none"; UI already toggled
 ```
 
 Wire the composer:

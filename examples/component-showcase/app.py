@@ -31,6 +31,11 @@ app = App(
 use_chirp_ui(app)
 
 
+@app.route("/favicon.ico")
+async def favicon(_request: Request) -> Response:
+    return Response(status=302).with_header("Location", "/static/chirpui-logo.svg")
+
+
 @app.route("/toast", methods=["POST"])
 async def show_toast(request: Request) -> Fragment:
     return Fragment("_toast.html", "toast_demo")

@@ -1613,6 +1613,21 @@
                     self.generating = false;
                 };
                 this.$root.addEventListener("chirpui:generation-done", this._onDone);
+                this._onSseClose = function (e) {
+                    var streamEl = e.target && e.target.closest
+                        ? e.target.closest("[sse-connect]")
+                        : null;
+                    if (!streamEl) {
+                        return;
+                    }
+                    var layout = self.$root.closest(".chirpui-chat-layout");
+                    if (layout && layout.contains(streamEl)) {
+                        self.generating = false;
+                    }
+                };
+                ["htmx:sseClose", "htmx:sse-close"].forEach(function (name) {
+                    document.body.addEventListener(name, self._onSseClose);
+                });
                 this._onSuggestion = function (e) {
                     var d = e.detail || {};
                     self.value = d.prompt || "";
@@ -1632,6 +1647,12 @@
                 }
                 if (this._onDone) {
                     this.$root.removeEventListener("chirpui:generation-done", this._onDone);
+                }
+                if (this._onSseClose) {
+                    var onSseClose = this._onSseClose;
+                    ["htmx:sseClose", "htmx:sse-close"].forEach(function (name) {
+                        document.body.removeEventListener(name, onSseClose);
+                    });
                 }
                 if (this._onSuggestion) {
                     window.removeEventListener("chirpui:suggestion", this._onSuggestion);
@@ -1675,23 +1696,37 @@
                 e.preventDefault();
                 this.send();
             },
+            maybeFinishGeneration: function (targetSelector) {
+                var target = targetSelector ? document.querySelector(targetSelector) : null;
+                if (target && target.querySelector("[sse-connect]")) {
+                    return;
+                }
+                this.generating = false;
+            },
             send: function () {
+                var self = this;
                 var form = this.$refs.field ? this.$refs.field.closest("form") : null;
                 if (!form || !this.canSend) {
                     return;
                 }
                 this.generating = true;
                 var post = form.getAttribute("hx-post") || form.getAttribute("action");
+                var targetSelector = form.getAttribute("hx-target");
                 if (typeof htmx !== "undefined" && post) {
                     var values = {};
                     if (this.$refs.field && this.$refs.field.name) {
                         values[this.$refs.field.name] = this.value;
                     }
-                    htmx.ajax("POST", post, {
-                        target: form.getAttribute("hx-target"),
+                    var result = htmx.ajax("POST", post, {
+                        target: targetSelector,
                         swap: form.getAttribute("hx-swap") || "beforeend",
                         values: values,
                     });
+                    if (result && typeof result.then === "function") {
+                        result.then(function () {
+                            self.maybeFinishGeneration(targetSelector);
+                        });
+                    }
                     return;
                 }
                 if (typeof form.requestSubmit === "function") {

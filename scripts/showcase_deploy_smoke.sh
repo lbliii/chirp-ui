@@ -34,4 +34,11 @@ if ! grep -q "<p>hello</p>" <<<"$response"; then
   exit 1
 fi
 
-echo "OK — shell recipes, composer page, and composer POST fragment passed"
+echo "POST /composer/abort"
+abort_code="$("${curl_common[@]}" -o /dev/null -w "%{http_code}" -X POST "${BASE}/composer/abort")"
+if [[ "$abort_code" != "204" ]]; then
+  echo "ERROR: POST /composer/abort expected HTTP 204, got ${abort_code}" >&2
+  exit 1
+fi
+
+echo "OK — shell recipes, composer page, composer POST fragment, and abort passed"

@@ -7434,6 +7434,7 @@ Message Thread component
 | Param | Required | Default |
 |-------|----------|---------|
 | `cls` | no | (has default) |
+| `id` | no | (has default) |
 
 ### `message_bubble`
 

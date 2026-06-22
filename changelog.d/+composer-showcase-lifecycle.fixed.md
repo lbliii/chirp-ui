@@ -1,0 +1,1 @@
+Fixed composer showcase abort/dismiss 500s, nested chat-layout styling, instant-send generating reset, `message_thread` HTMX id support, and multi-select combobox option hiding reactivity in browser smoke.
