@@ -49,15 +49,11 @@
 }
 
 .chirpui-hero--gradient {
-    background: linear-gradient(
-        135deg,
-        var(--chirpui-bg-subtle) 0%,
-        color-mix(in srgb, var(--chirpui-accent) 8%, var(--chirpui-bg)) 100%
-    );
+    background: var(--chirpui-hero-gradient-default);
 }
 
 .chirpui-hero--mesh {
-    background: var(--chirpui-gradient-mesh);
+    background: var(--chirpui-hero-gradient-mesh);
 }
 
 .chirpui-hero--animated-gradient {
@@ -65,13 +61,7 @@
 }
 @media (prefers-reduced-motion: no-preference) {
     .chirpui-hero--animated-gradient {
-        background: linear-gradient(
-            -45deg,
-            var(--chirpui-bg-subtle),
-            color-mix(in srgb, var(--chirpui-accent) 8%, var(--chirpui-bg)),
-            color-mix(in srgb, var(--chirpui-accent-secondary) 6%, var(--chirpui-bg)),
-            var(--chirpui-bg-subtle)
-        );
+        background: var(--chirpui-hero-gradient-animated);
         background-size: 400% 400%;
         animation: chirpui-gradient-shift 15s ease infinite;
     }

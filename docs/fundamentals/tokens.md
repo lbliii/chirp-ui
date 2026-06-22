@@ -143,6 +143,30 @@ Use the token explorer in `examples/design-system-gap-showcase/index.html` to
 check those jobs visually. Keep app themes in the `--chirpui-*` vocabulary;
 private theme token namespaces should not be necessary for normal branding.
 
+### Default identity (#206)
+
+The library `:root` ships a Chirp-native profile — warm paper light surfaces,
+phosphor dark, teal accent (`#0e7490` / `#2dd4bf`), and amber secondary — not
+the generic Tailwind sky/slate pairing. Theme packs (Atlas, Ember, Sage) override
+this baseline; apps load their own `@layer app.theme` sheet after `chirpui.css`.
+
+### Ambient and hero gradient tokens (#259)
+
+Aura color layers and hero multi-wash gradients are exposed at `:root` so theme
+packs can tune ambient personality without reaching into component CSS:
+
+| Token | Purpose |
+| ----- | ------- |
+| `--chirpui-aura-a`, `-b`, `-c`, `-mess` | Radial halo stop colors for `aura()` |
+| `--chirpui-aura-blur`, `-inset-*` | Aura pseudo-element geometry |
+| `--chirpui-hero-gradient-light`, `-dark` | Layered hero washes (light/dark recipes) |
+| `--chirpui-hero-gradient-default` | Scheme-aware alias consumed by `hero(background="gradient")` |
+| `--chirpui-hero-gradient-mesh` | Mesh ambient alias (defaults to `--chirpui-gradient-mesh`) |
+| `--chirpui-hero-gradient-animated` | Multi-stop base for animated hero variant |
+
+`band(variant="gradient")` continues to use `--chirpui-gradient-subtle`; hero
+presets stack three tinted directional gradients for a richer landing-page wash.
+
 ## Motion tokens
 
 - `--chirpui-motion-fast`, `--chirpui-motion-base`, `--chirpui-motion-slow`, `--chirpui-motion-slower`

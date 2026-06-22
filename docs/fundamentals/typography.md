@@ -8,15 +8,19 @@ chirp-ui uses two typography scales: **UI** (components) and **Prose** (document
 
 Used by badges, cards, stats, avatars, labels, meta text, page/section headers.
 
+UI sizes use **fixed rem steps** so dense app chrome stays stable across viewport
+widths (see `docs/decisions/typography-role-matrix.md`). Prose display sizes
+(`prose-3xl` and above) keep viewport `clamp()` for marketing/editorial hero type.
+
 ### Size
 
 | Token | Purpose | Default |
 |-------|---------|---------|
 | `--chirpui-ui-xs` | Chip, badge count, timestamp, meta | 0.75rem |
-| `--chirpui-ui-sm` | Label, card header, button, list item title | clamp(0.8125rem, 1.5vw, 0.875rem) |
-| `--chirpui-ui-base` | Modal title, section header, form label | clamp(0.9375rem, 2vw, 1rem) |
-| `--chirpui-ui-lg` | Page header, stat value | clamp(1.0625rem, 2.5vw, 1.125rem) |
-| `--chirpui-ui-xl` | Hero eyebrow, large stat icon | clamp(1.25rem, 3vw, 1.5rem) |
+| `--chirpui-ui-sm` | Label, card header, button, list item title | 0.8125rem |
+| `--chirpui-ui-base` | Modal title, section header, form label | 0.9375rem |
+| `--chirpui-ui-lg` | Page header, stat value | 1.0625rem |
+| `--chirpui-ui-xl` | Hero eyebrow, large stat icon | 1.25rem |
 
 ### Family & weight
 

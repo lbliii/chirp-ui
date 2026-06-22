@@ -3747,7 +3747,16 @@
       ],
       "slots_yielded": [],
       "template": "aura.html",
-      "tokens": [],
+      "tokens": [
+        "--chirpui-aura-a",
+        "--chirpui-aura-b",
+        "--chirpui-aura-blur",
+        "--chirpui-aura-c",
+        "--chirpui-aura-inset-bottom",
+        "--chirpui-aura-inset-top",
+        "--chirpui-aura-inset-x",
+        "--chirpui-aura-mess"
+      ],
       "tones": [],
       "trim_emits": [],
       "variants": []
@@ -11982,7 +11991,13 @@
       ],
       "slots_yielded": [],
       "template": "hero.html",
-      "tokens": [],
+      "tokens": [
+        "--chirpui-hero-gradient-animated",
+        "--chirpui-hero-gradient-dark",
+        "--chirpui-hero-gradient-default",
+        "--chirpui-hero-gradient-light",
+        "--chirpui-hero-gradient-mesh"
+      ],
       "tones": [],
       "trim_emits": [],
       "variants": [
@@ -25989,7 +26004,7 @@
     },
     "token_categories": {
       "color": 142,
-      "component": 136,
+      "component": 141,
       "elevation": 7,
       "layout": 51,
       "motion": 24,
@@ -25999,7 +26014,7 @@
     },
     "total_components": 376,
     "total_theme_packs": 3,
-    "total_tokens": 461
+    "total_tokens": 466
   },
   "theme_packs": [
     {
@@ -26739,6 +26754,26 @@
     "--chirpui-grid-min": {
       "category": "layout",
       "scope": "global"
+    },
+    "--chirpui-hero-gradient-animated": {
+      "category": "component",
+      "scope": "hero"
+    },
+    "--chirpui-hero-gradient-dark": {
+      "category": "component",
+      "scope": "hero"
+    },
+    "--chirpui-hero-gradient-default": {
+      "category": "component",
+      "scope": "hero"
+    },
+    "--chirpui-hero-gradient-light": {
+      "category": "component",
+      "scope": "hero"
+    },
+    "--chirpui-hero-gradient-mesh": {
+      "category": "component",
+      "scope": "hero"
     },
     "--chirpui-holy-color": {
       "category": "color",

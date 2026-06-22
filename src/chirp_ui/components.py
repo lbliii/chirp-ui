@@ -803,6 +803,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "hero": ComponentDescriptor(
         block="hero",
         variants=("solid", "muted", "gradient", "mesh", "animated-gradient"),
+        tokens=(
+            "--chirpui-hero-gradient-default",
+            "--chirpui-hero-gradient-light",
+            "--chirpui-hero-gradient-dark",
+            "--chirpui-hero-gradient-mesh",
+            "--chirpui-hero-gradient-animated",
+        ),
         template="hero.html",
         extra_emits=(
             "chirpui-hero--page",
@@ -951,6 +958,16 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         modifiers=("mirror",),
         elements=("content",),
         slots=("",),
+        tokens=(
+            "--chirpui-aura-a",
+            "--chirpui-aura-b",
+            "--chirpui-aura-c",
+            "--chirpui-aura-blur",
+            "--chirpui-aura-inset-x",
+            "--chirpui-aura-inset-top",
+            "--chirpui-aura-inset-bottom",
+            "--chirpui-aura-mess",
+        ),
         template="aura.html",
         category="effect",
         maturity="experimental",

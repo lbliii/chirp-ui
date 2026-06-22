@@ -10,14 +10,6 @@
     display: block;
     min-width: 0;
     overflow: visible;
-    --chirpui-aura-blur: 22px;
-    --chirpui-aura-inset-x: -12%;
-    --chirpui-aura-inset-top: -14%;
-    --chirpui-aura-inset-bottom: -32%;
-    --chirpui-aura-a: color-mix(in oklab, var(--chirpui-accent) 52%, transparent);
-    --chirpui-aura-b: color-mix(in oklab, var(--chirpui-primary) 38%, transparent);
-    --chirpui-aura-c: color-mix(in oklab, var(--chirpui-accent-secondary) 28%, transparent);
-    --chirpui-aura-mess: color-mix(in oklab, var(--chirpui-accent) 9%, transparent);
 }
 
 .chirpui-aura--sm {
