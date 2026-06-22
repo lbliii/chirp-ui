@@ -1,0 +1,1 @@
+Fixed composer Enter-to-send under htmx 2 by routing `chirpuiComposer.send()` through `htmx.ajax()` with explicit target/swap/values, and registered missing showcase icons (`plus`, `send`, `stop`, `file`, `x`, `info`).

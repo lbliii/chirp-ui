@@ -91,6 +91,8 @@ SHOWCASE_FRAGMENT_OR_ACTION_ROUTES = {
     "/streaming/demo",
     "/streaming/retry",
     "/composer/send",
+    "/composer/abort",
+    "/composer/dismiss/{file_id}",
     "/data/table",
     "/data/bulk-bar",
     "/data/export",
@@ -568,6 +570,9 @@ class TestDataPage:
             _SHOWCASE_DIR / "templates" / "showcase" / "operations_shell_workspace.html"
         ).read_text(encoding="utf-8")
         base_template = (_SHOWCASE_DIR / "templates" / "base.html").read_text(encoding="utf-8")
+        ops_shell_css = (
+            _SHOWCASE_DIR / "templates" / "showcase" / "_css" / "ops_shell.css.html"
+        ).read_text(encoding="utf-8")
 
         assert "workspace_shell(" in support_template
         assert "panel(title=support_metrics.tickets" in support_template
@@ -588,8 +593,8 @@ class TestDataPage:
         assert ".support-shell-spotlight-head" not in base_template
         assert ".support-shell-command-bar .chirpui-action-strip__inner" not in base_template
         assert ".ops-shell-command-bar .chirpui-action-strip__inner" not in base_template
-        assert ".ops-shell-workspace {" in base_template
-        assert ".ops-shell-frame {" in base_template
+        assert ".ops-shell-workspace {" in ops_shell_css
+        assert ".ops-shell-frame {" in ops_shell_css
 
     @pytest.mark.asyncio
     async def test_htmx_page_does_not_emit_demo_toasts_on_load(self, showcase_app) -> None:

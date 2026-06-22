@@ -13,12 +13,17 @@ ICON_REGISTRY: dict[str, str] = {
     "pause": "Ⅱ",
     # Actions
     "add": "+",
+    "plus": "+",
     "refresh": "↻",
     "search": "⌕",
     "magnifying-glass": "⌕",
     "reply": "↩",
     "comment": "◉",
     "share": "↗",
+    "send": "→",
+    "stop": "■",
+    "x": "×",  # noqa: RUF001
+    "file": "▤",
     "up": "▲",
     "down": "▼",
     "arrow-up": "▲",
@@ -66,6 +71,7 @@ ICON_REGISTRY: dict[str, str] = {
     # Alerts / flow
     "alert": "↑",
     "info": "◎",
+    "ℹ": "ℹ",  # noqa: RUF001
     "warning": "↑",
     "dots": "⋯",
     # Writing / authoring (Dingbats U+270E-U+2712, U+2709)

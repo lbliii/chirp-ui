@@ -63,6 +63,7 @@
       action="{{ action }}" method="post"
       {{ _form_hx | html_attrs }}
       {% if _form_hx.get("hx-target") %}hx-boost="false"{% endif %}
+      @submit.prevent="send()"
       @htmx:before-request="onSend($event)"
       @paste="onPaste($event)"
       @dragover="onDragOver($event)"
