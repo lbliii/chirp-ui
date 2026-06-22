@@ -84,7 +84,7 @@
         {% set _ol = opt.get("label", _ov) %}
         <li class="chirpui-combobox__option" id="{{ _cid }}-opt-{{ loop.index0 }}"
             role="option" data-value="{{ _ov }}" data-label="{{ _ol }}"
-            x-show="matches($el.dataset.label, $el.dataset.value)"
+            x-show="selected.length >= 0 && matches($el.dataset.label, $el.dataset.value)"
             :aria-selected="activeId === $el.id ? 'true' : 'false'"
             :class="{ 'chirpui-combobox__option--active': activeId === $el.id }"
             @click="choose($el)"

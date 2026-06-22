@@ -239,7 +239,9 @@ async def test_multi_select_adds_pills_and_hidden_inputs(page, base_url):
     # Each selected value submits as a repeated hidden `tags` input.
     vals = await page.eval_on_selector_all(M_HIDDEN, "els => els.map(e => e.value)")
     assert sorted(vals) == ["design", "docs"]
-    # Selected options drop out of the list.
+    # Selected options drop out of the list once Alpine re-evaluates x-show.
+    await expect(page.locator(f'{M_OPTION}[data-value="design"]')).to_be_hidden()
+    await expect(page.locator(f'{M_OPTION}[data-value="docs"]')).to_be_hidden()
     visible = await _multi_visible_values(page)
     assert "design" not in visible
     assert "docs" not in visible
