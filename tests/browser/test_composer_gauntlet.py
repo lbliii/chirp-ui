@@ -99,9 +99,7 @@ async def test_composer_enter_to_send_appends_message_bubble(
     console_errors: list[str] = []
     showcase_page.on(
         "console",
-        lambda msg: console_errors.append(msg.text)
-        if msg.type == "error"
-        else None,
+        lambda msg: console_errors.append(msg.text) if msg.type == "error" else None,
     )
 
     await showcase_page.goto(showcase_base_url + "/composer")

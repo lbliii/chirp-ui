@@ -52,10 +52,7 @@ def _super_violations(path: Path) -> list[str]:
 
 def _block_names_in_template(path: Path) -> set[str]:
     source = path.read_text(encoding="utf-8")
-    return {
-        match.group(1)
-        for match in re.finditer(r"\{%-?\s*block\s+([A-Za-z_][\w]*)", source)
-    }
+    return {match.group(1) for match in re.finditer(r"\{%-?\s*block\s+([A-Za-z_][\w]*)", source)}
 
 
 def _showcase_fragment_calls() -> list[tuple[str, str, Path]]:
