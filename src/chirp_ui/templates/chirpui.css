@@ -2761,12 +2761,29 @@ a.chirpui-action-bar__item {
 }
 
 /* Put on SSE / HTMX / custom wrapper around the scroll region inside __messages. */
+
+.chirpui-chat-layout__messages .chirpui-message-thread {
+    border: none;
+    border-radius: 0;
+    background: none;
+    min-height: 0;
+    padding: 0;
+}
+
+.chirpui-chat-layout__input .chirpui-chat-input {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+}
+
 .chirpui-chat-layout__messages-body {
     flex: 1;
     min-height: 0;
     display: flex;
     flex-direction: column;
     position: relative;
+    overflow-y: auto;
 }
 
 @media (max-width: 47.9375rem) {

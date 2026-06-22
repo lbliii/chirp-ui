@@ -656,6 +656,18 @@ class TestDataPage:
         assert "<p>hello</p>" in response.text
 
     @pytest.mark.asyncio
+    async def test_composer_abort_returns_no_content(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.post("/composer/abort")
+        assert response.status == 204
+
+    @pytest.mark.asyncio
+    async def test_composer_dismiss_returns_ok(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.post("/composer/dismiss/demo")
+        assert response.status == 200
+
+    @pytest.mark.asyncio
     async def test_effects_page_wraps_background_macros_with_canvas_height(
         self, showcase_app
     ) -> None:

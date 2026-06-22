@@ -101,11 +101,11 @@ def register(app: App) -> None:
 
     @app.route("/composer/abort", methods=["POST"])
     async def composer_abort(request: Request) -> Response:
-        return Response(status_code=204)
+        return Response(status=204)
 
     @app.route("/composer/dismiss/{file_id}", methods=["POST"])
     async def composer_dismiss(request: Request, file_id: str) -> Response:
-        return Response("", status_code=200)
+        return Response(status=200)
 
     @app.route("/streaming/demo", methods=["GET"])
     async def streaming_demo(request: Request) -> EventStream:
