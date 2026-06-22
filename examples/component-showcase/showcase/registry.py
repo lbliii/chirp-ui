@@ -523,6 +523,18 @@ PAGES: tuple[ShowcasePage, ...] = (
         tags=("streaming", "sse", "model_card"),
     ),
     ShowcasePage(
+        path="/message-turn",
+        title="Message turn surface",
+        section="Rich",
+        description=(
+            "Assistant-turn chrome: actions, meta, reasoning, tool calls, citations, shortcuts."
+        ),
+        nav_order=25,
+        index_card=True,
+        index_order=125,
+        tags=("message_bubble", "citations", "shortcuts"),
+    ),
+    ShowcasePage(
         path="/streaming/demo",
         title="Streaming demo fragment",
         hidden=True,

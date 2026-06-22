@@ -18,7 +18,7 @@
         }
 
         .chirpui-message-meta__time {
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
         }
 
         .chirpui-message-meta__usage {

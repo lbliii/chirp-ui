@@ -79,10 +79,12 @@
         "chirpui-action-bar__icon",
         "chirpui-action-bar__item",
         "chirpui-action-bar__item--active",
+        "chirpui-action-bar__item--danger",
         "chirpui-action-bar__item--disabled"
       ],
       "extra_emits": [
         "chirpui-action-bar__item--active",
+        "chirpui-action-bar__item--danger",
         "chirpui-action-bar__item--disabled"
       ],
       "lineno": 14,
@@ -5666,6 +5668,7 @@
       ],
       "emits": [
         "chirpui-chat-input",
+        "chirpui-chat-input--dock",
         "chirpui-chat-input__composer",
         "chirpui-chat-input__field",
         "chirpui-chat-input__footer"
@@ -5674,7 +5677,9 @@
       "lineno": 15,
       "macro": "chat_input",
       "maturity": "stable",
-      "modifiers": [],
+      "modifiers": [
+        "dock"
+      ],
       "params": [
         {
           "has_default": true,
@@ -5863,7 +5868,8 @@
         "chirpui-chip",
         "chirpui-chip--custom",
         "chirpui-chip--muted",
-        "chirpui-chip--selected"
+        "chirpui-chip--selected",
+        "chirpui-chip--sm"
       ],
       "extra_emits": [],
       "lineno": 12,
@@ -5909,7 +5915,9 @@
       "provides": [],
       "requires": [],
       "role": "component",
-      "sizes": [],
+      "sizes": [
+        "sm"
+      ],
       "slot_forwards": [],
       "slots": [],
       "slots_extracted": [],
@@ -20355,12 +20363,19 @@
         "stack"
       ],
       "emits": [
+        "chirpui-relevance--high",
+        "chirpui-relevance--low",
+        "chirpui-relevance--med",
         "chirpui-sources-summary",
         "chirpui-sources-summary__chip",
         "chirpui-sources-summary__index",
         "chirpui-sources-summary__stack"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-relevance--high",
+        "chirpui-relevance--low",
+        "chirpui-relevance--med"
+      ],
       "lineno": 25,
       "macro": "sources_summary",
       "maturity": "stable",
@@ -21405,13 +21420,18 @@
       ],
       "emits": [
         "chirpui-status-step",
+        "chirpui-status-step--active",
+        "chirpui-status-step--done",
         "chirpui-status-step__body",
         "chirpui-status-step__chips",
         "chirpui-status-step__count",
         "chirpui-status-step__label",
         "chirpui-status-step__marker"
       ],
-      "extra_emits": [],
+      "extra_emits": [
+        "chirpui-status-step--active",
+        "chirpui-status-step--done"
+      ],
       "lineno": 20,
       "macro": "status_step",
       "maturity": "stable",
@@ -25516,8 +25536,8 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 129,
-      "explicit_extra_classes": 547,
+      "explicit_extra_blocks": 131,
+      "explicit_extra_classes": 553,
       "explicit_trim_blocks": 69,
       "explicit_trim_classes": 96
     },

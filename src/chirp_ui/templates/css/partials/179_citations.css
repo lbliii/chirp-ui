@@ -65,7 +65,7 @@
         }
 
         .chirpui-sources-summary__index {
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
         }
     }
 }

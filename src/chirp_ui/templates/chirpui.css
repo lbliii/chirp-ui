@@ -23141,7 +23141,7 @@ a.chirpui-chip:focus-visible {
         }
 
         .chirpui-message-meta__time {
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
         }
 
         .chirpui-message-meta__usage {
@@ -23294,7 +23294,7 @@ a.chirpui-chip:focus-visible {
 
         .chirpui-status-step__count {
             margin-inline-start: var(--chirpui-spacing-xs);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             color: var(--chirpui-text-muted);
         }
 
@@ -23379,7 +23379,7 @@ a.chirpui-chip:focus-visible {
         }
 
         .chirpui-sources-summary__index {
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
         }
     }
 }

@@ -30,11 +30,11 @@ surface with a preferred replacement. Components the manifest marks `internal`
 (Chirp UI composition infrastructure) are intentionally omitted.
 
 <!-- chirpui:generated:start -->
-_361 public components across 17 categories._
+_370 public components across 17 categories._
 
 ## Layout
 
-_50 components._
+_58 components._
 
 | Macro | Maturity | Description |
 |-------|----------|-------------|
@@ -44,6 +44,7 @@ _50 components._
 | `block` | stable | Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block. |
 | `chat_layout` | stable | Chat Layout component |
 | `children` *(CSS / utility)* | stable | - |
+| `citation_chip` | stable | Citations |
 | `clamp-2` *(CSS / utility)* | legacy | - |
 | `clamp-3` *(CSS / utility)* | legacy | - |
 | `cluster` | stable | Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block. |
@@ -64,6 +65,8 @@ _50 components._
 | `list-reset` *(CSS / utility)* | legacy | - |
 | `mb-md` *(CSS / utility)* | legacy | - |
 | `media_object` | stable | Media Object layout primitive |
+| `message_actions` | stable | Message actions |
+| `message_meta` | stable | Message meta |
 | `message_bubble` | stable | Message Bubble component |
 | `metric_grid` | stable | Metric grid/card |
 | `min-w-0` *(CSS / utility)* | legacy | - |
@@ -73,6 +76,7 @@ _50 components._
 | `page_header` | stable | Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block. |
 | `page_hero` | stable | Hero component |
 | `placeholder-inline` *(CSS / utility)* | legacy | - |
+| `reasoning_block` | stable | Reasoning + tool-call disclosure |
 | `scroll_area` | stable | Scroll Area |
 | `scroll-x` *(CSS / utility)* | legacy | - |
 | `search_header` | experimental | Search Header composite |
@@ -82,9 +86,13 @@ _50 components._
 | `shell-action-form` *(CSS / utility)* | experimental | - |
 | `shell_actions_bar` | stable | Shell actions renderer |
 | `shell-section` *(CSS / utility)* | experimental | - |
+| `sources_summary` | stable | Citations |
 | `split_layout` | stable | Split layout |
 | `split_panel` | stable | Split Panel |
 | `stack` | stable | Layout primitives — container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block. |
+| `status_step` | stable | Status timeline |
+| `status_timeline` | stable | Status timeline |
+| `tool_call_card` | stable | Reasoning + tool-call disclosure |
 | `truncate` *(CSS / utility)* | legacy | - |
 | `visually-hidden` *(CSS / utility)* | legacy | - |
 | `workspace_shell` | experimental | Workspace shell |
@@ -144,7 +152,7 @@ _30 components._
 
 ## Control
 
-_23 components._
+_24 components._
 
 | Macro | Maturity | Description |
 |-------|----------|-------------|
@@ -163,6 +171,7 @@ _23 components._
 | `row_actions` | stable | Row actions (kebab menu) |
 | `segmented_control` | stable | Segmented Control |
 | `selection_bar` | stable | Selection Bar |
+| `shortcuts_help` | stable | Keyboard shortcuts help |
 | `slider` | stable | Slider |
 | `split_button` | stable | Split button component |
 | `star-rating` *(CSS / utility)* | stable | - |

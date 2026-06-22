@@ -860,6 +860,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "status-timeline": ComponentDescriptor(
         block="status-timeline",
+        slots=("",),
         template="status_timeline.html",
         category="layout",
         maturity="stable",
@@ -868,6 +869,10 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "status-step": ComponentDescriptor(
         block="status-step",
         elements=("marker", "body", "label", "count", "chips"),
+        extra_emits=(
+            "chirpui-status-step--active",
+            "chirpui-status-step--done",
+        ),
         template="status_timeline.html",
         category="layout",
         maturity="stable",
@@ -884,6 +889,11 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "sources-summary": ComponentDescriptor(
         block="sources-summary",
         elements=("stack", "chip", "index"),
+        extra_emits=(
+            "chirpui-relevance--high",
+            "chirpui-relevance--low",
+            "chirpui-relevance--med",
+        ),
         template="citations.html",
         category="layout",
         maturity="stable",
@@ -2952,6 +2962,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "chat-input": ComponentDescriptor(
         block="chat-input",
         elements=("composer", "field", "footer"),
+        modifiers=("dock",),
         slots=("",),
         template="chat_input.html",
         category="form",
@@ -3149,6 +3160,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         template="action_bar.html",
         extra_emits=(
             "chirpui-action-bar__item--active",
+            "chirpui-action-bar__item--danger",
             "chirpui-action-bar__item--disabled",
         ),
         category="control",
@@ -3584,6 +3596,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     ),
     "chip": ComponentDescriptor(
         block="chip",
+        sizes=("sm",),
         modifiers=("selected", "muted", "custom"),
         template="chip_group.html",
         category="data-display",

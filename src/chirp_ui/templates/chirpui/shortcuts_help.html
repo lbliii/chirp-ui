@@ -14,7 +14,7 @@
 
 {% def shortcuts_help(dialog_id="shortcuts-help", title="Keyboard shortcuts") %}
 <div x-data="chirpuiShortcuts()" x-init="init()" data-shortcuts-host>
-    <script type="application/json" x-ref="catalog">{{ shortcuts_json() | safe }}</script>
+    <script type="application/json" x-ref="catalog">{{ shortcuts_json() | safe(reason="shortcuts catalog JSON from shortcuts_json()") }}</script>
     <dialog id="{{ dialog_id }}" x-ref="dialog" class="chirpui-shortcuts-help" closedby="any"
             aria-labelledby="{{ dialog_id }}-title">
         <div class="chirpui-shortcuts-help__inner">

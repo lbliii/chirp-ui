@@ -103,6 +103,7 @@ def test_index_cards_match_legacy_destinations() -> None:
         "/theme-packs",
         "/ui",
         "/islands",
+        "/message-turn",
         "/streaming",
         "/data-display",
         "/data",

@@ -50,7 +50,7 @@
 
         .chirpui-status-step__count {
             margin-inline-start: var(--chirpui-spacing-xs);
-            font-variant-numeric: tabular-nums;
+            font-variant-numeric: var(--chirpui-nums-tabular);
             color: var(--chirpui-text-muted);
         }
 
