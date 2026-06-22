@@ -13,6 +13,22 @@ Open:
 examples/design-system-gap-showcase/index.html
 ```
 
+For interactive golden screens and shell recipes on a live Chirp app, use the
+Railway component showcase:
+
+```text
+https://chirp-ui-showcase-production.up.railway.app
+```
+
+Golden-screen fixtures:
+
+- [Command Center](https://chirp-ui-showcase-production.up.railway.app/screen-command-center)
+- [Review Queue](https://chirp-ui-showcase-production.up.railway.app/screen-review-queue)
+- [Agent Run Monitor](https://chirp-ui-showcase-production.up.railway.app/screen-agent-run-monitor)
+- [Product/Docs Home](https://chirp-ui-showcase-production.up.railway.app/screen-product-docs-home)
+
+See also `docs/screens/README.md` for archetype selection guidance.
+
 The page is intentionally static. It should work by opening the HTML file in a
 browser, with no dev server and no app backend.
 

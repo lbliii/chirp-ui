@@ -169,21 +169,21 @@
 }
 
 .chirpui-timeline--compact {
-    --chirpui-timeline-marker-size: 0.5rem;
-    --chirpui-timeline-content-gap: var(--chirpui-spacing-sm);
+    --chirpui-timeline-marker-size: var(--chirpui-density-timeline-marker-size);
+    --chirpui-timeline-content-gap: var(--chirpui-density-timeline-content-gap);
 }
 
 .chirpui-timeline--compact .chirpui-timeline__item {
-    padding-bottom: var(--chirpui-spacing);
+    padding-bottom: var(--chirpui-density-timeline-item-padding);
 }
 
 .chirpui-timeline--spacious {
-    --chirpui-timeline-marker-size: 0.75rem;
-    --chirpui-timeline-content-gap: var(--chirpui-spacing-lg);
+    --chirpui-timeline-marker-size: var(--chirpui-density-timeline-marker-size);
+    --chirpui-timeline-content-gap: var(--chirpui-density-timeline-content-gap);
 }
 
 .chirpui-timeline--spacious .chirpui-timeline__item {
-    padding-bottom: var(--chirpui-spacing-xl);
+    padding-bottom: var(--chirpui-density-timeline-item-padding);
 }
 
 .chirpui-timeline--cards .chirpui-timeline__content {

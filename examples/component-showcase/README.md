@@ -2,7 +2,9 @@
 
 Spin up a Chirp app to browse all chirp-ui components.
 
-## Run
+**Live deploy:** https://chirp-ui-showcase-production.up.railway.app
+
+## Run locally
 
 **Option A — pip (standalone):**
 
@@ -29,9 +31,10 @@ fields.
 The curated theme-pack gallery lives at `/theme-packs` and renders the packaged
 Atlas, Ember, and Sage token packs across light, dark, and system modes.
 
-> **Note:** chirp-ui requires `kida-templates>=0.9.0` and the showcase extra
-> installs `bengal-chirp>=0.6.0`. If you see `ModuleNotFoundError`, ensure
-> you're using the same Python environment where the showcase extra was installed.
+> **Note:** The showcase extra installs `bengal-chirp>=0.8.0` (CSP nonce
+> auto-wiring via `use_chirp_ui`) and `kida-templates>=0.9.0`. If you see
+> `ModuleNotFoundError`, ensure you're using the same Python environment where
+> the showcase extra was installed.
 
 ## Optional: Holy Light theme
 
@@ -40,3 +43,49 @@ Add to your base template's `{% block head %}`:
 ```html
 <link rel="stylesheet" href="/static/themes/holy-light.css">
 ```
+
+## Page registry
+
+Every navigable showcase route is declared once in
+`examples/component-showcase/showcase/registry.py`. The registry drives:
+
+- sidebar sections in `templates/base.html`,
+- the home index hierarchy (`/`),
+- command-palette search (⌘K / Ctrl+K),
+- and route ratchets in `tests/test_showcase_registry.py`.
+
+Route handlers live in thin modules under `examples/component-showcase/routes/`;
+fixture data lives in `examples/component-showcase/fixtures/`. The entrypoint
+`app.py` only wires config, CSP, and `register()` calls.
+
+## Add a showcase page
+
+1. **Registry entry** — add a `ShowcasePage(...)` to `showcase/registry.py`
+   (`path`, `title`, `section`, optional `description`, `tags`, flags).
+2. **Template** — add `templates/showcase/your_page.html` (extend `base.html`,
+   fill `{% block main %}`).
+3. **Route** — add a one-liner in the matching `routes/*.py` module using
+   `page(request, "showcase/your_page.html", ...)`.
+4. **Ratchet** — run `uv run pytest tests/test_showcase_registry.py -q` so the
+   new path is covered by the registry ↔ route sync test.
+5. **Smoke** — open the page locally and confirm sidebar highlight + palette
+   search find it.
+
+POST handlers, HTMX fragments, and SSE streams use `hidden=True` and
+`show_in_sidebar=False` in the registry.
+
+## Railway smoke checklist
+
+After deploying to https://chirp-ui-showcase-production.up.railway.app:
+
+1. **Home** — `/` loads; golden screens, shell recipes, and component gallery
+   sections render.
+2. **Search** — ⌘K / Ctrl+K opens the palette; filter `catalog` → navigate to
+   `/catalog-shell`; filter `command` → navigate to `/screen-command-center`.
+3. **Shell recipe** — `/catalog-shell` loads without CSP console errors.
+4. **Interactive demo** — `/demo` loads and submits without CSP console errors.
+5. **Golden screen** — `/screen-command-center` loads with shell CSS scoped to
+   the page (no missing-style flash).
+
+If any step fails, check the browser console for CSP nonce violations and confirm
+the deploy image installed `bengal-chirp>=0.8.0` via `pip install ".[showcase]"`.

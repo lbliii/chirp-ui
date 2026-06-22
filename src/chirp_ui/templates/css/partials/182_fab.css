@@ -1,0 +1,105 @@
+/* ==========================================================================
+   Floating action button (#256)
+   ========================================================================== */
+
+.chirpui-fab {
+    position: fixed;
+    z-index: var(--chirpui-z-fab);
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--chirpui-fab-size);
+    block-size: var(--chirpui-fab-size);
+    min-inline-size: var(--chirpui-control-touch-target);
+    min-block-size: var(--chirpui-control-touch-target);
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--chirpui-radius-full, 9999px);
+    box-shadow: var(--chirpui-shadow-lg);
+    cursor: pointer;
+    font: inherit;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+        background var(--chirpui-transition),
+        color var(--chirpui-transition),
+        border-color var(--chirpui-transition),
+        box-shadow var(--chirpui-transition),
+        transform var(--chirpui-transition-fast);
+}
+
+.chirpui-fab:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+}
+
+.chirpui-fab__icon {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 1.35em;
+    block-size: 1.35em;
+    font-size: 1.25rem;
+}
+
+.chirpui-fab--primary {
+    color: var(--chirpui-on-accent);
+    background: var(--chirpui-accent);
+    border-color: color-mix(in srgb, var(--chirpui-accent) 88%, black);
+}
+
+.chirpui-fab--primary:hover {
+    background: color-mix(in srgb, var(--chirpui-accent) 92%, white);
+}
+
+.chirpui-fab--ghost {
+    color: var(--chirpui-text);
+    background: var(--chirpui-surface);
+    border-color: var(--chirpui-border);
+}
+
+.chirpui-fab--ghost:hover {
+    background: var(--chirpui-bg-subtle);
+}
+
+.chirpui-fab--danger {
+    color: var(--chirpui-on-danger, var(--chirpui-on-accent));
+    background: var(--chirpui-danger);
+    border-color: color-mix(in srgb, var(--chirpui-danger) 88%, black);
+}
+
+.chirpui-fab--bottom-end {
+    inset-block-end: var(--chirpui-fab-inset);
+    inset-inline-end: var(--chirpui-fab-inset);
+}
+
+.chirpui-fab--bottom-start {
+    inset-block-end: var(--chirpui-fab-inset);
+    inset-inline-start: var(--chirpui-fab-inset);
+}
+
+.chirpui-fab--top-end {
+    inset-block-start: var(--chirpui-fab-inset);
+    inset-inline-end: var(--chirpui-fab-inset);
+}
+
+.chirpui-fab--top-start {
+    inset-block-start: var(--chirpui-fab-inset);
+    inset-inline-start: var(--chirpui-fab-inset);
+}
+
+@media (max-width: 48rem) {
+    .chirpui-fab--desktop-only {
+        display: none;
+    }
+}
+
+@media (min-width: 48rem) {
+    .chirpui-fab--mobile-only {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .chirpui-fab:active {
+        transform: scale(0.96);
+    }
+}

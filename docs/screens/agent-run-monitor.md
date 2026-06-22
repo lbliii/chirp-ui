@@ -3,6 +3,7 @@
 Status: golden screen fixture
 Profile: `signal` candidate
 Fixture route: `/screen-agent-run-monitor`
+Live demo: https://chirp-ui-showcase-production.up.railway.app/screen-agent-run-monitor
 Source template:
 `examples/component-showcase/templates/showcase/screen_agent_run_monitor.html`
 Proof: `tests/test_data_integration.py`,

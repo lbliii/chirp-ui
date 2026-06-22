@@ -42,6 +42,8 @@ SHOWCASE_ROUTE_SMOKE_PATHS = (
     "/islands/wizard-state",
     "/islands/upload-state",
     "/streaming",
+    "/message-turn",
+    "/composer",
     "/data-display",
     "/catalog-shell",
     "/catalog-shell?q=rag&category=intelligence",
@@ -88,6 +90,7 @@ SHOWCASE_FRAGMENT_OR_ACTION_ROUTES = {
     "/ui/tab/{name}",
     "/streaming/demo",
     "/streaming/retry",
+    "/composer/send",
     "/data/table",
     "/data/bulk-bar",
     "/data/export",
@@ -638,6 +641,14 @@ class TestDataPage:
             missing_mode = await client.get("/theme-packs/preview/atlas/sepia")
         assert missing_pack.status == 404
         assert missing_mode.status == 404
+
+    @pytest.mark.asyncio
+    async def test_composer_send_returns_message_bubble_fragment(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.post("/composer/send", data={"message": "hello"})
+        assert response.status == 200
+        assert "chirpui-message-bubble--right" in response.text
+        assert "<p>hello</p>" in response.text
 
     @pytest.mark.asyncio
     async def test_effects_page_wraps_background_macros_with_canvas_height(

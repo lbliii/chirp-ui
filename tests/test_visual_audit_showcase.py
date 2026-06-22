@@ -138,6 +138,21 @@ def test_visual_audit_showcase_keeps_theme_tokens_public() -> None:
     assert "--chirp_theme-" not in text
 
 
+def test_visual_audit_docs_link_live_golden_screens() -> None:
+    text = (REPO_ROOT / "docs" / "patterns" / "visual-audit-showcase.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "https://chirp-ui-showcase-production.up.railway.app" in text
+    for route in [
+        "/screen-command-center",
+        "/screen-review-queue",
+        "/screen-agent-run-monitor",
+        "/screen-product-docs-home",
+    ]:
+        assert route in text
+
+
 def test_visual_audit_docs_pin_application_chrome_rhythm_matrix() -> None:
     text = (REPO_ROOT / "docs" / "patterns" / "visual-audit-showcase.md").read_text(
         encoding="utf-8"

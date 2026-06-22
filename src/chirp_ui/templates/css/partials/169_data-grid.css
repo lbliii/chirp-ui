@@ -70,7 +70,7 @@
         }
 
         &.chirpui-data-grid--compact {
-            gap: var(--chirpui-spacing-xs);
+            gap: var(--chirpui-density-grid-gap);
         }
     }
 }

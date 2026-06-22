@@ -274,6 +274,23 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         category="control",
         maturity="stable",
     ),
+    "fab": ComponentDescriptor(
+        block="fab",
+        elements=("icon",),
+        variants=("", "primary", "ghost", "danger"),
+        template="fab.html",
+        extra_emits=(
+            "chirpui-fab--bottom-end",
+            "chirpui-fab--bottom-start",
+            "chirpui-fab--top-end",
+            "chirpui-fab--top-start",
+            "chirpui-fab--mobile-only",
+            "chirpui-fab--desktop-only",
+            "chirpui-command-palette-trigger--desktop-only",
+        ),
+        category="control",
+        maturity="stable",
+    ),
     "shimmer-btn": ComponentDescriptor(
         block="shimmer-btn",
         variants=("", "default", "primary"),

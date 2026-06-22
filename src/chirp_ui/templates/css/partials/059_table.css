@@ -209,8 +209,8 @@
 
         &.chirpui-table--compact .chirpui-table__th,
         &.chirpui-table--compact .chirpui-table__td {
-            padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
-            font-size: var(--chirpui-font-sm);
+            padding: var(--chirpui-density-cell-padding-y) var(--chirpui-density-cell-padding-x);
+            font-size: var(--chirpui-density-cell-font-size);
         }
 
         /* Per-column alignment utilities */

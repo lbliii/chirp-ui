@@ -1,0 +1,121 @@
+/* ==========================================================================
+   Unified density scale (#258)
+   Comfortable default; compact/dense cascade via data-density or utility class.
+   Per-component --compact / --dense / --relaxed modifiers alias the same tokens.
+   ========================================================================== */
+
+:root {
+    --chirpui-density-cell-padding-y: var(--chirpui-spacing-sm);
+    --chirpui-density-cell-padding-x: var(--chirpui-spacing);
+    --chirpui-density-cell-font-size: inherit;
+    --chirpui-density-field-margin-bottom: var(--chirpui-spacing);
+    --chirpui-density-field-label-gap: var(--chirpui-spacing-xs);
+    --chirpui-density-field-input-padding-y: var(--chirpui-spacing-sm);
+    --chirpui-density-field-input-padding-x: var(--chirpui-spacing);
+    --chirpui-density-field-font-size: inherit;
+    --chirpui-density-header-padding: var(--chirpui-page-header-padding);
+    --chirpui-density-header-gap: var(--chirpui-page-header-gap);
+    --chirpui-density-header-title-size: var(--chirpui-page-header-title-size);
+    --chirpui-density-header-title-weight: var(--chirpui-page-header-title-weight);
+    --chirpui-density-list-row-gap: var(--chirpui-spacing-sm);
+    --chirpui-density-section-gap: var(--chirpui-spacing-md);
+    --chirpui-density-grid-gap: var(--chirpui-spacing-md);
+    --chirpui-density-timeline-item-padding: var(--chirpui-spacing-lg);
+    --chirpui-density-timeline-marker-size: 0.625rem;
+    --chirpui-density-timeline-content-gap: var(--chirpui-spacing);
+}
+
+[data-density="compact"],
+.chirpui-density--compact {
+    --chirpui-density-cell-padding-y: var(--chirpui-spacing-xs);
+    --chirpui-density-cell-padding-x: var(--chirpui-spacing-sm);
+    --chirpui-density-cell-font-size: var(--chirpui-font-sm);
+    --chirpui-density-field-margin-bottom: var(--chirpui-spacing-xs);
+    --chirpui-density-field-label-gap: 2px;
+    --chirpui-density-field-input-padding-y: var(--chirpui-spacing-xs);
+    --chirpui-density-field-input-padding-x: var(--chirpui-spacing-sm);
+    --chirpui-density-field-font-size: var(--chirpui-font-sm);
+    --chirpui-density-header-padding: 0.6rem 1.25rem;
+    --chirpui-density-header-gap: var(--chirpui-space-control-gap);
+    --chirpui-density-header-title-size: var(--chirpui-ui-base);
+    --chirpui-density-header-title-weight: var(--chirpui-ui-font-weight-semibold);
+    --chirpui-density-list-row-gap: var(--chirpui-spacing-xs);
+    --chirpui-density-section-gap: var(--chirpui-spacing-sm);
+    --chirpui-density-grid-gap: var(--chirpui-spacing-xs);
+    --chirpui-density-timeline-item-padding: var(--chirpui-spacing);
+    --chirpui-density-timeline-marker-size: 0.5rem;
+    --chirpui-density-timeline-content-gap: var(--chirpui-spacing-sm);
+}
+
+[data-density="dense"],
+.chirpui-density--dense {
+    --chirpui-density-cell-padding-y: var(--chirpui-spacing-2xs);
+    --chirpui-density-cell-padding-x: var(--chirpui-spacing-xs);
+    --chirpui-density-cell-font-size: var(--chirpui-font-xs);
+    --chirpui-density-field-margin-bottom: var(--chirpui-spacing-2xs);
+    --chirpui-density-field-label-gap: 2px;
+    --chirpui-density-field-input-padding-y: var(--chirpui-spacing-2xs);
+    --chirpui-density-field-input-padding-x: var(--chirpui-spacing-xs);
+    --chirpui-density-field-font-size: var(--chirpui-font-xs);
+    --chirpui-density-header-padding: 0.45rem 1rem;
+    --chirpui-density-header-gap: var(--chirpui-spacing-2xs);
+    --chirpui-density-header-title-size: var(--chirpui-ui-sm);
+    --chirpui-density-header-title-weight: var(--chirpui-ui-font-weight-semibold);
+    --chirpui-density-list-row-gap: var(--chirpui-spacing-2xs);
+    --chirpui-density-section-gap: var(--chirpui-spacing-xs);
+    --chirpui-density-grid-gap: var(--chirpui-spacing-2xs);
+    --chirpui-density-timeline-item-padding: var(--chirpui-spacing-sm);
+    --chirpui-density-timeline-marker-size: 0.4375rem;
+    --chirpui-density-timeline-content-gap: var(--chirpui-spacing-xs);
+}
+
+/* Per-component modifiers alias the shared scale (backward compatible). */
+
+.chirpui-table--compact,
+.chirpui-data-grid--compact .chirpui-data-grid__table {
+    --chirpui-density-cell-padding-y: var(--chirpui-spacing-xs);
+    --chirpui-density-cell-padding-x: var(--chirpui-spacing-sm);
+    --chirpui-density-cell-font-size: var(--chirpui-font-sm);
+}
+
+.chirpui-field--dense {
+    --chirpui-density-field-margin-bottom: var(--chirpui-spacing-xs);
+    --chirpui-density-field-label-gap: 2px;
+    --chirpui-density-field-input-padding-y: var(--chirpui-spacing-xs);
+    --chirpui-density-field-input-padding-x: var(--chirpui-spacing-sm);
+    --chirpui-density-field-font-size: var(--chirpui-font-sm);
+}
+
+.chirpui-page-header--compact {
+    --chirpui-density-header-padding: 0.6rem 1.25rem;
+    --chirpui-density-header-gap: var(--chirpui-space-control-gap);
+    --chirpui-density-header-title-size: var(--chirpui-ui-base);
+    --chirpui-density-header-title-weight: var(--chirpui-ui-font-weight-semibold);
+}
+
+.chirpui-timeline--compact {
+    --chirpui-density-timeline-marker-size: 0.5rem;
+    --chirpui-density-timeline-content-gap: var(--chirpui-spacing-sm);
+    --chirpui-density-timeline-item-padding: var(--chirpui-spacing);
+}
+
+.chirpui-timeline--spacious {
+    --chirpui-density-timeline-marker-size: 0.75rem;
+    --chirpui-density-timeline-content-gap: var(--chirpui-spacing-lg);
+    --chirpui-density-timeline-item-padding: var(--chirpui-spacing-xl);
+}
+
+.chirpui-dl--compact {
+    --chirpui-density-list-row-gap: var(--chirpui-spacing-xs);
+}
+
+.chirpui-dl--relaxed,
+.chirpui-config-row-list--relaxed,
+.chirpui-settings-row-list--relaxed {
+    --chirpui-density-list-row-gap: var(--chirpui-spacing);
+}
+
+.chirpui-data-table--compact,
+.chirpui-data-grid--compact {
+    --chirpui-density-grid-gap: var(--chirpui-spacing-sm);
+}

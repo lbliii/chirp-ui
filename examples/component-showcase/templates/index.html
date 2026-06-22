@@ -21,7 +21,44 @@
 </section>
 
 <header class="chirpui-stack chirpui-stack--sm">
-  <h2 style="font-size: 1.25rem;">Components</h2>
+  <h2 style="font-size: 1.25rem;">Golden screens</h2>
+  <p class="showcase-copy showcase-copy--section">
+    Complete product-situation fixtures — start here when choosing an app archetype.
+  </p>
+</header>
+
+{% call grid(cols=2) %}
+{% for page in showcase_golden_screens %}
+{% call block() %}
+{% call card_link(page.path, page.title) %}
+<p>{{ page.description | safe }}</p>
+{% end %}
+{% end %}
+{% endfor %}
+{% end %}
+
+<header class="chirpui-stack chirpui-stack--sm">
+  <h2 style="font-size: 1.25rem;">Shell recipes</h2>
+  <p class="showcase-copy showcase-copy--section">
+    Catalog, operations, and support shells you can fork for route-aware app chrome.
+  </p>
+</header>
+
+{% call grid(cols=2) %}
+{% for page in showcase_shell_recipes %}
+{% call block() %}
+{% call card_link(page.path, page.title) %}
+<p>{{ page.description | safe }}</p>
+{% end %}
+{% end %}
+{% endfor %}
+{% end %}
+
+<header class="chirpui-stack chirpui-stack--sm">
+  <h2 style="font-size: 1.25rem;">Component gallery</h2>
+  <p class="showcase-copy showcase-copy--section">
+    Macro-level demos for primitives, data surfaces, effects, and rich media patterns.
+  </p>
 </header>
 
 {% call grid(cols=2) %}

@@ -122,13 +122,13 @@
 
 /* --- Shared: relaxed density --- */
 .chirpui-dl--relaxed .chirpui-dl__row {
-    margin-bottom: var(--chirpui-spacing);
+    margin-bottom: var(--chirpui-density-list-row-gap);
 }
 .chirpui-config-row-list--relaxed {
-    row-gap: var(--chirpui-spacing);
+    row-gap: var(--chirpui-density-list-row-gap);
 }
 .chirpui-settings-row-list--relaxed {
-    row-gap: var(--chirpui-spacing);
+    row-gap: var(--chirpui-density-list-row-gap);
 }
 
 /* Settings row: surface/card-aware — adapt hover bg on non-default contexts */

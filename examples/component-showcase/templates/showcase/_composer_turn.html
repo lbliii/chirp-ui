@@ -1,6 +1,8 @@
 {% from "chirpui/message_bubble.html" import message_bubble %}
+{% block composer_turn %}
 {% call message_bubble(align="right") %}
 <div>
   <p>{{ message }}</p>
 </div>
+{% end %}
 {% end %}

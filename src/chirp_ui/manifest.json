@@ -9710,6 +9710,168 @@
       "trim_emits": [],
       "variants": []
     },
+    "fab": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "fab",
+      "category": "control",
+      "composes": [],
+      "consumes": [],
+      "description": "Floating Action Button\n    Fixed-position circular action button for mobile-primary affordances.\n\n    Usage:\n        from \"chirpui/fab.html\" import fab\n\n        fab(\"search\", aria_label=\"Search\", href=\"/search\")\n        fab(\"plus\", aria_label=\"Create\", variant=\"primary\", corner=\"bottom-end\",\n            visibility=\"mobile-only\", hx={\"post\": \"/new\", \"target\": \"#main\"})\n\n    `target` wires the FAB to open a native ``<dialog>`` via ``chirpuiDialogTarget()``\n    (focus returns to the FAB on close). Pair with ``command_palette_fab()`` for\n    mobile command-palette access.\n\n    hx={...} — preferred for htmx attributes on button FABs.",
+      "elements": [
+        "icon"
+      ],
+      "emits": [
+        "chirpui-command-palette-trigger--desktop-only",
+        "chirpui-fab",
+        "chirpui-fab--bottom-end",
+        "chirpui-fab--bottom-start",
+        "chirpui-fab--danger",
+        "chirpui-fab--desktop-only",
+        "chirpui-fab--ghost",
+        "chirpui-fab--mobile-only",
+        "chirpui-fab--primary",
+        "chirpui-fab--top-end",
+        "chirpui-fab--top-start",
+        "chirpui-fab__icon"
+      ],
+      "extra_emits": [
+        "chirpui-command-palette-trigger--desktop-only",
+        "chirpui-fab--bottom-end",
+        "chirpui-fab--bottom-start",
+        "chirpui-fab--desktop-only",
+        "chirpui-fab--mobile-only",
+        "chirpui-fab--top-end",
+        "chirpui-fab--top-start"
+      ],
+      "lineno": 18,
+      "macro": "fab",
+      "maturity": "stable",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "icon"
+        },
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "aria_label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "variant"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "corner"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "visibility"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "target"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "href"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "type"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "disabled"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_get"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_post"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_put"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_patch"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_delete"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_target"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_swap"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_sync"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "hx_disabled_elt"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine",
+        "htmx"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "fab.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": [
+        "",
+        "danger",
+        "ghost",
+        "primary"
+      ]
+    },
     "facet-chip": {
       "appearances": [],
       "authoring": "available",
@@ -25722,7 +25884,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 323,
+      "available": 324,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -25732,7 +25894,7 @@
       "composite": 1,
       "container": 9,
       "content": 11,
-      "control": 24,
+      "control": 25,
       "data-display": 38,
       "effect": 46,
       "feedback": 26,
@@ -25751,22 +25913,22 @@
       "experimental": 108,
       "internal": 2,
       "legacy": 39,
-      "stable": 225
+      "stable": 226
     },
     "component_requirements": {
-      "alpine": 37,
-      "htmx": 30
+      "alpine": 38,
+      "htmx": 31
     },
     "component_roles": {
-      "component": 206,
+      "component": 207,
       "effect": 32,
       "infrastructure": 2,
       "pattern": 22,
       "primitive": 112
     },
     "components_with_consumes": 20,
-    "components_with_description": 269,
-    "components_with_params": 269,
+    "components_with_description": 270,
+    "components_with_params": 270,
     "components_with_provides": 12,
     "manifest_quality": {
       "missing_description": 0,
@@ -25774,7 +25936,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 267
+      "public_templated_components": 268
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -25782,8 +25944,8 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 133,
-      "explicit_extra_classes": 563,
+      "explicit_extra_blocks": 134,
+      "explicit_extra_classes": 570,
       "explicit_trim_blocks": 69,
       "explicit_trim_classes": 96
     },
@@ -25797,7 +25959,7 @@
       "spacing": 30,
       "typography": 46
     },
-    "total_components": 374,
+    "total_components": 375,
     "total_theme_packs": 3,
     "total_tokens": 440
   },

@@ -88,6 +88,8 @@ body {
     --chirpui-control-block-size: 2.5rem;
     --chirpui-control-block-size-sm: 2rem;
     --chirpui-control-touch-target: 2.5rem;
+    --chirpui-fab-size: 3.5rem;
+    --chirpui-fab-inset: var(--chirpui-spacing);
     --chirpui-measure-sm: 22rem;
     --chirpui-measure-md: 32rem;
     --chirpui-measure-lg: 48rem;
@@ -471,6 +473,7 @@ body {
     --chirpui-z-popover: 20;
     --chirpui-z-sticky-col: 40;
     --chirpui-z-sticky: 50;
+    --chirpui-z-fab: 55;
     --chirpui-z-sticky-corner: 60;
     --chirpui-z-toast: 100;
     --chirpui-z-tray: 1100;

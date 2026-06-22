@@ -1,0 +1,1 @@
+Added Premium Polish Phase A tail: `fab()` floating action button with mobile breakpoint gating and `command_palette_fab()` for palette access, plus a unified `--chirpui-density-*` scale with container `data-density` / `.chirpui-density--*` cascading and per-component compact/dense aliases.

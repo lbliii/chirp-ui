@@ -3,6 +3,7 @@
 Status: golden screen fixture
 Profile: `atlas`
 Fixture route: `/screen-command-center`
+Live demo: https://chirp-ui-showcase-production.up.railway.app/screen-command-center
 Source template: `examples/component-showcase/templates/showcase/operations_shell.html`
 Proof: `tests/test_data_integration.py`,
 `tests/browser/test_golden_screen_fixtures.py`

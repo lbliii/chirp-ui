@@ -77,12 +77,18 @@
 {% end %}
 {% end %}
 
-{% def command_palette_trigger(target="command-palette", label="Search", placeholder=none, shortcut="⌘K", icon=none, aria_label=none, density="md", cls="") %}
+{% def command_palette_fab(target="command-palette", icon="search", aria_label="Open command palette", variant="primary", corner="bottom-end", cls="") %}
+{% from "chirpui/fab.html" import fab %}
+{{ fab(icon, aria_label, variant=variant, corner=corner, visibility="mobile-only", target=target, cls=cls) }}
+{% end %}
+
+{% def command_palette_trigger(target="command-palette", label="Search", placeholder=none, shortcut="⌘K", icon=none, aria_label=none, density="md", desktop_only=false, cls="") %}
 {% set density = density | validate_variant(("sm","md"), "md") %}
 {% set visible_label = placeholder if placeholder is not none else label %}
 {% set control_label = aria_label if aria_label is not none else label %}
+{% set desktop_class = " chirpui-command-palette-trigger--desktop-only" if desktop_only else "" %}
 <button type="button"
-        class="chirpui-command-palette__trigger chirpui-command-palette-trigger chirpui-command-palette-trigger--{{ density }}{{ " " ~ cls if cls else "" }}"
+        class="chirpui-command-palette__trigger chirpui-command-palette-trigger chirpui-command-palette-trigger--{{ density }}{{ desktop_class }}{{ " " ~ cls if cls else "" }}"
         aria-label="{{ control_label }}"
         x-data="chirpuiDialogTarget()"
         data-dialog-target="{{ target }}"
