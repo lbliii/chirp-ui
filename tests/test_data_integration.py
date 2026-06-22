@@ -83,6 +83,7 @@ SHOWCASE_ROUTE_SMOKE_PATHS = (
 
 SHOWCASE_FRAGMENT_OR_ACTION_ROUTES = {
     "/toast",
+    "/favicon.ico",
     "/showcase/pages.json",
     "/demo/submit",
     "/demo/stream",

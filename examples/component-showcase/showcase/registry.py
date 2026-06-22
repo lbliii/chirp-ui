@@ -123,6 +123,12 @@ PAGES: tuple[ShowcasePage, ...] = (
         show_in_sidebar=False,
     ),
     ShowcasePage(
+        path="/favicon.ico",
+        title="Favicon redirect",
+        hidden=True,
+        show_in_sidebar=False,
+    ),
+    ShowcasePage(
         path="/showcase/pages.json",
         title="Showcase page index JSON",
         hidden=True,
