@@ -29,6 +29,7 @@ from chirp_ui.alpine import (
     check_alpine_runtime,
 )
 from chirp_ui.components import DesignSystemReport, DesignSystemStats, design_system_report
+from chirp_ui.css_subset import CssSubsetPlan, resolve_partial_paths
 from chirp_ui.config_schema import (
     Field,
     ProjectedField,
@@ -82,6 +83,7 @@ __all__ = [
     "ChirpUIWarning",
     "Column",
     "ColumnSort",
+    "CssSubsetPlan",
     "DesignSystemReport",
     "DesignSystemStats",
     "Field",
@@ -108,6 +110,7 @@ __all__ = [
     "register_colors",
     "register_filters",
     "reset_colors",
+    "resolve_partial_paths",
     "selection_state",
     "set_strict",
     "shortcuts_by_category",

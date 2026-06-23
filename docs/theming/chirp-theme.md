@@ -152,6 +152,13 @@ package. Share and LLM-copy controls depend on
 `data-action="copy-url"` or `data-action="copy-llm-txt"` must keep that script
 in the base script list.
 
+**Alpine policy (#192):** theme shell chrome (nav, search, theme menu) uses
+native `<dialog>` / `<popover>` and theme JS — not Alpine. Embedded chirp-ui
+macros in docs content require Alpine core; `base.html` loads the safeData shim
+before `library_asset_tags()` and Alpine core after. See
+[bengal-alpine-policy.md](bengal-alpine-policy.md) and
+[../integration/csp.md](../integration/csp.md).
+
 The theme should eventually cover the same broad content/output families users
 expect from Bengal: autodoc and reference pages, tutorials, tracks, notebooks,
 changelog and resume views, taxonomy/archive/author pages, search, errors, and

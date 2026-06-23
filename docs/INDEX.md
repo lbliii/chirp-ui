@@ -16,6 +16,7 @@ Adoption guides for using chirp-ui **without Chirp** — shared core plus
 per-framework glue. Part of saga [#284](https://github.com/lbliii/chirp-ui/issues/284).
 
 - [standalone-core.md](integration/standalone-core.md) — Bare kida bootstrap, static assets, Alpine.safeData shim, CSRF, checklist
+- [csp.md](integration/csp.md) — Content-Security-Policy contract (`unsafe-eval`, nonces, Chirp vs standalone)
 - [capability-matrix.md](integration/capability-matrix.md) — Chirp (free) vs standalone (hand-roll) vs lost/degraded
 - [flask.md](integration/flask.md) — Flask integration guide *(#286)*
 - [fastapi.md](integration/fastapi.md) — FastAPI integration guide *(#287)*

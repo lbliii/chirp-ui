@@ -181,6 +181,37 @@ if not result.ok:
     raise RuntimeError(result.problems)
 ```
 
+**CSP:** interactive macros require `script-src 'unsafe-eval'` with standard
+Alpine (plus a nonce or `'unsafe-inline'` for the safeData shim). See
+[csp.md](csp.md) for the full contract — a secure CSP without `'unsafe-eval'`
+silently disables every Alpine component.
+
+---
+
+## CSS subset (ship only what you use)
+
+The committed `chirpui.css` includes every component (~700KB unminified). For
+standalone apps that import a handful of macros, emit a **manifest-driven
+subset**:
+
+```bash
+python scripts/build_chirpui_css.py --components card,btn,badge,form,alert \
+  -o static/chirpui.subset.css
+```
+
+Or from Python:
+
+```python
+from chirp_ui.css_subset import CssSubsetPlan
+
+plan = CssSubsetPlan.for_components(["card", "btn", "badge"])
+paths = plan.partial_paths  # foundation + utilities + matched partials
+```
+
+Foundation partials (tokens, reset, base, layout) and shared utilities are
+always included. Load `chirpui-transitions.css` separately if you use motion
+classes. The monolithic `chirpui.css` remains the canonical full bundle.
+
 ---
 
 ## htmx
@@ -261,6 +292,7 @@ per route.
 | [flask.md](flask.md) | Flask / WSGI glue |
 | [fastapi.md](fastapi.md) | FastAPI / Starlette glue |
 | [django.md](django.md) | Django glue (most hand-roll, largest upgrade payoff) |
+| [csp.md](csp.md) | Content-Security-Policy contract for interactive macros |
 
 When the standalone seams feel heavy, [Chirp's `use_chirp_ui`](https://lbliii.github.io/chirp/docs/guides/chirp-ui/)
 deletes the glue — it is the destination, not the requirement.

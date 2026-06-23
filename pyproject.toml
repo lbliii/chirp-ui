@@ -254,6 +254,7 @@ format-check = { cmd = "ruff format . --check", help = "Check formatting" }
 lint-js = { cmd = "npx --yes @biomejs/biome@1.9.4 check src/bengal_themes/chirp_theme/assets/js", help = "Advisory biome lint over the Bengal theme assets/js (not part of `poe ci`)" }
 lint-js-fix = { cmd = "npx --yes @biomejs/biome@1.9.4 check --write src/bengal_themes/chirp_theme/assets/js", help = "Apply biome's safe auto-fixes to the Bengal theme assets/js" }
 build-css = { cmd = "python scripts/build_chirpui_css.py", help = "Concat CSS partials into chirpui.css" }
+build-css-subset = { cmd = "python scripts/build_chirpui_css.py --components card,btn,badge", help = "Example manifest-driven CSS subset (pass --output)" }
 build-css-check = { cmd = "python scripts/build_chirpui_css.py --check", help = "Fail if chirpui.css is stale relative to partials" }
 build-manifest = { cmd = "python scripts/build_manifest.py", help = "Emit src/chirp_ui/manifest.json from the registry" }
 build-manifest-check = { cmd = "python scripts/build_manifest.py --check", help = "Fail if manifest.json is stale relative to the registry" }
