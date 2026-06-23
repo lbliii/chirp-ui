@@ -980,6 +980,10 @@ def create_app() -> App:
     async def context_menu_page(request: Request):
         return Template("context_menu_page.html", page_title="Context Menu")
 
+    @app.route("/input-otp")
+    async def input_otp_page(request: Request):
+        return Template("input_otp_page.html", page_title="Input OTP")
+
     @app.route("/combobox")
     async def combobox_page(request: Request):
         return Template("combobox_page.html", page_title="Combobox")

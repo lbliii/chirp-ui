@@ -1,0 +1,75 @@
+{#- chirp-ui: Menubar
+    Horizontal application menu bar with keyboard roving between top-level
+    triggers and vertical submenus. Each menu entry is a dict:
+    {label, items: [{label, action?|href?, icon?, variant?, disabled?}, ...]}.
+    Requires Alpine.js.
+
+    Usage:
+        from "chirpui/menubar.html" import menubar
+
+        {{ menubar(label="Application", items=[
+            {"label": "File", "items": [
+                {"label": "New", "action": "new"},
+                {"label": "Open", "action": "open"},
+            ]},
+            {"label": "Edit", "items": [
+                {"label": "Undo", "action": "undo"},
+            ]},
+        ]) }}
+-#}
+
+{% def menubar(items, label="Application menu", id="chirpui-menubar") %}
+<div class="chirpui-menubar" id="{{ id }}" role="menubar" aria-label="{{ label }}"
+     x-id="['menubar-panel']"
+     x-data="chirpuiMenubar()"
+     x-init="init()"
+     data-menu-count="{{ items | length }}"
+     @keydown.escape.prevent.stop="closeAll()"
+     @click.outside="closeAll()"
+     @focusin.window="openIndex >= 0 && !$refs['panel-' + openIndex]?.contains($event.target) && closeAll()">
+    {% for menu in items %}
+    {% set _idx = loop.index0 %}
+    <div class="chirpui-menubar__root">
+        <button type="button" class="chirpui-menubar__trigger" x-ref="trigger-{{ _idx }}"
+                role="menuitem" tabindex="0" aria-haspopup="menu"
+                :aria-expanded="openIndex === {{ _idx }}"
+                :aria-controls="$id('menubar-panel', {{ _idx }})"
+                @click="openMenu({{ _idx }})"
+                @keydown="onTriggerKeydown($event, {{ _idx }})">
+            {{ menu.get("label", "") }}
+        </button>
+        <div class="chirpui-menubar__menu" x-ref="panel-{{ _idx }}"
+             :id="$id('menubar-panel', {{ _idx }})"
+             role="menu" aria-orientation="vertical"
+             x-show="openIndex === {{ _idx }}" x-cloak x-transition
+             @keydown.escape.prevent.stop="closeAll({{ _idx }})">
+            {% for item in menu.get("items", []) %}
+            {% set _variant = item.get("variant", "default") | validate_variant_block("menubar__item", "default") %}
+            {% set _href = item.get("href") %}
+            {% set _action = item.get("action", "") %}
+            {% set _disabled = item.get("disabled") %}
+            {% if _href and not _disabled %}
+            <a class="chirpui-menubar__item chirpui-menubar__item--{{ _variant }}" href="{{ _href }}"
+               role="menuitem" tabindex="-1"
+               data-label="{{ item.get('label', '') }}" data-href="{{ _href }}"
+               {{ route_link_attrs(_href) | html_attrs }}
+               @click="closeAll({{ _idx }})">
+                {% if item.get("icon") %}<span class="chirpui-menubar__icon" aria-hidden="true">{{ item.get("icon") }}</span>{% endif %}
+                {{ item.get("label", "") }}
+            </a>
+            {% else %}
+            <button type="button" class="chirpui-menubar__item chirpui-menubar__item--{{ _variant }}"
+                    role="menuitem" tabindex="-1"
+                    data-label="{{ item.get('label', '') }}"{% if _action %} data-action="{{ _action }}"{% endif %}
+                    {% if _disabled %} aria-disabled="true"{% endif %}
+                    @click="closeAll({{ _idx }}); $dispatch('chirpui:menubar-selected', { label: $el.dataset.label, action: $el.dataset.action || null })">
+                {% if item.get("icon") %}<span class="chirpui-menubar__icon" aria-hidden="true">{{ item.get("icon") }}</span>{% endif %}
+                {{ item.get("label", "") }}
+            </button>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% end %}

@@ -1,0 +1,44 @@
+/* ==========================================================================
+   Hover Card — delayed hover/focus preview
+   ========================================================================== */
+
+.chirpui-hover-card {
+    position: relative;
+    display: inline-block;
+}
+
+.chirpui-hover-card__trigger {
+    display: inline-block;
+}
+
+.chirpui-hover-card__content {
+    position: absolute;
+    left: 0;
+    top: calc(100% + var(--chirpui-spacing-xs));
+    z-index: var(--chirpui-z-popover);
+    min-inline-size: 12rem;
+    max-inline-size: min(20rem, calc(100vw - 1rem));
+    padding: var(--chirpui-spacing);
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    background: var(--chirpui-surface);
+    box-shadow: var(--chirpui-elevation-floating);
+    font-size: var(--chirpui-font-sm);
+    line-height: var(--chirpui-line-height-normal);
+}
+
+.chirpui-hover-card[data-align-x="end"] .chirpui-hover-card__content {
+    right: 0;
+    left: auto;
+}
+
+.chirpui-hover-card[data-align-y="top"] .chirpui-hover-card__content {
+    top: auto;
+    bottom: calc(100% + var(--chirpui-spacing-xs));
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chirpui-hover-card__content {
+        transition: none !important;
+    }
+}

@@ -1,0 +1,37 @@
+{#- chirp-ui: Input OTP
+    Grouped one-time-code input fields with paste, backspace, and arrow-key
+    navigation. Emits `chirpui:otp-change` with {value} as digits are entered.
+    A hidden input carries the composed value for form posts.
+
+    Usage:
+        from "chirpui/input_otp.html" import input_otp
+
+        {{ input_otp("otp", length=6, label="Verification code") }}
+-#}
+
+{% def input_otp(name, length=6, label=none, id=none, cls="", autocomplete="one-time-code") %}
+{% set _length = length if length > 0 else 6 %}
+{% set _id = id or ("chirpui-otp-" ~ name) %}
+<div class="chirpui-input-otp{{ " " ~ cls if cls else "" }}" id="{{ _id }}"
+     x-data="chirpuiInputOtp()"
+     data-length="{{ _length }}">
+    {% if label %}
+    <label class="chirpui-field__label chirpui-input-otp__label" for="{{ _id }}-0">{{ label }}</label>
+    {% endif %}
+    <div class="chirpui-input-otp__group" role="group"
+         aria-label="{{ label or 'One-time code' }}">
+        {% for i in range(_length) %}
+        <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1"
+               id="{{ _id }}-{{ i }}"
+               class="chirpui-input-otp__cell"
+               autocomplete="{{ autocomplete if i == 0 else 'off' }}"
+               aria-label="Digit {{ i + 1 }} of {{ _length }}"
+               x-ref="cell-{{ i }}"
+               @input="onInput($event, {{ i }})"
+               @keydown="onKeydown($event, {{ i }})"
+               @paste="onPaste($event)">
+        {% endfor %}
+    </div>
+    <input type="hidden" name="{{ name }}" :value="value">
+</div>
+{% end %}

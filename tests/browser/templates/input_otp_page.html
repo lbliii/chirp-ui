@@ -1,0 +1,12 @@
+{#- Gauntlet fixture for input_otp (#202). -#}
+{% extends "base.html" %}
+{% block brand %}Input OTP{% end %}
+{% block content %}
+{% from "chirpui/input_otp.html" import input_otp %}
+<div id="page-root">
+  <h1 data-testid="page-heading">Input OTP</h1>
+  <div data-testid="otp-container">
+    {{ input_otp("code", length=6, label="Verification code", id="gauntlet-otp") }}
+  </div>
+</div>
+{% end %}

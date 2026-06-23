@@ -1,0 +1,40 @@
+/* ==========================================================================
+   Input OTP — grouped one-time-code cells
+   ========================================================================== */
+
+.chirpui-input-otp {
+    display: flex;
+    flex-direction: column;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-input-otp__label {
+    font-size: var(--chirpui-font-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+}
+
+.chirpui-input-otp__group {
+    display: flex;
+    gap: var(--chirpui-spacing-sm);
+}
+
+.chirpui-input-otp__cell {
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    padding: 0;
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    background: var(--chirpui-surface);
+    color: var(--chirpui-text);
+    font-family: var(--chirpui-ui-font-family);
+    font-size: var(--chirpui-font-lg);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    line-height: 1;
+    text-align: center;
+}
+
+.chirpui-input-otp__cell:focus-visible {
+    outline: var(--chirpui-state-focus-outline);
+    outline-offset: var(--chirpui-state-focus-offset);
+    border-color: var(--chirpui-accent);
+}
