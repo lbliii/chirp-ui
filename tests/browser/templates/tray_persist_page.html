@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block brand %}Test App{% end %}
+{% block content %}
+{% from "chirpui/tray.html" import tray, tray_trigger %}
+
+<h1 data-testid="page-heading">Tray Persist A</h1>
+
+{{ tray_trigger("persist-tray", "Open Tray") }}
+
+<p><a href="/tray-persist-b" data-testid="tray-persist-nav">Go to page B</a></p>
+
+{% call tray("persist-tray", title="Persist Tray", persist_open=true) %}
+  <p data-testid="tray-body">Tray content on page A.</p>
+{% end %}
+{% end %}

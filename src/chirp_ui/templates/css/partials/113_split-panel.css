@@ -27,6 +27,7 @@
     transition: background var(--chirpui-motion-fast);
     cursor: col-resize;
     width: 6px;
+    touch-action: none;
 }
 .chirpui-split-panel--vertical .chirpui-split-panel__handle {
     cursor: row-resize;

@@ -1,6 +1,9 @@
 {#- chirp-ui: Tray (slide-out panel)
     Use tray_trigger to open, tray for content. Requires Alpine.js (Alpine.store('trays')).
 
+    persist_open: when true, restores open state across boosted navigation via
+    localStorage (opt-in — default false).
+
     Usage:
         from "chirpui/tray.html" import tray, tray_trigger
 
@@ -21,15 +24,16 @@
 </button>
 {% end %}
 
-{% def tray(id, title, position="right") %}
-<div class="chirpui-tray chirpui-tray--{{ position }} chirpui-tray--closed" id="tray-{{ id }}"
+{% def tray(id, title, position="right", persist_open=false, cls="") %}
+<div class="chirpui-tray chirpui-tray--{{ position }} chirpui-tray--closed{{ " " ~ cls if cls else "" }}" id="tray-{{ id }}"
      data-tray-id="{{ id }}"
      :class="{ 'chirpui-tray--closed': !$store.trays[trayId], 'chirpui-tray--open': $store.trays[trayId] }"
      role="dialog" aria-modal="true"
      aria-labelledby="tray-{{ id }}-title"
      aria-hidden="true"
      :aria-hidden="!$store.trays[trayId]"
-     x-data="{ get trayId() { return $el.dataset.trayId }, close() { $store.trays[this.trayId] = false; $dispatch('chirpui:tray-closed', { id: this.trayId }) } }">
+     x-data="chirpuiTray({ persistOpen: {{ 'true' if persist_open else 'false' }} })"
+     x-init="init()">
     <div class="chirpui-tray__backdrop" @click="close()"></div>
     <div class="chirpui-tray__panel" x-trap.inert.noscroll="$store.trays[trayId]">
         <header class="chirpui-tray__header">

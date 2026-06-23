@@ -1217,6 +1217,14 @@ def create_app() -> App:
     async def tray_page(request: Request):
         return Template("tray_page.html", page_title="Tray")
 
+    @app.route("/tray-persist")
+    async def tray_persist_page(request: Request):
+        return Template("tray_persist_page.html", page_title="Tray Persist A")
+
+    @app.route("/tray-persist-b")
+    async def tray_persist_b_page(request: Request):
+        return Template("tray_persist_b_page.html", page_title="Tray Persist B")
+
     # ── Toast ─────────────────────────────────────────────────────────
 
     @app.route("/toast")
