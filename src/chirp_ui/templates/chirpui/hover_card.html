@@ -17,10 +17,12 @@
      :data-align-x="alignX"
      :data-align-y="alignY"
      x-data="chirpuiHoverCard({ openDelay: {{ open_delay }}, closeDelay: {{ close_delay }} })"
+     x-init="init()"
      @mouseenter="scheduleOpen()"
      @mouseleave="scheduleClose()"
      @focusin="scheduleOpen()"
-     @focusout="scheduleClose($event)">
+     @focusout="scheduleClose($event)"
+     @keydown.escape.window="dismiss()">
     <div class="chirpui-hover-card__trigger" x-ref="trigger">
         {% slot trigger %}
     </div>

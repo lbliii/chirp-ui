@@ -760,6 +760,20 @@
             alignY: "bottom",
             _openTimer: null,
             _closeTimer: null,
+            init: function () {
+                if (
+                    window.matchMedia &&
+                    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                ) {
+                    openDelay = 0;
+                    closeDelay = 0;
+                }
+            },
+            dismiss: function () {
+                clearTimeout(this._openTimer);
+                clearTimeout(this._closeTimer);
+                this.open = false;
+            },
             scheduleOpen: function () {
                 clearTimeout(this._closeTimer);
                 if (this.open) {

@@ -702,7 +702,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
         slots=("", "trigger"),
         template="hover_card.html",
         category="overlay",
-        maturity="experimental",
+        maturity="stable",
         requires=("alpine",),
         macro="hover_card",
     ),

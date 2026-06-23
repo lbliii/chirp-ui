@@ -94,6 +94,7 @@ usage.
 | `context-menu` | Promote to stable | Render tests for trigger/panel/item anatomy, href/disabled/danger variants, browser gauntlet for pointer/keyboard open, roving focus, Escape/outside close, selection events, and axe; anatomy doc at `docs/components/context-menu-anatomy.md`. |
 | `menubar` | Promote to stable | Render tests for menubar/submenu anatomy, browser gauntlet for top-level roving focus, submenu open, Escape/outside close, selection events, and axe; anatomy doc at `docs/components/menubar-anatomy.md`. |
 | `input-otp` | Promote to stable | Render tests for grouped cells and hidden value, browser proof for paste/backspace/arrow navigation, typing advance, accessible names, and `chirpui:otp-change`; anatomy doc at `docs/components/input-otp-anatomy.md`. |
+| `hover-card` | Promote to stable | Render tests for trigger/content anatomy, browser gauntlet for hover/focus open, blur/Escape close, reduced-motion instant open, and viewport containment; anatomy doc at `docs/components/hover-card-anatomy.md`. |
 
 ## Promotion Rule
 
@@ -276,7 +277,6 @@ vocabulary.
 | `grain` | Keep experimental | Motion/effects visual proof. |
 | `hero-effects` | Keep experimental | Motion/effects visual proof. |
 | `holy-light` | Keep experimental | Motion/effects visual proof. |
-| `hover-card` | Keep experimental | Control interaction proof; delayed hover/focus preview card (#202) with anchor positioning + reduced-motion CSS — promote after browser gauntlet. |
 | `lifecycle-showcase` | Recipe-only | Marketing pattern proof; promote only after repeated app use. |
 | `live-event-card` | Recipe-only | Media recipe proof; promote only after repeated app use. |
 | `marquee` | Keep experimental | Motion/effects visual proof. |
@@ -284,7 +284,7 @@ vocabulary.
 | `meteor` | Keep experimental | Motion/effects visual proof. |
 | `moderation-queue-item` | Recipe-only | Social recipe proof; promote only after repeated app use. |
 | `neon` | Keep experimental | Motion/effects visual proof. |
-| `navigation-menu` | Keep experimental | Control interaction proof; site nav with flyout submenus (#202) with keyboard open/close — promote after browser gauntlet. |
+| `navigation-menu` | Keep experimental | Control interaction proof; anatomy doc + browser gauntlet at `docs/components/navigation-menu-anatomy.md` — promote after submenu roving/typeahead proof. |
 | `number-ticker` | Keep experimental | Motion/effects visual proof. |
 | `orbit` | Keep experimental | Motion/effects visual proof. |
 | `particle-bg` | Keep experimental | Motion/effects visual proof. |

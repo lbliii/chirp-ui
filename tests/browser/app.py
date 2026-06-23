@@ -988,6 +988,14 @@ def create_app() -> App:
     async def menubar_page(request: Request):
         return Template("menubar_page.html", page_title="Menubar")
 
+    @app.route("/navigation-menu")
+    async def navigation_menu_page(request: Request):
+        return Template("navigation_menu_page.html", page_title="Navigation Menu")
+
+    @app.route("/hover-card")
+    async def hover_card_page(request: Request):
+        return Template("hover_card_page.html", page_title="Hover Card")
+
     @app.route("/combobox")
     async def combobox_page(request: Request):
         return Template("combobox_page.html", page_title="Combobox")

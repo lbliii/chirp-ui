@@ -6976,7 +6976,11 @@ class TestHoverCard:
             "Preview text"
             "{% end %}"
         ).render()
+        assert 'class="chirpui-hover-card"' in html
         assert 'x-data="chirpuiHoverCard' in html
+        assert 'x-init="init()"' in html
+        assert "@keydown.escape.window" in html
+        assert "chirpui-hover-card__trigger" in html
         assert "chirpui-hover-card__content" in html
         assert 'role="tooltip"' in html
         assert "Preview text" in html
@@ -7003,8 +7007,14 @@ class TestNavigationMenu:
             '{% from "chirpui/navigation_menu.html" import navigation_menu %}'
             '{{ navigation_menu(items=[{"label": "Products", "children": [{"label": "Analytics", "href": "/a"}]}, {"label": "Pricing", "href": "/pricing"}]) }}'
         ).render()
+        assert 'class="chirpui-navigation-menu"' in html
         assert 'x-data="chirpuiNavigationMenu()"' in html
         assert 'role="menubar"' in html
+        assert 'role="menuitem"' in html
+        assert 'role="menu"' in html
+        assert 'chirpui-navigation-menu__trigger' in html
+        assert 'chirpui-navigation-menu__panel' in html
+        assert 'chirpui-navigation-menu__link--top' in html
         assert "/pricing" in html
         assert "Analytics" in html
 

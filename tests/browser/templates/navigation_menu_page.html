@@ -1,0 +1,30 @@
+{#- Gauntlet fixture for the navigation menu (#336). -#}
+{% extends "base.html" %}
+{% block brand %}Navigation Menu{% endblock %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path="/navigation-menu", aria_label="Primary") %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/navigation-menu", "Navigation Menu", match="exact") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/navigation_menu.html" import navigation_menu %}
+<div id="page-root">
+  <h1 data-testid="main-content">Navigation Menu</h1>
+  <div data-testid="navigation-menu-container">
+    {{ navigation_menu(label="Primary", items=[
+        {"label": "Products", "children": [
+            {"label": "Analytics", "href": "/products/analytics", "description": "Usage insights"},
+            {"label": "Automation", "href": "/products/automation", "description": "Workflow tools"},
+        ]},
+        {"label": "Solutions", "children": [
+            {"label": "Teams", "href": "/solutions/teams"},
+            {"label": "Enterprise", "href": "/solutions/enterprise"},
+        ]},
+        {"label": "Pricing", "href": "/pricing"},
+    ]) }}
+  </div>
+</div>
+{% end %}

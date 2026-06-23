@@ -6741,7 +6741,7 @@ Hover Card
 - **Template:** `chirpui/hover_card.html`
 - **Macro:** `hover_card`
 - **Category:** `overlay`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `alpine`

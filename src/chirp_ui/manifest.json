@@ -12171,7 +12171,7 @@
       "extra_emits": [],
       "lineno": 15,
       "macro": "hover_card",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -26344,10 +26344,10 @@
       "typography": 30
     },
     "component_maturity": {
-      "experimental": 108,
+      "experimental": 107,
       "internal": 2,
       "legacy": 39,
-      "stable": 232
+      "stable": 233
     },
     "component_requirements": {
       "alpine": 44,
