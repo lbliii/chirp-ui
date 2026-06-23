@@ -150,7 +150,7 @@
   }
 </style>
 
-<script>
+<script nonce="{{ csp_nonce() }}">
 (() => {
   const searchInput = document.getElementById("blocks-search");
   const countEl = document.getElementById("blocks-count");

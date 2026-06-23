@@ -12,12 +12,41 @@ from chirp_ui.blocks_gallery import (
     extract_usage_snippet,
     gallery_check_payload,
     is_public_component,
+    is_visual_preview,
+    normalize_usage_snippet,
+    render_preview_html,
 )
 from chirp_ui.manifest import build_manifest
+from chirp_ui.preview_env import make_preview_env
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 GALLERY_PATH = REPO_ROOT / "examples" / "component-showcase" / "generated" / "blocks_gallery.json"
 BUILD_SCRIPT = REPO_ROOT / "scripts" / "build_blocks_gallery.py"
+
+
+def test_normalize_usage_snippet_converts_pseudo_syntax() -> None:
+    snippet = normalize_usage_snippet(
+        'from "chirpui/action_bar.html" import action_bar, action_bar_item\n\n'
+        "call action_bar()\n"
+        '    call action_bar_item(icon="up", label="Vote up", count=42)\n'
+        "end"
+    )
+    assert '{% from "chirpui/action_bar.html" import action_bar, action_bar_item %}' in snippet
+    assert "{% call action_bar() %}" in snippet
+    assert '{% call action_bar_item(icon="up", label="Vote up", count=42) %}{% end %}' in snippet
+
+    env = make_preview_env()
+    html, error = render_preview_html(env, snippet)
+    assert error is None
+    assert is_visual_preview(html)
+    assert "chirpui-action-bar" in (html or "")
+
+
+def test_normalize_usage_snippet_wraps_bare_macro_calls() -> None:
+    snippet = normalize_usage_snippet(
+        'from "chirpui/badge.html" import badge\n\nbadge("Active", variant="success")'
+    )
+    assert '{{ badge("Active", variant="success") }}' in snippet
 
 
 def test_extract_usage_snippet_from_doc_block() -> None:
@@ -53,7 +82,12 @@ def test_build_gallery_covers_public_components() -> None:
 
 def test_build_gallery_renders_some_live_previews() -> None:
     gallery = build_gallery(with_previews=True)
-    assert gallery["stats"]["previews_rendered"] > 50
+    assert gallery["stats"]["previews_rendered"] > 100
+    rendered = [
+        block for block in gallery["blocks"] if is_visual_preview(block.get("preview_html"))
+    ]
+    assert len(rendered) > 100
+    assert any(block["name"] == "action-bar" for block in rendered)
 
 
 def test_committed_blocks_gallery_is_fresh() -> None:
