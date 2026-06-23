@@ -209,6 +209,19 @@ PAGES: tuple[ShowcasePage, ...] = (
         show_in_sidebar=False,
     ),
     ShowcasePage(
+        path="/blocks",
+        title="Blocks Gallery",
+        section="Components",
+        description=(
+            "Registry-generated copy-paste blocks — live preview and Kida macro call "
+            "for every public component."
+        ),
+        nav_order=65,
+        index_card=True,
+        index_order=55,
+        tags=("blocks", "gallery", "registry", "copy-paste"),
+    ),
+    ShowcasePage(
         path="/carousel",
         title="Carousel",
         section="Components",

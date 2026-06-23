@@ -107,6 +107,7 @@ def test_index_cards_match_legacy_destinations() -> None:
         "/chrome",
         "/shell-actions",
         "/sections",
+        "/blocks",
         "/carousel",
         "/cards",
         "/forms",

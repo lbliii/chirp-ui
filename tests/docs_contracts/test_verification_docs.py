@@ -16,6 +16,7 @@ def test_verify_generated_task_groups_generated_artifact_checks() -> None:
         "build-manifest-check",
         "build-docs-check",
         "build-component-index-check",
+        "build-blocks-gallery-check",
     ]
     assert "verify-generated" in tasks["ci"]["sequence"]
     assert "verify-generated" in tasks["check"]["sequence"]
