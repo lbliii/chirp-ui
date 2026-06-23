@@ -22,6 +22,7 @@
 {% from "chirpui/label.html" import ui_label %}
 {% from "chirpui/slider.html" import slider %}
 {% from "chirpui/toggle_group.html" import toggle_group %}
+{% from "chirpui/input_otp.html" import input_otp %}
 
 {% call container() %}
 {% call stack() %}
@@ -416,6 +417,14 @@
 </p>
 {% call block() %}
 {{ params_table(rows=[{"name": "variant", "type": "str", "default": '""', "description": "Visual variant"}, {"name": "size", "type": "str", "default": '"md"', "description": "Size variant"}, {"name": "cls", "type": "str", "default": '""', "description": "Extra CSS classes"}], title="Component Parameters") }}
+{% end %}
+
+<h2>Input OTP</h2>
+<p class="chirpui-text-muted chirpui-font-sm">
+  Grouped one-time-code cells with paste, backspace, and arrow-key navigation.
+</p>
+{% call block() %}
+{{ input_otp("verification", length=6, label="Verification code") }}
 {% end %}
 
 {% end %}

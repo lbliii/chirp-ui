@@ -1,0 +1,30 @@
+{#- Gauntlet fixture for the menubar (#335). -#}
+{% extends "base.html" %}
+{% block brand %}Menubar{% endblock %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path="/menubar", aria_label="Primary") %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/menubar", "Menubar", match="exact") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/menubar.html" import menubar %}
+<div id="page-root">
+  <h1 data-testid="main-content">Menubar</h1>
+  <div data-testid="menubar-container">
+    {{ menubar(items=[
+        {"label": "File", "items": [
+            {"label": "New", "action": "new"},
+            {"label": "Open", "action": "open"},
+            {"label": "Save", "action": "save", "disabled": true},
+        ]},
+        {"label": "Edit", "items": [
+            {"label": "Undo", "action": "undo"},
+            {"label": "Delete", "action": "delete", "variant": "danger"},
+        ]},
+    ], label="Application menu") }}
+  </div>
+</div>
+{% end %}

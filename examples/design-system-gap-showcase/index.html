@@ -704,6 +704,18 @@
               <a class="chirpui-route-tab" href="#"><span>Logs with a deliberately long label</span><span class="chirpui-route-tab__badge">124</span></a>
               <a class="chirpui-route-tab" href="#"><span>Settings</span><span class="chirpui-route-tab__badge chirpui-route-tab__badge--reserved"></span></a>
             </nav>
+            <div class="chirpui-menubar" role="menubar" aria-label="Application menu audit">
+              <div class="chirpui-menubar__root">
+                <button type="button" class="chirpui-menubar__trigger" role="menuitem">File</button>
+                <div class="chirpui-menubar__menu" role="menu" style="position: relative; opacity: 1;">
+                  <button type="button" class="chirpui-menubar__item" role="menuitem">New</button>
+                  <button type="button" class="chirpui-menubar__item chirpui-menubar__item--danger" role="menuitem">Delete</button>
+                </div>
+              </div>
+              <div class="chirpui-menubar__root">
+                <button type="button" class="chirpui-menubar__trigger" role="menuitem">Edit</button>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -745,6 +757,15 @@
                   <button class="chirpui-btn chirpui-btn--primary" type="button">Save</button>
                   <button class="chirpui-btn chirpui-btn--ghost" type="button">Cancel</button>
                 </div>
+                <div class="chirpui-input-otp">
+                  <label class="chirpui-field__label chirpui-input-otp__label" for="audit-otp-0">Verification code</label>
+                  <div class="chirpui-input-otp__group" role="group" aria-label="Verification code">
+                    <input class="chirpui-input-otp__cell" id="audit-otp-0" type="text" inputmode="numeric" maxlength="1" value="1" aria-label="Digit 1 of 4">
+                    <input class="chirpui-input-otp__cell" id="audit-otp-1" type="text" inputmode="numeric" maxlength="1" value="2" aria-label="Digit 2 of 4">
+                    <input class="chirpui-input-otp__cell" id="audit-otp-2" type="text" inputmode="numeric" maxlength="1" value="3" aria-label="Digit 3 of 4">
+                    <input class="chirpui-input-otp__cell" id="audit-otp-3" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 4 of 4">
+                  </div>
+                </div>
               </form>
             </div>
           </article>
@@ -762,6 +783,16 @@
             </button>
           </div>
           <div class="audit-frame__body chirpui-stack chirpui-stack--lg">
+            <div class="audit-row">
+              <div class="chirpui-context-menu">
+                <div class="chirpui-context-menu__target" role="button" tabindex="0">Right-click region</div>
+                <div class="chirpui-context-menu__panel" role="menu" style="position: relative; opacity: 1; inset: auto;">
+                  <button type="button" class="chirpui-context-menu__item" role="menuitem">Open</button>
+                  <button type="button" class="chirpui-context-menu__item" role="menuitem">Rename</button>
+                  <button type="button" class="chirpui-context-menu__item chirpui-context-menu__item--danger" role="menuitem">Delete</button>
+                </div>
+              </div>
+            </div>
             <div class="audit-command-preview">
               <div class="chirpui-command-palette__inner">
                 <input class="chirpui-command-palette__input" type="search" value="deploy" aria-label="Command search">

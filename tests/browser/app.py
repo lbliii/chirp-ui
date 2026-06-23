@@ -984,6 +984,10 @@ def create_app() -> App:
     async def input_otp_page(request: Request):
         return Template("input_otp_page.html", page_title="Input OTP")
 
+    @app.route("/menubar")
+    async def menubar_page(request: Request):
+        return Template("menubar_page.html", page_title="Menubar")
+
     @app.route("/combobox")
     async def combobox_page(request: Request):
         return Template("combobox_page.html", page_title="Combobox")

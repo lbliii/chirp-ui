@@ -15,6 +15,8 @@
 {% from "chirpui/primary_nav.html" import primary_nav %}
 {% from "chirpui/breadcrumbs.html" import breadcrumbs %}
 {% from "chirpui/dropdown_menu.html" import dropdown_menu %}
+{% from "chirpui/context_menu.html" import context_menu %}
+{% from "chirpui/menubar.html" import menubar %}
 {% from "chirpui/avatar.html" import avatar %}
 {% from "chirpui/pagination.html" import pagination %}
 {% from "chirpui/command_palette.html" import command_palette, command_palette_trigger %}
@@ -229,6 +231,32 @@
 {% call block() %}
 {{ command_palette(id="demo-palette", search_url="/data/table", placeholder="Search components...") }}
 {{ command_palette_trigger(target="demo-palette", label="Search") }}
+{% end %}
+
+<h2>Context Menu</h2>
+<p class="showcase-copy">Right-click or keyboard-open contextual commands on a non-interactive region.</p>
+{% call block() %}
+{% call context_menu(items=[
+  {"label": "Open", "action": "open"},
+  {"label": "Rename", "action": "rename"},
+  {"label": "Delete", "action": "delete", "variant": "danger"},
+], label="Row actions") %}
+  <div class="chirpui-surface" style="padding: 1.5rem;">Right-click for actions</div>
+{% end %}
+{% end %}
+
+<h2>Menubar</h2>
+<p class="showcase-copy">Horizontal application menu with keyboard-open submenus.</p>
+{% call block() %}
+{{ menubar(items=[
+  {"label": "File", "items": [
+    {"label": "New", "action": "new"},
+    {"label": "Open", "action": "open"},
+  ]},
+  {"label": "Edit", "items": [
+    {"label": "Undo", "action": "undo"},
+  ]},
+], label="Application menu") }}
 {% end %}
 
 {% end %}
