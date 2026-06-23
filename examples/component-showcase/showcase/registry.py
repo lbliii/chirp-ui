@@ -287,6 +287,19 @@ PAGES: tuple[ShowcasePage, ...] = (
         tags=("theme_pack", "atlas", "ember", "sage"),
     ),
     ShowcasePage(
+        path="/theme-explorer",
+        title="Theme Explorer",
+        section="Components",
+        description=(
+            "Live token explorer with preset switching, computed values, and WCAG contrast preview."
+        ),
+        nav_order=105,
+        index_card=True,
+        index_order=95,
+        interactive_demo=True,
+        tags=("theme", "tokens", "contrast", "preset"),
+    ),
+    ShowcasePage(
         path="/theme-packs/preview/{name}/{mode}",
         title="Theme pack preview",
         hidden=True,

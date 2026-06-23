@@ -17,7 +17,9 @@ def test_app_shell_regions_establish_layout_container() -> None:
     for region in (".chirpui-app-shell__main", ".chirpui-app-shell__context-rail"):
         start = shell.index(region)
         block = shell[start : start + 400]
-        assert "container-type: inline-size" in block, f"{region} must establish inline-size container"
+        assert "container-type: inline-size" in block, (
+            f"{region} must establish inline-size container"
+        )
         assert "container-name: chirpui-layout" in block, f"{region} must name chirpui-layout"
 
 

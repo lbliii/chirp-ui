@@ -35,6 +35,7 @@ SHOWCASE_ROUTE_SMOKE_PATHS = (
     "/cards",
     "/forms",
     "/appearance-tone",
+    "/theme-explorer",
     "/theme-packs",
     "/theme-packs/preview/atlas/light",
     "/ui",
@@ -665,6 +666,18 @@ class TestDataPage:
             missing_mode = await client.get("/theme-packs/preview/atlas/sepia")
         assert missing_pack.status == 404
         assert missing_mode.status == 404
+
+    @pytest.mark.asyncio
+    async def test_theme_explorer_renders_live_token_board(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get("/theme-explorer")
+        assert response.status == 200
+        assert "Theme Explorer" in response.text
+        assert 'data-audit-section="token-explorer"' in response.text
+        assert 'data-token-job="accent"' in response.text
+        assert "theme-explorer-preset" in response.text
+        assert "theme-explorer-contrast" in response.text
+        assert "--chirpui-on-accent" in response.text
 
     @pytest.mark.asyncio
     async def test_composer_send_returns_message_bubble_fragment(self, showcase_app) -> None:
