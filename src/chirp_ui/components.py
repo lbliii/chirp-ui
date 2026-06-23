@@ -699,7 +699,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     "hover-card": ComponentDescriptor(
         block="hover-card",
         elements=("trigger", "content"),
-        slots=("trigger",),
+        slots=("", "trigger"),
         template="hover_card.html",
         category="overlay",
         maturity="experimental",

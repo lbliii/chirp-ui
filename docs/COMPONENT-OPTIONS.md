@@ -6734,6 +6734,26 @@ Holy Light
 | `variant` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `hover-card`
+
+Hover Card
+
+- **Template:** `chirpui/hover_card.html`
+- **Macro:** `hover_card`
+- **Category:** `overlay`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+- **Slots:** `(default)`, `trigger`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `open_delay` | no | (has default) |
+| `close_delay` | no | (has default) |
+| `cls` | no | (has default) |
+| `id` | no | (has default) |
+
 ### `hover-jello`
 
 - **Category:** `effect`
@@ -6906,6 +6926,27 @@ Form field macros
 | `hint` | no | (has default) |
 | `attrs` | no | (has default) |
 | `attrs_unsafe` | no | (has default) |
+
+### `input-otp`
+
+Input OTP
+
+- **Template:** `chirpui/input_otp.html`
+- **Macro:** `input_otp`
+- **Category:** `form`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `name` | yes | — |
+| `length` | no | (has default) |
+| `label` | no | (has default) |
+| `id` | no | (has default) |
+| `cls` | no | (has default) |
+| `autocomplete` | no | (has default) |
 
 ### `inspector-panel`
 
@@ -7372,6 +7413,43 @@ Mention component
 | `href` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `menubar`
+
+Menubar
+
+- **Template:** `chirpui/menubar.html`
+- **Macro:** `menubar`
+- **Category:** `navigation`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `label` | no | (has default) |
+| `id` | no | (has default) |
+
+### `menubar__item`
+
+Menubar
+
+- **Template:** `chirpui/menubar.html`
+- **Macro:** `menubar`
+- **Category:** `navigation`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+- **Variants:** `danger`, `default`, `muted`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `label` | no | (has default) |
+| `id` | no | (has default) |
+
 ### `message-actions`
 
 Message actions
@@ -7718,6 +7796,25 @@ Navbar component
 | `href` | no | (has default) |
 | `cls` | no | (has default) |
 
+### `navigation-menu`
+
+Navigation Menu
+
+- **Template:** `chirpui/navigation_menu.html`
+- **Macro:** `navigation_menu`
+- **Category:** `navigation`
+- **Maturity:** `experimental`
+- **Role:** `component`
+- **Authoring:** `available`
+- **Requires:** `alpine`
+- **Modifiers:** `has-children`
+
+| Param | Required | Default |
+|-------|----------|---------|
+| `items` | yes | — |
+| `label` | no | (has default) |
+| `id` | no | (has default) |
+
 ### `neon`
 
 Neon Text
@@ -8043,12 +8140,14 @@ Popover component
 - **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
+- **Requires:** `alpine`
 - **Slots:** `(default)`, `footer`, `header`
 
 | Param | Required | Default |
 |-------|----------|---------|
 | `trigger_label` | yes | — |
 | `cls` | no | (has default) |
+| `id` | no | (has default) |
 
 ### `post-card`
 

@@ -6970,10 +6970,10 @@ class TestHoverCard:
     def test_hover_card_anatomy(self, env: Environment) -> None:
         html = env.from_string(
             '{% from "chirpui/hover_card.html" import hover_card %}'
-            '{% call hover_card() %}'
-            '{% slot trigger %}<button>Info</button>{% end %}'
-            'Preview text'
-            '{% end %}'
+            "{% call hover_card() %}"
+            "{% slot trigger %}<button>Info</button>{% end %}"
+            "Preview text"
+            "{% end %}"
         ).render()
         assert 'x-data="chirpuiHoverCard' in html
         assert "chirpui-hover-card__content" in html
