@@ -63,7 +63,7 @@ def _classify_pseudo_line(stripped: str) -> tuple[str, str | None]:
     """Classify one Usage line for pseudo-syntax normalization."""
     if not stripped:
         return "blank", None
-    if stripped.startswith("{%") or stripped.startswith("{{") or stripped.startswith("{#"):
+    if stripped.startswith(("{%", "{{", "{#")):
         return "kida", stripped
     from_match = _PSEUDO_FROM_RE.match(stripped)
     if from_match:
@@ -104,7 +104,7 @@ def normalize_usage_snippet(snippet: str) -> str:
             leaf_calls.add(index)
 
     output: list[str] = []
-    for index, (indent, kind, payload, stripped) in enumerate(parsed):
+    for index, (indent, kind, payload, _stripped) in enumerate(parsed):
         pad = " " * indent
         if kind == "blank":
             output.append("")
