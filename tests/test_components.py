@@ -9256,7 +9256,7 @@ class TestCombobox:
             '[{"label": "North", "value": "north"},'
             ' {"label": "South", "value": "south", "disabled": true}]) }}'
         ).render()
-        assert 'chirpui-combobox__option--disabled' in html
+        assert "chirpui-combobox__option--disabled" in html
         assert 'aria-disabled="true"' in html
         assert "South" in html
 

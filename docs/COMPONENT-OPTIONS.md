@@ -5332,7 +5332,7 @@ Collapse component
 
 ### `combobox`
 
-Combobox / autocomplete
+Typeahead combobox for form fields — text input over a filtered
 
 - **Template:** `chirpui/combobox.html`
 - **Macro:** `combobox`
@@ -6006,7 +6006,7 @@ Dropdown component
 
 ### `dropdown-select`
 
-Dropdown menu, select, and split-button primitives.
+Dropdown menu, select, and split-button primitives — dropdown_select
 
 - **Template:** `chirpui/dropdown_menu.html`
 - **Macro:** `dropdown_select`
@@ -6026,7 +6026,7 @@ Dropdown menu, select, and split-button primitives.
 
 ### `dropdown__item`
 
-Dropdown menu, select, and split-button primitives.
+Dropdown menu, select, and split-button primitives — dropdown_select
 
 - **Template:** `chirpui/dropdown_menu.html`
 - **Macro:** `dropdown_menu`
