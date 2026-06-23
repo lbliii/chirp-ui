@@ -3146,7 +3146,7 @@ class TestAlpineMagics:
             '{% call tray("filters", "Filters") %}content{% end %}'
         ).render()
         assert "x-trap.inert.noscroll" in html
-        assert "@click=\"close()\"" in html
+        assert '@click="close()"' in html
 
     def test_tray_anatomy_contract(self, env: Environment) -> None:
         html = env.from_string(
@@ -3172,7 +3172,7 @@ class TestAlpineMagics:
         assert 'id="tray-filters-title"' in html
         assert "chirpui-tray__close" in html
         assert "chirpuiTray(" in html
-        assert "@click=\"close()\"" in html
+        assert '@click="close()"' in html
 
     def test_tray_persist_open_flag(self, env: Environment) -> None:
         html = env.from_string(
@@ -9799,8 +9799,8 @@ class TestSplitPanel:
         assert "chirpui-split-panel__pane" in html
         assert 'role="separator"' in html
         assert "chirpuiSplitPanel(" in html
-        assert "@pointerdown.prevent=\"startPointerDrag($event)\"" in html
-        assert "@keydown=\"onKeydown($event)\"" in html
+        assert '@pointerdown.prevent="startPointerDrag($event)"' in html
+        assert '@keydown="onKeydown($event)"' in html
 
     def test_vertical(self, env: Environment) -> None:
         html = env.from_string(
