@@ -83,7 +83,9 @@ def test_build_gallery_covers_public_components() -> None:
 def test_build_gallery_renders_some_live_previews() -> None:
     gallery = build_gallery(with_previews=True)
     assert gallery["stats"]["previews_rendered"] > 100
-    rendered = [block for block in gallery["blocks"] if is_visual_preview(block.get("preview_html"))]
+    rendered = [
+        block for block in gallery["blocks"] if is_visual_preview(block.get("preview_html"))
+    ]
     assert len(rendered) > 100
     assert any(block["name"] == "action-bar" for block in rendered)
 
