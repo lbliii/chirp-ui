@@ -121,8 +121,8 @@ _33 components._
 | Macro | Maturity | Description |
 |-------|----------|-------------|
 | `breadcrumbs` | stable | Breadcrumbs component |
-| `context_menu` | experimental | Context Menu |
-| `context_menu` | experimental | Context Menu |
+| `context_menu` | stable | Context Menu |
+| `context_menu` | stable | Context Menu |
 | `conversation_item` | stable | Conversation Item component |
 | `conversation_list` | stable | Conversation List component |
 | `dropdown` | stable | Dropdown component |
@@ -131,8 +131,8 @@ _33 components._
 | `filter_rail` | experimental | Dense workspace primitives |
 | `index_card` | stable | Index card component |
 | `link` | stable | Link component |
-| `menubar` | experimental | Menubar |
-| `menubar` | experimental | Menubar |
+| `menubar` | stable | Menubar |
+| `menubar` | stable | Menubar |
 | `nav_link` | stable | SPA-style link for content areas |
 | `nav-pill` *(CSS / utility)* | stable | - |
 | `nav_progress` | stable | Navigation progress bar |
@@ -207,7 +207,7 @@ _27 components._
 | `form_error_summary` | stable | Form field macros |
 | `inline_edit_field_display` | stable | Inline edit field |
 | `input_group` | stable | Form field macros |
-| `input_otp` | experimental | Input OTP |
+| `input_otp` | stable | Input OTP |
 | `key-value-form` *(CSS / utility)* | stable | - |
 | `ui_label` | stable | Label |
 | `number-scale` *(CSS / utility)* | experimental | - |

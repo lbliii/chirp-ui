@@ -52,7 +52,7 @@ def test_context_menu_anatomy_covers_trigger_keyboard_focus_and_positioning() ->
         "ArrowDown and ArrowUp move among items via roving tabindex",
         "Home and End move to first and last item",
         "Escape closes the menu and returns focus to the trigger",
-        "Disabled items stay focusable with `aria-disabled=\"true\"`",
+        'Disabled items stay focusable with `aria-disabled="true"`',
         "clamps the panel to the viewport on open",
     ]:
         assert signal in text
@@ -97,6 +97,7 @@ def test_context_menu_source_is_indexed_as_shipped_contract() -> None:
     inventory = SOURCE_INVENTORY.read_text(encoding="utf-8")
 
     assert "components/context-menu-anatomy.md" in index
-    assert "shipped contract" in index
+    assert "Shipped context-menu anatomy" in index
     assert "docs/components/context-menu-anatomy.md" in inventory
-    assert "shipped contract" in inventory
+    assert "| `source-only` |" in inventory
+    assert "**Status:** shipped contract" in _text()
