@@ -1970,10 +1970,22 @@
     gap: 0.65rem;
   }
 
-  .chirp-theme-docs-nav__section {
+  .chirp-theme-docs-nav .chirpui-sidebar__section.chirp-theme-docs-nav__section {
     padding: 0.35rem;
     border: 1px solid transparent;
     border-radius: var(--radius-md);
+    background: transparent;
+  }
+
+  /* Nested folder sections inside a disclosure panel's `__section-links`
+   * grid — drop the outer section chrome so depth-2+ nodes read as tree rows,
+   * not cards. Scope to `--has-toggle` descendants only: depth-1 sections
+   * that sit beside `__root-leaf` rows under the root section keep their
+   * horizontal padding so the folder toggle aligns with the root leaf icon. */
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__section.chirp-theme-docs-nav__section {
+    padding: 0;
+    border-color: transparent;
+    border-radius: 0;
     background: transparent;
   }
 
@@ -2073,11 +2085,17 @@
   }
 
   .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link:hover,
-  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link:focus-visible,
-  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link--active {
+  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link:focus-visible {
     border-color: transparent;
     background: color-mix(in srgb, var(--chirpui-accent) 7%, transparent);
     color: var(--chirpui-accent);
+  }
+
+  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link--active,
+  .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link[aria-current="page"] {
+    border-color: color-mix(in srgb, var(--chirpui-accent) 24%, transparent);
+    background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+    color: var(--chirpui-text);
   }
 
   .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-copy {
@@ -2096,11 +2114,15 @@
     grid-template-columns: 1rem minmax(0, 1fr);
     gap: 0.36rem;
     min-block-size: 1.85rem;
+    margin-inline-start: 0;
     padding: 0.18rem 0.36rem;
     border-color: transparent;
     border-radius: var(--radius-sm);
     color: var(--color-text-muted);
     font-size: 0.84rem;
+    font-weight: var(--weight-normal);
+    letter-spacing: normal;
+    text-transform: none;
   }
 
   .chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__leaf-link:hover,
@@ -2130,9 +2152,9 @@
   }
 
   /*
-   * Folder sections deeper than depth-1 (depth 2, 3, 4 …). These only surface
-   * in the API reference, where packages nest several levels (e.g. cache >
-   * backends, data > drivers > _pelt). The depth-1 rules above are pinned to
+   * Folder sections deeper than depth-1 (depth 2, 3, 4 …). These show up in
+   * nested doc trees (e.g. build-apps > html-fragments > rendering) and in
+   * the API reference (cache > backends > redis). The depth-1 rules above are
    * the literal `--depth-1` class (a package test asserts that selector), so
    * rather than enumerate every depth we generalise the SAME treatment to
    * every folder via `--has-toggle` — the class the template stamps on every
@@ -2164,11 +2186,17 @@
   }
 
   .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link:hover,
-  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link:focus-visible,
-  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link--active {
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link:focus-visible {
     border-color: transparent;
     background: color-mix(in srgb, var(--chirpui-accent) 7%, transparent);
     color: var(--chirpui-accent);
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link--active,
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-link[aria-current="page"] {
+    border-color: color-mix(in srgb, var(--chirpui-accent) 24%, transparent);
+    background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+    color: var(--chirpui-text);
   }
 
   .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header .chirp-theme-docs-nav__summary-copy {
@@ -2183,15 +2211,73 @@
     padding-inline-start: 0.55rem;
   }
 
+  /*
+   * Compact leaf rows at any depth under a disclosure section. The direct-child
+   * selector above covers immediate children; this descendant form catches
+   * depth-3+ pages (e.g. build-apps > html-fragments > rendering) without
+   * enumerating `--depth-N`. Exclude `__root-leaf` — those are depth-1 singles
+   * under the root section and carry their own mono-uppercase treatment.
+   */
+  .chirp-theme-docs-nav__section--has-toggle .chirp-theme-docs-nav__leaf-link:not(.chirp-theme-docs-nav__root-leaf) {
+    display: grid;
+    grid-template-columns: 1rem minmax(0, 1fr);
+    gap: 0.36rem;
+    align-items: center;
+    min-block-size: 1.85rem;
+    margin-inline-start: 0;
+    padding: 0.18rem 0.36rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    color: var(--chirpui-text-muted);
+    font-family: inherit;
+    font-size: 0.84rem;
+    font-weight: var(--weight-normal);
+    letter-spacing: normal;
+    line-height: var(--chirpui-line-height-tight);
+    text-decoration: none;
+    text-transform: none;
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle .chirp-theme-docs-nav__leaf-link:not(.chirp-theme-docs-nav__root-leaf):hover,
+  .chirp-theme-docs-nav__section--has-toggle .chirp-theme-docs-nav__leaf-link:not(.chirp-theme-docs-nav__root-leaf):focus-visible {
+    border-color: transparent;
+    background: color-mix(in srgb, var(--chirpui-accent) 6%, transparent);
+    color: var(--chirpui-text);
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle .chirp-theme-docs-nav__leaf-link:not(.chirp-theme-docs-nav__root-leaf)[aria-current="page"],
+  .chirp-theme-docs-nav__section--has-toggle .chirp-theme-docs-nav__leaf-link:not(.chirp-theme-docs-nav__root-leaf).chirpui-sidebar__link--active {
+    border-color: color-mix(in srgb, var(--chirpui-accent) 24%, transparent);
+    background: color-mix(in srgb, var(--chirpui-accent) 10%, transparent);
+    color: var(--chirpui-text);
+    font-weight: var(--weight-normal);
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle .chirp-theme-docs-nav__leaf-link:not(.chirp-theme-docs-nav__root-leaf) .chirp-theme-docs-nav__type-icon {
+    inline-size: 1rem;
+    block-size: 1rem;
+    border-radius: 0.32rem;
+    background: transparent;
+  }
+
+  .chirp-theme-docs-nav__section--has-toggle .chirp-theme-docs-nav__leaf-link:not(.chirp-theme-docs-nav__root-leaf) .chirp-theme-docs-nav__type-icon svg {
+    inline-size: 0.68rem;
+    block-size: 0.68rem;
+  }
+
   .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__leaf-link {
     grid-template-columns: 1rem minmax(0, 1fr);
     gap: 0.36rem;
     min-block-size: 1.85rem;
+    margin-inline-start: 0;
     padding: 0.18rem 0.36rem;
     border-color: transparent;
     border-radius: var(--radius-sm);
     color: var(--chirpui-text-muted);
     font-size: 0.84rem;
+    font-weight: var(--weight-normal);
+    letter-spacing: normal;
+    text-transform: none;
   }
 
   .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__leaf-link:hover,
