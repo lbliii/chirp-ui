@@ -213,7 +213,16 @@ async def _disabled_factory_move(page, delta):
 async def test_disabled_option_click_does_not_select(page, base_url):
     await _open_page(page, base_url)
     await _open_disabled(page)
-    await page.locator(D_OPTION, has_text="South (unavailable)").click()
+    # aria-disabled options are not Playwright-actionable; dispatch the click
+    # directly so we prove chirpuiCombobox().choose() ignores disabled rows.
+    await page.evaluate(
+        """() => {
+            const opt = [...document.querySelectorAll(
+                "[data-testid='combobox-disabled-container'] .chirpui-combobox__option")]
+                .find(o => o.dataset.value === 'south');
+            opt?.click();
+        }"""
+    )
     await expect(page.locator(D_LIST)).to_be_visible()
     assert await page.locator(D_INPUT).input_value() == ""
     assert await page.eval_on_selector(D_HIDDEN, "el => el.value") == ""
