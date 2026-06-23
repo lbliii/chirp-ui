@@ -702,11 +702,7 @@ def test_bengal_minifier_preserves_chirpui_scope_envelope() -> None:
     assert ":scope{padding:" in minified.replace(" ", "")
 
     library_css = (
-        Path(__file__).resolve().parents[1]
-        / "src"
-        / "chirp_ui"
-        / "templates"
-        / "chirpui.css"
+        Path(__file__).resolve().parents[1] / "src" / "chirp_ui" / "templates" / "chirpui.css"
     ).read_text(encoding="utf-8")
     minified_library = minify_css(library_css)
 

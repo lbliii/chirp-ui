@@ -126,7 +126,9 @@ def _format_pct(value: float) -> str:
     return f"{prefix}{value:.2f}%"
 
 
-def market_context(request: Request, *, base_path: str = "/screen-lucky-cat-market") -> dict[str, object]:
+def market_context(
+    request: Request, *, base_path: str = "/screen-lucky-cat-market"
+) -> dict[str, object]:
     query = (request.query.get("q") or "").strip()
     sector = (request.query.get("sector") or "").strip()
     status = (request.query.get("status") or "").strip()
