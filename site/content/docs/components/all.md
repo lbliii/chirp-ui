@@ -321,7 +321,7 @@ _4 components._
 | Macro | Maturity | Description |
 |-------|----------|-------------|
 | `drawer` | stable | Drawer component |
-| `hover_card` | experimental | Hover Card |
+| `hover_card` | stable | Hover Card |
 | `popover` | stable | Popover component |
 | `tray` | stable | Tray (slide-out panel) |
 
