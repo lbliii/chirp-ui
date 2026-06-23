@@ -122,7 +122,7 @@ SHOWCASE_PAGE_CONTEXTS = {
     "showcase/effects.html": {"current_path"},
     "showcase/forms.html": {"current_path"},
     "showcase/htmx.html": {"current_path"},
-    "showcase/islands.html": {"current_path"},
+    "showcase/islands.html": {"current_path", "csp_nonce"},
     "showcase/islands_grid_state.html": {"current_path"},
     "showcase/islands_upload_state.html": {"current_path"},
     "showcase/islands_wizard_state.html": {"current_path"},

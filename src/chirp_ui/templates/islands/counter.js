@@ -1,6 +1,6 @@
 import { readProps, registerPrimitive, setAction, setState } from "/static/islands/foundation.js";
 
-function mount(payload, api) {
+export function mount(payload, api) {
   const props = readProps(payload);
   let count = Number(props.seed || 0);
   const root = payload.element;

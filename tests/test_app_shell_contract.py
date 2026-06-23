@@ -57,7 +57,7 @@ def test_inline_shell_scripts_carry_csp_nonce() -> None:
     templates_dir = (
         Path(__file__).resolve().parents[1] / "src" / "chirp_ui" / "templates" / "chirpui"
     )
-    for name in ("app_layout.html", "app_shell_layout.html", "shell_frame.html"):
+    for name in ("app_layout.html", "app_shell_layout.html", "app_shell.html", "shell_frame.html"):
         text = (templates_dir / name).read_text(encoding="utf-8")
         assert '<script nonce="{{ csp_nonce() }}">' in text, name
     shell_frame = (templates_dir / "shell_frame.html").read_text(encoding="utf-8")

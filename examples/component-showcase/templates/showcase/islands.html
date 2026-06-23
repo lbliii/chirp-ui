@@ -124,7 +124,7 @@
 {% end %}
 {% end %}
 
-<script>
+<script nonce="{{ csp_nonce() }}">
 (() => {
   const log = document.getElementById("island-events");
   const boundaryTrigger = document.getElementById("trigger-boundary-error");

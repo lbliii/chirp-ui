@@ -1,0 +1,1 @@
+Fixed island adapters not mounting on fresh page load by exporting `mount` from built-in primitive modules (workaround for Chirp `ensureAdapter` register-only gap). Added CSP nonces to the `app_shell` sidebar-restore script and the showcase islands event-log script.
