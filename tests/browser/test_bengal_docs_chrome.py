@@ -1294,14 +1294,14 @@ async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
     assert metrics["timelineCount"] >= 1, metrics
     assert metrics["latestTop"] < metrics["regularTop"], metrics
     assert metrics["latestDotBackground"] not in ("", "rgba(0, 0, 0, 0)"), metrics
-    assert metrics["latestTitle"] == "chirp-ui 0.10.0", metrics
-    assert metrics["regularTitle"] == "chirp-ui 0.9.0", metrics
-    assert "uv add chirp-ui==0.10.0" in (metrics["latestInstallText"] or ""), metrics
-    assert "uv add chirp-ui==0.9.0" in (metrics["regularInstallText"] or ""), metrics
+    assert metrics["latestTitle"] == "chirp-ui 0.11.0", metrics
+    assert metrics["regularTitle"] == "chirp-ui 0.10.0", metrics
+    assert "uv add chirp-ui==0.11.0" in (metrics["latestInstallText"] or ""), metrics
+    assert "uv add chirp-ui==0.10.0" in (metrics["regularInstallText"] or ""), metrics
     assert "Install a specific version" in (metrics["heroSubtitle"] or ""), metrics
-    await expect(latest.locator(".chirpui-timeline__title-link")).to_have_text("chirp-ui 0.10.0")
+    await expect(latest.locator(".chirpui-timeline__title-link")).to_have_text("chirp-ui 0.11.0")
     await expect(first_regular.locator(".chirpui-timeline__title-link")).to_have_text(
-        "chirp-ui 0.9.0"
+        "chirp-ui 0.10.0"
     )
 
 

@@ -1,1 +1,0 @@
-Added Component Showcase v2 Phase 3: golden-screen and shell-recipe registry sections, a registry-driven home index hierarchy, live Railway cross-links in screen docs, and contributor/deploy documentation for the showcase app.

@@ -1,1 +1,0 @@
-Fixed the showcase unified demo SSE flow by emitting `fragment` events from `/demo/stream` and `/streaming/demo`, and wired `chirpuiStreamLifecycle()` into streaming `model_card` markup so streamed text, completion toasts, and the active cursor all behave correctly.

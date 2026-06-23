@@ -1,1 +1,0 @@
-Add a `chirp-ui` console script, a manifest-backed blocks gallery at `/blocks` with CI freshness gating, and an optional MCP server (`chirp-ui mcp`) exposing `find_components`, `get_component`, and `list_categories` over the shipped manifest. Closes #211 and #212.
