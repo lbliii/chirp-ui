@@ -771,6 +771,7 @@
         "chirpui-app-shell--nav-drawer",
         "chirpui-app-shell--sidebar-collapsed",
         "chirpui-app-shell--sidebar-collapsible",
+        "chirpui-app-shell--sidebar-dragging",
         "chirpui-app-shell__brand",
         "chirpui-app-shell__context-rail",
         "chirpui-app-shell__context-rail--muted",
@@ -814,7 +815,8 @@
         "has-context-rail",
         "nav-drawer",
         "sidebar-collapsed",
-        "sidebar-collapsible"
+        "sidebar-collapsible",
+        "sidebar-dragging"
       ],
       "params": [
         {

@@ -3953,7 +3953,7 @@ App Shell component
 - **Authoring:** `available`
 - **Requires:** `alpine`, `htmx`
 - **Slots:** `(default)`, `brand`, `context_rail`, `sidebar`, `topbar`, `topbar_end`, `topbar_leading`
-- **Modifiers:** `has-context-rail`, `nav-drawer`, `sidebar-collapsed`, `sidebar-collapsible`
+- **Modifiers:** `has-context-rail`, `nav-drawer`, `sidebar-collapsed`, `sidebar-collapsible`, `sidebar-dragging`
 
 | Param | Required | Default |
 |-------|----------|---------|
