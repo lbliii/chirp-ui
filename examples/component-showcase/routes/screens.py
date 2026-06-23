@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from chirp import App, Request, Template
+from fixtures.market import market_context
 from fixtures.ops import ops_context
 from fixtures.support import support_context
 from showcase.helpers import page
@@ -46,3 +47,18 @@ def register(app: App) -> None:
     @app.route("/screen-product-docs-home", template="showcase/screen_product_docs_home.html")
     async def screen_product_docs_home(request: Request) -> Template:
         return page(request, "showcase/screen_product_docs_home.html")
+
+    @app.route("/screen-lucky-cat-market", template="showcase/screen_lucky_cat_market.html")
+    async def screen_lucky_cat_market(request: Request) -> Template:
+        return page(
+            request,
+            "showcase/screen_lucky_cat_market.html",
+            **market_context(request, base_path="/screen-lucky-cat-market"),
+            market_screen_title="Golden screen: Lucky Cat Market",
+            market_screen_subtitle=(
+                "Atlas profile fixture for ticker search, movers, market catalog, "
+                "and live activity on a data-dense trading floor."
+            ),
+            market_screen_archetype="data-dense-market",
+            market_screen_profile="atlas",
+        )

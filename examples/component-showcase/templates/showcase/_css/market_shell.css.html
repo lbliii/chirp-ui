@@ -1,0 +1,76 @@
+<style>
+  .market-shell-page {
+    --market-shell-gap: var(--chirpui-density-md, var(--chirpui-spacing-lg));
+  }
+
+  .market-shell-surface {
+    display: grid;
+    gap: var(--market-shell-gap);
+  }
+
+  .market-shell-search {
+    display: flex;
+    flex: 1 1 18rem;
+    gap: var(--chirpui-spacing-sm);
+    min-width: 0;
+  }
+
+  .market-shell-hints {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--chirpui-spacing-xs);
+  }
+
+  .market-shell-pending {
+    font-size: var(--chirpui-ui-sm);
+    color: var(--chirpui-text-muted);
+  }
+
+  .market-shell-surface.is-pending .market-shell-pending {
+    color: var(--chirpui-accent);
+  }
+
+  .market-shell-scope-label {
+    font-size: var(--chirpui-ui-sm);
+    font-weight: var(--chirpui-ui-font-weight-medium);
+    color: var(--chirpui-text-muted);
+    white-space: nowrap;
+  }
+
+  .market-shell-frame {
+    display: grid;
+    gap: var(--market-shell-gap);
+  }
+
+  .market-shell-price {
+    margin: 0;
+    font-size: var(--chirpui-ui-lg);
+    font-weight: var(--chirpui-ui-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .market-shell-price--hero {
+    font-size: var(--chirpui-ui-xl);
+  }
+
+  .market-shell-change {
+    margin: 0;
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-ui-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .market-shell-live-note {
+    margin: var(--chirpui-spacing-sm) 0 0;
+    color: var(--chirpui-text-muted);
+    font-size: var(--chirpui-ui-sm);
+  }
+
+  @media (max-width: 48rem) {
+    .market-shell-search {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+</style>

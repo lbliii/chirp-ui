@@ -35,6 +35,12 @@ SCREEN_DOCS = {
         "archetype": "product-docs-home",
         "template": "examples/component-showcase/templates/showcase/screen_product_docs_home.html",
     },
+    "data-dense-market.md": {
+        "route": "/screen-lucky-cat-market",
+        "profile": "atlas",
+        "archetype": "data-dense-market",
+        "template": "examples/component-showcase/templates/showcase/screen_lucky_cat_market.html",
+    },
 }
 
 
@@ -84,6 +90,7 @@ def test_screen_archetype_matrix_names_canonical_product_situations() -> None:
         "`review-queue`",
         "`agent-run-monitor`",
         "`product-docs-home`",
+        "`data-dense-market`",
         "`settings-detail`",
         "`data-index-detail`",
         "`setup-flow`",
@@ -221,6 +228,15 @@ def test_screen_docs_map_recipe_only_typography_roles() -> None:
             "`proof-copy`",
             "`panel-title`",
             "`object-title`",
+            "`metadata`",
+            "`metric`",
+            "`status-label`",
+        ],
+        "data-dense-market.md": [
+            "`page-title`",
+            "`panel-title`",
+            "`object-title`",
+            "`dense-body`",
             "`metadata`",
             "`metric`",
             "`status-label`",

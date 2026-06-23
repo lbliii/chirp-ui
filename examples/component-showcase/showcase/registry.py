@@ -453,6 +453,17 @@ PAGES: tuple[ShowcasePage, ...] = (
         golden_screen=True,
         tags=("product-docs", "golden-screen", "ember"),
     ),
+    ShowcasePage(
+        path="/screen-lucky-cat-market",
+        title="Lucky Cat Market",
+        section="Golden screens",
+        description=(
+            "Atlas profile — ticker search, movers grid, market catalog, and live activity feed."
+        ),
+        nav_order=50,
+        golden_screen=True,
+        tags=("data-dense", "market", "lucky-cat", "golden-screen", "atlas"),
+    ),
     # --- Effects ---
     ShowcasePage(
         path="/effects",

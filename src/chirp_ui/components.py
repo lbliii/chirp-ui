@@ -2628,7 +2628,13 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
     # -- Layout & shell (Sprint 2) ------------------------------------------
     "app-shell": ComponentDescriptor(
         block="app-shell",
-        modifiers=("sidebar-collapsible", "sidebar-collapsed", "has-context-rail", "nav-drawer"),
+        modifiers=(
+            "sidebar-collapsible",
+            "sidebar-collapsed",
+            "sidebar-dragging",
+            "has-context-rail",
+            "nav-drawer",
+        ),
         elements=(
             "topbar",
             "brand",

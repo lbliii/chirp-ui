@@ -13325,9 +13325,10 @@ html {
     top: 0;
     bottom: 0;
     width: 10px;
-    cursor: pointer;
+    cursor: col-resize;
     z-index: var(--chirpui-z-popover);
     user-select: none;
+    touch-action: none;
 }
 
 .chirpui-app-shell__sidebar-resize::before {
@@ -13358,6 +13359,14 @@ html {
 
 .chirpui-app-shell--sidebar-collapsible {
     transition: grid-template-columns var(--chirpui-transition);
+}
+
+.chirpui-app-shell--sidebar-dragging {
+    transition: none;
+}
+
+html[data-chirpui-sidebar-collapsed="true"] {
+    --chirpui-sidebar-width: var(--chirpui-sidebar-collapsed-width, 4rem);
 }
 
 .chirpui-app-shell--sidebar-collapsed .chirpui-sidebar__label,

@@ -5361,6 +5361,9 @@ class TestAppShell:
         assert "data-chirpui-sidebar-toggle" in html
         assert "chirpui-app-shell__sidebar-resize" in html
         assert 'x-data="chirpuiSidebar({ collapsible: true, resizable: true })"' in html
+        assert '@dblclick="onDoubleClick($event)"' in html
+        assert '@keydown="onKeydown($event)"' in html
+        assert 'localStorage.getItem("chirpui-sidebar-width")' in html
 
     def test_app_shell_without_toggle_handle_when_not_collapsible(self, env: Environment) -> None:
         html = env.from_string(

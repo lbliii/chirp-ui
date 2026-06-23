@@ -1433,13 +1433,21 @@
 
     register("chirpuiSidebar", function (options) {
         var config = options || {};
+        var WIDTH_KEY = "chirpui-sidebar-width";
+        var COLLAPSED_KEY = "chirpui-sidebar-collapsed";
+        var MIN_PX = 64;
+        var SNAP_PX = 96;
+        var DEFAULT_PX = 256;
+        var MAX_PX = 320;
+
         return {
             collapsible: Boolean(config.collapsible),
             resizable: Boolean(config.resizable),
             collapsed: false,
+            widthPx: DEFAULT_PX,
             _dragging: false,
             _startX: 0,
-            _startCollapsed: false,
+            _startWidth: DEFAULT_PX,
             _lastX: 0,
             init: function () {
                 if (!this.collapsible) {
@@ -1448,44 +1456,121 @@
                     return;
                 }
                 this.collapsed = this.readInitialCollapsed();
+                this.widthPx = this.readInitialWidth();
+                if (this.collapsed) {
+                    this.widthPx = MIN_PX;
+                }
+                this.applyWidth();
                 this.$el.classList.toggle("chirpui-app-shell--sidebar-collapsed", this.collapsed);
+                document.documentElement.removeAttribute("data-chirpui-sidebar-collapsed");
+                document.documentElement.style.removeProperty("--chirpui-sidebar-width");
+                this.syncHandleA11y();
             },
             readInitialCollapsed: function () {
-                var collapsed = safeGetItem("chirpui-sidebar-collapsed");
-                if (collapsed === null && this.resizable) {
-                    var legacyWidth = safeGetItem("chirpui-sidebar-width");
-                    if (legacyWidth) {
-                        var match = legacyWidth.match(/^(\d+)(px|rem)$/);
-                        var pixels = null;
-                        if (match) {
-                            pixels =
-                                match[2] === "rem"
-                                    ? Number.parseInt(match[1], 10) * 16
-                                    : Number.parseInt(match[1], 10);
-                        }
-                        collapsed = pixels !== null && pixels <= 96 ? "true" : "false";
-                        safeRemoveItem("chirpui-sidebar-width");
-                    } else {
-                        collapsed = "false";
+                var collapsed = safeGetItem(COLLAPSED_KEY);
+                if (collapsed === "true") {
+                    return true;
+                }
+                if (collapsed === "false") {
+                    return false;
+                }
+                return (
+                    document.documentElement.getAttribute("data-chirpui-sidebar-collapsed") ===
+                    "true"
+                );
+            },
+            readInitialWidth: function () {
+                var stored = safeGetItem(WIDTH_KEY);
+                if (stored) {
+                    var match = stored.match(/^(\d+)px$/);
+                    if (match) {
+                        return this.clampWidth(Number.parseInt(match[1], 10));
                     }
                 }
-                return collapsed === "true";
+                var boot = document.documentElement.style.getPropertyValue(
+                    "--chirpui-sidebar-width"
+                );
+                if (boot) {
+                    var px = Number.parseFloat(boot);
+                    if (!Number.isNaN(px)) {
+                        return this.clampWidth(px);
+                    }
+                }
+                return DEFAULT_PX;
+            },
+            clampWidth: function (px) {
+                if (!this.resizable) {
+                    return DEFAULT_PX;
+                }
+                return Math.min(MAX_PX, Math.max(MIN_PX, px));
+            },
+            applyWidth: function () {
+                if (this.collapsed) {
+                    this.$el.classList.add("chirpui-app-shell--sidebar-collapsed");
+                    this.$el.style.removeProperty("--chirpui-sidebar-width");
+                } else {
+                    this.$el.classList.remove("chirpui-app-shell--sidebar-collapsed");
+                    this.$el.style.setProperty("--chirpui-sidebar-width", this.widthPx + "px");
+                }
             },
             setCollapsed: function (value) {
                 this.collapsed = Boolean(value);
-                this.$el.classList.toggle("chirpui-app-shell--sidebar-collapsed", this.collapsed);
-                this.$el.style.removeProperty("--chirpui-sidebar-width");
-                safeSetItem("chirpui-sidebar-collapsed", this.collapsed ? "true" : "false");
-                var handle = this.$el.querySelector("[data-chirpui-sidebar-toggle]");
-                if (handle) {
-                    handle.setAttribute("aria-expanded", this.collapsed ? "false" : "true");
+                if (this.collapsed) {
+                    this.widthPx = MIN_PX;
+                } else if (this.widthPx <= SNAP_PX) {
+                    this.widthPx = DEFAULT_PX;
                 }
+                this.applyWidth();
+                safeSetItem(COLLAPSED_KEY, this.collapsed ? "true" : "false");
+                if (!this.collapsed) {
+                    safeSetItem(WIDTH_KEY, this.widthPx + "px");
+                }
+                this.syncHandleA11y();
+            },
+            setWidth: function (px) {
+                var clamped = this.clampWidth(px);
+                if (clamped <= SNAP_PX) {
+                    this.setCollapsed(true);
+                    return;
+                }
+                this.collapsed = false;
+                this.widthPx = clamped;
+                this.applyWidth();
+                safeSetItem(COLLAPSED_KEY, "false");
+                safeSetItem(WIDTH_KEY, this.widthPx + "px");
+                this.syncHandleA11y();
             },
             toggle: function () {
                 if (!this.collapsible) {
                     return;
                 }
                 this.setCollapsed(!this.collapsed);
+            },
+            syncHandleA11y: function () {
+                var handle = this.$el.querySelector("[data-chirpui-sidebar-toggle]");
+                if (!handle) {
+                    return;
+                }
+                if (this.resizable) {
+                    handle.setAttribute("role", "separator");
+                    handle.setAttribute("aria-orientation", "vertical");
+                    handle.setAttribute("aria-valuemin", String(MIN_PX));
+                    handle.setAttribute("aria-valuemax", String(MAX_PX));
+                    handle.setAttribute(
+                        "aria-valuenow",
+                        String(this.collapsed ? MIN_PX : this.widthPx)
+                    );
+                    handle.setAttribute("aria-label", "Resize sidebar");
+                    handle.removeAttribute("aria-expanded");
+                } else {
+                    handle.setAttribute("role", "button");
+                    handle.setAttribute("aria-expanded", this.collapsed ? "false" : "true");
+                    handle.setAttribute("aria-label", "Toggle sidebar");
+                    handle.removeAttribute("aria-orientation");
+                    handle.removeAttribute("aria-valuemin");
+                    handle.removeAttribute("aria-valuemax");
+                    handle.removeAttribute("aria-valuenow");
+                }
             },
             startDrag: function (event) {
                 if (!this.resizable) {
@@ -1495,32 +1580,72 @@
                 event.preventDefault();
                 this._dragging = true;
                 this._startX = event.clientX;
-                this._startCollapsed = this.collapsed;
+                this._startWidth = this.collapsed ? MIN_PX : this.widthPx;
                 this._lastX = event.clientX;
+                this.$el.classList.add("chirpui-app-shell--sidebar-dragging");
                 document.body.style.userSelect = "none";
+                document.body.style.cursor = "col-resize";
             },
             onMove: function (event) {
                 if (!this._dragging) {
                     return;
                 }
                 this._lastX = event.clientX;
+                var delta = this._lastX - this._startX;
+                var next = this.clampWidth(this._startWidth + delta);
+                if (next <= SNAP_PX) {
+                    this.collapsed = true;
+                    this.$el.classList.add("chirpui-app-shell--sidebar-collapsed");
+                    this.$el.style.removeProperty("--chirpui-sidebar-width");
+                } else {
+                    this.collapsed = false;
+                    this.widthPx = next;
+                    this.$el.classList.remove("chirpui-app-shell--sidebar-collapsed");
+                    this.$el.style.setProperty("--chirpui-sidebar-width", next + "px");
+                }
+                this.syncHandleA11y();
             },
             onUp: function () {
                 if (!this._dragging) {
                     return;
                 }
                 this._dragging = false;
+                this.$el.classList.remove("chirpui-app-shell--sidebar-dragging");
                 document.body.style.userSelect = "";
-                var delta = this._lastX - this._startX;
-                if (Math.abs(delta) >= 5) {
-                    if (delta < 0 && !this._startCollapsed) {
-                        this.setCollapsed(true);
-                    } else if (delta > 0 && this._startCollapsed) {
-                        this.setCollapsed(false);
-                    }
+                document.body.style.cursor = "";
+                if (this.collapsed) {
+                    safeSetItem(COLLAPSED_KEY, "true");
                 } else {
-                    this.toggle();
+                    safeSetItem(COLLAPSED_KEY, "false");
+                    safeSetItem(WIDTH_KEY, this.widthPx + "px");
                 }
+            },
+            onKeydown: function (event) {
+                if (!this.resizable) {
+                    return;
+                }
+                var step = event.shiftKey ? 32 : 8;
+                if (event.key === "ArrowLeft") {
+                    event.preventDefault();
+                    this.setWidth((this.collapsed ? DEFAULT_PX : this.widthPx) - step);
+                } else if (event.key === "ArrowRight") {
+                    event.preventDefault();
+                    this.setWidth((this.collapsed ? MIN_PX : this.widthPx) + step);
+                } else if (event.key === "Home") {
+                    event.preventDefault();
+                    this.setCollapsed(true);
+                } else if (event.key === "End") {
+                    event.preventDefault();
+                    this.setCollapsed(false);
+                    this.setWidth(DEFAULT_PX);
+                }
+            },
+            onDoubleClick: function (event) {
+                if (!this.resizable) {
+                    return;
+                }
+                event.preventDefault();
+                this.toggle();
             },
         };
     });

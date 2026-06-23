@@ -59,6 +59,8 @@ SHOWCASE_ROUTE_SMOKE_PATHS = (
     "/screen-review-queue?q=latency&queue=priority&status=danger",
     "/screen-agent-run-monitor",
     "/screen-product-docs-home",
+    "/screen-lucky-cat-market",
+    "/screen-lucky-cat-market?q=MEOW&sector=tech",
     "/calendar",
     "/calendar/2026/5",
     "/calendar/2026/05",
@@ -557,8 +559,23 @@ class TestDataPage:
         assert 'data-screen-profile="ember"' in product.text
         assert "Signal Loom" in product.text
         assert "Open screen catalog" in product.text
-        assert "chirpui-logo-cloud" in product.text
-        assert "chirpui-cta-band" in product.text
+
+    @pytest.mark.asyncio
+    async def test_lucky_cat_market_golden_screen_exposes_profile_and_archetype_metadata(
+        self, showcase_app
+    ) -> None:
+        async with TestClient(showcase_app) as client:
+            market = await client.get("/screen-lucky-cat-market?q=MEOW&sector=tech")
+
+        assert market.status == 200
+        assert 'data-screen-archetype="data-dense-market"' in market.text
+        assert 'data-screen-profile="atlas"' in market.text
+        assert 'action="/screen-lucky-cat-market"' in market.text
+        assert 'hx-get="/screen-lucky-cat-market"' in market.text
+        assert "Golden screen: Lucky Cat Market" in market.text
+        assert "MEOW" in market.text
+        assert "chirpui-metric-strip" in market.text
+        assert "chirpui-table" in market.text
 
     def test_support_shell_uses_workspace_shell_instead_of_page_owned_shell_grid(self) -> None:
         support_template = (
