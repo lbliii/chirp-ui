@@ -1977,9 +1977,12 @@
     background: transparent;
   }
 
-  /* Nested folder sections sit inside a parent's `__section-links` grid — drop
-   * the outer section chrome so depth-2+ nodes read as tree rows, not cards. */
-  .chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__section.chirp-theme-docs-nav__section {
+  /* Nested folder sections inside a disclosure panel's `__section-links`
+   * grid — drop the outer section chrome so depth-2+ nodes read as tree rows,
+   * not cards. Scope to `--has-toggle` descendants only: depth-1 sections
+   * that sit beside `__root-leaf` rows under the root section keep their
+   * horizontal padding so the folder toggle aligns with the root leaf icon. */
+  .chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__section.chirp-theme-docs-nav__section {
     padding: 0;
     border-color: transparent;
     border-radius: 0;

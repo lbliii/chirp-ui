@@ -1166,7 +1166,8 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
         + '.chirp-theme-docs-nav__summary-link[aria-current="page"]'
     ) in css
     assert (
-        ".chirp-theme-docs-nav__section-links > .chirp-theme-docs-nav__section.chirp-theme-docs-nav__section"
+        ".chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-links "
+        + "> .chirp-theme-docs-nav__section.chirp-theme-docs-nav__section"
         in css
     )
     assert ".chirp-theme-docs-nav__root-leaf" in css
