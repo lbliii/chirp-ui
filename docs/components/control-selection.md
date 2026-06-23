@@ -9,7 +9,8 @@ surface feel complete without inventing duplicate APIs.
 | Need | Use | Source | Why |
 |---|---|---|---|
 | Submit a normal form value from a short option list | `select_field(...)` | `chirpui/forms.html` | Native `<select>` keeps browser behavior, mobile pickers, validation, and form submission. |
-| Pick from an app-command or filter menu without a form submit | `dropdown_select(...)` | `chirpui/dropdown_menu.html` | Alpine-backed combobox/listbox anatomy dispatches selection events and supports keyboard focus. |
+| Pick from a compact app-command or filter menu without typing | `dropdown_select(...)` | `chirpui/dropdown_menu.html` | Stable button trigger over a fixed listbox; dispatches selection events and supports keyboard focus. |
+| Type to search a long or open-ended option list in a form | `combobox(...)` | `chirpui/combobox.html` | Text input typeahead with hidden form value, optional multi-select token pills, and client-side filtering. |
 | Choose one option from a small visible set | `toggle_group(type="single", ...)` | `chirpui/toggle_group.html` | Keeps the options visible and renders native radio inputs. |
 | Choose several options from a small visible set | `toggle_group(type="multiple", ...)` | `chirpui/toggle_group.html` | Renders native checkbox inputs with grouped button anatomy. |
 | Enter a date with browser-native validation | `date_field(...)` | `chirpui/forms.html` | Native date input is the stable default until a popover picker has browser proof. |
@@ -20,20 +21,30 @@ surface feel complete without inventing duplicate APIs.
 
 ## Combobox Boundary
 
-Chirp UI’s current combobox-like surface is `dropdown_select(...)`. It renders a
-trigger with `role="combobox"` and a listbox menu, then uses
-`chirpuiDropdownSelect()` for focus and keyboard behavior. The registry and
-manifest expose this surface as `dropdown-select`; there is no separate
-`combobox(...)` macro today.
+Chirp UI ships two combobox-like surfaces with different triggers and jobs:
 
-Use `dropdown_select(...)` when selection is app state, a filter chip, a command
-surface choice, or a non-submit interaction.
+| Surface | Registry key | Trigger | Best for |
+| --- | --- | --- | --- |
+| `dropdown_select(...)` | `dropdown-select` (stable) | Button showing the current label | Toolbar filters, view switchers, app-state picks from a short fixed list |
+| `combobox(...)` | `combobox` (experimental) | Text input with typeahead | Form fields, tag pickers, and long option lists where users search by typing |
+
+Both use combobox/listbox ARIA wiring, but only `combobox(...)` filters options
+as the user types and writes a hidden input for normal form submission.
+`dropdown_select(...)` uses `chirpuiDropdownSelect()` and dispatches
+`chirpui:dropdown-selected`; `combobox(...)` uses `chirpuiCombobox()` and
+dispatches `chirpui:combobox-selected`.
+
+Use `dropdown_select(...)` when the option list is short, fixed, and chosen from
+a compact control without free-text entry.
+
+Use `combobox(...)` when the field needs typeahead search, multi-select token
+pills, or a form-backed hidden value under `name`.
 
 Use `select_field(...)` when the value belongs to a normal HTML form and should
-submit with the form payload.
+submit with native `<select>` semantics.
 
-Do not add a second `combobox(...)` macro until there is a distinct job that
-`dropdown_select(...)` and `select_field(...)` cannot satisfy.
+Do not add a third combobox macro. See [combobox-anatomy.md](combobox-anatomy.md)
+and [dropdown-anatomy.md](dropdown-anatomy.md) for rendered contracts and proof.
 
 ## Date Picker Boundary
 
@@ -68,10 +79,16 @@ browser-backed examples prove those contracts.
 - `tests/test_manifest.py::test_dropdown_select_manifest_entry_documents_combobox_boundary`
   keeps `dropdown_select(...)` discoverable as the `dropdown-select` manifest
   entry.
+- `tests/test_manifest.py::test_combobox_manifest_entry_documents_typeahead_boundary`
+  keeps `combobox(...)` discoverable with its typeahead/form-field contract.
+- `tests/test_components.py::TestCombobox` and `TestCombobox` render tests cover
+  combobox anatomy, disabled options, and multi-select scaffold.
 - `tests/test_components.py` covers `select_field`, `date_field`,
   `range_field`, `dropdown_select`, `table`, and pagination rendering.
 - `tests/browser/test_dropdowns.py` covers dropdown menu and dropdown-select
   browser behavior.
+- `tests/browser/test_combobox_gauntlet.py` covers combobox typeahead, roving
+  select, disabled-option skip, multi-select, and axe.
 - `tests/test_template_css_contract.py` and
   `tests/test_registry_emits_parity.py` keep template, CSS, and registry output
   aligned.

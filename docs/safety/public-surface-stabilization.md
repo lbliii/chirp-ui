@@ -257,7 +257,7 @@ vocabulary.
 | `band` | Keep experimental | Marketing pattern proof. |
 | `border-beam` | Keep experimental | Motion/effects visual proof. |
 | `catalog-rail` | Recipe-only | Media recipe proof; promote only after repeated app use. |
-| `combobox` | Keep experimental | Control interaction proof; typeahead role=combobox over a filtered listbox (#201) with aria-activedescendant roving + Escape/click-outside and axe coverage via the combobox browser gauntlet — promote in a later deliberate hardening PR once the gauntlet stabilizes. |
+| `combobox` | Keep experimental | Control interaction proof; typeahead `combobox(...)` for form fields and multi-select tokens — distinct from stable `dropdown_select(...)` toolbar/filter picks. Anatomy at `docs/components/combobox-anatomy.md`; browser gauntlet covers typeahead filter, roving select, disabled-option skip, Escape/click-outside, multi-select, and axe. Promote after gauntlet runs in blocking CI (#349). |
 | `chat-input` | Keep experimental | Chat composer proof; `composer()` + `chirpuiComposer` IME-safe send/stop (#298) with render tests and `/composer` showcase — promote after browser gauntlet. |
 | `composer-shell` | Keep experimental | Form interaction proof. |
 | `confetti` | Keep experimental | Motion/effects visual proof. |

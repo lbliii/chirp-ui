@@ -752,7 +752,7 @@ COMPONENTS: dict[str, ComponentDescriptor] = {
             "token-remove",
         ),
         template="combobox.html",
-        extra_emits=("chirpui-combobox__option--active",),
+        extra_emits=("chirpui-combobox__option--active", "chirpui-combobox__option--disabled"),
         category="form",
         maturity="experimental",
         requires=("alpine",),

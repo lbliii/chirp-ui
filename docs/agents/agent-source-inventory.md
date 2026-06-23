@@ -76,6 +76,7 @@ adds all of the following:
 | `docs-derived` | `tests/browser/test_consumer_shell_actions_oob.py` | Browser proof for consumer shell action response contracts. | `source-only` |
 | `docs-derived` | `tests/test_find_cli.py` | CLI proof for agent discovery reference contracts. | `source-only` |
 | `docs-derived` | `docs/components/appearance-tone.md` | Appearance/tone semantics and migration guidance. | `source-only` |
+| `docs-derived` | `docs/components/combobox-anatomy.md` | Combobox typeahead anatomy, dropdown-select boundary, and keyboard proof ledger. | `source-only` |
 | `docs-derived` | `docs/components/context-menu-anatomy.md` | Shipped context-menu anatomy, proof ledger, and keyboard/focus contract. | `source-only` |
 | `docs-derived` | `docs/components/menubar-anatomy.md` | Shipped menubar anatomy, proof ledger, and roving-focus contract. | `source-only` |
 | `docs-derived` | `docs/components/navigation-menu-anatomy.md` | Navigation menu flyout anatomy, proof ledger, and keyboard/focus contract. | `source-only` |

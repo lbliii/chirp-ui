@@ -6587,7 +6587,7 @@
       "category": "form",
       "composes": [],
       "consumes": [],
-      "description": "Combobox / autocomplete\n    Typeahead text input over a filtered role=\"listbox\" of suggestions — the\n    WAI-ARIA combobox pattern with aria-activedescendant. Typing filters the\n    options client-side; ArrowDown/ArrowUp rove the visible options, Enter selects\n    the active one, Escape closes, click-outside closes.\n\n    Single-select (default): selecting fills the visible input with the option\n    label, writes the option value to a hidden input (submitted under `name`), and\n    dispatches `chirpui:combobox-selected` {value, label}.\n\n    Multi-select (`multiple=true`): selecting adds a removable pill, keeps the list\n    open, and clears the query; each selected value submits as a repeated hidden\n    `name` input. Backspace on the empty input removes the last pill; the remove\n    button removes a specific one; already-selected options drop out of the list.\n    Multi-select requires JavaScript (the pills/values are Alpine-managed); v1\n    starts empty (no pre-selected values).\n\n    Requires Alpine.js. In single-select, options are server-rendered so the field\n    degrades to a plain text input with JS off (the hidden value still submits).\n\n    Options: list of {label, value?} dicts (value defaults to label).\n\n    Usage:\n        from \"chirpui/combobox.html\" import combobox\n\n        {{ combobox(name=\"country\", label=\"Country\",\n                    placeholder=\"Search countries…\", value=\"us\",\n                    options=[{\"label\": \"Canada\", \"value\": \"ca\"},\n                             {\"label\": \"United States\", \"value\": \"us\"}]) }}\n\n        {{ combobox(name=\"tags\", label=\"Tags\", multiple=true,\n                    placeholder=\"Add tags…\", options=[...]) }}",
+      "description": "Typeahead combobox for form fields — text input over a filtered\n    role=\"listbox\" with hidden form value and optional multi-select token pills.\n    Use dropdown_select for stable fixed-list toolbar/filter picks without typing.\n    Typeahead text input over a filtered role=\"listbox\" of suggestions — the\n    WAI-ARIA combobox pattern with aria-activedescendant. Typing filters the\n    options client-side; ArrowDown/ArrowUp rove the visible options, Enter selects\n    the active one, Escape closes, click-outside closes.\n\n    Single-select (default): selecting fills the visible input with the option\n    label, writes the option value to a hidden input (submitted under `name`), and\n    dispatches `chirpui:combobox-selected` {value, label}.\n\n    Multi-select (`multiple=true`): selecting adds a removable pill, keeps the list\n    open, and clears the query; each selected value submits as a repeated hidden\n    `name` input. Backspace on the empty input removes the last pill; the remove\n    button removes a specific one; already-selected options drop out of the list.\n    Multi-select requires JavaScript (the pills/values are Alpine-managed); v1\n    starts empty (no pre-selected values).\n\n    Requires Alpine.js. In single-select, options are server-rendered so the field\n    degrades to a plain text input with JS off (the hidden value still submits).\n\n    Options: list of {label, value?} dicts (value defaults to label).\n\n    Usage:\n        from \"chirpui/combobox.html\" import combobox\n\n        {{ combobox(name=\"country\", label=\"Country\",\n                    placeholder=\"Search countries…\", value=\"us\",\n                    options=[{\"label\": \"Canada\", \"value\": \"ca\"},\n                             {\"label\": \"United States\", \"value\": \"us\"}]) }}\n\n        {{ combobox(name=\"tags\", label=\"Tags\", multiple=true,\n                    placeholder=\"Add tags…\", options=[...]) }}",
       "elements": [
         "control",
         "empty",
@@ -6610,15 +6610,17 @@
         "chirpui-combobox__list",
         "chirpui-combobox__option",
         "chirpui-combobox__option--active",
+        "chirpui-combobox__option--disabled",
         "chirpui-combobox__token",
         "chirpui-combobox__token-label",
         "chirpui-combobox__token-remove",
         "chirpui-combobox__tokens"
       ],
       "extra_emits": [
-        "chirpui-combobox__option--active"
+        "chirpui-combobox__option--active",
+        "chirpui-combobox__option--disabled"
       ],
-      "lineno": 35,
+      "lineno": 37,
       "macro": "combobox",
       "maturity": "experimental",
       "modifiers": [
@@ -9350,7 +9352,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Dropdown menu, select, and split-button primitives.\n    Includes item menus, combobox/listbox-style dropdown_select controls,\n    and primary-action split menus. Items: {label, href?} or\n    {label, action?, variant?, icon?, divider?}. Requires Alpine.js for behavior.\n\n    Usage:\n        from \"chirpui/dropdown_menu.html\" import dropdown_menu, dropdown_select, dropdown_split\n        from \"chirpui/button.html\" import btn\n\n        {{ dropdown_menu(btn(\"Actions\", icon=\"▾\"), items=[...]) }}",
+      "description": "Dropdown menu, select, and split-button primitives — dropdown_select\n    is the stable fixed-list combobox/listbox for toolbar filters; use combobox\n    for typeahead form fields. Includes item menus, combobox/listbox-style\n    dropdown_select controls, and primary-action split menus. Items: {label, href?}\n    or {label, action?, variant?, icon?, divider?}. Requires Alpine.js for behavior.\n\n    Usage:\n        from \"chirpui/dropdown_menu.html\" import dropdown_menu, dropdown_select, dropdown_split\n        from \"chirpui/button.html\" import btn\n\n        {{ dropdown_menu(btn(\"Actions\", icon=\"▾\"), items=[...]) }}",
       "elements": [
         "caret",
         "item",
@@ -9375,7 +9377,7 @@
         "chirpui-dropdown__item--selected",
         "chirpui-dropdown__trigger--select"
       ],
-      "lineno": 80,
+      "lineno": 81,
       "macro": "dropdown_select",
       "maturity": "stable",
       "modifiers": [
@@ -9426,7 +9428,7 @@
       "category": "navigation",
       "composes": [],
       "consumes": [],
-      "description": "Dropdown menu, select, and split-button primitives.\n    Includes item menus, combobox/listbox-style dropdown_select controls,\n    and primary-action split menus. Items: {label, href?} or\n    {label, action?, variant?, icon?, divider?}. Requires Alpine.js for behavior.\n\n    Usage:\n        from \"chirpui/dropdown_menu.html\" import dropdown_menu, dropdown_select, dropdown_split\n        from \"chirpui/button.html\" import btn\n\n        {{ dropdown_menu(btn(\"Actions\", icon=\"▾\"), items=[...]) }}",
+      "description": "Dropdown menu, select, and split-button primitives — dropdown_select\n    is the stable fixed-list combobox/listbox for toolbar filters; use combobox\n    for typeahead form fields. Includes item menus, combobox/listbox-style\n    dropdown_select controls, and primary-action split menus. Items: {label, href?}\n    or {label, action?, variant?, icon?, divider?}. Requires Alpine.js for behavior.\n\n    Usage:\n        from \"chirpui/dropdown_menu.html\" import dropdown_menu, dropdown_select, dropdown_split\n        from \"chirpui/button.html\" import btn\n\n        {{ dropdown_menu(btn(\"Actions\", icon=\"▾\"), items=[...]) }}",
       "elements": [],
       "emits": [
         "chirpui-dropdown__item",
@@ -9436,7 +9438,7 @@
       "extra_emits": [
         "chirpui-dropdown__item--selected"
       ],
-      "lineno": 13,
+      "lineno": 14,
       "macro": "dropdown_menu",
       "maturity": "stable",
       "modifiers": [],
@@ -26379,7 +26381,7 @@
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
       "explicit_extra_blocks": 136,
-      "explicit_extra_classes": 574,
+      "explicit_extra_classes": 575,
       "explicit_trim_blocks": 71,
       "explicit_trim_classes": 98
     },

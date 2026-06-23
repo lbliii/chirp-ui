@@ -126,8 +126,8 @@ _33 components._
 | `conversation_item` | stable | Conversation Item component |
 | `conversation_list` | stable | Conversation List component |
 | `dropdown` | stable | Dropdown component |
-| `dropdown_select` | stable | Dropdown menu, select, and split-button primitives. |
-| `dropdown_menu` | stable | Dropdown menu, select, and split-button primitives. |
+| `dropdown_select` | stable | Dropdown menu, select, and split-button primitives — dropdown_select |
+| `dropdown_menu` | stable | Dropdown menu, select, and split-button primitives — dropdown_select |
 | `filter_rail` | experimental | Dense workspace primitives |
 | `index_card` | stable | Index card component |
 | `link` | stable | Link component |
@@ -195,7 +195,7 @@ _27 components._
 | `advanced_params` | stable | Parameter override controls |
 | `attachment_chip` | experimental | File item / attachment chip |
 | `composer` | experimental | Chat Input / Composer |
-| `combobox` | experimental | Combobox / autocomplete |
+| `combobox` | experimental | Typeahead combobox for form fields — text input over a filtered |
 | `composer_shell` | experimental | Composer shell |
 | `date_picker` | experimental | Date / range picker |
 | `field_wrapper` | stable | Form field macros |

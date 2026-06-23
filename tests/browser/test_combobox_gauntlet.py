@@ -182,6 +182,60 @@ async def test_click_outside_closes(page, base_url):
     await expect(page.locator(LIST)).to_be_hidden()
 
 
+# ── Disabled options ────────────────────────────────────────────────
+
+D_CT = "[data-testid='combobox-disabled-container']"
+D_INPUT = D_CT + " .chirpui-combobox__input"
+D_LIST = D_CT + " .chirpui-combobox__list"
+D_OPTION = D_CT + " .chirpui-combobox__option"
+D_HIDDEN = D_CT + " input[type=hidden][name=region]"
+
+
+async def _open_disabled(page):
+    await page.locator(D_INPUT).click()
+    await expect(page.locator(D_LIST)).to_be_visible()
+    await page.wait_for_function(
+        '() => { const l = document.querySelector("' + D_LIST + '");'
+        " return !!l && parseFloat(getComputedStyle(l).opacity) >= 0.99; }",
+        timeout=5000,
+    )
+
+
+async def _disabled_factory_move(page, delta):
+    await page.evaluate(
+        "(d) => { document.querySelector("
+        "\"[data-testid='combobox-disabled-container'] .chirpui-combobox\")"
+        "._x_dataStack[0].move(d); }",
+        delta,
+    )
+
+
+async def test_disabled_option_click_does_not_select(page, base_url):
+    await _open_page(page, base_url)
+    await _open_disabled(page)
+    await page.locator(D_OPTION, has_text="South (unavailable)").click()
+    await expect(page.locator(D_LIST)).to_be_visible()
+    assert await page.locator(D_INPUT).input_value() == ""
+    assert await page.eval_on_selector(D_HIDDEN, "el => el.value") == ""
+
+
+async def test_disabled_option_is_skipped_when_roving(page, base_url):
+    await _open_page(page, base_url)
+    await _open_disabled(page)
+    await _disabled_factory_move(page, 1)  # North (enabled)
+    await _disabled_factory_move(page, 1)  # skip South, land on East
+    active_label = await page.evaluate(
+        """() => {
+            const i = document.querySelector(
+                "[data-testid='combobox-disabled-container'] .chirpui-combobox__input");
+            const ad = i.getAttribute('aria-activedescendant');
+            const opt = ad ? document.getElementById(ad) : null;
+            return opt ? opt.dataset.label : null;
+        }"""
+    )
+    assert active_label == "East"
+
+
 async def test_axe_no_serious_or_critical_violations(page, base_url):
     await _open_page(page, base_url)
     await _open(page)
