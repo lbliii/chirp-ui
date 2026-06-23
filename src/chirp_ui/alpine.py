@@ -320,4 +320,3 @@ def check_alpine_runtime(html: str) -> AlpineRuntimeCheck:
         core_loaded=core_loaded,
         core_url_valid=core_url_valid,
     )
-
