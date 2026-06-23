@@ -29,13 +29,13 @@ from chirp_ui.alpine import (
     check_alpine_runtime,
 )
 from chirp_ui.components import DesignSystemReport, DesignSystemStats, design_system_report
-from chirp_ui.css_subset import CssSubsetPlan, resolve_partial_paths
 from chirp_ui.config_schema import (
     Field,
     ProjectedField,
     Widget,
     project_fields,
 )
+from chirp_ui.css_subset import CssSubsetPlan, resolve_partial_paths
 from chirp_ui.filters import TemplateFilterApp, register_colors, reset_colors
 from chirp_ui.grid_state import (
     Column,
