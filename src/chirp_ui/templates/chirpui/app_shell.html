@@ -57,6 +57,9 @@
 {% set rail_variant_class = " chirpui-app-shell__context-rail--" ~ _context_rail_variant if _context_rail_variant != "default" else "" %}
 {% set shell_actions_target = shell_actions.target if shell_actions else "chirp-shell-actions" %}
 {% if sidebar_collapsible %}
+<script>
+(function(){try{var c=localStorage.getItem("chirpui-sidebar-collapsed");var w=localStorage.getItem("chirpui-sidebar-width");if(c==="true"){document.documentElement.setAttribute("data-chirpui-sidebar-collapsed","true");document.documentElement.style.setProperty("--chirpui-sidebar-width","var(--chirpui-sidebar-collapsed-width, 4rem)");}else if(w&&/^\d+px$/.test(w)){document.documentElement.style.setProperty("--chirpui-sidebar-width",w);}}catch(e){}})();
+</script>
 <div class="chirpui-app-shell chirpui-app-shell--sidebar-collapsible{{ rail_shell_class }}{{ nav_drawer_class }}{{ " " ~ cls if cls else "" }}"
      x-data="chirpuiSidebar({ collapsible: true, resizable: true })"
      x-init="init()"
@@ -130,9 +133,10 @@
         <div id="chirpui-sidebar-nav" aria-live="polite" aria-atomic="true">{% slot sidebar %}</div>
         {% if sidebar_collapsible %}
         <div class="chirpui-app-shell__sidebar-resize" data-chirpui-sidebar-toggle
-             role="button" tabindex="0" aria-label="Toggle sidebar"
-             :aria-expanded="!collapsed"
+             tabindex="0"
              @mousedown="startDrag($event)"
+             @dblclick="onDoubleClick($event)"
+             @keydown="onKeydown($event)"
              @keydown.enter.prevent="toggle()"
              @keydown.space.prevent="toggle()"></div>
         {% end %}

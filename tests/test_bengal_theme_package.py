@@ -684,6 +684,38 @@ def test_chirp_theme_css_avoids_bengal_minifier_spacing_regression() -> None:
     assert "calc(" in minified
 
 
+def test_bengal_minifier_preserves_chirpui_scope_envelope() -> None:
+    """Production CSS minification must not glue `@scope (...) to (` (#247 / bengal#510)."""
+    from bengal.css.minify import minify_css
+
+    envelope = (
+        "@layer chirpui.component {\n"
+        "  @scope (.chirpui-card) to (.chirpui-card .chirpui-card) {\n"
+        "    :scope { padding: var(--chirpui-spacing); }\n"
+        "  }\n"
+        "}"
+    )
+    minified = minify_css(envelope)
+
+    assert "to(" not in minified
+    assert re.search(r"@scope\s*\(.+\)\s+to\s+\(", minified)
+    assert ":scope{padding:" in minified.replace(" ", "")
+
+    library_css = (
+        Path(__file__).resolve().parents[1]
+        / "src"
+        / "chirp_ui"
+        / "templates"
+        / "chirpui.css"
+    ).read_text(encoding="utf-8")
+    minified_library = minify_css(library_css)
+
+    assert "@scope" in minified_library
+    assert " to " in minified_library or " to(" not in minified_library
+    assert ".chirpui-card" in minified_library
+    assert ":scope" in minified_library
+
+
 def test_theme_manifest_declares_standalone_package() -> None:
     """The packaged theme manifest should not inherit Bengal default anymore."""
     package_root = resources.files(THEME_PACKAGE)

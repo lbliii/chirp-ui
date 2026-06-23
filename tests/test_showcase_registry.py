@@ -152,6 +152,7 @@ def test_nav_sections_preserve_sidebar_groups() -> None:
         "/screen-review-queue",
         "/screen-agent-run-monitor",
         "/screen-product-docs-home",
+        "/screen-lucky-cat-market",
     ]
     shell_paths = [page.path for page in sections[2][1]]
     assert shell_paths == [
@@ -173,6 +174,7 @@ def test_golden_screens_and_shell_recipes_grouped_for_home_index() -> None:
         "/screen-review-queue",
         "/screen-agent-run-monitor",
         "/screen-product-docs-home",
+        "/screen-lucky-cat-market",
     ]
     assert [page.path for page in recipes] == [
         "/catalog-shell",
@@ -225,12 +227,13 @@ def test_search_index_serializes_visible_pages() -> None:
 
 
 SHELL_CSS_DIR = SHOWCASE_DIR / "templates" / "showcase" / "_css"
-SHELL_CSS_PREFIXES = ("catalog-shell-", "ops-shell-", "support-shell-")
+SHELL_CSS_PREFIXES = ("catalog-shell-", "ops-shell-", "support-shell-", "market-shell-")
 SHELL_TEMPLATE_INCLUDES = {
     "showcase/catalog_shell.html": "showcase/_css/catalog_shell.css.html",
     "showcase/operations_shell.html": "showcase/_css/ops_shell.css.html",
     "showcase/operations_shell_workspace.html": "showcase/_css/ops_shell.css.html",
     "showcase/support_shell.html": "showcase/_css/support_shell.css.html",
+    "showcase/screen_lucky_cat_market.html": "showcase/_css/market_shell.css.html",
 }
 GALLERY_TEMPLATES = (
     "showcase/forms.html",

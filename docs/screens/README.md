@@ -37,6 +37,7 @@ to jump to any golden screen or shell recipe.
 | [Review Queue](review-queue.md) | `sage` | `/screen-review-queue` | [open](https://chirp-ui-showcase-production.up.railway.app/screen-review-queue) | Triage/review tools need filters, a result collection, selected-object inspector, and state-rich items. |
 | [Agent Run Monitor](agent-run-monitor.md) | `signal` candidate | `/screen-agent-run-monitor` | [open](https://chirp-ui-showcase-production.up.railway.app/screen-agent-run-monitor) | Agent, automation, build, import, or evaluation jobs need live state, artifacts, logs, and retry context. |
 | [Product/Docs Home](product-docs-home.md) | `ember` | `/screen-product-docs-home` | [open](https://chirp-ui-showcase-production.up.railway.app/screen-product-docs-home) | Product and docs entry pages need identity, proof, lifecycle explanation, entry points, and CTA. |
+| [Data-Dense Market](data-dense-market.md) | `atlas` | `/screen-lucky-cat-market` | [open](https://chirp-ui-showcase-production.up.railway.app/screen-lucky-cat-market) | Trading and finance surfaces need ticker search, movers, market catalog, selected-symbol inspection, and live activity. |
 
 ## Agent Selection Rule
 
@@ -50,6 +51,8 @@ Choose a screen archetype before choosing individual components.
   jobs, imports, builds, deploys, and recovery workflows.
 - Use **Product/Docs Home** for product pages, docs homes, library homepages,
   launch pages, and internal platform entry pages.
+- Use **Data-Dense Market** for trading floors, portfolio monitors, market
+  catalogs, and other number-heavy finance operations surfaces.
 - If the requested product situation does not match a catalog entry, start from
   the closest pattern doc and record the gap instead of inventing utility
   classes.

@@ -114,6 +114,12 @@ async def showcase_page():
             "ember",
             "Signal Loom",
         ),
+        (
+            "/screen-lucky-cat-market?q=MEOW&sector=tech",
+            "#lucky-cat-market-surface",
+            "atlas",
+            "Golden screen: Lucky Cat Market",
+        ),
     ],
 )
 @pytest.mark.parametrize(
@@ -202,6 +208,21 @@ async def test_product_docs_home_golden_screen_uses_product_pattern_surfaces(
     await expect(showcase_page.locator(".chirpui-cta-band")).to_have_count(1)
 
 
+async def test_lucky_cat_market_golden_screen_uses_data_dense_surfaces(
+    showcase_page,
+    showcase_base_url: str,
+) -> None:
+    await showcase_page.set_viewport_size({"width": 1280, "height": 900})
+    await showcase_page.goto(showcase_base_url + "/screen-lucky-cat-market?q=MEOW&sector=tech")
+    await wait_for_alpine(showcase_page)
+
+    await expect(showcase_page.locator(".chirpui-metric-strip")).to_have_count(1)
+    await expect(showcase_page.locator(".chirpui-result-collection")).not_to_have_count(0)
+    await expect(showcase_page.locator(".chirpui-inspector-panel")).to_have_count(1)
+    await expect(showcase_page.locator(".chirpui-table")).to_have_count(1)
+    await expect(showcase_page.locator(".chirpui-tabular")).not_to_have_count(0)
+
+
 @pytest.mark.parametrize(
     ("path", "surface", "profile", "archetype"),
     [
@@ -228,6 +249,12 @@ async def test_product_docs_home_golden_screen_uses_product_pattern_surfaces(
             "#product-docs-home-surface",
             "ember",
             "product-docs-home",
+        ),
+        (
+            "/screen-lucky-cat-market?q=MEOW&sector=tech",
+            "#lucky-cat-market-surface",
+            "atlas",
+            "data-dense-market",
         ),
     ],
 )

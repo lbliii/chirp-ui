@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block head_extra %}
+{% include "showcase/_showcase_head_styles.html" %}
+{% include "showcase/_css/market_shell.css.html" %}
+{% end %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, stack, grid, block, page_header, cluster %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/command_bar.html" import command_bar %}
+{% from "chirpui/filter_bar.html" import filter_bar %}
+{% from "chirpui/panel.html" import panel %}
+{% from "chirpui/empty.html" import empty_state %}
+{% from "chirpui/workspace_primitives.html" import metric_strip, metric_item, result_collection, result_card, inspector_panel %}
+{% from "chirpui/table.html" import table %}
+
+{% call container(cls="market-shell-page") %}
+{% call stack(gap="xl") %}
+{{ page_header(
+  market_screen_title | default("Golden screen: Lucky Cat Market"),
+  subtitle=market_screen_subtitle | default(
+    "Atlas profile fixture for ticker search, movers, market catalog, and live activity on a data-dense trading floor."
+  )
+) }}
+
+<section id="lucky-cat-market-surface" class="market-shell-surface"
+         data-screen-archetype="{{ market_screen_archetype | default('data-dense-market') }}"
+         data-screen-profile="{{ market_screen_profile | default('atlas') }}"
+         aria-label="Lucky Cat market golden screen"
+         x-data="{ pending: false }"
+         x-bind:class="{ 'is-pending': pending }"
+         x-on:htmx:before-request.window="if ($event.target.closest && $event.target.closest('#lucky-cat-market-surface')) pending = true"
+         x-on:htmx:after-settle.window="if ($event.target.closest && $event.target.closest('#lucky-cat-market-surface')) pending = false"
+         x-on:htmx:response-error.window="pending = false">
+
+{% call command_bar(surface_variant="default", density="sm", wrap="wrap", aria_label="Market command controls", cls="market-shell-command-bar") %}
+  <form id="market-shell-controls" class="market-shell-search" action="{{ market_route }}" method="get"
+        data-chirpui-role="search"
+        hx-get="{{ market_route }}"
+        hx-trigger="submit"
+        hx-target="#lucky-cat-market-surface"
+        hx-select="#lucky-cat-market-surface"
+        hx-swap="outerHTML transition:true"
+        hx-push-url="true"
+        hx-sync="#lucky-cat-market-surface:replace"
+        hx-indicator="#market-shell-pending">
+    <input type="hidden" name="sector" value="{{ market_sector }}">
+    <input type="hidden" name="status" value="{{ market_status }}">
+    <label class="chirpui-visually-hidden" for="market-shell-query">Search market symbols</label>
+    <input id="market-shell-query" class="chirpui-field__input" name="q" type="search"
+           value="{{ market_query }}" placeholder="Search symbols, sectors, tags..."
+           autocomplete="off"
+           x-ref="marketQuery"
+           hx-get="{{ market_route }}"
+           hx-trigger="input changed delay:120ms, search"
+           hx-target="#market-shell-frame"
+           hx-select="#market-shell-frame"
+           hx-swap="outerHTML transition:true"
+           hx-include="#market-shell-controls"
+           hx-push-url="true"
+           hx-sync="#market-shell-frame:replace"
+           hx-indicator="#market-shell-pending">
+    {{ btn("Search", variant="primary", size="sm", type="submit") }}
+  </form>
+  <div class="market-shell-hints" aria-label="Suggested market searches">
+    <span id="market-shell-pending" class="market-shell-pending" role="status" aria-live="polite">Updating</span>
+    {% for hint in market_hints %}
+    <a class="chirpui-btn chirpui-btn--ghost chirpui-btn--sm" href="{{ hint.href }}"
+       data-query="{{ hint.label }}"
+       x-on:click="$refs.marketQuery.value = $el.dataset.query"
+       hx-boost="false"
+       hx-get="{{ hint.href }}"
+       hx-target="#lucky-cat-market-surface"
+       hx-select="#lucky-cat-market-surface"
+       hx-swap="outerHTML transition:true"
+       hx-push-url="true"
+       hx-sync="#lucky-cat-market-surface:replace"
+       hx-indicator="#market-shell-pending"><span class="chirpui-btn__label">{{ hint.label }}</span></a>
+    {% endfor %}
+  </div>
+{% end %}
+
+{% call metric_strip(label="Portfolio snapshot", cls="market-shell-metrics") %}
+  {{ metric_item(market_portfolio_value, "portfolio value", cls="chirpui-tabular") }}
+  {{ metric_item(market_day_pnl, "day P/L", cls="chirpui-tabular") }}
+  {{ metric_item(market_day_pnl_pct, "day return", cls="chirpui-tabular") }}
+  {{ metric_item(market_open_positions, "open positions", cls="chirpui-tabular") }}
+  {{ metric_item(market_watch_count, "watchlist", cls="chirpui-tabular") }}
+{% end %}
+
+{% call filter_bar(market_route, attrs_map={
+    "id": "market-shell-filter-form",
+    "hx-get": market_route,
+    "hx-trigger": "change delay:80ms from:select",
+    "hx-target": "#lucky-cat-market-surface",
+    "hx-select": "#lucky-cat-market-surface",
+    "hx-swap": "outerHTML transition:true",
+    "hx-push-url": "true",
+    "hx-sync": "#lucky-cat-market-surface:replace",
+    "hx-indicator": "#market-shell-pending"
+  }, surface_variant="muted", density="sm", wrap="wrap", cls="market-shell-filter-bar") %}
+  <input type="hidden" name="q" value="{{ market_query }}">
+  <span class="market-shell-scope-label">{{ market_sector_label }}</span>
+  <div class="chirpui-field chirpui-field--dense">
+    <label class="chirpui-field__label" for="market-shell-sector">Sector</label>
+    <select class="chirpui-field__input" id="market-shell-sector" name="sector">
+      <option value="">All sectors</option>
+      {% for sector in market_sectors %}
+      <option value="{{ sector.id }}"{% if sector.active %} selected{% end %}>{{ sector.label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="chirpui-field chirpui-field--dense">
+    <label class="chirpui-field__label" for="market-shell-status">State</label>
+    <select class="chirpui-field__input" id="market-shell-status" name="status">
+      {% for item in market_status_items %}
+      <option value="{{ item.id }}"{% if item.active %} selected{% end %}>{{ item.label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+{% end %}
+
+<div id="market-shell-frame" class="market-shell-frame">
+{% call stack(gap="lg") %}
+  {% call grid(cols=3, gap="lg") %}
+    {% call block() %}
+      {% call panel(title="Top gainers", subtitle="Session leaders", surface_variant="muted") %}
+        {% call result_collection(label="Top gainers", title="Gainers") %}
+          {% for item in market_movers_up %}
+          {% call result_card(item.symbol, subtitle=item.name) %}
+            {% slot mark %}{{ item.symbol[:2] }}{% end %}
+            {% slot actions %}{{ badge(item.change_pct_label, variant="success") }}{% end %}
+            <p class="market-shell-price chirpui-tabular">{{ item.price_label }}</p>
+            <p class="market-shell-change chirpui-tabular">{{ item.change_label }} ({{ item.change_pct_label }})</p>
+            {% slot footer %}<span>volume</span><span class="chirpui-tabular">{{ item.volume }}</span>{% end %}
+          {% end %}
+          {% endfor %}
+        {% end %}
+      {% end %}
+    {% end %}
+    {% call block() %}
+      {% call panel(title="Top decliners", subtitle="Session laggards", surface_variant="muted") %}
+        {% call result_collection(label="Top decliners", title="Decliners") %}
+          {% for item in market_movers_down %}
+          {% call result_card(item.symbol, subtitle=item.name) %}
+            {% slot mark %}{{ item.symbol[:2] }}{% end %}
+            {% slot actions %}{{ badge(item.change_pct_label, variant="error") }}{% end %}
+            <p class="market-shell-price chirpui-tabular">{{ item.price_label }}</p>
+            <p class="market-shell-change chirpui-tabular">{{ item.change_label }} ({{ item.change_pct_label }})</p>
+            {% slot footer %}<span>volume</span><span class="chirpui-tabular">{{ item.volume }}</span>{% end %}
+          {% end %}
+          {% endfor %}
+        {% end %}
+      {% end %}
+    {% end %}
+    {% call block() %}
+      {% if market_selected %}
+      {% call inspector_panel(title=market_selected.symbol, subtitle=market_selected.name) %}
+        {% slot actions %}{{ badge(market_selected.change_pct_label, variant=market_selected.status) }}{% end %}
+        <p class="market-shell-price market-shell-price--hero chirpui-tabular">{{ market_selected.price_label }}</p>
+        <p class="market-shell-change chirpui-tabular">{{ market_selected.change_label }} ({{ market_selected.change_pct_label }})</p>
+        <p>{{ market_selected.summary }}</p>
+        {% slot footer %}
+        <span>volume</span><span class="chirpui-tabular">{{ market_selected.volume }}</span>
+        {% end %}
+      {% end %}
+      {% else %}
+      {{ empty_state(title="No symbols match the current filters.", action_label="Reset filters", action_href=market_route) }}
+      {% endif %}
+    {% end %}
+  {% end %}
+
+  {% call grid(cols=2, gap="lg") %}
+    {% call block() %}
+      {% call panel(title="Market catalog", subtitle="Sortable watchlist with live quote metadata", surface_variant="default") %}
+        {% if market_symbols %}
+        {% call result_collection(label="Market catalog", title="Watchlist") %}
+          {% for item in market_symbols %}
+          {% call result_card(item.symbol, subtitle=item.name, cls="chirpui-result-card--selected" if item.selected else "", attrs_map={"aria-current": "true"} if item.selected else none) %}
+            {% slot mark %}{{ item.symbol[:2] }}{% end %}
+            {% slot actions %}{{ badge(item.change_pct_label, variant=item.status) }}{% end %}
+            <p class="market-shell-price chirpui-tabular">{{ item.price_label }}</p>
+            <p class="market-shell-change chirpui-tabular">{{ item.change_label }} ({{ item.change_pct_label }})</p>
+            <p>{{ item.summary }}</p>
+            {% slot footer %}<span>volume</span><span class="chirpui-tabular">{{ item.volume }}</span>{% end %}
+          {% end %}
+          {% endfor %}
+        {% end %}
+        {% else %}
+        {{ empty_state(title="No symbols match the current filters.", action_label="Reset filters", action_href=market_route) }}
+        {% endif %}
+      {% end %}
+    {% end %}
+    {% call block() %}
+      {% call panel(title="Live activity", subtitle="Recent tape prints", surface_variant="muted") %}
+        {{ table(
+          headers=["Time", "Symbol", "Side", "Size", "Price"],
+          rows=[
+            [item.time, item.symbol, item.side, item.size, item.price]
+            for item in market_activity
+          ],
+          compact=true,
+          cls="market-shell-activity chirpui-tabular"
+        ) }}
+        <p class="market-shell-live-note" role="status" aria-live="polite">Tape updates stream into this region during live sessions.</p>
+      {% end %}
+    {% end %}
+  {% end %}
+{% end %}
+</div>
+</section>
+{% end %}
+{% end %}
+{% end %}
