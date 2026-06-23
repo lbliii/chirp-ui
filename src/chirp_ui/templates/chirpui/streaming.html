@@ -86,7 +86,7 @@
     <div class="chirpui-card__body chirpui-model-card__body">
         {% if sse_streaming %}
         <div class="chirpui-streaming-block chirpui-streaming-block--active"
-             sse-swap="fragment" hx-target="this" role="log" aria-relevant="additions text">
+             x-data="chirpuiStreamLifecycle()" sse-swap="fragment" hx-target="this" role="log" aria-relevant="additions text">
             {% slot %}
             <span class="chirpui-streaming-block__cursor" aria-hidden="true"></span>
         </div>

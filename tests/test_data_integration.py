@@ -687,6 +687,15 @@ class TestDataPage:
         assert response.status == 200
 
     @pytest.mark.asyncio
+    async def test_demo_stream_emits_fragment_sse_events(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            result = await client.sse("/demo/stream?prompt=Hello", max_events=3)
+        assert result.status == 200
+        assert result.headers.get("content-type", "").startswith("text/event-stream")
+        assert any(event.event == "fragment" for event in result.events)
+        assert any("Response to" in (event.data or "") for event in result.events)
+
+    @pytest.mark.asyncio
     async def test_effects_page_wraps_background_macros_with_canvas_height(
         self, showcase_app
     ) -> None:
