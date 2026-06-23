@@ -71,8 +71,8 @@ async def test_sidebar_drawer_opens_traps_focus_and_returns_on_escape(page, base
     # The modal dialog must expose an accessible name (aria-labelledby -> head title).
     await expect(page.get_by_role("dialog", name="Navigation")).to_be_visible()
     await expect(toggle).to_have_attribute("aria-expanded", "true")
-    # Initial focus landed inside the drawer (the close button is first focusable).
-    assert await page.evaluate(
+    # Initial focus lands inside the drawer on the next frame (see shell_runtime_script rAF).
+    await page.wait_for_function(
         "() => document.activeElement?.closest('#chirpui-app-shell-sidebar') !== null"
     )
     # Body scroll is locked while open.
@@ -90,12 +90,11 @@ async def test_sidebar_drawer_opens_traps_focus_and_returns_on_escape(page, base
 async def test_focus_trap_wraps_both_directions(page, base_url):
     await _open(page, base_url, PHONE)
     await page.get_by_role("button", name="Open Navigation").click()
-    await page.wait_for_timeout(50)
-
-    # Focus starts on the first focusable (close button). Shift+Tab wraps to last.
-    assert await page.evaluate(
+    await page.wait_for_function(
         "() => document.activeElement?.getAttribute('data-chirpui-shell-drawer-close') !== null"
     )
+
+    # Focus starts on the first focusable (close button). Shift+Tab wraps to last.
     await page.keyboard.press("Shift+Tab")
     assert await page.evaluate("() => document.activeElement?.textContent?.includes('Audit log')")
     # Tab from the last focusable wraps back to the first.
@@ -150,10 +149,9 @@ async def test_rail_drawer_opens_from_context_trigger(page, base_url):
     await expect(rail.get_by_test_id("rail-content")).to_contain_text("Inspector")
     # The headless rail gets a runtime-injected floating close (kept out of the
     # OOB-swapped content), and focus lands inside the trapped panel on open.
-    await page.wait_for_timeout(50)
     close = rail.locator("[data-chirpui-shell-drawer-close]")
     await expect(close).to_be_visible()
-    assert await page.evaluate(
+    await page.wait_for_function(
         "() => document.activeElement?.closest('#chirpui-context-rail') !== null"
     )
     await close.click()
