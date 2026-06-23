@@ -320,12 +320,3 @@ def check_alpine_runtime(html: str) -> AlpineRuntimeCheck:
         core_loaded=core_loaded,
         core_url_valid=core_url_valid,
     )
-
-
-# TODO(chirp): wire check_alpine_runtime() into use_chirp_ui(app) at
-# freeze time. Run against the first rendered layout response; in dev
-# (app.debug or strict="auto"), raise on result.missing; otherwise emit
-# a warning. The detector now also reports Alpine core + CDN-URL problems
-# (result.problems / result.core_loaded / result.core_url_valid) for use
-# against fully-injected responses. See chirp-ui/.context/plan-dev-mode-strict.md
-# § Sprint 3.
