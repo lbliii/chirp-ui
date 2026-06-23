@@ -100,3 +100,26 @@ async def test_drawer_region_rhythm_contains_long_content(page, base_url, width,
     assert metrics["bodyOverflow"] <= 1, metrics
     assert metrics["titleMarginEnd"] == "0px", metrics
     assert metrics["bodyChildMargin"] == "0px", metrics
+
+
+async def test_drawer_swipe_dismiss(page, base_url):
+    """Swipe the drawer panel toward its edge dismisses the native dialog."""
+    await page.goto(base_url + "/drawer")
+    await wait_for_alpine(page)
+
+    await page.click(".chirpui-drawer-trigger")
+    dialog = page.locator("#test-drawer")
+    await dialog.wait_for(state="visible", timeout=2000)
+
+    panel = dialog.locator(".chirpui-drawer__panel")
+    box = await panel.bounding_box()
+    start_x = box["x"] + box["width"] * 0.5
+    start_y = box["y"] + box["height"] * 0.5
+
+    await page.mouse.move(start_x, start_y)
+    await page.mouse.down()
+    await page.mouse.move(start_x + 120, start_y)
+    await page.mouse.up()
+    await page.wait_for_timeout(300)
+
+    assert not await dialog.evaluate("el => el.open")

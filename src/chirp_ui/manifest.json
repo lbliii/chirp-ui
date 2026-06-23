@@ -9191,7 +9191,7 @@
       "category": "overlay",
       "composes": [],
       "consumes": [],
-      "description": "Drawer component\n    Slide-out panel from left or right. Uses native <dialog>.\n\n    Usage:\n        from \"chirpui/drawer.html\" import drawer, drawer_trigger\n\n        drawer_trigger(\"side-drawer\", label=\"Open panel\")\n\n        call drawer(\"side-drawer\", title=\"Filters\", side=\"right\")\n            <p>Drawer content.</p>\n        end",
+      "description": "Drawer component\n    Slide-out panel from left or right. Uses native <dialog>.\n\n    persist_open: when true, restores open state across boosted navigation via\n    localStorage (opt-in — default false).\n\n    Usage:\n        from \"chirpui/drawer.html\" import drawer, drawer_trigger\n\n        drawer_trigger(\"side-drawer\", label=\"Open panel\")\n\n        call drawer(\"side-drawer\", title=\"Filters\", side=\"right\")\n            <p>Drawer content.</p>\n        end",
       "elements": [
         "body",
         "close",
@@ -9212,7 +9212,7 @@
         "chirpui-drawer__title"
       ],
       "extra_emits": [],
-      "lineno": 14,
+      "lineno": 17,
       "macro": "drawer",
       "maturity": "stable",
       "modifiers": [],
@@ -9231,6 +9231,11 @@
           "has_default": true,
           "is_required": false,
           "name": "side"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "persist_open"
         },
         {
           "has_default": true,
@@ -24711,7 +24716,7 @@
       "category": "overlay",
       "composes": [],
       "consumes": [],
-      "description": "Tray (slide-out panel)\n    Use tray_trigger to open, tray for content. Requires Alpine.js (Alpine.store('trays')).\n\n    Usage:\n        from \"chirpui/tray.html\" import tray, tray_trigger\n\n        {{ tray_trigger(\"filters\", \"Filters\", icon=\"⚙\") }}\n        {% call tray(\"filters\", \"Filters\", position=\"right\") %}\n            <form>...</form>\n        {% end %}",
+      "description": "Tray (slide-out panel)\n    Use tray_trigger to open, tray for content. Requires Alpine.js (Alpine.store('trays')).\n\n    persist_open: when true, restores open state across boosted navigation via\n    localStorage (opt-in — default false).\n\n    Usage:\n        from \"chirpui/tray.html\" import tray, tray_trigger\n\n        {{ tray_trigger(\"filters\", \"Filters\", icon=\"⚙\") }}\n        {% call tray(\"filters\", \"Filters\", position=\"right\") %}\n            <form>...</form>\n        {% end %}",
       "elements": [
         "backdrop",
         "body",
@@ -24735,7 +24740,7 @@
         "chirpui-tray__title"
       ],
       "extra_emits": [],
-      "lineno": 24,
+      "lineno": 27,
       "macro": "tray",
       "maturity": "stable",
       "modifiers": [
@@ -24757,6 +24762,16 @@
           "has_default": true,
           "is_required": false,
           "name": "position"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "persist_open"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
         }
       ],
       "provides": [],

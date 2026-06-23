@@ -63,8 +63,9 @@
 <div class="chirpui-app-shell chirpui-app-shell--sidebar-collapsible{{ rail_shell_class }}{{ nav_drawer_class }}{{ " " ~ cls if cls else "" }}"
      x-data="chirpuiSidebar({ collapsible: true, resizable: true })"
      x-init="init()"
-     @mousemove.window="onMove($event)"
-     @mouseup.window="onUp()"
+     @pointermove.window="onPointerMove($event)"
+     @pointerup.window="endPointerDrag($event)"
+     @pointercancel.window="endPointerDrag($event)"
      :class="{ 'chirpui-app-shell--sidebar-collapsed': collapsed }">
 {% else %}
 <div class="chirpui-app-shell{{ rail_shell_class }}{{ nav_drawer_class }}{{ " " ~ cls if cls else "" }}">
@@ -134,7 +135,7 @@
         {% if sidebar_collapsible %}
         <div class="chirpui-app-shell__sidebar-resize" data-chirpui-sidebar-toggle
              tabindex="0"
-             @mousedown="startDrag($event)"
+             @pointerdown="startPointerDrag($event)"
              @dblclick="onDoubleClick($event)"
              @keydown="onKeydown($event)"
              @keydown.enter.prevent="toggle()"

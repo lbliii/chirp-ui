@@ -2,7 +2,7 @@
 
 import pytest
 
-from tests.browser.conftest import wait_for_alpine
+from tests.browser.conftest import wait_for_alpine, wait_for_htmx
 
 pytestmark = [pytest.mark.integration, pytest.mark.asyncio]
 
@@ -127,3 +127,43 @@ async def test_tray_region_rhythm_contains_long_content(page, base_url, width, h
     assert metrics["bodyOverflow"] <= 1, metrics
     assert metrics["titleMarginEnd"] == "0px", metrics
     assert metrics["bodyChildMargin"] == "0px", metrics
+
+
+async def test_tray_swipe_dismiss(page, base_url):
+    """Swipe the tray panel toward its edge closes the tray."""
+    await page.goto(base_url + "/tray")
+    await wait_for_alpine(page)
+
+    await page.click("[aria-controls='tray-test-tray']")
+    await page.wait_for_timeout(300)
+
+    panel = page.locator("#tray-test-tray .chirpui-tray__panel")
+    box = await panel.bounding_box()
+    start_x = box["x"] + box["width"] * 0.5
+    start_y = box["y"] + box["height"] * 0.5
+
+    await page.mouse.move(start_x, start_y)
+    await page.mouse.down()
+    await page.mouse.move(start_x + 120, start_y)
+    await page.mouse.up()
+    await page.wait_for_timeout(300)
+
+    assert not await page.locator(".chirpui-tray--open").is_visible()
+
+
+async def test_tray_persist_open_across_boosted_nav(page, base_url):
+    """persist_open trays restore open state after boosted navigation."""
+    await page.goto(base_url + "/tray-persist")
+    await wait_for_alpine(page)
+
+    await page.click("[aria-controls='tray-persist-tray']")
+    await page.wait_for_timeout(200)
+    assert await page.locator("#tray-persist-tray.chirpui-tray--open").is_visible()
+
+    await page.click("[data-testid='tray-persist-nav']")
+    await wait_for_htmx(page)
+    await page.wait_for_timeout(300)
+
+    tray = page.locator("#tray-persist-tray")
+    assert await tray.is_visible()
+    assert "chirpui-tray--open" in await tray.get_attribute("class")

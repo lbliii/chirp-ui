@@ -67,9 +67,16 @@ describe("chirpuiSidebar continuous resize (#219)", () => {
     const sidebar = createSidebar();
     const handle = sidebar.$el.querySelector("[data-chirpui-sidebar-toggle]");
 
-    sidebar.startDrag({ clientX: 200, preventDefault() {} });
-    sidebar.onMove({ clientX: 240 });
-    sidebar.onUp();
+    sidebar.startPointerDrag({
+      clientX: 200,
+      pointerType: "mouse",
+      button: 0,
+      pointerId: 1,
+      currentTarget: handle,
+      preventDefault() {},
+    });
+    sidebar.onPointerMove({ clientX: 240, pointerId: 1 });
+    sidebar.endPointerDrag({ pointerId: 1, currentTarget: handle });
 
     expect(sidebar.widthPx).toBe(296);
     expect(storage.store.get("chirpui-sidebar-width")).toBe("296px");
@@ -79,10 +86,18 @@ describe("chirpuiSidebar continuous resize (#219)", () => {
 
   it("collapses when dragged below the snap threshold", () => {
     const sidebar = createSidebar();
+    const handle = sidebar.$el.querySelector("[data-chirpui-sidebar-toggle]");
 
-    sidebar.startDrag({ clientX: 300, preventDefault() {} });
-    sidebar.onMove({ clientX: 140 });
-    sidebar.onUp();
+    sidebar.startPointerDrag({
+      clientX: 300,
+      pointerType: "mouse",
+      button: 0,
+      pointerId: 1,
+      currentTarget: handle,
+      preventDefault() {},
+    });
+    sidebar.onPointerMove({ clientX: 140, pointerId: 1 });
+    sidebar.endPointerDrag({ pointerId: 1, currentTarget: handle });
 
     expect(sidebar.collapsed).toBe(true);
     expect(storage.store.get("chirpui-sidebar-collapsed")).toBe("true");

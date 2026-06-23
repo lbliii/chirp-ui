@@ -72,6 +72,18 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
         factory="chirpuiDialogTarget",
         macros=("modal", "drawer", "confirm", "ascii_modal", "command_palette"),
     ),
+    "chirpuiSplitPanel": AlpineRequirement(
+        factory="chirpuiSplitPanel",
+        macros=("split_panel",),
+    ),
+    "chirpuiDrawer": AlpineRequirement(
+        factory="chirpuiDrawer",
+        macros=("drawer",),
+    ),
+    "chirpuiTray": AlpineRequirement(
+        factory="chirpuiTray",
+        macros=("tray",),
+    ),
     "chirpuiDropdown": AlpineRequirement(
         factory="chirpuiDropdown",
         macros=("dropdown_menu",),

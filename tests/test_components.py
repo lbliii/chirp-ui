@@ -3145,8 +3145,8 @@ class TestAlpineMagics:
             '{% from "chirpui/tray.html" import tray %}'
             '{% call tray("filters", "Filters") %}content{% end %}'
         ).render()
-        assert "chirpui:tray-closed" in html
         assert "x-trap.inert.noscroll" in html
+        assert '@click="close()"' in html
 
     def test_tray_anatomy_contract(self, env: Environment) -> None:
         html = env.from_string(
@@ -3171,7 +3171,23 @@ class TestAlpineMagics:
         assert 'x-trap.inert.noscroll="$store.trays[trayId]"' in html
         assert 'id="tray-filters-title"' in html
         assert "chirpui-tray__close" in html
-        assert "chirpui:tray-closed" in html
+        assert "chirpuiTray(" in html
+        assert '@click="close()"' in html
+
+    def test_tray_persist_open_flag(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/tray.html" import tray %}'
+            '{% call tray("filters", "Filters", persist_open=true) %}content{% end %}'
+        ).render()
+        assert "persistOpen: true" in html
+
+    def test_drawer_persist_open_flag(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/drawer.html" import drawer %}'
+            '{% call drawer("filters", title="Filters", persist_open=true) %}content{% end %}'
+        ).render()
+        assert "persistOpen: true" in html
+        assert "chirpuiDrawer(" in html
 
     def test_tray_css_owns_body_rhythm_and_pressure(self) -> None:
         css = _chirpui_css()
@@ -9782,6 +9798,9 @@ class TestSplitPanel:
         assert "chirpui-split-panel__handle" in html
         assert "chirpui-split-panel__pane" in html
         assert 'role="separator"' in html
+        assert "chirpuiSplitPanel(" in html
+        assert '@pointerdown.prevent="startPointerDrag($event)"' in html
+        assert '@keydown="onKeydown($event)"' in html
 
     def test_vertical(self, env: Environment) -> None:
         html = env.from_string(

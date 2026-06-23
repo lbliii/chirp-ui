@@ -44,6 +44,87 @@
         return Number.isFinite(parsed) ? parsed : fallback;
     }
 
+    function parseFloatOption(value, fallback) {
+        var parsed = Number.parseFloat(value);
+        return Number.isFinite(parsed) ? parsed : fallback;
+    }
+
+    /**
+     * Pointer swipe-to-dismiss on a panel surface. Returns a destroy() cleanup.
+     * dismissDirection: swipe along axis in this sign dismisses (right drawer: +1 on x).
+     */
+    function bindSwipeDismiss(surface, options) {
+        options = options || {};
+        var panel = options.panel || surface;
+        var axis = options.axis === "y" ? "y" : "x";
+        var dismissDirection = options.dismissDirection === -1 ? -1 : 1;
+        var threshold = parseInteger(options.threshold, 80);
+        var onDismiss = options.onDismiss || function () {};
+        var dragging = false;
+        var pointerId = null;
+        var startX = 0;
+        var startY = 0;
+
+        function onPointerDown(event) {
+            if (event.pointerType === "mouse" && event.button !== 0) {
+                return;
+            }
+            if (event.target.closest("button, a, input, textarea, select, label")) {
+                return;
+            }
+            dragging = true;
+            pointerId = event.pointerId;
+            startX = event.clientX;
+            startY = event.clientY;
+            try {
+                surface.setPointerCapture(event.pointerId);
+            } catch (e) {}
+        }
+
+        function onPointerMove(event) {
+            if (!dragging || event.pointerId !== pointerId) {
+                return;
+            }
+            var dx = event.clientX - startX;
+            var dy = event.clientY - startY;
+            if (axis === "x") {
+                panel.style.transform = "translateX(" + dx + "px)";
+            } else {
+                panel.style.transform = "translateY(" + dy + "px)";
+            }
+        }
+
+        function endPointer(event) {
+            if (!dragging || event.pointerId !== pointerId) {
+                return;
+            }
+            dragging = false;
+            pointerId = null;
+            try {
+                surface.releasePointerCapture(event.pointerId);
+            } catch (e) {}
+            var dx = event.clientX - startX;
+            var dy = event.clientY - startY;
+            var delta = axis === "x" ? dx : dy;
+            panel.style.transform = "";
+            if (Math.abs(delta) >= threshold && delta * dismissDirection > 0) {
+                onDismiss();
+            }
+        }
+
+        surface.addEventListener("pointerdown", onPointerDown);
+        surface.addEventListener("pointermove", onPointerMove);
+        surface.addEventListener("pointerup", endPointer);
+        surface.addEventListener("pointercancel", endPointer);
+
+        return function destroy() {
+            surface.removeEventListener("pointerdown", onPointerDown);
+            surface.removeEventListener("pointermove", onPointerMove);
+            surface.removeEventListener("pointerup", endPointer);
+            surface.removeEventListener("pointercancel", endPointer);
+        };
+    }
+
     function readDocumentPreference(attribute, fallback) {
         return document.documentElement.getAttribute(attribute) || fallback;
     }
@@ -1431,6 +1512,220 @@
         };
     });
 
+    register("chirpuiSplitPanel", function (config) {
+        config = config || {};
+        var isVertical = config.direction === "vertical";
+
+        return {
+            split: parseFloatOption(config.defaultSplit, 50),
+            dragging: false,
+            min: parseFloatOption(config.min, 10),
+            max: parseFloatOption(config.max, 90),
+            _activePointer: null,
+            init: function () {
+                this.syncHandleA11y();
+            },
+            clampSplit: function (pct) {
+                return Math.min(this.max, Math.max(this.min, pct));
+            },
+            pctFromEvent: function (event) {
+                var rect = this.$el.getBoundingClientRect();
+                if (isVertical) {
+                    return ((event.clientY - rect.top) / rect.height) * 100;
+                }
+                return ((event.clientX - rect.left) / rect.width) * 100;
+            },
+            syncHandleA11y: function () {
+                var handle = this.$refs.handle;
+                if (!handle) {
+                    return;
+                }
+                handle.setAttribute("aria-valuenow", String(Math.round(this.split)));
+                handle.setAttribute(
+                    "aria-label",
+                    isVertical ? "Resize panes vertically" : "Resize panes horizontally"
+                );
+            },
+            setSplit: function (pct) {
+                this.split = this.clampSplit(pct);
+                this.syncHandleA11y();
+            },
+            startPointerDrag: function (event) {
+                if (event.pointerType === "mouse" && event.button !== 0) {
+                    return;
+                }
+                event.preventDefault();
+                this.dragging = true;
+                this._activePointer = event.pointerId;
+                try {
+                    event.currentTarget.setPointerCapture(event.pointerId);
+                } catch (e) {}
+                this.setSplit(this.pctFromEvent(event));
+            },
+            onPointerMove: function (event) {
+                if (!this.dragging || event.pointerId !== this._activePointer) {
+                    return;
+                }
+                this.setSplit(this.pctFromEvent(event));
+            },
+            endPointerDrag: function (event) {
+                if (!this.dragging || event.pointerId !== this._activePointer) {
+                    return;
+                }
+                this.dragging = false;
+                this._activePointer = null;
+                try {
+                    event.currentTarget.releasePointerCapture(event.pointerId);
+                } catch (e) {}
+            },
+            onKeydown: function (event) {
+                var step = event.shiftKey ? 10 : 2;
+                if (isVertical) {
+                    if (event.key === "ArrowUp") {
+                        event.preventDefault();
+                        this.setSplit(this.split - step);
+                    } else if (event.key === "ArrowDown") {
+                        event.preventDefault();
+                        this.setSplit(this.split + step);
+                    }
+                } else {
+                    if (event.key === "ArrowLeft") {
+                        event.preventDefault();
+                        this.setSplit(this.split - step);
+                    } else if (event.key === "ArrowRight") {
+                        event.preventDefault();
+                        this.setSplit(this.split + step);
+                    }
+                }
+                if (event.key === "Home") {
+                    event.preventDefault();
+                    this.setSplit(this.min);
+                } else if (event.key === "End") {
+                    event.preventDefault();
+                    this.setSplit(this.max);
+                }
+            },
+        };
+    });
+
+    register("chirpuiDrawer", function (config) {
+        config = config || {};
+        var persistOpen = Boolean(config.persistOpen);
+        var drawerId = config.id || "";
+        var side = config.side === "left" ? "left" : "right";
+        var storageKey = drawerId ? "chirpui-drawer-open-" + drawerId : "";
+
+        return {
+            persistOpen: persistOpen,
+            side: side,
+            _swipeDestroy: null,
+            init: function () {
+                var self = this;
+                if (persistOpen && storageKey && safeGetItem(storageKey) === "true") {
+                    if (!this.$el.open && typeof this.$el.showModal === "function") {
+                        this.$el.showModal();
+                    }
+                }
+                if (persistOpen && storageKey) {
+                    this.$el.addEventListener("toggle", function () {
+                        if (self.$el.open) {
+                            safeSetItem(storageKey, "true");
+                        } else {
+                            safeSetItem(storageKey, "false");
+                        }
+                    });
+                }
+                var panel = this.$el.querySelector(".chirpui-drawer__panel");
+                if (panel) {
+                    var dismissDirection = side === "left" ? -1 : 1;
+                    this._swipeDestroy = bindSwipeDismiss(panel, {
+                        panel: panel,
+                        axis: "x",
+                        dismissDirection: dismissDirection,
+                        onDismiss: function () {
+                            if (typeof self.$el.close === "function") {
+                                self.$el.close();
+                            }
+                        },
+                    });
+                }
+            },
+            destroy: function () {
+                if (this._swipeDestroy) {
+                    this._swipeDestroy();
+                    this._swipeDestroy = null;
+                }
+            },
+        };
+    });
+
+    register("chirpuiTray", function (config) {
+        config = config || {};
+        var persistOpen = Boolean(config.persistOpen);
+
+        return {
+            persistOpen: persistOpen,
+            trayId: "",
+            _swipeDestroy: null,
+            init: function () {
+                var self = this;
+                this.trayId = this.$el.dataset.trayId || "";
+                var storageKey = this.trayId ? "chirpui-tray-open-" + this.trayId : "";
+                if (persistOpen && storageKey) {
+                    if (safeGetItem(storageKey) === "true") {
+                        if (window.Alpine && typeof window.Alpine.store === "function") {
+                            window.Alpine.store("trays")[this.trayId] = true;
+                        }
+                    }
+                    this.$watch(
+                        function () {
+                            return self.$store.trays[self.trayId];
+                        },
+                        function (open) {
+                            safeSetItem(storageKey, open ? "true" : "false");
+                        }
+                    );
+                }
+                var panel = this.$el.querySelector(".chirpui-tray__panel");
+                if (panel) {
+                    var position = "right";
+                    if (this.$el.classList.contains("chirpui-tray--left")) {
+                        position = "left";
+                    } else if (this.$el.classList.contains("chirpui-tray--bottom")) {
+                        position = "bottom";
+                    }
+                    var swipeOptions = {
+                        panel: panel,
+                        onDismiss: function () {
+                            self.close();
+                        },
+                    };
+                    if (position === "bottom") {
+                        swipeOptions.axis = "y";
+                        swipeOptions.dismissDirection = 1;
+                    } else {
+                        swipeOptions.axis = "x";
+                        swipeOptions.dismissDirection = position === "left" ? -1 : 1;
+                    }
+                    this._swipeDestroy = bindSwipeDismiss(panel, swipeOptions);
+                }
+            },
+            destroy: function () {
+                if (this._swipeDestroy) {
+                    this._swipeDestroy();
+                    this._swipeDestroy = null;
+                }
+            },
+            close: function () {
+                if (!this.trayId) {
+                    return;
+                }
+                this.$store.trays[this.trayId] = false;
+                this.$dispatch("chirpui:tray-closed", { id: this.trayId });
+            },
+        };
+    });
+
     register("chirpuiSidebar", function (options) {
         var config = options || {};
         var WIDTH_KEY = "chirpui-sidebar-width";
@@ -1446,6 +1741,7 @@
             collapsed: false,
             widthPx: DEFAULT_PX,
             _dragging: false,
+            _activePointer: null,
             _startX: 0,
             _startWidth: DEFAULT_PX,
             _lastX: 0,
@@ -1572,22 +1868,29 @@
                     handle.removeAttribute("aria-valuenow");
                 }
             },
-            startDrag: function (event) {
+            startPointerDrag: function (event) {
                 if (!this.resizable) {
                     this.toggle();
                     return;
                 }
+                if (event.pointerType === "mouse" && event.button !== 0) {
+                    return;
+                }
                 event.preventDefault();
                 this._dragging = true;
+                this._activePointer = event.pointerId;
                 this._startX = event.clientX;
                 this._startWidth = this.collapsed ? MIN_PX : this.widthPx;
                 this._lastX = event.clientX;
+                try {
+                    event.currentTarget.setPointerCapture(event.pointerId);
+                } catch (e) {}
                 this.$el.classList.add("chirpui-app-shell--sidebar-dragging");
                 document.body.style.userSelect = "none";
                 document.body.style.cursor = "col-resize";
             },
-            onMove: function (event) {
-                if (!this._dragging) {
+            onPointerMove: function (event) {
+                if (!this._dragging || event.pointerId !== this._activePointer) {
                     return;
                 }
                 this._lastX = event.clientX;
@@ -1605,11 +1908,18 @@
                 }
                 this.syncHandleA11y();
             },
-            onUp: function () {
-                if (!this._dragging) {
+            endPointerDrag: function (event) {
+                if (!this._dragging || event.pointerId !== this._activePointer) {
                     return;
                 }
                 this._dragging = false;
+                this._activePointer = null;
+                try {
+                    var handle = this.$el.querySelector("[data-chirpui-sidebar-toggle]");
+                    if (handle && typeof handle.releasePointerCapture === "function") {
+                        handle.releasePointerCapture(event.pointerId);
+                    }
+                } catch (e) {}
                 this.$el.classList.remove("chirpui-app-shell--sidebar-dragging");
                 document.body.style.userSelect = "";
                 document.body.style.cursor = "";

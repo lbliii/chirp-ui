@@ -53,3 +53,18 @@ async def test_split_panel_drag_changes_split(page, base_url):
     valuenow = await handle.get_attribute("aria-valuenow")
     assert valuenow is not None
     assert float(valuenow) != 50.0
+
+
+async def test_split_panel_keyboard_changes_split(page, base_url):
+    """Arrow keys on the separator handle resize the panes."""
+    await page.goto(base_url + "/split-panel")
+    await wait_for_alpine(page)
+
+    handle = page.locator(".chirpui-split-panel__handle")
+    await handle.focus()
+    await page.keyboard.press("ArrowRight")
+    await page.wait_for_timeout(100)
+
+    valuenow = await handle.get_attribute("aria-valuenow")
+    assert valuenow is not None
+    assert float(valuenow) > 50.0

@@ -5984,6 +5984,7 @@ Drawer component
 | `id` | yes | — |
 | `title` | no | (has default) |
 | `side` | no | (has default) |
+| `persist_open` | no | (has default) |
 | `cls` | no | (has default) |
 
 ### `dropdown`
@@ -10025,6 +10026,8 @@ Tray (slide-out panel)
 | `id` | yes | — |
 | `title` | yes | — |
 | `position` | no | (has default) |
+| `persist_open` | no | (has default) |
+| `cls` | no | (has default) |
 
 ### `tree`
 
