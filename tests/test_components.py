@@ -7012,9 +7012,9 @@ class TestNavigationMenu:
         assert 'role="menubar"' in html
         assert 'role="menuitem"' in html
         assert 'role="menu"' in html
-        assert 'chirpui-navigation-menu__trigger' in html
-        assert 'chirpui-navigation-menu__panel' in html
-        assert 'chirpui-navigation-menu__link--top' in html
+        assert "chirpui-navigation-menu__trigger" in html
+        assert "chirpui-navigation-menu__panel" in html
+        assert "chirpui-navigation-menu__link--top" in html
         assert "/pricing" in html
         assert "Analytics" in html
 
