@@ -5551,7 +5551,7 @@ Context Menu
 - **Template:** `chirpui/context_menu.html`
 - **Macro:** `context_menu`
 - **Category:** `navigation`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `alpine`
@@ -5570,7 +5570,7 @@ Context Menu
 - **Template:** `chirpui/context_menu.html`
 - **Macro:** `context_menu`
 - **Category:** `navigation`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `alpine`
@@ -6934,7 +6934,7 @@ Input OTP
 - **Template:** `chirpui/input_otp.html`
 - **Macro:** `input_otp`
 - **Category:** `form`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `alpine`
@@ -7420,7 +7420,7 @@ Menubar
 - **Template:** `chirpui/menubar.html`
 - **Macro:** `menubar`
 - **Category:** `navigation`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `alpine`
@@ -7438,7 +7438,7 @@ Menubar
 - **Template:** `chirpui/menubar.html`
 - **Macro:** `menubar`
 - **Category:** `navigation`
-- **Maturity:** `experimental`
+- **Maturity:** `stable`
 - **Role:** `component`
 - **Authoring:** `available`
 - **Requires:** `alpine`

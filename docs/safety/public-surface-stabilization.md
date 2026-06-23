@@ -91,6 +91,9 @@ usage.
 | `result-collection` | Recipe-only | Dense result-list recipe primitive; keep pattern-role and non-preferred until search/workspace routes converge on one API. |
 | `result-card` | Recipe-only | Dense result-card recipe primitive; keep pattern-role and non-preferred until repeated catalog/support/operations usage proves the slots. |
 | `inspector-panel` | Recipe-only | Workspace inspector recipe primitive; keep pattern-role and non-preferred until selected-object panels converge across apps. |
+| `context-menu` | Promote to stable | Render tests for trigger/panel/item anatomy, href/disabled/danger variants, browser gauntlet for pointer/keyboard open, roving focus, Escape/outside close, selection events, and axe; anatomy doc at `docs/components/context-menu-anatomy.md`. |
+| `menubar` | Promote to stable | Render tests for menubar/submenu anatomy, browser gauntlet for top-level roving focus, submenu open, Escape/outside close, selection events, and axe; anatomy doc at `docs/components/menubar-anatomy.md`. |
+| `input-otp` | Promote to stable | Render tests for grouped cells and hidden value, browser proof for paste/backspace/arrow navigation, typing advance, accessible names, and `chirpui:otp-change`; anatomy doc at `docs/components/input-otp-anatomy.md`. |
 
 ## Promotion Rule
 
@@ -258,8 +261,6 @@ vocabulary.
 | `composer-shell` | Keep experimental | Form interaction proof. |
 | `confetti` | Keep experimental | Motion/effects visual proof. |
 | `constellation` | Keep experimental | Motion/effects visual proof. |
-| `context-menu` | Keep experimental | Control interaction proof; right-click/keyboard menu (#202) with roving-tabindex + click-outside/Escape and axe coverage via the context-menu browser gauntlet — promote in a later deliberate hardening PR once the gauntlet stabilizes. |
-| `context-menu__item` | Keep experimental | Control interaction proof; item variant vocabulary (default/danger/muted) for `context-menu`, promoted together with its parent composite. |
 | `data-grid` | Keep experimental | Control interaction proof; server-driven grid (#200) backed by render + grid_state unit proof and the data-grid browser/a11y gauntlet — promote in a later deliberate hardening PR once the gauntlet stabilizes. |
 | `data-table` | Keep experimental | Layout recipe proof; demoted from stable per #200 as the deliberately-thin filter+table+pagination wrapper, superseded by `data-grid` for interactive grids. |
 | `date-picker` | Keep experimental | Control interaction proof; client-rendered date/range calendar (#201) with role=grid roving keyboard nav, min/max bounds, range selection, and axe coverage via the date-picker browser gauntlet — promote in a later deliberate hardening PR once the gauntlet stabilizes. |
@@ -276,14 +277,11 @@ vocabulary.
 | `hero-effects` | Keep experimental | Motion/effects visual proof. |
 | `holy-light` | Keep experimental | Motion/effects visual proof. |
 | `hover-card` | Keep experimental | Control interaction proof; delayed hover/focus preview card (#202) with anchor positioning + reduced-motion CSS — promote after browser gauntlet. |
-| `input-otp` | Keep experimental | Form interaction proof; grouped OTP cells (#202) with paste/backspace/arrow-key nav and `/input-otp` browser gauntlet — promote after gauntlet stabilizes. |
 | `lifecycle-showcase` | Recipe-only | Marketing pattern proof; promote only after repeated app use. |
 | `live-event-card` | Recipe-only | Media recipe proof; promote only after repeated app use. |
 | `marquee` | Keep experimental | Motion/effects visual proof. |
 | `media-hero-shelf` | Recipe-only | Media recipe proof; promote only after repeated app use. |
 | `meteor` | Keep experimental | Motion/effects visual proof. |
-| `menubar` | Keep experimental | Control interaction proof; horizontal app menu (#202) with roving top-level focus + vertical submenus — promote after browser gauntlet. |
-| `menubar__item` | Keep experimental | Control interaction proof; item variant vocabulary (default/danger/muted) for `menubar`, promoted together with its parent composite. |
 | `moderation-queue-item` | Recipe-only | Social recipe proof; promote only after repeated app use. |
 | `neon` | Keep experimental | Motion/effects visual proof. |
 | `navigation-menu` | Keep experimental | Control interaction proof; site nav with flyout submenus (#202) with keyboard open/close — promote after browser gauntlet. |

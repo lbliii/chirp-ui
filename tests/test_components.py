@@ -6988,6 +6988,7 @@ class TestMenubar:
             '{% from "chirpui/menubar.html" import menubar %}'
             '{{ menubar(items=[{"label": "File", "items": [{"label": "New", "action": "new"}]}]) }}'
         ).render()
+        assert 'class="chirpui-menubar"' in html
         assert 'x-data="chirpuiMenubar()"' in html
         assert 'role="menubar"' in html
         assert 'role="menuitem"' in html

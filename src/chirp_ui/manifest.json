@@ -7473,7 +7473,7 @@
       ],
       "lineno": 34,
       "macro": "context_menu",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -7529,7 +7529,7 @@
       "extra_emits": [],
       "lineno": 34,
       "macro": "context_menu",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -12913,7 +12913,7 @@
       "extra_emits": [],
       "lineno": 12,
       "macro": "input_otp",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -14666,7 +14666,7 @@
       ],
       "lineno": 21,
       "macro": "menubar",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -14718,7 +14718,7 @@
       "extra_emits": [],
       "lineno": 21,
       "macro": "menubar",
-      "maturity": "experimental",
+      "maturity": "stable",
       "modifiers": [],
       "params": [
         {
@@ -26344,10 +26344,10 @@
       "typography": 30
     },
     "component_maturity": {
-      "experimental": 113,
+      "experimental": 108,
       "internal": 2,
       "legacy": 39,
-      "stable": 227
+      "stable": 232
     },
     "component_requirements": {
       "alpine": 44,

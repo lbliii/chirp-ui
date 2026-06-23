@@ -100,6 +100,7 @@ Make existing capabilities discoverable before inventing replacements:
 - slider wrapper over `range_field`
 - date picker pattern decision
 - data table composition from table/filter/resource-index pieces
+- `context_menu` shipped in 0.11 with browser gauntlet and stable promotion in Wave 1 contract hardening
 
 Acceptance:
 
@@ -132,12 +133,11 @@ surfaces only when the contract is small enough to prove:
 
 1. Draft menubar/navigation-menu anatomy separately from dropdown menu and route
    tabs so app/site navigation does not blur into command menus.
-2. Implement `context_menu` only after accepting the source-only anatomy in
-   `docs/components/context-menu-anatomy.md` and proving render, strict-
-   undefined, escaping, browser focus, keyboard, dismissal, and overflow
-   behavior in the same slice.
-3. Keep `hover_card`, `input_otp`, and `resizable` deferred until browser
+2. `context_menu` is shipped and promoted to stable after the browser gauntlet
+   and anatomy doc landed in Wave 1 contract hardening.
+3. Keep `hover_card` and `resizable` deferred until browser
    behavior and accessibility proof can be added in the same slice.
+   `input_otp` promoted to stable in Wave 1 contract hardening.
 
 ## Not Now
 

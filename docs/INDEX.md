@@ -54,7 +54,9 @@ Canonical component, behavior, and macro-contract references.
 - [ALPINE-MAGICS.md](components/alpine-magics.md) — Alpine.js store, `safeData`, shared controllers
 - [HTMX-PATTERNS.md](components/htmx-patterns.md) — `hx={}` dict, auto-injected attrs, app-shell HTMX boundaries, `build_hx_attrs()`
 - [CONTROL-SELECTION.md](components/control-selection.md) — Native controls, dropdown-select, toggle groups, sliders, and data-table composition boundaries
-- [CONTEXT-MENU-ANATOMY.md](components/context-menu-anatomy.md) — Pre-implementation context-menu anatomy, focus, positioning, and proof gate
+- [CONTEXT-MENU-ANATOMY.md](components/context-menu-anatomy.md) — Shipped context-menu anatomy, keyboard/focus contract, and proof ledger
+- [MENUBAR-ANATOMY.md](components/menubar-anatomy.md) — Shipped menubar anatomy, roving focus contract, and proof ledger
+- [INPUT-OTP-ANATOMY.md](components/input-otp-anatomy.md) — Shipped input OTP anatomy, paste/backspace contract, and proof ledger
 - [DROPDOWN-ANATOMY.md](components/dropdown-anatomy.md) — Dropdown menu, select, and split-menu rendered anatomy
 - [MODAL-ANATOMY.md](components/modal-anatomy.md) — Native modal, overlay modal, and confirm dialog anatomy
 - [TABS-ANATOMY.md](components/tabs-anatomy.md) — htmx tabs, tab panels, route tabs, and tabbed page layout anatomy
