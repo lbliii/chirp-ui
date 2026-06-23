@@ -7,6 +7,84 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.11.0] - 2026-06-23
+
+### Added
+
+- **AI chat UI** — `composer()` (Enter-to-send, attachments, suggestions),
+  message-turn layouts (actions, reasoning, tool calls, citations),
+  streaming via `prose()` and server-sent events, and model settings via
+  `config_form()` / `param_override`. See `docs/patterns/ai-chat.md` and
+  `docs/patterns/sse-events.md`.
+- **Showcase tooling** — manifest-backed blocks gallery at `/blocks`, live theme
+  explorer with preset switching ([#213](https://github.com/lbliii/chirp-ui/issues/213)),
+  golden-screen and shell-recipe registry sections, a `chirp-ui` console script,
+  and an optional MCP server (`chirp-ui mcp`) with `find_components`,
+  `get_component`, and `list_categories`. Closes
+  [#211](https://github.com/lbliii/chirp-ui/issues/211) and
+  [#212](https://github.com/lbliii/chirp-ui/issues/212).
+- **New components** — focus-managed popover/dropdown, `input_otp`, `hover_card`,
+  `menubar`, and `navigation_menu`
+  ([#202](https://github.com/lbliii/chirp-ui/issues/202)).
+- **Visual polish** — warmer default colors and hero gradients, toast
+  stacking/swipe, tabular numbers, sliding route-tab pill, compact/dense density
+  modes, and `fab()` / `command_palette_fab()` floating action buttons.
+- **Smaller CSS bundles** — `css_subset` and `build_chirpui_css.py --components`
+  ship only the component partials you use.
+- **Lucky Cat golden screen** — `data-dense-market` layout archetype at
+  `/screen-lucky-cat-market`, with fixture data and docs
+  ([#262](https://github.com/lbliii/chirp-ui/issues/262)).
+- **`Column` sizing** — optional `width`, `mobile_width`, and `resizable` for
+  richer data grid layouts.
+- **Docs site** — data-driven YAML resume page, CSP guide for Alpine inline
+  expressions, and Bengal theme now loads Alpine correctly for interactive
+  chirp-ui macros.
+- **Graph explorer page** — vendored `bengal-graph-explorer.js` for the new
+  `/graph/` route (Bengal 0.5.1).
+
+### Changed
+
+- **Responsive cards** — `card` and `surface` reflow inside narrow columns (like
+  the context rail) without waiting for a viewport breakpoint
+  ([#209](https://github.com/lbliii/chirp-ui/issues/209)).
+- **Resizable sidebar** — drag to any width, with persistence and keyboard
+  control ([#219](https://github.com/lbliii/chirp-ui/issues/219)).
+- **Drawer, tray, and split-panel** — pointer and keyboard resize,
+  swipe-to-dismiss, and optional `persist_open` for boosted navigation
+  ([#198](https://github.com/lbliii/chirp-ui/issues/198)).
+- **Docs site navigation** — unified global side rail and top bar, centered doc
+  catalog rail, Layouts/Dev section hubs, redesigned releases index, and live
+  showcase links throughout.
+- **Docs site polish** — compact notebook layout, blog hero typography fix, API
+  symbol card grids, and link hover previews.
+- **Alpine runtime check** — removed a stale internal TODO now that Chirp
+  wiring is complete ([#191](https://github.com/lbliii/chirp-ui/issues/191)).
+
+### Removed
+
+- Bengal docs theme: legacy default-Bengal CSS (breadcrumbs, pagination, section
+  headers, loading spinner) replaced by chirp-ui primitives.
+
+### Fixed
+
+- **Accessibility** — default accent colors now meet WCAG AA contrast; deeply
+  nested docs sidebar folders highlight consistently, including the folder
+  containing the current page.
+- **Security (CSP)** — shell inline scripts and HTMX swaps work with Chirp 0.8+
+  CSP nonces; island adapters mount correctly on fresh page loads.
+- **Composer and streaming** — Enter-to-send under htmx 2, showcase
+  abort/dismiss errors, unified demo SSE wiring, and streaming lifecycle cleanup.
+- **Layout nits** — story cards no longer show empty slots, toggle-group items
+  don't collide, table action buttons stay on one row, and list item trailing
+  content aligns correctly.
+- **Showcase** — blocks gallery previews render correctly; missing icons
+  registered (`plus`, `send`, `stop`, `file`, `x`, `info`).
+- **Docs theme** — doc-page hero Actions menu moved to top-right; page-nav
+  tokens renamed from `--chirp-theme-*` to `--chirpui-*`.
+- **CSS build** — confirmed `@scope` rules survive production minification
+  ([#247](https://github.com/lbliii/chirp-ui/issues/247)).
+
+
 ## [0.10.0] - 2026-06-15
 
 ### Added

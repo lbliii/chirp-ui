@@ -1,6 +1,6 @@
 {
   "name": "chirp-ui-js-tests",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "JavaScript test harness for Chirp UI island helpers.",
   "private": true,
   "directories": {
