@@ -97,10 +97,16 @@ def _wrap_in_layer(body: str, layer: str) -> str:
     return f"@layer {layer} {{\n{body}}}\n"
 
 
-def build() -> str:
-    """Return the full concatenated stylesheet as a string."""
+def build(manifest: tuple[str, ...] | None = None) -> str:
+    """Return the full concatenated stylesheet as a string.
+
+    When ``manifest`` is provided, only those partial paths (relative to
+    ``CSS_SRC``) are concatenated — used by the manifest-driven subset emitter
+    (issue #205). Otherwise the full :data:`MANIFEST` is built.
+    """
+    partials = manifest if manifest is not None else MANIFEST
     parts: list[str] = [HEADER, "\n", LAYER_DECLARATION]
-    for rel in MANIFEST:
+    for rel in partials:
         path = CSS_SRC / rel
         if not path.is_file():
             raise FileNotFoundError(f"Manifest entry not found: {path}")
@@ -121,7 +127,46 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Exit non-zero if the committed output is stale.",
     )
+    parser.add_argument(
+        "--components",
+        metavar="NAMES",
+        help="Comma-separated registry component names for a CSS subset (issue #205).",
+    )
+    parser.add_argument(
+        "--no-utilities",
+        action="store_true",
+        help="With --components, omit default utility partials.",
+    )
+    parser.add_argument(
+        "--output",
+        "-o",
+        metavar="PATH",
+        help="Write output to PATH (default: chirpui.css, or stdout for subsets).",
+    )
     args = parser.parse_args(argv)
+
+    if args.components:
+        repo_src = REPO_ROOT / "src"
+        if str(repo_src) not in sys.path:
+            sys.path.insert(0, str(repo_src))
+        from chirp_ui.css_subset import resolve_partial_paths
+
+        names = tuple(part.strip() for part in args.components.split(",") if part.strip())
+        manifest = resolve_partial_paths(
+            names,
+            include_utilities=not args.no_utilities,
+        )
+        generated = build(manifest)
+        out_path = Path(args.output) if args.output else None
+        if out_path:
+            out_path.write_text(generated, encoding="utf-8")
+            sys.stdout.write(
+                f"wrote {out_path} ({len(generated):,} bytes, "
+                f"{len(manifest)} partials for {len(names)} components)\n"
+            )
+        else:
+            sys.stdout.write(generated)
+        return 0
 
     generated = build()
 

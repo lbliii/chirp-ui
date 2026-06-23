@@ -366,7 +366,24 @@ symbols imported inside another block.
        Make that degradation LOUD with a dev-visible diagnostic instead of a
        silent style-only build. The happy path below is byte-identical. #}
     {% if library_asset_tags | default(none) %}
+    {# chirp-theme Alpine policy (#192): shim BEFORE chirpui-alpine.js (inside
+       library_asset_tags), Alpine core AFTER. See bengal-alpine-policy.md. #}
+    <script>
+    (function(){
+      var q=[];
+      window._chirpAlpineData=function(n,f){
+        if(window.Alpine&&Alpine.version){Alpine.data(n,f);}else{q.push([n,f]);}
+      };
+      document.addEventListener("alpine:init",function(){
+        Alpine.store("modals",{});
+        Alpine.store("trays",{});
+        Alpine.safeData=function(n,f){Alpine.data(n,f);};
+        q.forEach(function(r){Alpine.data(r[0],r[1]);});q=[];
+      });
+    })();
+    </script>
     {{ library_asset_tags() }}
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.8/dist/cdn.min.js"></script>
     {% else %}
     <!-- chirp-theme: library_asset_tags() unavailable — Bengal >= 0.3.3 is required
          (see theme.toml [bengal] min_version / requires_bengal). The chirp-ui token +

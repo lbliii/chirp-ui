@@ -40,6 +40,8 @@ Legend:
 | Route-aware link attrs (`route_link_attrs`, boosted nav) | **Free** — Chirp router integration | **Degraded** — `make_route_link_attrs()` returns plain `href` | Internal links won't auto-get shell swap attrs |
 | Dev-time Alpine manifest check | **Free** — startup/freeze warning | **Hand-roll** — call `check_alpine_runtime(html)` | Pure function in `chirp_ui.alpine` |
 | Strict validation (`CHIRP_UI_DEV`) | **Free** | **Free** — `set_strict(True)` | Same library behavior |
+| CSP contract documented | **Free** — Chirp merges policy via `use_chirp_ui` | **Hand-roll** — see [csp.md](csp.md) | Standard Alpine + inline macros need `'unsafe-eval'` |
+| Manifest-driven CSS subset | **Hand-roll** — `build_chirpui_css.py --components` | **Hand-roll** — same CLI / `css_subset` module | Full `chirpui.css` always available |
 
 ---
 

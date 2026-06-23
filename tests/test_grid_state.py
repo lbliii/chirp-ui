@@ -259,3 +259,34 @@ def test_selection_state_is_frozen() -> None:
     sel = selection_state(["a"], page_ids=["a"])
     with pytest.raises((AttributeError, Exception)):
         sel.total = 5  # type: ignore[misc]
+
+
+def test_column_width_fields_preserved() -> None:
+    col = Column(
+        "timestamp",
+        "Time",
+        sortable=True,
+        width="120px",
+        mobile_width="80px",
+        resizable=True,
+    )
+    assert col.width == "120px"
+    assert col.mobile_width == "80px"
+    assert col.resizable is True
+
+
+def test_coerce_column_width_from_dict() -> None:
+    from chirp_ui.grid_state import _coerce_column
+
+    col = _coerce_column(
+        {
+            "key": "sym",
+            "label": "Symbol",
+            "width": "1fr",
+            "mobile_width": "64px",
+            "resizable": True,
+        }
+    )
+    assert col.width == "1fr"
+    assert col.mobile_width == "64px"
+    assert col.resizable is True

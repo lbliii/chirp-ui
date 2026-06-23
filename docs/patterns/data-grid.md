@@ -25,7 +25,7 @@ from chirp_ui import Column, GridSort, parse_sort, sort_columns, selection_state
 
 | Symbol | What it is |
 |--------|------------|
-| `Column(key, label, sortable=False, align="")` | A column declaration. `key` is the **stable** sort key sent to the server — never `label\|lower`, so renaming a label or shipping i18n/duplicate labels never breaks sorting. (No per-column `frozen`: v1 pins the **first visual column** via `sticky_first_col=true`, not an arbitrary column — see Sticky zones.) |
+| `Column(key, label, sortable=False, align="")` | A column declaration. `key` is the **stable** sort key sent to the server — never `label\|lower`, so renaming a label or shipping i18n/duplicate labels never breaks sorting. Optional `width`, `mobile_width`, and `resizable` seed the future ARIA-grid renderer (#261); table mode ignores them today. (No per-column `frozen`: v1 pins the **first visual column** via `sticky_first_col=true`, not an arbitrary column — see Sticky zones.) |
 | `GridSort(key="", direction="asc")` | The typed current-sort state. |
 | `ColumnSort` | A projected column ready to render: carries `aria_sort` (`ascending`/`descending`/`none`), `is_active`, and the fully-built toggle `next_url`. |
 | `SelectionState` | A page-scoped selection snapshot: `count`, `all_selected`, `none_selected`, `partial`, `is_selected(id)`. |
@@ -158,3 +158,16 @@ sentinel.
 Cross-page "select all N matching" is **not** solved — selection is page-scoped
 client state, re-seeded server-side from the preserved ids on full reload. A
 server-side "select all matching query" affordance is a noted follow-up.
+
+## Rendering fork (table default vs ARIA grid)
+
+See [../decisions/data-grid-rendering-fork.md](../decisions/data-grid-rendering-fork.md).
+
+| Mode | Substrate | When |
+|---|---|---|
+| **Table (default)** | Real `<table>` | Server-driven lists, sort + page-scoped selection, moderate row counts |
+| **ARIA grid (future)** | `role="grid"` over CSS grid | Column resize, virtualization, dense log/market feeds |
+
+`Column.width`, `Column.mobile_width`, and `Column.resizable` document the
+width contract for the ARIA-grid variant. Do not bolt resize handles onto the
+`<table>` default — the fork exists so each mode stays honest.

@@ -28,8 +28,12 @@ Example (Chirp route)::
     COLS = [
         Column("name", "Name", sortable=True),
         Column("status", "Status", sortable=True, align="center"),
-        Column("seats", "Seats", sortable=True, align="right"),
+        Column("seats", "Seats", sortable=True, align="right",
+               width="1fr", mobile_width="80px", resizable=True),
     ]
+
+``width``, ``mobile_width``, and ``resizable`` are layout hints for the future
+opt-in ARIA-grid renderer (issue #261). Table mode ignores them today.
 
     sort = parse_sort(req.query.get("sort"), default_key="name",
                       allowed=tuple(c.key for c in COLS))
@@ -72,12 +76,19 @@ class Column:
     column** via ``sticky_first_col=true`` (a CSS ``:first-child`` rule), not an
     arbitrary column. A ``frozen`` flag was deliberately *not* shipped so the
     public surface advertises no pinning contract the renderer cannot honor.
+
+    ``width``, ``mobile_width``, and ``resizable`` seed the ARIA-grid-over-div
+    variant (issue #261). Real-``<table>`` mode ignores them — callers can set
+    them now without changing table rendering.
     """
 
     key: str
     label: str
     sortable: bool = False
     align: str = ""
+    width: str | None = None
+    mobile_width: str | None = None
+    resizable: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -288,11 +299,16 @@ def _coerce_column(raw: Column | Mapping[str, object]) -> Column:
     """Accept a :class:`Column` or a plain dict (caller convenience)."""
     if isinstance(raw, Column):
         return raw
+    width = raw.get("width")
+    mobile_width = raw.get("mobile_width")
     return Column(
         key=str(raw.get("key", "")),
         label=str(raw.get("label", "")),
         sortable=bool(raw.get("sortable", False)),
         align=str(raw.get("align", "")),
+        width=str(width) if width not in (None, "") else None,
+        mobile_width=str(mobile_width) if mobile_width not in (None, "") else None,
+        resizable=bool(raw.get("resizable", False)),
     )
 
 

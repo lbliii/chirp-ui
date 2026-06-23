@@ -736,6 +736,10 @@ def test_chirp_theme_base_uses_bespoke_chirpui_shell_spine() -> None:
     assert "render_navbar_item" in base
     assert "library_asset_tags()" in base
     assert "library_asset_tags | default(none)" in base
+    assert "_chirpAlpineData" in base
+    assert base.index("_chirpAlpineData") < base.index("{{ library_asset_tags() }}")
+    assert "alpinejs@3.15.8/dist/cdn.min.js" in base
+    assert base.index("{{ library_asset_tags() }}") < base.index("alpinejs@3.15.8/dist/cdn.min.js")
     assert "chirpui_asset_path('chirpui.css')" not in base
     assert "chirpui_asset_path('chirpui-transitions.css')" not in base
     assert "chirpui_asset_path('chirpui.js')" not in base

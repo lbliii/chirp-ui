@@ -35,6 +35,7 @@ from chirp_ui.config_schema import (
     Widget,
     project_fields,
 )
+from chirp_ui.css_subset import CssSubsetPlan, resolve_partial_paths
 from chirp_ui.filters import TemplateFilterApp, register_colors, reset_colors
 from chirp_ui.grid_state import (
     Column,
@@ -82,6 +83,7 @@ __all__ = [
     "ChirpUIWarning",
     "Column",
     "ColumnSort",
+    "CssSubsetPlan",
     "DesignSystemReport",
     "DesignSystemStats",
     "Field",
@@ -108,6 +110,7 @@ __all__ = [
     "register_colors",
     "register_filters",
     "reset_colors",
+    "resolve_partial_paths",
     "selection_state",
     "set_strict",
     "shortcuts_by_category",
