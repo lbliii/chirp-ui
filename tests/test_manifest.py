@@ -436,6 +436,26 @@ def test_dropdown_select_manifest_entry_documents_combobox_boundary() -> None:
     assert "chirpui-dropdown__item--selected" in entry["emits"]
 
 
+def test_combobox_manifest_entry_documents_typeahead_boundary() -> None:
+    """The typeahead combobox macro should be agent-discoverable with form-field contract."""
+    m = build_manifest()
+    entry = m["components"]["combobox"]
+
+    assert entry["block"] == "combobox"
+    assert entry["template"] == "combobox.html"
+    assert entry["macro"] == "combobox"
+    assert entry["maturity"] == "experimental"
+    assert entry["role"] == "component"
+    assert entry["category"] == "form"
+    assert "alpine" in entry["requires"]
+    assert "multiple" in entry["modifiers"]
+    assert {"input", "list", "option", "empty", "tokens", "token"} <= set(entry["elements"])
+    assert "chirpui-combobox__option--active" in entry["emits"]
+    assert "chirpui-combobox__option--disabled" in entry["emits"]
+    assert "typeahead" in (entry.get("description") or "").casefold()
+    assert "dropdown_select" in (entry.get("description") or "")
+
+
 def test_layout_descriptor_burndown_stays_explicit() -> None:
     """PR-sized layout descriptor burn-down should not regress into auto extras."""
     migrated_blocks = {

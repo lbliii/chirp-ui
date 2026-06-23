@@ -22820,6 +22820,19 @@ a.chirpui-chip:focus-visible {
             background: var(--chirpui-muted-bg);
         }
 
+        & .chirpui-combobox__option--disabled,
+        & .chirpui-combobox__option[aria-disabled="true"] {
+            color: var(--chirpui-text-muted);
+            cursor: not-allowed;
+        }
+
+        & .chirpui-combobox__option--disabled.chirpui-combobox__option--active,
+        & .chirpui-combobox__option[aria-disabled="true"].chirpui-combobox__option--active,
+        & .chirpui-combobox__option--disabled:hover,
+        & .chirpui-combobox__option[aria-disabled="true"]:hover {
+            background: transparent;
+        }
+
         & .chirpui-combobox__empty {
             padding: var(--chirpui-spacing-xs) var(--chirpui-spacing-sm);
             color: var(--chirpui-text-muted);

@@ -53,7 +53,8 @@ Canonical component, behavior, and macro-contract references.
 - [PROVIDE-CONSUME-KEYS.md](components/provide-consume-keys.md) — All provide/consume context keys and their contracts
 - [ALPINE-MAGICS.md](components/alpine-magics.md) — Alpine.js store, `safeData`, shared controllers
 - [HTMX-PATTERNS.md](components/htmx-patterns.md) — `hx={}` dict, auto-injected attrs, app-shell HTMX boundaries, `build_hx_attrs()`
-- [CONTROL-SELECTION.md](components/control-selection.md) — Native controls, dropdown-select, toggle groups, sliders, and data-table composition boundaries
+- [CONTROL-SELECTION.md](components/control-selection.md) — Native controls, dropdown-select, combobox, toggle groups, sliders, and data-table composition boundaries
+- [COMBOBOX-ANATOMY.md](components/combobox-anatomy.md) — Combobox typeahead anatomy, dropdown-select boundary, and proof ledger
 - [CONTEXT-MENU-ANATOMY.md](components/context-menu-anatomy.md) — Shipped context-menu anatomy, keyboard/focus contract, and proof ledger
 - [MENUBAR-ANATOMY.md](components/menubar-anatomy.md) — Shipped menubar anatomy, roving focus contract, and proof ledger
 - [NAVIGATION-MENU-ANATOMY.md](components/navigation-menu-anatomy.md) — Navigation menu flyout anatomy, keyboard/focus contract, and proof ledger

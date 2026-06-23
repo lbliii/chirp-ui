@@ -9249,6 +9249,17 @@ class TestCombobox:
         for i in range(3):
             assert f'id="chirpui-combobox-country-opt-{i}"' in html
 
+    def test_combobox_disabled_option_renders_aria_disabled(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/combobox.html" import combobox %}'
+            '{{ combobox(name="region", label="Region", options='
+            '[{"label": "North", "value": "north"},'
+            ' {"label": "South", "value": "south", "disabled": true}]) }}'
+        ).render()
+        assert "chirpui-combobox__option--disabled" in html
+        assert 'aria-disabled="true"' in html
+        assert "South" in html
+
     def test_combobox_multiple_renders_token_scaffold(self, env: Environment) -> None:
         html = self._render(env, extra=", multiple=true")
         assert "chirpui-combobox--multiple" in html

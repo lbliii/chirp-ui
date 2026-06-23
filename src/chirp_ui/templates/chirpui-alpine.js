@@ -943,6 +943,9 @@
                 }
                 return false;
             },
+            _isDisabled: function (option) {
+                return option.getAttribute("aria-disabled") === "true";
+            },
             _visible: function () {
                 var q = this.query.trim().toLowerCase();
                 var self = this;
@@ -952,6 +955,12 @@
                     }
                     var label = (o.dataset.label || "").toLowerCase();
                     return !q || label.indexOf(q) !== -1;
+                });
+            },
+            _enabledVisible: function () {
+                var self = this;
+                return this._visible().filter(function (o) {
+                    return !self._isDisabled(o);
                 });
             },
             matches: function (label, value) {
@@ -991,7 +1000,7 @@
                 this.activeId = "";
             },
             move: function (delta) {
-                var vis = this._visible();
+                var vis = this._enabledVisible();
                 this.open = true;
                 if (!vis.length) {
                     return;
@@ -1015,8 +1024,11 @@
             },
             selectActive: function () {
                 var el = this.activeId ? document.getElementById(this.activeId) : null;
+                if (el && this._isDisabled(el)) {
+                    el = null;
+                }
                 if (!el) {
-                    var vis = this._visible();
+                    var vis = this._enabledVisible();
                     if (vis.length === 1) {
                         el = vis[0];
                     } else {
@@ -1026,7 +1038,7 @@
                 this.choose(el);
             },
             choose: function (el) {
-                if (!el) {
+                if (!el || this._isDisabled(el)) {
                     return;
                 }
                 var label = el.dataset.label || "";

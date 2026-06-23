@@ -1,4 +1,6 @@
-{#- chirp-ui: Combobox / autocomplete
+{#- chirp-ui: Typeahead combobox for form fields — text input over a filtered
+    role="listbox" with hidden form value and optional multi-select token pills.
+    Use dropdown_select for stable fixed-list toolbar/filter picks without typing.
     Typeahead text input over a filtered role="listbox" of suggestions — the
     WAI-ARIA combobox pattern with aria-activedescendant. Typing filters the
     options client-side; ArrowDown/ArrowUp rove the visible options, Enter selects
@@ -82,8 +84,9 @@
         {% for opt in options %}
         {% set _ov = opt.get("value", opt.get("label", "")) %}
         {% set _ol = opt.get("label", _ov) %}
-        <li class="chirpui-combobox__option" id="{{ _cid }}-opt-{{ loop.index0 }}"
+        <li class="chirpui-combobox__option{% if opt.get("disabled") %} chirpui-combobox__option--disabled{% end %}" id="{{ _cid }}-opt-{{ loop.index0 }}"
             role="option" data-value="{{ _ov }}" data-label="{{ _ol }}"
+            {% if opt.get("disabled") %}aria-disabled="true"{% end %}
             x-show="selected.length >= 0 && matches($el.dataset.label, $el.dataset.value)"
             :aria-selected="activeId === $el.id ? 'true' : 'false'"
             :class="{ 'chirpui-combobox__option--active': activeId === $el.id }"
