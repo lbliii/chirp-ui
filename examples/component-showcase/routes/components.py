@@ -15,6 +15,7 @@ from chirp import (
     ShellActionZone,
     Template,
 )
+from showcase.blocks_data import load_blocks_gallery
 from showcase.helpers import page
 
 from chirp_ui.theme_packs import get_theme_pack, list_theme_packs
@@ -106,6 +107,17 @@ def register(app: App) -> None:
         if pack is None or mode not in pack.modes:
             return Response("Theme pack preview not found", status=404)
         return page(request, "showcase/theme_pack_preview.html", pack=pack, mode=mode)
+
+    @app.route("/blocks", template="showcase/blocks.html")
+    async def blocks_gallery(request: Request) -> Template:
+        gallery = load_blocks_gallery()
+        return page(
+            request,
+            "showcase/blocks.html",
+            blocks_items=gallery.get("blocks", []),
+            blocks_categories=gallery.get("categories", []),
+            blocks_stats=gallery.get("stats", {}),
+        )
 
     @app.route("/ui", template="showcase/ui.html")
     async def ui(request: Request) -> Template:

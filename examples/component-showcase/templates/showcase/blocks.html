@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, stack, cluster, page_header %}
+{% from "chirpui/badge.html" import badge %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header(
+  "Blocks Gallery",
+  subtitle="Registry-generated copy-paste blocks — live preview + Kida macro call for every public component."
+) }}
+
+<div class="showcase-blocks__toolbar">
+  <label class="chirpui-field">
+    <span class="chirpui-field__label">Search</span>
+    <input
+      id="blocks-search"
+      class="chirpui-field__input"
+      type="search"
+      placeholder="Filter by name, category, macro, or summary…"
+      autocomplete="off"
+    >
+  </label>
+  <div class="showcase-blocks__filters" id="blocks-category-filters" aria-label="Category filters">
+    <button type="button" class="chirpui-btn chirpui-btn--sm chirpui-btn--primary" data-category="">All</button>
+    {% for category in blocks_categories %}
+    <button type="button" class="chirpui-btn chirpui-btn--sm chirpui-btn--ghost" data-category="{{ category }}">{{ category }}</button>
+    {% endfor %}
+  </div>
+  <p class="chirpui-text-muted chirpui-font-sm" id="blocks-count">
+    Showing {{ blocks_stats.blocks }} blocks · {{ blocks_stats.previews_rendered }} live previews
+  </p>
+</div>
+
+<div class="showcase-blocks__grid" id="blocks-grid">
+  {% for item in blocks_items %}
+  <article
+    class="showcase-blocks__card"
+    data-block-card
+    data-name="{{ item.name }}"
+    data-category="{{ item.category }}"
+    data-search="{{ item.name }} {{ item.category }} {{ item.macro }} {{ item.summary }} {{ item.role }} {{ item.maturity }}"
+  >
+    <header class="showcase-blocks__card-header">
+      <div>
+        <h2 class="showcase-blocks__title">{{ item.name }}</h2>
+        <p class="chirpui-text-muted chirpui-font-sm">{{ item.summary }}</p>
+      </div>
+      {% call cluster(cls="showcase-blocks__badges") %}
+      {{ badge(item.category, variant="muted") }}
+      {{ badge(item.maturity, variant="info") }}
+      {{ badge(item.authoring, variant="muted") }}
+      {% end %}
+    </header>
+
+    <section class="showcase-blocks__preview" aria-label="Live preview for {{ item.name }}">
+      {% if item.preview_html %}
+      {{ item.preview_html | safe }}
+      {% else %}
+      <p class="chirpui-text-muted chirpui-font-sm">
+        Preview unavailable{% if item.preview_error %}: {{ item.preview_error }}{% end %}
+      </p>
+      {% end %}
+    </section>
+
+    <section class="showcase-blocks__snippet">
+      <div class="showcase-blocks__snippet-header">
+        <span class="chirpui-font-sm chirpui-text-muted">Copy-paste</span>
+        <button
+          type="button"
+          class="chirpui-btn chirpui-btn--sm chirpui-btn--ghost"
+          data-copy-snippet="{{ item.copy_snippet | e }}"
+        >
+          Copy
+        </button>
+      </div>
+      <pre class="showcase-blocks__code"><code>{{ item.copy_snippet }}</code></pre>
+    </section>
+  </article>
+  {% endfor %}
+</div>
+{% end %}
+{% end %}
+
+<style>
+  .showcase-blocks__toolbar {
+    display: grid;
+    gap: var(--chirpui-spacing-md);
+    margin-bottom: var(--chirpui-spacing-lg);
+  }
+  .showcase-blocks__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--chirpui-spacing-xs);
+  }
+  .showcase-blocks__grid {
+    display: grid;
+    gap: var(--chirpui-spacing-lg);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+  }
+  .showcase-blocks__card {
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+    background: var(--chirpui-surface-1);
+    display: grid;
+    gap: var(--chirpui-spacing-md);
+    padding: var(--chirpui-spacing-md);
+  }
+  .showcase-blocks__card-header {
+    display: grid;
+    gap: var(--chirpui-spacing-sm);
+  }
+  .showcase-blocks__title {
+    font-size: var(--chirpui-font-lg);
+    margin: 0;
+  }
+  .showcase-blocks__badges {
+    flex-wrap: wrap;
+  }
+  .showcase-blocks__preview {
+    border: 1px dashed var(--chirpui-border);
+    border-radius: var(--chirpui-radius-md);
+    min-height: 4rem;
+    padding: var(--chirpui-spacing-md);
+    overflow: auto;
+  }
+  .showcase-blocks__snippet {
+    display: grid;
+    gap: var(--chirpui-spacing-xs);
+  }
+  .showcase-blocks__snippet-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+  .showcase-blocks__code {
+    background: var(--chirpui-surface-2);
+    border-radius: var(--chirpui-radius-md);
+    font-size: var(--chirpui-font-xs);
+    margin: 0;
+    max-height: 14rem;
+    overflow: auto;
+    padding: var(--chirpui-spacing-sm);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .showcase-blocks__card[hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+(() => {
+  const searchInput = document.getElementById("blocks-search");
+  const countEl = document.getElementById("blocks-count");
+  const cards = Array.from(document.querySelectorAll("[data-block-card]"));
+  const filterButtons = Array.from(document.querySelectorAll("[data-category]"));
+  let activeCategory = "";
+
+  function updateCount(visible) {
+    countEl.textContent = `Showing ${visible} of {{ blocks_stats.blocks }} blocks · {{ blocks_stats.previews_rendered }} live previews`;
+  }
+
+  function applyFilters() {
+    const query = (searchInput?.value || "").trim().toLowerCase();
+    let visible = 0;
+    for (const card of cards) {
+      const haystack = (card.dataset.search || "").toLowerCase();
+      const category = card.dataset.category || "";
+      const matchesQuery = !query || haystack.includes(query);
+      const matchesCategory = !activeCategory || category === activeCategory;
+      const show = matchesQuery && matchesCategory;
+      card.hidden = !show;
+      if (show) visible += 1;
+    }
+    updateCount(visible);
+  }
+
+  searchInput?.addEventListener("input", applyFilters);
+
+  for (const button of filterButtons) {
+    button.addEventListener("click", () => {
+      activeCategory = button.dataset.category || "";
+      for (const peer of filterButtons) {
+        peer.classList.toggle("chirpui-btn--primary", peer === button);
+        peer.classList.toggle("chirpui-btn--ghost", peer !== button);
+      }
+      applyFilters();
+    });
+  }
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const copyButton = target.closest("[data-copy-snippet]");
+    if (!(copyButton instanceof HTMLElement)) return;
+    const snippet = copyButton.dataset.copySnippet || "";
+    navigator.clipboard?.writeText(snippet).then(() => {
+      const original = copyButton.textContent;
+      copyButton.textContent = "Copied";
+      window.setTimeout(() => {
+        copyButton.textContent = original;
+      }, 1200);
+    });
+  });
+})();
+</script>
+{% endblock %}

@@ -13,11 +13,12 @@ import sys
 
 def _usage() -> str:
     return (
-        "Usage: python -m chirp_ui <command> [args...]\n"
+        "Usage: chirp-ui <command> [args...]\n"
         "\n"
         "Commands:\n"
         "  find       Search components by name, category, or description\n"
-        "  manifest   (alias) python -m chirp_ui.manifest — emit the full manifest as JSON\n"
+        "  manifest   Emit the full manifest as JSON\n"
+        "  mcp        Run the manifest MCP server (requires chirp-ui[mcp])\n"
     )
 
 
@@ -36,6 +37,10 @@ def main(argv: list[str] | None = None) -> int:
         from chirp_ui.manifest import main as manifest_main
 
         return manifest_main(rest)
+    if command == "mcp":
+        from chirp_ui.mcp_server import main as mcp_main
+
+        return mcp_main(rest)
 
     sys.stderr.write(f"unknown command: {command!r}\n\n{_usage()}")
     return 2

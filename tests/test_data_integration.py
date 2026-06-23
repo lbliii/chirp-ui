@@ -30,6 +30,7 @@ SHOWCASE_ROUTE_SMOKE_PATHS = (
     "/chrome",
     "/shell-actions",
     "/sections",
+    "/blocks",
     "/carousel",
     "/cards",
     "/forms",
@@ -760,6 +761,16 @@ class TestDataPage:
             assert "chirpui-spinner" in response.text
             assert "chirpui-field--dense" in response.text
             assert 'style="min-width' not in response.text
+
+    @pytest.mark.asyncio
+    async def test_blocks_gallery_renders_registry_entries(self, showcase_app) -> None:
+        async with TestClient(showcase_app) as client:
+            response = await client.get("/blocks")
+        assert response.status == 200
+        assert "Blocks Gallery" in response.text
+        assert "data-block-card" in response.text
+        assert "chirpui-badge" in response.text
+        assert "Copy-paste" in response.text
 
     @pytest.mark.asyncio
     async def test_maturity_primitives_render_in_showcase(self, showcase_app) -> None:
