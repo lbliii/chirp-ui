@@ -1,28 +1,28 @@
 {% extends "base.html" %}
 
 {% block main %}
-{% from "chirpui/layout.html" import container, stack, cluster, block, page_header %}
+{% from "chirpui/layout.html" import container, stack, cluster, page_header %}
 {% from "chirpui/badge.html" import badge %}
 
-{% call container(cls="chirpui-blocks-gallery") %}
+{% call container() %}
 {% call stack() %}
 {{ page_header(
   "Blocks Gallery",
   subtitle="Registry-generated copy-paste blocks — live preview + Kida macro call for every public component."
 ) }}
 
-<div class="chirpui-blocks-gallery__toolbar">
+<div class="showcase-blocks__toolbar">
   <label class="chirpui-field">
     <span class="chirpui-field__label">Search</span>
     <input
       id="blocks-search"
-      class="chirpui-input"
+      class="chirpui-field__input"
       type="search"
       placeholder="Filter by name, category, macro, or summary…"
       autocomplete="off"
     >
   </label>
-  <div class="chirpui-blocks-gallery__filters" id="blocks-category-filters" aria-label="Category filters">
+  <div class="showcase-blocks__filters" id="blocks-category-filters" aria-label="Category filters">
     <button type="button" class="chirpui-btn chirpui-btn--sm chirpui-btn--primary" data-category="">All</button>
     {% for category in blocks_categories %}
     <button type="button" class="chirpui-btn chirpui-btn--sm chirpui-btn--ghost" data-category="{{ category }}">{{ category }}</button>
@@ -33,28 +33,28 @@
   </p>
 </div>
 
-<div class="chirpui-blocks-gallery__grid" id="blocks-grid">
+<div class="showcase-blocks__grid" id="blocks-grid">
   {% for item in blocks_items %}
   <article
-    class="chirpui-blocks-gallery__card"
+    class="showcase-blocks__card"
     data-block-card
     data-name="{{ item.name }}"
     data-category="{{ item.category }}"
     data-search="{{ item.name }} {{ item.category }} {{ item.macro }} {{ item.summary }} {{ item.role }} {{ item.maturity }}"
   >
-    <header class="chirpui-blocks-gallery__card-header">
+    <header class="showcase-blocks__card-header">
       <div>
-        <h2 class="chirpui-blocks-gallery__title">{{ item.name }}</h2>
+        <h2 class="showcase-blocks__title">{{ item.name }}</h2>
         <p class="chirpui-text-muted chirpui-font-sm">{{ item.summary }}</p>
       </div>
-      {% call cluster(cls="chirpui-blocks-gallery__badges") %}
+      {% call cluster(cls="showcase-blocks__badges") %}
       {{ badge(item.category, variant="muted") }}
       {{ badge(item.maturity, variant="info") }}
       {{ badge(item.authoring, variant="muted") }}
       {% end %}
     </header>
 
-    <section class="chirpui-blocks-gallery__preview" aria-label="Live preview for {{ item.name }}">
+    <section class="showcase-blocks__preview" aria-label="Live preview for {{ item.name }}">
       {% if item.preview_html %}
       {{ item.preview_html | safe }}
       {% else %}
@@ -64,8 +64,8 @@
       {% end %}
     </section>
 
-    <section class="chirpui-blocks-gallery__snippet">
-      <div class="chirpui-blocks-gallery__snippet-header">
+    <section class="showcase-blocks__snippet">
+      <div class="showcase-blocks__snippet-header">
         <span class="chirpui-font-sm chirpui-text-muted">Copy-paste</span>
         <button
           type="button"
@@ -75,7 +75,7 @@
           Copy
         </button>
       </div>
-      <pre class="chirpui-blocks-gallery__code"><code>{{ item.copy_snippet }}</code></pre>
+      <pre class="showcase-blocks__code"><code>{{ item.copy_snippet }}</code></pre>
     </section>
   </article>
   {% endfor %}
@@ -84,22 +84,22 @@
 {% end %}
 
 <style>
-  .chirpui-blocks-gallery__toolbar {
+  .showcase-blocks__toolbar {
     display: grid;
     gap: var(--chirpui-spacing-md);
     margin-bottom: var(--chirpui-spacing-lg);
   }
-  .chirpui-blocks-gallery__filters {
+  .showcase-blocks__filters {
     display: flex;
     flex-wrap: wrap;
     gap: var(--chirpui-spacing-xs);
   }
-  .chirpui-blocks-gallery__grid {
+  .showcase-blocks__grid {
     display: grid;
     gap: var(--chirpui-spacing-lg);
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
   }
-  .chirpui-blocks-gallery__card {
+  .showcase-blocks__card {
     border: 1px solid var(--chirpui-border);
     border-radius: var(--chirpui-radius-lg);
     background: var(--chirpui-surface-1);
@@ -107,34 +107,34 @@
     gap: var(--chirpui-spacing-md);
     padding: var(--chirpui-spacing-md);
   }
-  .chirpui-blocks-gallery__card-header {
+  .showcase-blocks__card-header {
     display: grid;
     gap: var(--chirpui-spacing-sm);
   }
-  .chirpui-blocks-gallery__title {
+  .showcase-blocks__title {
     font-size: var(--chirpui-font-lg);
     margin: 0;
   }
-  .chirpui-blocks-gallery__badges {
+  .showcase-blocks__badges {
     flex-wrap: wrap;
   }
-  .chirpui-blocks-gallery__preview {
+  .showcase-blocks__preview {
     border: 1px dashed var(--chirpui-border);
     border-radius: var(--chirpui-radius-md);
     min-height: 4rem;
     padding: var(--chirpui-spacing-md);
     overflow: auto;
   }
-  .chirpui-blocks-gallery__snippet {
+  .showcase-blocks__snippet {
     display: grid;
     gap: var(--chirpui-spacing-xs);
   }
-  .chirpui-blocks-gallery__snippet-header {
+  .showcase-blocks__snippet-header {
     align-items: center;
     display: flex;
     justify-content: space-between;
   }
-  .chirpui-blocks-gallery__code {
+  .showcase-blocks__code {
     background: var(--chirpui-surface-2);
     border-radius: var(--chirpui-radius-md);
     font-size: var(--chirpui-font-xs);
@@ -145,7 +145,7 @@
     white-space: pre-wrap;
     word-break: break-word;
   }
-  .chirpui-blocks-gallery__card[hidden] {
+  .showcase-blocks__card[hidden] {
     display: none;
   }
 </style>

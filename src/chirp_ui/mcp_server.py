@@ -34,7 +34,9 @@ def _require_mcp():
 
 def _tool_result(payload: Any) -> list[Any]:
     _server_cls, mcp_types, _stdio = _require_mcp()
-    return [mcp_types.TextContent(type="text", text=json.dumps(payload, indent=2, ensure_ascii=True))]
+    return [
+        mcp_types.TextContent(type="text", text=json.dumps(payload, indent=2, ensure_ascii=True))
+    ]
 
 
 def create_server():
@@ -122,9 +124,7 @@ def create_server():
                     maturity=maturity,
                     role=role,
                 )
-                payload = [
-                    {"name": row[0], "category": row[1], "summary": row[2]} for row in rows
-                ]
+                payload = [{"name": row[0], "category": row[1], "summary": row[2]} for row in rows]
             return _tool_result({"count": len(payload), "results": payload})
 
         if name == "get_component":
@@ -143,8 +143,7 @@ def create_server():
                 category = entry.get("category") or "uncategorized"
                 counts[category] = counts.get(category, 0) + 1
             payload = [
-                {"category": category, "count": counts[category]}
-                for category in sorted(counts)
+                {"category": category, "count": counts[category]} for category in sorted(counts)
             ]
             return _tool_result({"count": len(payload), "categories": payload})
 

@@ -14,9 +14,6 @@ GALLERY_PATH = Path(__file__).resolve().parent.parent / "generated" / "blocks_ga
 def load_blocks_gallery() -> dict[str, Any]:
     """Return the committed blocks gallery JSON."""
     if not GALLERY_PATH.is_file():
-        msg = (
-            f"Missing {GALLERY_PATH.name}. Run: poe build-blocks-gallery "
-            "from the repo root."
-        )
+        msg = f"Missing {GALLERY_PATH.name}. Run: poe build-blocks-gallery from the repo root."
         raise FileNotFoundError(msg)
     return json.loads(GALLERY_PATH.read_text(encoding="utf-8"))

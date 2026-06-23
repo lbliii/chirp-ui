@@ -30,7 +30,9 @@ async def test_find_components_tool_returns_manifest_backed_results() -> None:
     result = await call_tool(
         mcp.types.CallToolRequest(
             method="tools/call",
-            params=mcp.types.CallToolRequestParams(name="find_components", arguments={"query": "badge"}),
+            params=mcp.types.CallToolRequestParams(
+                name="find_components", arguments={"query": "badge"}
+            ),
         )
     )
     call_result = result.root
@@ -51,7 +53,9 @@ async def test_get_component_tool_returns_full_entry() -> None:
     result = await call_tool(
         mcp.types.CallToolRequest(
             method="tools/call",
-            params=mcp.types.CallToolRequestParams(name="get_component", arguments={"name": "badge"}),
+            params=mcp.types.CallToolRequestParams(
+                name="get_component", arguments={"name": "badge"}
+            ),
         )
     )
     call_result = result.root

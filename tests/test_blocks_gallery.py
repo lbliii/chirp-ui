@@ -24,7 +24,7 @@ def test_extract_usage_snippet_from_doc_block() -> None:
     description = (
         "Accordion component\n\n"
         "    Usage:\n"
-        "        {% from \"chirpui/accordion.html\" import accordion %}\n"
+        '        {% from "chirpui/accordion.html" import accordion %}\n'
         "        {{ accordion() }}\n"
     )
     snippet = extract_usage_snippet(description)
@@ -43,9 +43,7 @@ def test_copy_snippet_falls_back_to_import_and_call() -> None:
 def test_build_gallery_covers_public_components() -> None:
     manifest = build_manifest()
     public_names = {
-        name
-        for name, entry in manifest["components"].items()
-        if is_public_component(entry)
+        name for name, entry in manifest["components"].items() if is_public_component(entry)
     }
     gallery = build_gallery(with_previews=False)
     assert gallery["schema"] == GALLERY_SCHEMA
