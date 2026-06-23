@@ -1,0 +1,1 @@
+Card and surface now adapt to column width via `@container chirpui-layout` breakpoints — app shell main and context-rail regions establish inline-size containers so header actions stack and horizontal cards reflow in the narrow context rail without a viewport breakpoint ([#209](https://github.com/lbliii/chirp-ui/issues/209)).

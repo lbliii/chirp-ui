@@ -234,6 +234,18 @@
         :scope.chirpui-surface--no-padding {
             padding: 0;
         }
+
+        /* Narrow column (context rail): tighten padding and child rhythm without
+           a viewport breakpoint — pairs with app-shell region containers (#209). */
+        @container chirpui-layout (width < 28rem) {
+            :scope:not(.chirpui-surface--no-padding) {
+                padding: var(--chirpui-spacing-sm);
+            }
+
+            :scope:not(.chirpui-surface--no-padding) > :where(:not(script, style, template)) + :where(:not(script, style, template)) {
+                margin-block-start: var(--chirpui-spacing-xs);
+            }
+        }
     }
 
     /* Blade — full-width edge-to-edge section; breaks out of container.

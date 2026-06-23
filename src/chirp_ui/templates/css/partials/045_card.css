@@ -411,11 +411,39 @@
             }
         }
 
-        @media (max-width: 36rem) {
-            .chirpui-card__header [data-chirpui-role~="actions"] {
+        /* Narrow column (context rail ~20rem, nested containers): stack header chrome
+           and horizontal media cards without waiting for a viewport breakpoint. */
+        @container chirpui-layout (width < 36rem) {
+            .chirpui-card__header [data-chirpui-role~="actions"],
+            .chirpui-card__header-actions {
                 flex-basis: 100%;
                 margin-inline-start: 0;
                 justify-content: flex-start;
+            }
+        }
+
+        @container chirpui-layout (width < 28rem) {
+            :scope.chirpui-card--horizontal {
+                flex-direction: column;
+
+                .chirpui-card__media {
+                    flex: none;
+                    max-width: none;
+
+                    img,
+                    video {
+                        aspect-ratio: var(--chirpui-video-aspect-ratio);
+                        height: auto;
+                    }
+                }
+            }
+
+            .chirpui-card__header,
+            .chirpui-card__body,
+            .chirpui-card__footer,
+            .chirpui-card__footer-wrap:not(:empty),
+            .chirpui-card__top-meta {
+                padding-inline: var(--chirpui-spacing-sm);
             }
         }
 

@@ -112,6 +112,7 @@ def test_index_cards_match_legacy_destinations() -> None:
         "/cards",
         "/forms",
         "/appearance-tone",
+        "/theme-explorer",
         "/theme-packs",
         "/ui",
         "/islands",

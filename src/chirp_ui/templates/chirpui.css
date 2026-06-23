@@ -5579,6 +5579,18 @@ a.chirpui-mention:focus-visible {
         :scope.chirpui-surface--no-padding {
             padding: 0;
         }
+
+        /* Narrow column (context rail): tighten padding and child rhythm without
+           a viewport breakpoint — pairs with app-shell region containers (#209). */
+        @container chirpui-layout (width < 28rem) {
+            :scope:not(.chirpui-surface--no-padding) {
+                padding: var(--chirpui-spacing-sm);
+            }
+
+            :scope:not(.chirpui-surface--no-padding) > :where(:not(script, style, template)) + :where(:not(script, style, template)) {
+                margin-block-start: var(--chirpui-spacing-xs);
+            }
+        }
     }
 
     /* Blade — full-width edge-to-edge section; breaks out of container.
@@ -6483,11 +6495,39 @@ a.chirpui-mention:focus-visible {
             }
         }
 
-        @media (max-width: 36rem) {
-            .chirpui-card__header [data-chirpui-role~="actions"] {
+        /* Narrow column (context rail ~20rem, nested containers): stack header chrome
+           and horizontal media cards without waiting for a viewport breakpoint. */
+        @container chirpui-layout (width < 36rem) {
+            .chirpui-card__header [data-chirpui-role~="actions"],
+            .chirpui-card__header-actions {
                 flex-basis: 100%;
                 margin-inline-start: 0;
                 justify-content: flex-start;
+            }
+        }
+
+        @container chirpui-layout (width < 28rem) {
+            :scope.chirpui-card--horizontal {
+                flex-direction: column;
+
+                .chirpui-card__media {
+                    flex: none;
+                    max-width: none;
+
+                    img,
+                    video {
+                        aspect-ratio: var(--chirpui-video-aspect-ratio);
+                        height: auto;
+                    }
+                }
+            }
+
+            .chirpui-card__header,
+            .chirpui-card__body,
+            .chirpui-card__footer,
+            .chirpui-card__footer-wrap:not(:empty),
+            .chirpui-card__top-meta {
+                padding-inline: var(--chirpui-spacing-sm);
             }
         }
 
@@ -13156,6 +13196,8 @@ html {
 
 .chirpui-app-shell__context-rail {
     grid-area: context;
+    container-type: inline-size;
+    container-name: chirpui-layout;
     min-width: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -13443,6 +13485,8 @@ html[data-chirpui-sidebar-collapsed="true"] {
 
 .chirpui-app-shell__main {
     grid-area: main;
+    container-type: inline-size;
+    container-name: chirpui-layout;
     position: relative;
     min-height: 0;
     min-width: 0;

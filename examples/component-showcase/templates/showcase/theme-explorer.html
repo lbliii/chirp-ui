@@ -1,0 +1,420 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% from "chirpui/layout.html" import container, stack, cluster, block, grid, page_header %}
+{% from "chirpui/card.html" import card %}
+{% from "chirpui/badge.html" import badge %}
+{% from "chirpui/button.html" import btn %}
+{% from "chirpui/alert.html" import alert %}
+{% from "chirpui/surface.html" import surface %}
+{% from "chirpui/forms.html" import text_field %}
+
+{% call container() %}
+{% call stack() %}
+{{ page_header(
+  "Theme Explorer",
+  subtitle="Live token values, preset switching, and WCAG contrast preview. Use the theme toggle in the top bar for dark, system, and OLED modes."
+) }}
+
+<div class="showcase-theme-explorer__toolbar">
+  <label class="chirpui-field">
+    <span class="chirpui-field__label">Preset</span>
+    <select id="theme-explorer-preset" class="chirpui-field__input">
+      {% for preset in theme_presets %}
+      <option value="{{ preset.id }}">{{ preset.label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label class="chirpui-field showcase-theme-explorer__toggle">
+    <span class="chirpui-field__label">Contrast badges</span>
+    <input id="theme-explorer-contrast" class="chirpui-field__input" type="checkbox" checked>
+  </label>
+  <p class="chirpui-text-muted chirpui-font-sm" id="theme-explorer-status">
+    Reading computed tokens for <strong id="theme-explorer-preset-label">{{ theme_presets[0].label }}</strong>
+  </p>
+</div>
+
+{% call card(title="Live preview", appearance="outlined", tone="primary") %}
+<div id="theme-explorer-preview" class="showcase-theme-explorer__preview">
+  {% call cluster(gap="sm") %}
+  {{ btn("Primary", tone="primary") }}
+  {{ btn("Ghost", appearance="ghost", tone="neutral") }}
+  {{ badge("Ready", tone="success") }}
+  {{ badge("Review", tone="warning") }}
+  {% end %}
+  {% call alert(tone="info", appearance="tonal", title="Token-driven surfaces") %}
+  Accent, semantic, and text tokens should stay readable when you switch presets or theme modes.
+  {% end %}
+  {{ text_field("project", label="Sample field", value="Token preview", appearance="outlined", tone="primary") }}
+  <div class="showcase-theme-explorer__swatches" id="theme-explorer-swatches" aria-label="Key token swatches"></div>
+</div>
+{% end %}
+
+<section id="token-explorer" class="showcase-theme-explorer__board" data-audit-section="token-explorer">
+  <div class="showcase-theme-explorer__board-header">
+    <div>
+      <h2 class="showcase-theme-explorer__title">Token explorer</h2>
+      <p class="chirpui-text-muted chirpui-font-sm">First app-owned overrides by job — values refresh from computed styles.</p>
+    </div>
+    {{ badge("live", tone="primary") }}
+  </div>
+
+  {% for job in board_sections %}
+  <section class="showcase-theme-explorer__group" data-token-job="{{ job.id }}">
+    <h3 class="showcase-theme-explorer__group-title">{{ job.title }}</h3>
+    <div class="showcase-theme-explorer__rows">
+      {% for token in job.tokens %}
+      <div class="showcase-theme-explorer__row" data-token-name="{{ token.name }}" data-token-kind="{{ token.kind }}">
+        <code>{{ token.name }}</code>
+        <div class="showcase-theme-explorer__sample" data-token-sample></div>
+        <span class="showcase-theme-explorer__value chirpui-text-muted chirpui-font-sm" data-token-value></span>
+        <span class="showcase-theme-explorer__meta chirpui-text-muted chirpui-font-sm">{{ token.meta }}</span>
+        <span class="showcase-theme-explorer__contrast chirpui-font-sm" data-token-contrast hidden></span>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+</section>
+
+<div id="theme-explorer-contrast-panel" class="showcase-theme-explorer__contrast-panel" hidden>
+  <h3 class="showcase-theme-explorer__group-title">Contrast pairs</h3>
+  <ul class="showcase-theme-explorer__contrast-list" id="theme-explorer-contrast-list"></ul>
+</div>
+
+{% end %}
+{% end %}
+
+<link id="theme-explorer-pack" rel="stylesheet" href="" disabled>
+
+<style>
+  .showcase-theme-explorer__toolbar {
+    display: grid;
+    gap: var(--chirpui-spacing-md);
+    margin-bottom: var(--chirpui-spacing-lg);
+    max-width: 36rem;
+  }
+  .showcase-theme-explorer__toggle {
+    align-items: center;
+    display: flex;
+    gap: var(--chirpui-spacing-sm);
+  }
+  .showcase-theme-explorer__preview {
+    display: grid;
+    gap: var(--chirpui-spacing-md);
+  }
+  .showcase-theme-explorer__swatches {
+    display: grid;
+    gap: var(--chirpui-spacing-xs);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .showcase-theme-explorer__swatch {
+    aspect-ratio: 1.4;
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+  }
+  .showcase-theme-explorer__board {
+    display: grid;
+    gap: var(--chirpui-spacing-lg);
+    margin-top: var(--chirpui-spacing-lg);
+  }
+  .showcase-theme-explorer__board-header {
+    align-items: start;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--chirpui-spacing-md);
+  }
+  .showcase-theme-explorer__title {
+    font-size: var(--chirpui-font-lg);
+    margin: 0;
+  }
+  .showcase-theme-explorer__group {
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+    padding: var(--chirpui-spacing-md);
+  }
+  .showcase-theme-explorer__group-title {
+    font-size: var(--chirpui-font-base);
+    margin: 0 0 var(--chirpui-spacing-sm);
+  }
+  .showcase-theme-explorer__rows {
+    display: grid;
+    gap: var(--chirpui-spacing-sm);
+  }
+  .showcase-theme-explorer__row {
+    align-items: center;
+    display: grid;
+    gap: var(--chirpui-spacing-sm);
+    grid-template-columns: minmax(10rem, 1.2fr) minmax(5rem, 0.8fr) minmax(6rem, 1fr) auto;
+  }
+  .showcase-theme-explorer__sample {
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-sm);
+    min-height: 1.75rem;
+  }
+  .showcase-theme-explorer__sample[data-kind="focus"] {
+    box-shadow: 0 0 0 3px var(--sample-color, var(--chirpui-focus-ring));
+  }
+  .showcase-theme-explorer__sample[data-kind="outline"] {
+    outline: var(--sample-outline, var(--chirpui-state-focus-outline));
+    outline-offset: var(--chirpui-state-focus-offset, 2px);
+    min-height: 2.5rem;
+  }
+  .showcase-theme-explorer__sample[data-kind="radius"] {
+    background: var(--chirpui-accent);
+  }
+  .showcase-theme-explorer__sample[data-kind="shadow"] {
+    background: var(--chirpui-surface);
+    box-shadow: var(--sample-shadow, var(--chirpui-elevation-card-rest));
+    min-height: 2.5rem;
+  }
+  .showcase-theme-explorer__sample[data-kind="type"] {
+    align-items: center;
+    display: flex;
+    font-family: var(--sample-font, inherit);
+    font-size: var(--sample-size, inherit);
+    justify-content: center;
+    min-height: 2.5rem;
+  }
+  .showcase-theme-explorer__sample[data-kind="motion"] {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    transition: transform var(--sample-transition, var(--chirpui-motion-base) var(--chirpui-ease-standard));
+  }
+  .showcase-theme-explorer__sample[data-kind="motion"]:hover {
+    transform: translateX(0.35rem);
+  }
+  .showcase-theme-explorer__contrast[data-pass="true"] {
+    color: var(--chirpui-success);
+  }
+  .showcase-theme-explorer__contrast[data-pass="false"] {
+    color: var(--chirpui-error);
+  }
+  .showcase-theme-explorer__contrast-panel {
+    border: 1px solid var(--chirpui-border);
+    border-radius: var(--chirpui-radius-lg);
+    margin-top: var(--chirpui-spacing-lg);
+    padding: var(--chirpui-spacing-md);
+  }
+  .showcase-theme-explorer__contrast-list {
+    display: grid;
+    gap: var(--chirpui-spacing-xs);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  @media (max-width: 48rem) {
+    .showcase-theme-explorer__row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script nonce="{{ csp_nonce() }}">
+(() => {
+  const presets = {{ theme_presets_json | safe }};
+  const contrastPairs = {{ contrast_pairs_json | safe }};
+  const presetSelect = document.getElementById("theme-explorer-preset");
+  const contrastToggle = document.getElementById("theme-explorer-contrast");
+  const presetLabel = document.getElementById("theme-explorer-preset-label");
+  const packLink = document.getElementById("theme-explorer-pack");
+  const swatchRoot = document.getElementById("theme-explorer-swatches");
+  const contrastPanel = document.getElementById("theme-explorer-contrast-panel");
+  const contrastList = document.getElementById("theme-explorer-contrast-list");
+  const tokenRows = Array.from(document.querySelectorAll("[data-token-name]"));
+  const swatchTokens = ["--chirpui-bg", "--chirpui-surface", "--chirpui-border", "--chirpui-accent", "--chirpui-text"];
+  let inlineStyle = document.getElementById("theme-explorer-inline");
+  const AA = 4.5;
+
+  if (!inlineStyle) {
+    inlineStyle = document.createElement("style");
+    inlineStyle.id = "theme-explorer-inline";
+    document.head.appendChild(inlineStyle);
+  }
+
+  function presetById(id) {
+    return presets.find((item) => item.id === id) || presets[0];
+  }
+
+  function parseColor(value) {
+    if (!value) return null;
+    const trimmed = value.trim();
+    if (trimmed.startsWith("#")) {
+      let hex = trimmed.slice(1);
+      if (hex.length === 3) hex = hex.split("").map((ch) => ch + ch).join("");
+      if (hex.length !== 6) return null;
+      return [
+        parseInt(hex.slice(0, 2), 16),
+        parseInt(hex.slice(2, 4), 16),
+        parseInt(hex.slice(4, 6), 16),
+      ];
+    }
+    const rgb = trimmed.match(/^rgba?\(([^)]+)\)/);
+    if (!rgb) return null;
+    const parts = rgb[1].split(",").map((part) => Number.parseFloat(part.trim()));
+    if (parts.length < 3 || parts.some(Number.isNaN)) return null;
+    return parts.slice(0, 3);
+  }
+
+  function luminance([r, g, b]) {
+    const channels = [r, g, b].map((value) => {
+      const c = value / 255;
+      return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+  }
+
+  function contrastRatio(fg, bg) {
+    const l1 = luminance(fg);
+    const l2 = luminance(bg);
+    const hi = Math.max(l1, l2);
+    const lo = Math.min(l1, l2);
+    return (hi + 0.05) / (lo + 0.05);
+  }
+
+  function readToken(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function renderSwatches() {
+    if (!swatchRoot) return;
+    swatchRoot.replaceChildren();
+    for (const name of swatchTokens) {
+      const swatch = document.createElement("span");
+      swatch.className = "showcase-theme-explorer__swatch";
+      swatch.title = name;
+      swatch.style.background = `var(${name})`;
+      swatchRoot.appendChild(swatch);
+    }
+  }
+
+  function renderTokenRows() {
+    const showContrast = contrastToggle?.checked ?? true;
+    for (const row of tokenRows) {
+      const name = row.dataset.tokenName;
+      const kind = row.dataset.tokenKind || "color";
+      const value = readToken(name);
+      const valueEl = row.querySelector("[data-token-value]");
+      const sampleEl = row.querySelector("[data-token-sample]");
+      const contrastEl = row.querySelector("[data-token-contrast]");
+      if (valueEl) valueEl.textContent = value || "—";
+      if (sampleEl) {
+        sampleEl.dataset.kind = kind;
+        sampleEl.style.background = "";
+        sampleEl.style.removeProperty("--sample-color");
+        sampleEl.style.removeProperty("--sample-outline");
+        sampleEl.style.removeProperty("--sample-shadow");
+        sampleEl.style.removeProperty("--sample-font");
+        sampleEl.style.removeProperty("--sample-size");
+        sampleEl.style.removeProperty("--sample-transition");
+        sampleEl.textContent = "";
+        if (kind === "color") {
+          sampleEl.style.background = `var(${name})`;
+        } else if (kind === "focus") {
+          sampleEl.style.setProperty("--sample-color", `var(${name})`);
+        } else if (kind === "outline") {
+          sampleEl.style.setProperty("--sample-outline", `var(${name})`);
+          sampleEl.textContent = "outline";
+        } else if (kind === "radius") {
+          sampleEl.style.borderRadius = `var(${name})`;
+        } else if (kind === "shadow") {
+          sampleEl.style.setProperty("--sample-shadow", `var(${name})`);
+        } else if (kind === "type") {
+          if (name.includes("font")) {
+            sampleEl.style.setProperty("--sample-font", `var(${name})`);
+            sampleEl.textContent = "Aa";
+          } else {
+            sampleEl.style.setProperty("--sample-size", `var(${name})`);
+            sampleEl.textContent = "Title";
+          }
+        } else if (kind === "motion") {
+          sampleEl.style.setProperty("--sample-transition", `var(${name}) var(--chirpui-ease-standard)`);
+          sampleEl.textContent = "ease";
+        }
+      }
+      if (contrastEl) {
+        contrastEl.hidden = !showContrast || kind !== "color";
+        contrastEl.textContent = "";
+        contrastEl.removeAttribute("data-pass");
+      }
+    }
+  }
+
+  function renderContrastPanel() {
+    const showContrast = contrastToggle?.checked ?? true;
+    if (!contrastPanel || !contrastList) return;
+    contrastPanel.hidden = !showContrast;
+    contrastList.replaceChildren();
+    for (const [label, fgName, bgName] of contrastPairs) {
+      const fg = parseColor(readToken(fgName));
+      const bg = parseColor(readToken(bgName));
+      const item = document.createElement("li");
+      if (!fg || !bg) {
+        item.textContent = `${label}: unresolved (${fgName} on ${bgName})`;
+        contrastList.appendChild(item);
+        continue;
+      }
+      const ratio = contrastRatio(fg, bg);
+      const pass = ratio >= AA;
+      item.textContent = `${label}: ${ratio.toFixed(2)}:1 ${pass ? "AA" : "below AA"}`;
+      item.style.color = pass ? "var(--chirpui-success)" : "var(--chirpui-error)";
+      contrastList.appendChild(item);
+    }
+  }
+
+  function applyPreset(id) {
+    const preset = presetById(id);
+    if (presetLabel) presetLabel.textContent = preset.label;
+
+    if (packLink) {
+      if (preset.stylesheet) {
+        packLink.href = `/static/${preset.stylesheet}`;
+        packLink.disabled = false;
+      } else {
+        packLink.href = "";
+        packLink.disabled = true;
+      }
+    }
+
+    const rules = [];
+    if (preset.inline_tokens) {
+      for (const [name, value] of preset.inline_tokens) {
+        rules.push(`${name}: ${value};`);
+      }
+    }
+    inlineStyle.textContent = rules.length ? `:root { ${rules.join(" ")} }` : "";
+
+    if (preset.theme_mode) {
+      document.documentElement.setAttribute("data-theme", preset.theme_mode);
+    }
+
+    window.requestAnimationFrame(() => {
+      renderSwatches();
+      renderTokenRows();
+      renderContrastPanel();
+    });
+  }
+
+  function refreshFromThemeChange() {
+    renderSwatches();
+    renderTokenRows();
+    renderContrastPanel();
+  }
+
+  presetSelect?.addEventListener("change", () => applyPreset(presetSelect.value));
+  contrastToggle?.addEventListener("change", () => {
+    renderTokenRows();
+    renderContrastPanel();
+  });
+
+  const observer = new MutationObserver(refreshFromThemeChange);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  window.addEventListener("storage", (event) => {
+    if (event.key === "chirpui-theme") refreshFromThemeChange();
+  });
+
+  applyPreset(presetSelect?.value || presets[0]?.id);
+})();
+</script>
+{% endblock %}

@@ -299,6 +299,14 @@ SHOWCASE_PAGE_CONTEXTS = {
     "showcase/social.html": {"current_path"},
     "showcase/streaming.html": {"current_path"},
     "showcase/theme-packs.html": {"current_path", "theme_packs"},
+    "showcase/theme-explorer.html": {
+        "contrast_pairs_json",
+        "csp_nonce",
+        "current_path",
+        "theme_presets",
+        "theme_presets_json",
+        "board_sections",
+    },
     "showcase/theme_pack_preview.html": {
         "mode",
         "pack",

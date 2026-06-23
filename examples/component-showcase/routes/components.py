@@ -17,6 +17,12 @@ from chirp import (
 )
 from showcase.blocks_data import load_blocks_gallery
 from showcase.helpers import page
+from showcase.theme_explorer import (
+    contrast_pairs_json,
+    list_theme_presets,
+    list_token_jobs,
+    theme_presets_json,
+)
 
 from chirp_ui.theme_packs import get_theme_pack, list_theme_packs
 
@@ -100,6 +106,17 @@ def register(app: App) -> None:
     @app.route("/theme-packs", template="showcase/theme-packs.html")
     async def theme_packs(request: Request) -> Template:
         return page(request, "showcase/theme-packs.html", theme_packs=list_theme_packs())
+
+    @app.route("/theme-explorer", template="showcase/theme-explorer.html")
+    async def theme_explorer(request: Request) -> Template:
+        return page(
+            request,
+            "showcase/theme-explorer.html",
+            theme_presets=list_theme_presets(),
+            board_sections=list_token_jobs(),
+            theme_presets_json=theme_presets_json(),
+            contrast_pairs_json=contrast_pairs_json(),
+        )
 
     @app.route("/theme-packs/preview/{name}/{mode}", template="showcase/theme_pack_preview.html")
     async def theme_pack_preview(request: Request, name: str, mode: str) -> Template | Response:
