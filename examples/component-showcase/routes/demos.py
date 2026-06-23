@@ -50,9 +50,19 @@ def register(app: App) -> None:
             text = ""
             for word in words:
                 text = f"{text} {word}".strip() if text else word
-                yield Fragment("showcase/_streaming_demo.html", "streaming_text", text=text)
+                yield Fragment(
+                    "showcase/_streaming_demo.html",
+                    "streaming_text",
+                    target="fragment",
+                    text=text,
+                )
                 await asyncio.sleep(0.12)
-            yield Fragment("_toast.html", "toast_demo", message="Stream complete")
+            yield Fragment(
+                "_toast.html",
+                "toast_demo",
+                target="fragment",
+                message="Stream complete",
+            )
             yield SSEEvent(event="done", data="complete")
 
         return EventStream(generate())
@@ -116,7 +126,12 @@ def register(app: App) -> None:
             text = ""
             for word in words:
                 text = f"{text} {word}".strip() if text else word
-                yield Fragment("showcase/_streaming_demo.html", "streaming_text", text=text)
+                yield Fragment(
+                    "showcase/_streaming_demo.html",
+                    "streaming_text",
+                    target="fragment",
+                    text=text,
+                )
                 await asyncio.sleep(0.15)
             yield SSEEvent(event="done", data="complete")
 

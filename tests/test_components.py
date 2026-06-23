@@ -2124,6 +2124,7 @@ class TestStreaming:
         assert 'sse-connect="/stream"' in html
         assert 'hx-ext="sse"' in html
         assert 'sse-swap="fragment"' in html
+        assert 'x-data="chirpuiStreamLifecycle()"' in html
 
     # --- streaming_bubble role variants & aria-label ---
 
