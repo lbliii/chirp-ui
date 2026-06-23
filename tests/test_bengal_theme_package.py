@@ -1154,13 +1154,15 @@ def test_chirp_theme_core_surfaces_have_bespoke_spine_markers() -> None:
     assert ".chirp-theme-docs-nav__summary-copy" in css
     assert ".chirp-theme-docs-nav__section-header" in css
     assert ".chirp-theme-docs-nav__section--depth-1 > .chirp-theme-docs-nav__section-header" in css
-    assert ".chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header" in css
+    assert (
+        ".chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header" in css
+    )
     assert (
         ".chirp-theme-docs-nav__section--has-toggle .chirp-theme-docs-nav__leaf-link:not(.chirp-theme-docs-nav__root-leaf)"
         in css
     )
     assert (
-        '.chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header '
+        ".chirp-theme-docs-nav__section--has-toggle > .chirp-theme-docs-nav__section-header "
         + '.chirp-theme-docs-nav__summary-link[aria-current="page"]'
     ) in css
     assert (
