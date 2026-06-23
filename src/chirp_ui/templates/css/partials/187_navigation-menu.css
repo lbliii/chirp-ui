@@ -16,6 +16,7 @@
 
 .chirpui-navigation-menu__list {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--chirpui-spacing-sm);
     margin: 0;
@@ -64,6 +65,7 @@
     left: 0;
     z-index: var(--chirpui-z-dropdown);
     min-inline-size: 14rem;
+    max-inline-size: min(20rem, calc(100vw - 2 * var(--chirpui-spacing-md)));
     margin: 0;
     padding: var(--chirpui-spacing-xs);
     list-style: none;

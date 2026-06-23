@@ -82,7 +82,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/actions.html\" import actions %}\n\n{{ actions() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/actions.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/actions.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "advanced-params",
@@ -124,7 +124,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ambient.html\" import ambient %}\n\n{{ ambient() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ambient.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ambient.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ambient-root",
@@ -138,7 +138,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ambient_root.html\" import ambient_root %}\n\n{{ ambient_root() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ambient_root.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ambient_root.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "animated-counter",
@@ -208,7 +208,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii.html\" import ascii %}\n\n{{ ascii() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ascii-7seg",
@@ -306,7 +306,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_checkbox_group.html\" import ascii_checkbox_group %}\n\n{{ ascii_checkbox_group() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_checkbox_group.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_checkbox_group.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ascii-divider",
@@ -376,7 +376,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_fader_bank.html\" import ascii_fader_bank %}\n\n{{ ascii_fader_bank() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_fader_bank.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_fader_bank.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ascii-fill",
@@ -390,7 +390,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_fill.html\" import ascii_fill %}\n\n{{ ascii_fill() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_fill.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_fill.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ascii-fill-hover",
@@ -404,7 +404,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_fill_hover.html\" import ascii_fill_hover %}\n\n{{ ascii_fill_hover() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_fill_hover.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_fill_hover.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ascii-indicator",
@@ -432,7 +432,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_indicator_row.html\" import ascii_indicator_row %}\n\n{{ ascii_indicator_row() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_indicator_row.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_indicator_row.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ascii-knob",
@@ -474,7 +474,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_modal_trigger.html\" import ascii_modal_trigger %}\n\n{{ ascii_modal_trigger() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_modal_trigger.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_modal_trigger.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ascii-progress",
@@ -670,7 +670,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_tile_grid.html\" import ascii_tile_grid %}\n\n{{ ascii_tile_grid() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_tile_grid.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_tile_grid.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ascii-toggle",
@@ -712,7 +712,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_vu_stack.html\" import ascii_vu_stack %}\n\n{{ ascii_vu_stack() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_vu_stack.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_vu_stack.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "aspect-ratio",
@@ -768,7 +768,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/aura_tone.html\" import aura_tone %}\n\n{{ aura_tone() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/aura_tone.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/aura_tone.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "aurora",
@@ -866,7 +866,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/bento.html\" import bento %}\n\n{{ bento() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/bento.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/bento.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "bg-pattern",
@@ -880,7 +880,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/bg_pattern.html\" import bg_pattern %}\n\n{{ bg_pattern() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/bg_pattern.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/bg_pattern.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "blade",
@@ -894,7 +894,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/blade.html\" import blade %}\n\n{{ blade() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/blade.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/blade.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "block",
@@ -936,7 +936,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/bounce_in.html\" import bounce_in %}\n\n{{ bounce_in() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/bounce_in.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/bounce_in.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "breadcrumbs",
@@ -978,7 +978,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/btn_group.html\" import btn_group %}\n\n{{ btn_group() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/btn_group.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/btn_group.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "bulk-bar",
@@ -992,7 +992,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/bulk_bar.html\" import bulk_bar %}\n\n{{ bulk_bar() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/bulk_bar.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/bulk_bar.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "calendar",
@@ -1146,7 +1146,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/children.html\" import children %}\n\n{{ children() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/children.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/children.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "chip",
@@ -1202,7 +1202,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/clamp_2.html\" import clamp_2 %}\n\n{{ clamp_2() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/clamp_2.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/clamp_2.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "clamp-3",
@@ -1216,7 +1216,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/clamp_3.html\" import clamp_3 %}\n\n{{ clamp_3() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/clamp_3.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/clamp_3.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "click-jello",
@@ -1230,7 +1230,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/click_jello.html\" import click_jello %}\n\n{{ click_jello() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/click_jello.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/click_jello.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "click-wobble",
@@ -1244,7 +1244,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/click_wobble.html\" import click_wobble %}\n\n{{ click_wobble() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/click_wobble.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/click_wobble.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "cluster",
@@ -1286,7 +1286,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/code_block.html\" import code_block %}\n\n{{ code_block() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/code_block.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/code_block.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "code-block-wrapper",
@@ -1300,7 +1300,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/code_block_wrapper.html\" import code_block_wrapper %}\n\n{{ code_block_wrapper() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/code_block_wrapper.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/code_block_wrapper.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "collapse",
@@ -1384,7 +1384,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/comment_thread.html\" import comment_thread %}\n\n{{ comment_thread() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/comment_thread.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/comment_thread.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "composer-shell",
@@ -1440,7 +1440,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/config_row_list.html\" import config_row_list %}\n\n{{ config_row_list() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/config_row_list.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/config_row_list.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "confirm",
@@ -1566,7 +1566,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/counter_badge.html\" import counter_badge %}\n\n{{ counter_badge() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/counter_badge.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/counter_badge.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "cta-band",
@@ -1636,7 +1636,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/density.html\" import density %}\n\n{{ density() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/density.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/density.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "description_list",
@@ -1678,7 +1678,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/display.html\" import display %}\n\n{{ display() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/display.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/display.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "divider",
@@ -1706,7 +1706,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/dl.html\" import dl %}\n\n{{ dl() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/dl.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/dl.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "dnd",
@@ -2028,7 +2028,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/flow.html\" import flow %}\n\n{{ flow() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/flow.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/flow.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "focus-ring",
@@ -2042,7 +2042,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/focus_ring.html\" import focus_ring %}\n\n{{ focus_ring() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/focus_ring.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/focus_ring.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "follow-ups",
@@ -2070,7 +2070,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_2xl.html\" import font_2xl %}\n\n{{ font_2xl() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_2xl.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_2xl.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "font-base",
@@ -2084,7 +2084,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_base.html\" import font_base %}\n\n{{ font_base() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_base.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_base.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "font-lg",
@@ -2098,7 +2098,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_lg.html\" import font_lg %}\n\n{{ font_lg() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_lg.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_lg.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "font-medium",
@@ -2112,7 +2112,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_medium.html\" import font_medium %}\n\n{{ font_medium() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_medium.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_medium.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "font-mono",
@@ -2126,7 +2126,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_mono.html\" import font_mono %}\n\n{{ font_mono() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_mono.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_mono.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "font-sm",
@@ -2140,7 +2140,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_sm.html\" import font_sm %}\n\n{{ font_sm() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "font-xl",
@@ -2154,7 +2154,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_xl.html\" import font_xl %}\n\n{{ font_xl() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_xl.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_xl.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "font-xs",
@@ -2168,7 +2168,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_xs.html\" import font_xs %}\n\n{{ font_xs() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_xs.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_xs.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "form",
@@ -2341,7 +2341,7 @@
     {
       "name": "hover-card",
       "category": "overlay",
-      "maturity": "experimental",
+      "maturity": "stable",
       "authoring": "available",
       "role": "component",
       "block": "hover-card",
@@ -2349,7 +2349,7 @@
       "template": "hover_card.html",
       "summary": "Hover Card",
       "copy_snippet": "{% from \"chirpui/hover_card.html\" import hover_card %}\n\n{% call hover_card(open_delay=200) %}\n    {% slot trigger %}<button>Hover me</button>{% end %}\n    <p>Preview content with richer detail.</p>\n{% end %}",
-      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n<div class=\"chirpui-hover-card\" id=\"chirpui-hover-card\"\n     :data-align-x=\"alignX\"\n     :data-align-y=\"alignY\"\n     x-data=\"chirpuiHoverCard({ openDelay: 200, closeDelay: 100 })\"\n     @mouseenter=\"scheduleOpen()\"\n     @mouseleave=\"scheduleClose()\"\n     @focusin=\"scheduleOpen()\"\n     @focusout=\"scheduleClose($event)\">\n    <div class=\"chirpui-hover-card__trigger\" x-ref=\"trigger\">\n        <button>Hover me</button>\n    </div>\n    <div class=\"chirpui-hover-card__content\" x-ref=\"panel\" role=\"tooltip\"\n         x-show=\"open\" x-cloak x-transition\n         @mouseenter=\"scheduleOpen()\"\n         @mouseleave=\"scheduleClose()\">\n        \n    \n    <p>Preview content with richer detail.</p>\n\n    </div>\n</div>\n\n\n</div>",
+      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n<div class=\"chirpui-hover-card\" id=\"chirpui-hover-card\"\n     :data-align-x=\"alignX\"\n     :data-align-y=\"alignY\"\n     x-data=\"chirpuiHoverCard({ openDelay: 200, closeDelay: 100 })\"\n     x-init=\"init()\"\n     @mouseenter=\"scheduleOpen()\"\n     @mouseleave=\"scheduleClose()\"\n     @focusin=\"scheduleOpen()\"\n     @focusout=\"scheduleClose($event)\"\n     @keydown.escape.window=\"dismiss()\">\n    <div class=\"chirpui-hover-card__trigger\" x-ref=\"trigger\">\n        <button>Hover me</button>\n    </div>\n    <div class=\"chirpui-hover-card__content\" x-ref=\"panel\" role=\"tooltip\"\n         x-show=\"open\" x-cloak x-transition\n         @mouseenter=\"scheduleOpen()\"\n         @mouseleave=\"scheduleClose()\">\n        \n    \n    <p>Preview content with richer detail.</p>\n\n    </div>\n</div>\n\n\n</div>",
       "preview_error": null
     },
     {
@@ -2364,7 +2364,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/hover_jello.html\" import hover_jello %}\n\n{{ hover_jello() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/hover_jello.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/hover_jello.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "hover-rubber",
@@ -2378,7 +2378,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/hover_rubber.html\" import hover_rubber %}\n\n{{ hover_rubber() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/hover_rubber.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/hover_rubber.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "hover-wobble",
@@ -2392,7 +2392,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/hover_wobble.html\" import hover_wobble %}\n\n{{ hover_wobble() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/hover_wobble.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/hover_wobble.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "icon-btn",
@@ -2448,7 +2448,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/inline.html\" import inline %}\n\n{{ inline() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/inline.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/inline.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "inline-counter",
@@ -2574,7 +2574,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/jello.html\" import jello %}\n\n{{ jello() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/jello.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/jello.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "kbd",
@@ -2602,7 +2602,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/key_value_form.html\" import key_value_form %}\n\n{{ key_value_form() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/key_value_form.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/key_value_form.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "label",
@@ -2714,7 +2714,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/list_reset.html\" import list_reset %}\n\n{{ list_reset() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/list_reset.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/list_reset.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "live-badge",
@@ -2812,7 +2812,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/mb_md.html\" import mb_md %}\n\n{{ mb_md() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/mb_md.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/mb_md.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "measure-lg",
@@ -2826,7 +2826,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/measure_lg.html\" import measure_lg %}\n\n{{ measure_lg() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/measure_lg.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/measure_lg.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "measure-md",
@@ -2840,7 +2840,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/measure_md.html\" import measure_md %}\n\n{{ measure_md() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/measure_md.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/measure_md.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "measure-sm",
@@ -2854,7 +2854,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/measure_sm.html\" import measure_sm %}\n\n{{ measure_sm() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/measure_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/measure_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "media-hero-shelf",
@@ -2966,7 +2966,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/message_reactions.html\" import message_reactions %}\n\n{{ message_reactions() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/message_reactions.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/message_reactions.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "message-thread",
@@ -3064,7 +3064,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/min_w_0.html\" import min_w_0 %}\n\n{{ min_w_0() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/min_w_0.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/min_w_0.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "modal",
@@ -3092,7 +3092,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/model_card.html\" import model_card %}\n\n{{ model_card() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/model_card.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/model_card.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "moderation-queue-item",
@@ -3120,7 +3120,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/mt_md.html\" import mt_md %}\n\n{{ mt_md() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/mt_md.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/mt_md.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "mt-sm",
@@ -3134,7 +3134,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/mt_sm.html\" import mt_sm %}\n\n{{ mt_sm() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/mt_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/mt_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "nav-link",
@@ -3162,7 +3162,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/nav_pill.html\" import nav_pill %}\n\n{{ nav_pill() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/nav_pill.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/nav_pill.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "nav-progress",
@@ -3274,7 +3274,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/number_scale.html\" import number_scale %}\n\n{{ number_scale() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/number_scale.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/number_scale.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "number-ticker",
@@ -3330,7 +3330,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/page_fill.html\" import page_fill %}\n\n{{ page_fill() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/page_fill.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/page_fill.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "page_header",
@@ -3442,7 +3442,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/placeholder_inline.html\" import placeholder_inline %}\n\n{{ placeholder_inline() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/placeholder_inline.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/placeholder_inline.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "playlist",
@@ -3568,7 +3568,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/prose.html\" import prose %}\n\n{{ prose() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/prose.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/prose.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "prose-lg",
@@ -3582,7 +3582,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/prose_lg.html\" import prose_lg %}\n\n{{ prose_lg() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/prose_lg.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/prose_lg.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "prose-sm",
@@ -3596,7 +3596,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/prose_sm.html\" import prose_sm %}\n\n{{ prose_sm() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/prose_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/prose_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "pulsing-btn",
@@ -3666,7 +3666,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/resource_card.html\" import resource_card %}\n\n{{ resource_card() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/resource_card.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/resource_card.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "resource-index",
@@ -3722,7 +3722,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/result_slot.html\" import result_slot %}\n\n{{ result_slot() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/result_slot.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/result_slot.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "reveal-on-scroll",
@@ -3806,7 +3806,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/rubber_band.html\" import rubber_band %}\n\n{{ rubber_band() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/rubber_band.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/rubber_band.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "rune-field",
@@ -3904,7 +3904,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/scroll_x.html\" import scroll_x %}\n\n{{ scroll_x() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/scroll_x.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/scroll_x.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "search-bar",
@@ -4044,7 +4044,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/shell_action_form.html\" import shell_action_form %}\n\n{{ shell_action_form() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/shell_action_form.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/shell_action_form.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "shell-actions",
@@ -4072,7 +4072,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/shell_section.html\" import shell_section %}\n\n{{ shell_section() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/shell_section.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/shell_section.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "shimmer-btn",
@@ -4296,7 +4296,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/spinner_thinking.html\" import spinner_thinking %}\n\n{{ spinner_thinking() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/spinner_thinking.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/spinner_thinking.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "split-btn",
@@ -4338,7 +4338,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/split_flap_board.html\" import split_flap_board %}\n\n{{ split_flap_board() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/split_flap_board.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/split_flap_board.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "split-flap-row",
@@ -4352,7 +4352,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/split_flap_row.html\" import split_flap_row %}\n\n{{ split_flap_row() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/split_flap_row.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/split_flap_row.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "split-layout",
@@ -4408,7 +4408,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/sse_retry.html\" import sse_retry %}\n\n{{ sse_retry() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/sse_retry.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/sse_retry.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "sse-status",
@@ -4450,7 +4450,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/star_rating.html\" import star_rating %}\n\n{{ star_rating() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/star_rating.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/star_rating.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "stat",
@@ -4562,7 +4562,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/streaming_block.html\" import streaming_block %}\n\n{{ streaming_block() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/streaming_block.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/streaming_block.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "streaming_bubble",
@@ -4604,7 +4604,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/suspense_group.html\" import suspense_group %}\n\n{{ suspense_group() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/suspense_group.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/suspense_group.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "symbol-rain",
@@ -4646,7 +4646,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/tab_panel.html\" import tab_panel %}\n\n{{ tab_panel() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/tab_panel.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/tab_panel.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "table",
@@ -4702,7 +4702,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/tabular.html\" import tabular %}\n\n{{ tabular() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/tabular.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/tabular.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "tag",
@@ -4758,7 +4758,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/text_muted.html\" import text_muted %}\n\n{{ text_muted() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/text_muted.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/text_muted.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "text-reveal",
@@ -4786,7 +4786,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/texture.html\" import texture %}\n\n{{ texture() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/texture.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/texture.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "theme-toggle",
@@ -4828,7 +4828,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/thumbs.html\" import thumbs %}\n\n{{ thumbs() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/thumbs.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/thumbs.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "timeline",
@@ -4884,7 +4884,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/toast_container.html\" import toast_container %}\n\n{{ toast_container() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/toast_container.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/toast_container.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "toggle",
@@ -4898,7 +4898,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/toggle.html\" import toggle %}\n\n{{ toggle() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/toggle.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/toggle.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "toggle-group",
@@ -5038,7 +5038,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/truncate.html\" import truncate %}\n\n{{ truncate() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/truncate.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/truncate.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "typewriter",
@@ -5080,7 +5080,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_base.html\" import ui_base %}\n\n{{ ui_base() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_base.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_base.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ui-bold",
@@ -5094,7 +5094,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_bold.html\" import ui_bold %}\n\n{{ ui_bold() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_bold.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_bold.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ui-label",
@@ -5108,7 +5108,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_label.html\" import ui_label %}\n\n{{ ui_label() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_label.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_label.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ui-lg",
@@ -5122,7 +5122,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_lg.html\" import ui_lg %}\n\n{{ ui_lg() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_lg.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_lg.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ui-medium",
@@ -5136,7 +5136,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_medium.html\" import ui_medium %}\n\n{{ ui_medium() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_medium.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_medium.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ui-meta",
@@ -5150,7 +5150,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_meta.html\" import ui_meta %}\n\n{{ ui_meta() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_meta.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_meta.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ui-normal",
@@ -5164,7 +5164,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_normal.html\" import ui_normal %}\n\n{{ ui_normal() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_normal.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_normal.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ui-semibold",
@@ -5178,7 +5178,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_semibold.html\" import ui_semibold %}\n\n{{ ui_semibold() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_semibold.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_semibold.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ui-sm",
@@ -5192,7 +5192,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_sm.html\" import ui_sm %}\n\n{{ ui_sm() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ui-title",
@@ -5206,7 +5206,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_title.html\" import ui_title %}\n\n{{ ui_title() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_title.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_title.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ui-xl",
@@ -5220,7 +5220,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_xl.html\" import ui_xl %}\n\n{{ ui_xl() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_xl.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_xl.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "ui-xs",
@@ -5234,7 +5234,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_xs.html\" import ui_xs %}\n\n{{ ui_xs() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_xs.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_xs.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "video-card",
@@ -5276,7 +5276,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/visually_hidden.html\" import visually_hidden %}\n\n{{ visually_hidden() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/visually_hidden.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/louisville-v2/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/visually_hidden.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/bucharest-v1/src/chirp_ui/templates"
     },
     {
       "name": "watch-companion-layout",

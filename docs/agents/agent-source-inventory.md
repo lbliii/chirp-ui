@@ -78,7 +78,9 @@ adds all of the following:
 | `docs-derived` | `docs/components/appearance-tone.md` | Appearance/tone semantics and migration guidance. | `source-only` |
 | `docs-derived` | `docs/components/context-menu-anatomy.md` | Shipped context-menu anatomy, proof ledger, and keyboard/focus contract. | `source-only` |
 | `docs-derived` | `docs/components/menubar-anatomy.md` | Shipped menubar anatomy, proof ledger, and roving-focus contract. | `source-only` |
+| `docs-derived` | `docs/components/navigation-menu-anatomy.md` | Navigation menu flyout anatomy, proof ledger, and keyboard/focus contract. | `source-only` |
 | `docs-derived` | `docs/components/input-otp-anatomy.md` | Shipped input OTP anatomy, proof ledger, and paste/backspace contract. | `source-only` |
+| `docs-derived` | `docs/components/hover-card-anatomy.md` | Shipped hover card anatomy, proof ledger, and delay/focus contract. | `source-only` |
 | `docs-derived` | `docs/theming/app-theme.md` | App theme-pack load order, token-only rules, and ownership guidance. | `source-only` |
 | `docs-derived` | `docs/components/dropdown-anatomy.md` | Dropdown rendered anatomy and tested behavior. | `source-only` |
 | `docs-derived` | `docs/components/modal-anatomy.md` | Modal, overlay, and confirm rendered anatomy and tested behavior. | `source-only` |

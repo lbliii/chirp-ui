@@ -56,7 +56,9 @@ Canonical component, behavior, and macro-contract references.
 - [CONTROL-SELECTION.md](components/control-selection.md) — Native controls, dropdown-select, toggle groups, sliders, and data-table composition boundaries
 - [CONTEXT-MENU-ANATOMY.md](components/context-menu-anatomy.md) — Shipped context-menu anatomy, keyboard/focus contract, and proof ledger
 - [MENUBAR-ANATOMY.md](components/menubar-anatomy.md) — Shipped menubar anatomy, roving focus contract, and proof ledger
+- [NAVIGATION-MENU-ANATOMY.md](components/navigation-menu-anatomy.md) — Navigation menu flyout anatomy, keyboard/focus contract, and proof ledger
 - [INPUT-OTP-ANATOMY.md](components/input-otp-anatomy.md) — Shipped input OTP anatomy, paste/backspace contract, and proof ledger
+- [HOVER-CARD-ANATOMY.md](components/hover-card-anatomy.md) — Shipped hover card anatomy, delay/focus contract, and proof ledger
 - [DROPDOWN-ANATOMY.md](components/dropdown-anatomy.md) — Dropdown menu, select, and split-menu rendered anatomy
 - [MODAL-ANATOMY.md](components/modal-anatomy.md) — Native modal, overlay modal, and confirm dialog anatomy
 - [TABS-ANATOMY.md](components/tabs-anatomy.md) — htmx tabs, tab panels, route tabs, and tabbed page layout anatomy

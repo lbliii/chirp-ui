@@ -13,6 +13,7 @@
 {% from "chirpui/accordion.html" import accordion, accordion_item %}
 {% from "chirpui/collapse.html" import collapse %}
 {% from "chirpui/tooltip.html" import tooltip %}
+{% from "chirpui/hover_card.html" import hover_card %}
 {% from "chirpui/row_actions.html" import row_actions %}
 {% from "chirpui/button.html" import btn %}
 {% from "chirpui/code.html" import code, code_block %}
@@ -231,6 +232,19 @@ Go to Settings → Profile to edit your name, email, and preferences.
 {% end %}
 <p class="showcase-copy showcase-copy--spaced">
   Pure CSS tooltip. Uses <code>title</code> for accessibility.
+</p>
+{% end %}
+
+<h2>Hover Card</h2>
+{% call block() %}
+{% call hover_card(open_delay=200) %}
+  {% slot trigger %}
+  <button type="button" class="chirpui-btn chirpui-btn--ghost">Preview profile</button>
+  {% end %}
+  <p style="margin: 0;">Profile summary with richer detail than the trigger alone.</p>
+{% end %}
+<p class="showcase-copy showcase-copy--spaced">
+  Delayed hover/focus preview card with viewport-aware positioning.
 </p>
 {% end %}
 

@@ -1,0 +1,33 @@
+{#- Gauntlet fixture for hover_card (#338). -#}
+{% extends "base.html" %}
+{% block brand %}Hover Card{% endblock %}
+{% block sidebar %}
+{% from "chirpui/sidebar.html" import sidebar, sidebar_link, sidebar_section %}
+{% call sidebar(current_path="/hover-card", aria_label="Primary") %}
+  {% call sidebar_section("Nav") %}
+    {{ sidebar_link("/hover-card", "Hover Card", match="exact") }}
+  {% end %}
+{% end %}
+{% end %}
+{% block content %}
+{% from "chirpui/hover_card.html" import hover_card %}
+<div id="page-root">
+  <h1 data-testid="main-content" tabindex="-1">Hover Card</h1>
+  <div data-testid="hover-card-container">
+    {% call hover_card(open_delay=120, close_delay=60, id="gauntlet-hover-card") %}
+      {% slot trigger %}
+      <button type="button" data-testid="hover-card-trigger">Preview profile</button>
+      {% end %}
+      <p data-testid="hover-card-preview">Profile summary with richer detail than the trigger alone.</p>
+    {% end %}
+  </div>
+  <div data-testid="hover-card-edge-container" style="margin-inline-start: auto; width: fit-content;">
+    {% call hover_card(open_delay=80, close_delay=40, id="gauntlet-hover-card-edge") %}
+      {% slot trigger %}
+      <button type="button" data-testid="hover-card-edge-trigger">Edge preview</button>
+      {% end %}
+      <p>Edge-aligned preview content for viewport containment proof.</p>
+    {% end %}
+  </div>
+</div>
+{% end %}
