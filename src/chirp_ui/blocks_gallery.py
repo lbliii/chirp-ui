@@ -18,6 +18,8 @@ from chirp_ui.preview_env import make_preview_env
 
 GALLERY_SCHEMA = "chirpui-blocks-gallery@1"
 
+_PREVIEW_KEYS = frozenset({"preview_html", "preview_error"})
+
 _USAGE_RE = re.compile(r"(?:^|\n)\s*Usage:\s*\n", re.MULTILINE)
 _TRAILING_SECTION_RE = re.compile(r"^\s*(Notes|See also|Parameters):", re.MULTILINE)
 
@@ -144,9 +146,31 @@ def build_gallery(*, with_previews: bool = True) -> dict[str, Any]:
     }
 
 
+def gallery_check_payload(gallery: dict[str, Any]) -> dict[str, Any]:
+    """Return a platform-stable gallery payload for CI freshness checks.
+
+    Live preview HTML/error strings can differ across OS/Python builds; the
+    gate compares manifest-derived metadata and copy snippets only.
+    """
+    payload = json.loads(json.dumps(gallery))
+    stats = dict(payload.get("stats") or {})
+    stats.pop("previews_rendered", None)
+    payload["stats"] = stats
+    payload["blocks"] = [
+        {key: value for key, value in block.items() if key not in _PREVIEW_KEYS}
+        for block in payload.get("blocks") or []
+    ]
+    return payload
+
+
 def to_json_gallery(gallery: dict[str, Any], *, indent: int = 2) -> str:
     """Serialize a gallery payload to canonical JSON."""
     text = json.dumps(gallery, indent=indent, ensure_ascii=True)
     if not text.endswith("\n"):
         text += "\n"
     return text
+
+
+def to_json_gallery_check(gallery: dict[str, Any], *, indent: int = 2) -> str:
+    """Serialize the freshness-gate view of a gallery payload."""
+    return to_json_gallery(gallery_check_payload(gallery), indent=indent)

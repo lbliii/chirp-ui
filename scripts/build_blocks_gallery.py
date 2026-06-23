@@ -17,10 +17,11 @@ From the repo root::
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
-from chirp_ui.blocks_gallery import build_gallery, to_json_gallery
+from chirp_ui.blocks_gallery import build_gallery, to_json_gallery, to_json_gallery_check
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = REPO_ROOT / "examples" / "component-showcase" / "generated" / "blocks_gallery.json"
@@ -45,21 +46,26 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    generated = (
-        to_json_gallery(build_gallery(with_previews=not args.no_previews))
-        if args.no_previews
-        else build()
-    )
-
     if args.check:
         current = OUTPUT.read_text(encoding="utf-8") if OUTPUT.exists() else ""
-        if current != generated:
+        generated_full = (
+            build() if not args.no_previews else to_json_gallery(build_gallery(with_previews=False))
+        )
+        generated_check = to_json_gallery_check(json.loads(generated_full))
+        current_check = to_json_gallery_check(json.loads(current)) if current else ""
+        if current_check != generated_check:
             sys.stderr.write(
                 f"{OUTPUT.relative_to(REPO_ROOT)} is stale relative to the registry.\n"
                 f"Run: poe build-blocks-gallery\n"
             )
             return 1
         return 0
+
+    generated = (
+        to_json_gallery(build_gallery(with_previews=not args.no_previews))
+        if args.no_previews
+        else build()
+    )
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(generated, encoding="utf-8")

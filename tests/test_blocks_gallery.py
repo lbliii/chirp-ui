@@ -10,8 +10,8 @@ from chirp_ui.blocks_gallery import (
     build_gallery,
     copy_snippet_for,
     extract_usage_snippet,
+    gallery_check_payload,
     is_public_component,
-    to_json_gallery,
 )
 from chirp_ui.manifest import build_manifest
 
@@ -60,9 +60,9 @@ def test_committed_blocks_gallery_is_fresh() -> None:
     assert GALLERY_PATH.is_file(), (
         f"Missing {GALLERY_PATH.relative_to(REPO_ROOT)}. Run: poe build-blocks-gallery"
     )
-    current = GALLERY_PATH.read_text(encoding="utf-8")
-    generated = to_json_gallery(build_gallery(with_previews=True))
-    assert current == generated, (
+    current = json.loads(GALLERY_PATH.read_text(encoding="utf-8"))
+    generated = build_gallery(with_previews=True)
+    assert gallery_check_payload(current) == gallery_check_payload(generated), (
         f"{GALLERY_PATH.relative_to(REPO_ROOT)} is stale relative to the registry.\n"
         "Run: poe build-blocks-gallery"
     )
