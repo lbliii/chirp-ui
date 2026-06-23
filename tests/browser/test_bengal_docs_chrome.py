@@ -593,8 +593,8 @@ async def test_bengal_section_hubs_and_release_index(page, static_site_url):
             installHeight: Math.round(document.querySelector(".chirp-theme-release-install")?.getBoundingClientRect().height ?? 0),
         })"""
     )
-    assert metrics["groups"] == 10, metrics
-    assert metrics["navItems"] == 10, metrics
+    assert metrics["groups"] == 11, metrics
+    assert metrics["navItems"] == 11, metrics
     assert metrics["heroBadge"] is None, metrics
     assert metrics["heroCount"] == "", metrics
     assert metrics["installHeight"] <= 28, metrics
