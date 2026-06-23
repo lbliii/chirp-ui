@@ -1,0 +1,71 @@
+{#- chirp-ui: Navigation Menu
+    Site navigation with flyout submenus for nested links. Each item is a dict:
+    {label, href?, children?: [{label, href, description?}, ...]}.
+    Top-level items with children open a positioned submenu on click or
+    ArrowDown; leaf items render as links. Requires Alpine.js.
+
+    Usage:
+        from "chirpui/navigation_menu.html" import navigation_menu
+
+        {{ navigation_menu(label="Primary", items=[
+            {"label": "Products", "children": [
+                {"label": "Analytics", "href": "/products/analytics"},
+                {"label": "Automation", "href": "/products/automation"},
+            ]},
+            {"label": "Pricing", "href": "/pricing"},
+        ]) }}
+-#}
+
+{% def navigation_menu(items, label="Main", id="chirpui-navigation-menu") %}
+<nav class="chirpui-navigation-menu" id="{{ id }}" aria-label="{{ label }}"
+     x-id="['nav-panel']"
+     x-data="chirpuiNavigationMenu()"
+     x-init="init()"
+     data-item-count="{{ items | length }}"
+     @keydown.escape.prevent.stop="close(openIndex)"
+     @click.outside="close(openIndex)"
+     @focusin.window="openIndex >= 0 && !$refs['panel-' + openIndex]?.contains($event.target) && close(openIndex)">
+    <ul class="chirpui-navigation-menu__list" role="menubar">
+        {% for item in items %}
+        {% set _idx = loop.index0 %}
+        {% set _children = item.get("children", []) %}
+        <li class="chirpui-navigation-menu__item{% if _children %} chirpui-navigation-menu__item--has-children{% endif %}">
+            {% if _children %}
+            <button type="button" class="chirpui-navigation-menu__trigger" x-ref="trigger-{{ _idx }}"
+                    role="menuitem" tabindex="0" aria-haspopup="menu"
+                    :aria-expanded="openIndex === {{ _idx }}"
+                    :aria-controls="$id('nav-panel', {{ _idx }})"
+                    @click="toggle({{ _idx }})"
+                    @keydown="onTriggerKeydown($event, {{ _idx }})">
+                {{ item.get("label", "") }}
+                <span class="chirpui-navigation-menu__caret" aria-hidden="true">▾</span>
+            </button>
+            <ul class="chirpui-navigation-menu__panel" x-ref="panel-{{ _idx }}"
+                :id="$id('nav-panel', {{ _idx }})"
+                role="menu" x-show="openIndex === {{ _idx }}" x-cloak x-transition>
+                {% for child in _children %}
+                <li role="none">
+                    <a class="chirpui-navigation-menu__link" href="{{ child.get('href', '#') }}"
+                       role="menuitem" tabindex="-1"
+                       {{ route_link_attrs(child.get('href', '#')) | html_attrs }}
+                       @click="close({{ _idx }})">
+                        <span class="chirpui-navigation-menu__link-label">{{ child.get("label", "") }}</span>
+                        {% if child.get("description") %}
+                        <span class="chirpui-navigation-menu__link-desc">{{ child.get("description") }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <a class="chirpui-navigation-menu__link chirpui-navigation-menu__link--top"
+               href="{{ item.get('href', '#') }}" role="menuitem"
+               {{ route_link_attrs(item.get('href', '#')) | html_attrs }}>
+                {{ item.get("label", "") }}
+            </a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</nav>
+{% end %}

@@ -323,6 +323,18 @@
     overflow-wrap: anywhere;
 }
 
+.chirpui-popover[data-align-x="end"] .chirpui-popover__panel {
+    right: 0;
+    left: auto;
+}
+
+.chirpui-popover[data-align-y="top"] .chirpui-popover__panel {
+    top: auto;
+    bottom: calc(100% + var(--chirpui-spacing-xs));
+    margin-top: 0;
+    margin-bottom: var(--chirpui-spacing-xs);
+}
+
 /* Tag input */
 .chirpui-tag-input {
     margin-bottom: var(--chirpui-spacing);

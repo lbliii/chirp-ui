@@ -133,6 +133,26 @@ ALPINE_REQUIRED_COMPONENTS: dict[str, AlpineRequirement] = {
         factory="chirpuiContextMenu",
         macros=("context_menu",),
     ),
+    "chirpuiPopover": AlpineRequirement(
+        factory="chirpuiPopover",
+        macros=("popover",),
+    ),
+    "chirpuiInputOtp": AlpineRequirement(
+        factory="chirpuiInputOtp",
+        macros=("input_otp",),
+    ),
+    "chirpuiHoverCard": AlpineRequirement(
+        factory="chirpuiHoverCard",
+        macros=("hover_card",),
+    ),
+    "chirpuiMenubar": AlpineRequirement(
+        factory="chirpuiMenubar",
+        macros=("menubar",),
+    ),
+    "chirpuiNavigationMenu": AlpineRequirement(
+        factory="chirpuiNavigationMenu",
+        macros=("navigation_menu",),
+    ),
     "chirpuiCombobox": AlpineRequirement(
         factory="chirpuiCombobox",
         macros=("combobox",),

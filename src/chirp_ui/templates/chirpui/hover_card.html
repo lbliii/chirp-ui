@@ -1,0 +1,34 @@
+{#- chirp-ui: Hover Card
+    Delayed hover/focus preview card anchored to the trigger. Opens after a
+    short delay on pointer enter or focus; closes on leave/blur. Respects
+    reduced motion via CSS. Requires Alpine.js.
+
+    Usage:
+        from "chirpui/hover_card.html" import hover_card
+
+        {% call hover_card(open_delay=200) %}
+            {% slot trigger %}<button>Hover me</button>{% end %}
+            <p>Preview content with richer detail.</p>
+        {% end %}
+-#}
+
+{% def hover_card(open_delay=200, close_delay=100, cls="", id="chirpui-hover-card") %}
+<div class="chirpui-hover-card{{ " " ~ cls if cls else "" }}" id="{{ id }}"
+     :data-align-x="alignX"
+     :data-align-y="alignY"
+     x-data="chirpuiHoverCard({ openDelay: {{ open_delay }}, closeDelay: {{ close_delay }} })"
+     @mouseenter="scheduleOpen()"
+     @mouseleave="scheduleClose()"
+     @focusin="scheduleOpen()"
+     @focusout="scheduleClose($event)">
+    <div class="chirpui-hover-card__trigger" x-ref="trigger">
+        {% slot trigger %}
+    </div>
+    <div class="chirpui-hover-card__content" x-ref="panel" role="tooltip"
+         x-show="open" x-cloak x-transition
+         @mouseenter="scheduleOpen()"
+         @mouseleave="scheduleClose()">
+        {% slot %}
+    </div>
+</div>
+{% end %}

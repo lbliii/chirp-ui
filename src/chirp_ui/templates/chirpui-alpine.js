@@ -159,15 +159,40 @@
             open: false,
             alignX: "start",
             alignY: "bottom",
+            focusedIndex: -1,
+            itemCount: 0,
+            init: function () {
+                this.itemCount = parseInteger(this.$el.dataset.itemCount, 0);
+            },
+            menuItems: function () {
+                var panel = this.$refs.panel;
+                if (!panel) {
+                    return [];
+                }
+                return panel.querySelectorAll(
+                    '[role="menuitem"]:not([aria-disabled="true"])'
+                );
+            },
+            focusMenuItem: function (index) {
+                var items = this.menuItems();
+                if (!items.length) {
+                    return;
+                }
+                var idx = Math.max(0, Math.min(index, items.length - 1));
+                this.focusedIndex = idx;
+                focusElement(items[idx]);
+            },
             toggle: function () {
                 if (this.open) {
-                    return this.close();
+                    return this.close(this.$refs.trigger);
                 }
-                focusElement(this.$refs.trigger);
                 this.open = true;
                 this.$nextTick(
                     function () {
                         this.reposition();
+                        if (this.menuItems().length) {
+                            this.focusMenuItem(0);
+                        }
                     }.bind(this)
                 );
             },
@@ -176,9 +201,57 @@
                     return;
                 }
                 this.open = false;
+                this.focusedIndex = -1;
                 focusElement(focusAfter);
             },
+            onTriggerKeydown: function (event) {
+                if (this.open) {
+                    return;
+                }
+                var key = event.key;
+                var isOpenKey =
+                    key === "Enter" ||
+                    key === " " ||
+                    key === "Spacebar" ||
+                    key === "ArrowDown" ||
+                    key === "ArrowUp";
+                if (!isOpenKey) {
+                    return;
+                }
+                event.preventDefault();
+                this.open = true;
+                this.$nextTick(
+                    function () {
+                        this.reposition();
+                        var items = this.menuItems();
+                        if (items.length) {
+                            var idx =
+                                key === "ArrowUp" ? items.length - 1 : 0;
+                            this.focusMenuItem(idx);
+                        }
+                    }.bind(this)
+                );
+            },
+            keyDown: function () {
+                this.focusMenuItem(this.focusedIndex + 1);
+            },
+            keyUp: function () {
+                this.focusMenuItem(this.focusedIndex - 1);
+            },
+            keyHome: function () {
+                this.focusMenuItem(0);
+            },
+            keyEnd: function () {
+                var items = this.menuItems();
+                this.focusMenuItem(items.length - 1);
+            },
             selectItem: function (element, focusAfter) {
+                if (
+                    !element ||
+                    element.getAttribute("aria-disabled") === "true"
+                ) {
+                    return;
+                }
                 var detail = { label: element.dataset.label || "" };
                 if (element.dataset.href) {
                     detail.href = element.dataset.href;
@@ -199,6 +272,79 @@
                 this.alignX = alignment.alignX;
                 this.alignY = alignment.alignY;
             },
+        };
+    }
+
+    function createPopoverState() {
+        var state = createDropdownState();
+        return {
+            open: state.open,
+            alignX: state.alignX,
+            alignY: state.alignY,
+            init: state.init,
+            toggle: function () {
+                if (this.open) {
+                    return this.close(this.$refs.trigger);
+                }
+                this.open = true;
+                this.$nextTick(
+                    function () {
+                        this.reposition();
+                        var panel = this.$refs.panel;
+                        if (!panel) {
+                            return;
+                        }
+                        var focusable = panel.querySelector(
+                            'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+                        );
+                        focusElement(focusable || panel);
+                    }.bind(this)
+                );
+            },
+            close: state.close,
+            onTriggerKeydown: function (event) {
+                if (this.open) {
+                    return;
+                }
+                var key = event.key;
+                if (
+                    key === "Enter" ||
+                    key === " " ||
+                    key === "Spacebar" ||
+                    key === "ArrowDown"
+                ) {
+                    event.preventDefault();
+                    this.toggle();
+                }
+            },
+            trapFocus: function (event) {
+                if (!this.open) {
+                    return;
+                }
+                var panel = this.$refs.panel;
+                if (!panel) {
+                    return;
+                }
+                var nodes = panel.querySelectorAll(
+                    'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+                );
+                if (!nodes.length) {
+                    return;
+                }
+                var first = nodes[0];
+                var last = nodes[nodes.length - 1];
+                if (event.shiftKey && document.activeElement === first) {
+                    event.preventDefault();
+                    focusElement(last);
+                } else if (
+                    !event.shiftKey &&
+                    document.activeElement === last
+                ) {
+                    event.preventDefault();
+                    focusElement(first);
+                }
+            },
+            reposition: state.reposition,
         };
     }
 
@@ -353,6 +499,10 @@
 
     register("chirpuiDropdown", function () {
         return createDropdownState();
+    });
+
+    register("chirpuiPopover", function () {
+        return createPopoverState();
     });
 
     register("chirpuiDropdownSelect", function () {
@@ -528,6 +678,223 @@
                 }
                 this.close();
                 this.$dispatch("chirpui:context-menu-selected", detail);
+            },
+        };
+    });
+
+    // One-time code input: grouped single-character fields with paste/backspace
+    // navigation and a hidden input carrying the composed value for forms.
+    register("chirpuiInputOtp", function () {
+        return {
+            value: "",
+            length: 6,
+            init: function () {
+                this.length = parseInteger(this.$root.dataset.length, 6);
+            },
+            onInput: function (event, index) {
+                var input = event.target;
+                var digit = (input.value || "").replace(/\D/g, "").slice(-1);
+                input.value = digit;
+                this.syncValue();
+                if (digit && index < this.length - 1) {
+                    focusElement(this.$refs["cell-" + (index + 1)]);
+                }
+            },
+            onKeydown: function (event, index) {
+                var input = event.target;
+                if (event.key === "Backspace" && !input.value && index > 0) {
+                    event.preventDefault();
+                    var prev = this.$refs["cell-" + (index - 1)];
+                    if (prev) {
+                        prev.value = "";
+                        this.syncValue();
+                        focusElement(prev);
+                    }
+                } else if (event.key === "ArrowLeft" && index > 0) {
+                    event.preventDefault();
+                    focusElement(this.$refs["cell-" + (index - 1)]);
+                } else if (
+                    event.key === "ArrowRight" &&
+                    index < this.length - 1
+                ) {
+                    event.preventDefault();
+                    focusElement(this.$refs["cell-" + (index + 1)]);
+                }
+            },
+            onPaste: function (event) {
+                event.preventDefault();
+                var text = (event.clipboardData || window.clipboardData)
+                    .getData("text")
+                    .replace(/\D/g, "")
+                    .slice(0, this.length);
+                for (var i = 0; i < this.length; i += 1) {
+                    var cell = this.$refs["cell-" + i];
+                    if (cell) {
+                        cell.value = text.charAt(i) || "";
+                    }
+                }
+                this.syncValue();
+                var focusIdx = Math.min(text.length, this.length - 1);
+                focusElement(this.$refs["cell-" + focusIdx]);
+            },
+            syncValue: function () {
+                var chars = [];
+                for (var i = 0; i < this.length; i += 1) {
+                    var cell = this.$refs["cell-" + i];
+                    chars.push(cell && cell.value ? cell.value : "");
+                }
+                this.value = chars.join("");
+                this.$dispatch("chirpui:otp-change", { value: this.value });
+            },
+        };
+    });
+
+    // Delayed hover/focus preview card anchored to the trigger.
+    register("chirpuiHoverCard", function (config) {
+        config = config || {};
+        var openDelay = parseInteger(config.openDelay, 200);
+        var closeDelay = parseInteger(config.closeDelay, 100);
+        return {
+            open: false,
+            alignX: "center",
+            alignY: "bottom",
+            _openTimer: null,
+            _closeTimer: null,
+            scheduleOpen: function () {
+                clearTimeout(this._closeTimer);
+                if (this.open) {
+                    return;
+                }
+                var self = this;
+                this._openTimer = window.setTimeout(function () {
+                    self.open = true;
+                    self.$nextTick(function () {
+                        self.reposition();
+                    });
+                }, openDelay);
+            },
+            scheduleClose: function (event) {
+                clearTimeout(this._openTimer);
+                if (
+                    event &&
+                    this.$refs.panel &&
+                    this.$refs.panel.contains(event.relatedTarget)
+                ) {
+                    return;
+                }
+                var self = this;
+                this._closeTimer = window.setTimeout(function () {
+                    self.open = false;
+                }, closeDelay);
+            },
+            reposition: function () {
+                var panel = this.$refs.panel;
+                var trigger = this.$refs.trigger;
+                if (!panel || !trigger) {
+                    return;
+                }
+                var alignment = menuAlignment(trigger, panel);
+                this.alignX = alignment.alignX;
+                this.alignY = alignment.alignY;
+            },
+        };
+    });
+
+    // Horizontal application menubar with roving top-level focus and
+    // per-item vertical submenus (mirrors dropdown keyboard contract).
+    register("chirpuiMenubar", function () {
+        return {
+            openIndex: -1,
+            menuCount: 0,
+            init: function () {
+                this.menuCount = parseInteger(this.$root.dataset.menuCount, 0);
+            },
+            openMenu: function (index) {
+                this.openIndex = index;
+                this.$nextTick(
+                    function () {
+                        var panel = this.$refs["panel-" + index];
+                        if (!panel) {
+                            return;
+                        }
+                        var first = panel.querySelector('[role="menuitem"]');
+                        focusElement(first);
+                    }.bind(this)
+                );
+            },
+            closeAll: function (focusIndex) {
+                this.openIndex = -1;
+                if (typeof focusIndex === "number" && focusIndex >= 0) {
+                    focusElement(this.$refs["trigger-" + focusIndex]);
+                }
+            },
+            onTriggerKeydown: function (event, index) {
+                var key = event.key;
+                if (key === "ArrowRight") {
+                    event.preventDefault();
+                    this.closeAll();
+                    var next = (index + 1) % this.menuCount;
+                    focusElement(this.$refs["trigger-" + next]);
+                } else if (key === "ArrowLeft") {
+                    event.preventDefault();
+                    this.closeAll();
+                    var prev = (index - 1 + this.menuCount) % this.menuCount;
+                    focusElement(this.$refs["trigger-" + prev]);
+                } else if (
+                    key === "ArrowDown" ||
+                    key === "Enter" ||
+                    key === " " ||
+                    key === "Spacebar"
+                ) {
+                    event.preventDefault();
+                    this.openMenu(index);
+                } else if (key === "Escape") {
+                    event.preventDefault();
+                    this.closeAll(index);
+                }
+            },
+        };
+    });
+
+    // Site navigation menu: top-level triggers with flyout submenus.
+    register("chirpuiNavigationMenu", function () {
+        return {
+            openIndex: -1,
+            itemCount: 0,
+            init: function () {
+                this.itemCount = parseInteger(this.$root.dataset.itemCount, 0);
+            },
+            toggle: function (index) {
+                if (this.openIndex === index) {
+                    return this.close(index);
+                }
+                this.openIndex = index;
+                this.$nextTick(
+                    function () {
+                        var panel = this.$refs["panel-" + index];
+                        if (!panel) {
+                            return;
+                        }
+                        var first = panel.querySelector('[role="menuitem"]');
+                        focusElement(first);
+                    }.bind(this)
+                );
+            },
+            close: function (index) {
+                this.openIndex = -1;
+                if (typeof index === "number") {
+                    focusElement(this.$refs["trigger-" + index]);
+                }
+            },
+            onTriggerKeydown: function (event, index) {
+                var key = event.key;
+                if (key === "ArrowDown" || key === "Enter" || key === " ") {
+                    event.preventDefault();
+                    this.toggle(index);
+                } else if (key === "Escape") {
+                    event.preventDefault();
+                    this.close(index);
+                }
             },
         };
     });

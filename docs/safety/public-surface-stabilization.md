@@ -275,13 +275,18 @@ vocabulary.
 | `grain` | Keep experimental | Motion/effects visual proof. |
 | `hero-effects` | Keep experimental | Motion/effects visual proof. |
 | `holy-light` | Keep experimental | Motion/effects visual proof. |
+| `hover-card` | Keep experimental | Control interaction proof; delayed hover/focus preview card (#202) with anchor positioning + reduced-motion CSS — promote after browser gauntlet. |
+| `input-otp` | Keep experimental | Form interaction proof; grouped OTP cells (#202) with paste/backspace/arrow-key nav and `/input-otp` browser gauntlet — promote after gauntlet stabilizes. |
 | `lifecycle-showcase` | Recipe-only | Marketing pattern proof; promote only after repeated app use. |
 | `live-event-card` | Recipe-only | Media recipe proof; promote only after repeated app use. |
 | `marquee` | Keep experimental | Motion/effects visual proof. |
 | `media-hero-shelf` | Recipe-only | Media recipe proof; promote only after repeated app use. |
 | `meteor` | Keep experimental | Motion/effects visual proof. |
+| `menubar` | Keep experimental | Control interaction proof; horizontal app menu (#202) with roving top-level focus + vertical submenus — promote after browser gauntlet. |
+| `menubar__item` | Keep experimental | Control interaction proof; item variant vocabulary (default/danger/muted) for `menubar`, promoted together with its parent composite. |
 | `moderation-queue-item` | Recipe-only | Social recipe proof; promote only after repeated app use. |
 | `neon` | Keep experimental | Motion/effects visual proof. |
+| `navigation-menu` | Keep experimental | Control interaction proof; site nav with flyout submenus (#202) with keyboard open/close — promote after browser gauntlet. |
 | `number-ticker` | Keep experimental | Motion/effects visual proof. |
 | `orbit` | Keep experimental | Motion/effects visual proof. |
 | `particle-bg` | Keep experimental | Motion/effects visual proof. |

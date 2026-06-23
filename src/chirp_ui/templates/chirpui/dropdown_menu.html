@@ -16,6 +16,7 @@
      :data-align-x="alignX"
      :data-align-y="alignY"
      x-data="chirpuiDropdown()"
+     x-init="init()"
      @keydown.escape.prevent.stop="close($refs.trigger)"
      @focusin.window="!$refs.panel?.contains($event.target) && close($refs.trigger)"
      @click.outside="close($refs.trigger)"
@@ -23,13 +24,17 @@
     <div class="chirpui-dropdown__trigger" x-ref="trigger"
          role="button" tabindex="0" aria-haspopup="menu" :aria-expanded="open"
          :aria-controls="$id('dropdown-menu')"
-         @click="toggle()">
+         @click="toggle()"
+         @keydown="onTriggerKeydown($event)">
         {{ trigger }}
     </div>
     <div class="chirpui-dropdown__menu" x-ref="panel" :id="$id('dropdown-menu')" role="menu"
          aria-orientation="vertical"
          x-show="open" x-cloak x-transition
-         @click="close()">
+         @keydown.down.prevent="keyDown()"
+         @keydown.up.prevent="keyUp()"
+         @keydown.home.prevent="keyHome()"
+         @keydown.end.prevent="keyEnd()">
         {% for item in items %}
         {% if item.get("divider") %}
         <div class="chirpui-dropdown__divider" role="separator"></div>
@@ -38,23 +43,28 @@
         {% set action = item.get("action") %}
         {% set variant = item.get("variant", "default") | validate_variant_block("dropdown__item", "default") %}
         {% set icon = item.get("icon", "") %}
-        {% if href %}
+        {% set _disabled = item.get("disabled") %}
+        {% if href and not _disabled %}
         <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ href }}" role="menuitem"
+           tabindex="-1"
            data-label="{{ item.get("label", "") }}" data-href="{{ href }}"
            {{ route_link_attrs(href) | html_attrs }}
            @click="selectItem($el, $refs.trigger)">
             {% if icon %}<span class="chirpui-dropdown__icon" aria-hidden="true">{{ icon }}</span>{% endif %}
             {{ item.get("label", "") }}
         </a>
-        {% elif action %}
+        {% elif action or not href %}
         <button type="button" class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}"
+                tabindex="-1"
                 data-label="{{ item.get("label", "") }}" data-action="{{ action }}" role="menuitem"
+                {% if _disabled %} aria-disabled="true"{% end %}
                 @click="selectItem($el, $refs.trigger)">
             {% if icon %}<span class="chirpui-dropdown__icon" aria-hidden="true">{{ icon }}</span>{% endif %}
             {{ item.get("label", "") }}
         </button>
         {% else %}
         <span class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" role="menuitem"
+              tabindex="-1"
               data-label="{{ item.get("label", "") }}"
               @click="selectItem($el, $refs.trigger)">
             {% if icon %}<span class="chirpui-dropdown__icon" aria-hidden="true">{{ icon }}</span>{% endif %}
@@ -121,6 +131,7 @@
      :data-align-x="alignX"
      :data-align-y="alignY"
      x-data="chirpuiDropdown()"
+     x-init="init()"
      @keydown.escape.prevent.stop="close($refs.trigger)"
      @focusin.window="!$refs.panel?.contains($event.target) && close($refs.trigger)"
      @click.outside="close($refs.trigger)"
@@ -140,12 +151,17 @@
     <div class="chirpui-dropdown__trigger chirpui-dropdown__trigger--split" x-ref="trigger"
          role="button" tabindex="0" aria-haspopup="menu" :aria-expanded="open"
          :aria-controls="$id('dropdown-split')"
-         @click="toggle()">
+         @click="toggle()"
+         @keydown="onTriggerKeydown($event)">
         <span class="chirpui-dropdown__caret" aria-hidden="true">▾</span>
     </div>
     <div class="chirpui-dropdown__menu" x-ref="panel" :id="$id('dropdown-split')" role="menu"
+         aria-orientation="vertical"
          x-show="open" x-cloak x-transition
-         @click="close()">
+         @keydown.down.prevent="keyDown()"
+         @keydown.up.prevent="keyUp()"
+         @keydown.home.prevent="keyHome()"
+         @keydown.end.prevent="keyEnd()">
         {% for item in items %}
         {% if item.get("divider") %}
         <div class="chirpui-dropdown__divider" role="separator"></div>
@@ -154,6 +170,7 @@
         {% set variant = item.get("variant", "default") | validate_variant_block("dropdown__item", "default") %}
         {% if item_href %}
         <a class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}" href="{{ item_href }}" role="menuitem"
+           tabindex="-1"
            data-label="{{ item.get("label", "") }}" data-href="{{ item_href }}"
            {{ route_link_attrs(item_href) | html_attrs }}
            @click="selectItem($el, $refs.trigger)">
@@ -162,6 +179,7 @@
         </a>
         {% else %}
         <button type="button" class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}"
+                tabindex="-1"
                 data-label="{{ item.get("label", "") }}" data-action="{{ item.get('action', '') }}" role="menuitem"
                 @click="selectItem($el, $refs.trigger)">
             {% if item.get("icon") %}<span class="chirpui-dropdown__icon">{{ item.get("icon") }}</span>{% endif %}

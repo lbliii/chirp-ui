@@ -9375,7 +9375,7 @@
         "chirpui-dropdown__item--selected",
         "chirpui-dropdown__trigger--select"
       ],
-      "lineno": 70,
+      "lineno": 80,
       "macro": "dropdown_select",
       "maturity": "stable",
       "modifiers": [
@@ -12151,6 +12151,72 @@
         "silver"
       ]
     },
+    "hover-card": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "hover-card",
+      "category": "overlay",
+      "composes": [],
+      "consumes": [],
+      "description": "Hover Card\n    Delayed hover/focus preview card anchored to the trigger. Opens after a\n    short delay on pointer enter or focus; closes on leave/blur. Respects\n    reduced motion via CSS. Requires Alpine.js.\n\n    Usage:\n        from \"chirpui/hover_card.html\" import hover_card\n\n        {% call hover_card(open_delay=200) %}\n            {% slot trigger %}<button>Hover me</button>{% end %}\n            <p>Preview content with richer detail.</p>\n        {% end %}",
+      "elements": [
+        "content",
+        "trigger"
+      ],
+      "emits": [
+        "chirpui-hover-card",
+        "chirpui-hover-card__content",
+        "chirpui-hover-card__trigger"
+      ],
+      "extra_emits": [],
+      "lineno": 15,
+      "macro": "hover_card",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "open_delay"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "close_delay"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [
+        "",
+        "trigger"
+      ],
+      "slots_extracted": [
+        "",
+        "trigger"
+      ],
+      "slots_yielded": [],
+      "template": "hover_card.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "hover-jello": {
       "appearances": [],
       "authoring": "available",
@@ -12820,6 +12886,78 @@
       ],
       "slots_yielded": [],
       "template": "forms.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "input-otp": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "input-otp",
+      "category": "form",
+      "composes": [],
+      "consumes": [],
+      "description": "Input OTP\n    Grouped one-time-code input fields with paste, backspace, and arrow-key\n    navigation. Emits `chirpui:otp-change` with {value} as digits are entered.\n    A hidden input carries the composed value for form posts.\n\n    Usage:\n        from \"chirpui/input_otp.html\" import input_otp\n\n        {{ input_otp(\"otp\", length=6, label=\"Verification code\") }}",
+      "elements": [
+        "cell",
+        "group",
+        "label"
+      ],
+      "emits": [
+        "chirpui-input-otp",
+        "chirpui-input-otp__cell",
+        "chirpui-input-otp__group",
+        "chirpui-input-otp__label"
+      ],
+      "extra_emits": [],
+      "lineno": 12,
+      "macro": "input_otp",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "name"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "length"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "autocomplete"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "input_otp.html",
       "tokens": [],
       "tones": [],
       "trim_emits": [],
@@ -14500,6 +14638,127 @@
       "trim_emits": [],
       "variants": []
     },
+    "menubar": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "menubar",
+      "category": "navigation",
+      "composes": [],
+      "consumes": [],
+      "description": "Menubar\n    Horizontal application menu bar with keyboard roving between top-level\n    triggers and vertical submenus. Each menu entry is a dict:\n    {label, items: [{label, action?|href?, icon?, variant?, disabled?}, ...]}.\n    Requires Alpine.js.\n\n    Usage:\n        from \"chirpui/menubar.html\" import menubar\n\n        {{ menubar(label=\"Application\", items=[\n            {\"label\": \"File\", \"items\": [\n                {\"label\": \"New\", \"action\": \"new\"},\n                {\"label\": \"Open\", \"action\": \"open\"},\n            ]},\n            {\"label\": \"Edit\", \"items\": [\n                {\"label\": \"Undo\", \"action\": \"undo\"},\n            ]},\n        ]) }}",
+      "elements": [
+        "icon",
+        "item",
+        "menu",
+        "root",
+        "trigger"
+      ],
+      "emits": [
+        "chirpui-menubar",
+        "chirpui-menubar__icon",
+        "chirpui-menubar__item",
+        "chirpui-menubar__menu",
+        "chirpui-menubar__root",
+        "chirpui-menubar__trigger"
+      ],
+      "extra_emits": [
+        "chirpui-menubar__icon"
+      ],
+      "lineno": 21,
+      "macro": "menubar",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "menubar.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
+    "menubar__item": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "menubar__item",
+      "category": "navigation",
+      "composes": [],
+      "consumes": [],
+      "description": "Menubar\n    Horizontal application menu bar with keyboard roving between top-level\n    triggers and vertical submenus. Each menu entry is a dict:\n    {label, items: [{label, action?|href?, icon?, variant?, disabled?}, ...]}.\n    Requires Alpine.js.\n\n    Usage:\n        from \"chirpui/menubar.html\" import menubar\n\n        {{ menubar(label=\"Application\", items=[\n            {\"label\": \"File\", \"items\": [\n                {\"label\": \"New\", \"action\": \"new\"},\n                {\"label\": \"Open\", \"action\": \"open\"},\n            ]},\n            {\"label\": \"Edit\", \"items\": [\n                {\"label\": \"Undo\", \"action\": \"undo\"},\n            ]},\n        ]) }}",
+      "elements": [],
+      "emits": [
+        "chirpui-menubar__item",
+        "chirpui-menubar__item--danger",
+        "chirpui-menubar__item--muted"
+      ],
+      "extra_emits": [],
+      "lineno": 21,
+      "macro": "menubar",
+      "maturity": "experimental",
+      "modifiers": [],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "menubar.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [
+        "chirpui-menubar__item--default"
+      ],
+      "variants": [
+        "danger",
+        "default",
+        "muted"
+      ]
+    },
     "message-actions": {
       "appearances": [],
       "authoring": "available",
@@ -15804,6 +16063,79 @@
       "trim_emits": [],
       "variants": []
     },
+    "navigation-menu": {
+      "appearances": [],
+      "authoring": "available",
+      "block": "navigation-menu",
+      "category": "navigation",
+      "composes": [],
+      "consumes": [],
+      "description": "Navigation Menu\n    Site navigation with flyout submenus for nested links. Each item is a dict:\n    {label, href?, children?: [{label, href, description?}, ...]}.\n    Top-level items with children open a positioned submenu on click or\n    ArrowDown; leaf items render as links. Requires Alpine.js.\n\n    Usage:\n        from \"chirpui/navigation_menu.html\" import navigation_menu\n\n        {{ navigation_menu(label=\"Primary\", items=[\n            {\"label\": \"Products\", \"children\": [\n                {\"label\": \"Analytics\", \"href\": \"/products/analytics\"},\n                {\"label\": \"Automation\", \"href\": \"/products/automation\"},\n            ]},\n            {\"label\": \"Pricing\", \"href\": \"/pricing\"},\n        ]) }}",
+      "elements": [
+        "caret",
+        "item",
+        "link",
+        "link-desc",
+        "link-label",
+        "list",
+        "panel",
+        "trigger"
+      ],
+      "emits": [
+        "chirpui-navigation-menu",
+        "chirpui-navigation-menu--has-children",
+        "chirpui-navigation-menu__caret",
+        "chirpui-navigation-menu__item",
+        "chirpui-navigation-menu__link",
+        "chirpui-navigation-menu__link--top",
+        "chirpui-navigation-menu__link-desc",
+        "chirpui-navigation-menu__link-label",
+        "chirpui-navigation-menu__list",
+        "chirpui-navigation-menu__panel",
+        "chirpui-navigation-menu__trigger"
+      ],
+      "extra_emits": [
+        "chirpui-navigation-menu__link--top"
+      ],
+      "lineno": 19,
+      "macro": "navigation_menu",
+      "maturity": "experimental",
+      "modifiers": [
+        "has-children"
+      ],
+      "params": [
+        {
+          "has_default": false,
+          "is_required": true,
+          "name": "items"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "label"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
+        }
+      ],
+      "provides": [],
+      "requires": [
+        "alpine"
+      ],
+      "role": "component",
+      "sizes": [],
+      "slot_forwards": [],
+      "slots": [],
+      "slots_extracted": [],
+      "slots_yielded": [],
+      "template": "navigation_menu.html",
+      "tokens": [],
+      "tones": [],
+      "trim_emits": [],
+      "variants": []
+    },
     "neon": {
       "appearances": [],
       "authoring": "available",
@@ -17025,7 +17357,7 @@
       "category": "overlay",
       "composes": [],
       "consumes": [],
-      "description": "Popover component\n    Floating panel with interactive content. Same structure as dropdown but styled as popover.\n\n    Named slots: header, footer, default (panel content).\n\n    Usage:\n        from \"chirpui/popover.html\" import popover\n\n        call popover(trigger_label=\"Filters\")\n            {% slot header %}<h3>Filters</h3>{% end %}\n            <form>...</form>\n            {% slot footer %}<button>Apply</button>{% end %}\n        end",
+      "description": "Popover component\n    Anchor-positioned, focus-managed floating panel with interactive content.\n    Replaces the previous <details>-based popover with Alpine positioning,\n    Escape/click-outside dismiss, and Tab focus trap inside the panel.\n\n    Named slots: header, footer, default (panel content).\n\n    Usage:\n        from \"chirpui/popover.html\" import popover\n\n        call popover(trigger_label=\"Filters\")\n            {% slot header %}<h3>Filters</h3>{% end %}\n            <form>...</form>\n            {% slot footer %}<button>Apply</button>{% end %}\n        end",
       "elements": [
         "footer",
         "header",
@@ -17040,7 +17372,7 @@
         "chirpui-popover__trigger"
       ],
       "extra_emits": [],
-      "lineno": 16,
+      "lineno": 18,
       "macro": "popover",
       "maturity": "stable",
       "modifiers": [],
@@ -17054,10 +17386,17 @@
           "has_default": true,
           "is_required": false,
           "name": "cls"
+        },
+        {
+          "has_default": true,
+          "is_required": false,
+          "name": "id"
         }
       ],
       "provides": [],
-      "requires": [],
+      "requires": [
+        "alpine"
+      ],
       "role": "component",
       "sizes": [],
       "slot_forwards": [],
@@ -25979,7 +26318,7 @@
   "schema": "chirpui-manifest@5",
   "stats": {
     "component_authoring": {
-      "available": 325,
+      "available": 330,
       "compatibility": 39,
       "internal": 2,
       "preferred": 10
@@ -25993,37 +26332,37 @@
       "data-display": 38,
       "effect": 46,
       "feedback": 26,
-      "form": 26,
+      "form": 27,
       "infrastructure": 2,
       "interactive": 9,
       "layout": 59,
       "marketing": 11,
       "media": 6,
-      "navigation": 30,
-      "overlay": 3,
+      "navigation": 33,
+      "overlay": 4,
       "social": 4,
       "typography": 30
     },
     "component_maturity": {
-      "experimental": 108,
+      "experimental": 113,
       "internal": 2,
       "legacy": 39,
       "stable": 227
     },
     "component_requirements": {
-      "alpine": 38,
+      "alpine": 44,
       "htmx": 31
     },
     "component_roles": {
-      "component": 207,
+      "component": 212,
       "effect": 32,
       "infrastructure": 3,
       "pattern": 22,
       "primitive": 112
     },
     "components_with_consumes": 20,
-    "components_with_description": 270,
-    "components_with_params": 270,
+    "components_with_description": 275,
+    "components_with_params": 275,
     "components_with_provides": 12,
     "manifest_quality": {
       "missing_description": 0,
@@ -26031,7 +26370,7 @@
       "missing_maturity": 0,
       "missing_role": 0,
       "missing_slot_metadata": 0,
-      "public_templated_components": 268
+      "public_templated_components": 273
     },
     "registry_debt": {
       "auto_category_components": 0,
@@ -26039,10 +26378,10 @@
       "auto_extra_classes": 0,
       "auto_trim_blocks": 0,
       "auto_trim_classes": 0,
-      "explicit_extra_blocks": 134,
-      "explicit_extra_classes": 572,
-      "explicit_trim_blocks": 70,
-      "explicit_trim_classes": 97
+      "explicit_extra_blocks": 136,
+      "explicit_extra_classes": 574,
+      "explicit_trim_blocks": 71,
+      "explicit_trim_classes": 98
     },
     "token_categories": {
       "color": 142,
@@ -26054,7 +26393,7 @@
       "spacing": 46,
       "typography": 48
     },
-    "total_components": 376,
+    "total_components": 381,
     "total_theme_packs": 3,
     "total_tokens": 466
   },

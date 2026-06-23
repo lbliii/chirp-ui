@@ -30,7 +30,7 @@ surface with a preferred replacement. Components the manifest marks `internal`
 (Chirp UI composition infrastructure) are intentionally omitted.
 
 <!-- chirpui:generated:start -->
-_374 public components across 17 categories._
+_379 public components across 17 categories._
 
 ## Layout
 
@@ -116,7 +116,7 @@ _9 components._
 
 ## Navigation
 
-_30 components._
+_33 components._
 
 | Macro | Maturity | Description |
 |-------|----------|-------------|
@@ -131,12 +131,15 @@ _30 components._
 | `filter_rail` | experimental | Dense workspace primitives |
 | `index_card` | stable | Index card component |
 | `link` | stable | Link component |
+| `menubar` | experimental | Menubar |
+| `menubar` | experimental | Menubar |
 | `nav_link` | stable | SPA-style link for content areas |
 | `nav-pill` *(CSS / utility)* | stable | - |
 | `nav_progress` | stable | Navigation progress bar |
 | `nav_tree` | stable | Nav tree component |
 | `navbar` | stable | Navbar component |
 | `navbar_dropdown` | stable | Navbar component |
+| `navigation_menu` | experimental | Navigation Menu |
 | `pagination` | stable | Pagination component |
 | `primary_nav` | stable | Primary navigation |
 | `render_route_tabs` | stable | Route-backed subsection tabs |
@@ -185,7 +188,7 @@ _25 components._
 
 ## Form
 
-_26 components._
+_27 components._
 
 | Macro | Maturity | Description |
 |-------|----------|-------------|
@@ -204,6 +207,7 @@ _26 components._
 | `form_error_summary` | stable | Form field macros |
 | `inline_edit_field_display` | stable | Inline edit field |
 | `input_group` | stable | Form field macros |
+| `input_otp` | experimental | Input OTP |
 | `key-value-form` *(CSS / utility)* | stable | - |
 | `ui_label` | stable | Label |
 | `number-scale` *(CSS / utility)* | experimental | - |
@@ -312,11 +316,12 @@ _9 components._
 
 ## Overlay
 
-_3 components._
+_4 components._
 
 | Macro | Maturity | Description |
 |-------|----------|-------------|
 | `drawer` | stable | Drawer component |
+| `hover_card` | experimental | Hover Card |
 | `popover` | stable | Popover component |
 | `tray` | stable | Tray (slide-out panel) |
 

@@ -1,5 +1,7 @@
 {#- chirp-ui: Popover component
-    Floating panel with interactive content. Same structure as dropdown but styled as popover.
+    Anchor-positioned, focus-managed floating panel with interactive content.
+    Replaces the previous <details>-based popover with Alpine positioning,
+    Escape/click-outside dismiss, and Tab focus trap inside the panel.
 
     Named slots: header, footer, default (panel content).
 
@@ -13,13 +15,29 @@
         end
 -#}
 
-{% def popover(trigger_label, cls="") %}
-<details class="chirpui-popover{{ " " ~ cls if cls else "" }}">
-    <summary class="chirpui-popover__trigger">{{ trigger_label }}</summary>
-    <div class="chirpui-popover__panel">
+{% def popover(trigger_label, cls="", id="chirpui-popover") %}
+<div class="chirpui-popover{{ " " ~ cls if cls else "" }}" id="{{ id }}" x-id="['popover-panel']"
+     :data-align-x="alignX"
+     :data-align-y="alignY"
+     x-data="chirpuiPopover()"
+     @keydown.escape.prevent.stop="close($refs.trigger)"
+     @focusin.window="!$refs.panel?.contains($event.target) && close($refs.trigger)"
+     @click.outside="close($refs.trigger)"
+     @resize.window="open && reposition()">
+    <div class="chirpui-popover__trigger" x-ref="trigger"
+         role="button" tabindex="0" aria-haspopup="dialog" :aria-expanded="open"
+         :aria-controls="$id('popover-panel')"
+         @click="toggle()"
+         @keydown="onTriggerKeydown($event)">
+        {{ trigger_label }}
+    </div>
+    <div class="chirpui-popover__panel" x-ref="panel" :id="$id('popover-panel')"
+         role="dialog" aria-modal="false"
+         x-show="open" x-cloak x-transition
+         @keydown.tab="trapFocus($event)">
         <div class="chirpui-popover__header">{% slot header %}</div>
         {% slot %}
         <div class="chirpui-popover__footer">{% slot footer %}</div>
     </div>
-</details>
+</div>
 {% end %}

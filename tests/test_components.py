@@ -6946,8 +6946,65 @@ class TestPopover:
         ).render()
         assert "chirpui-popover" in html
         assert "chirpui-popover__panel" in html
+        assert 'x-data="chirpuiPopover()"' in html
+        assert 'role="dialog"' in html
+        assert 'aria-haspopup="dialog"' in html
         assert "Filters" in html
         assert "Content" in html
+
+
+class TestInputOtp:
+    def test_input_otp_anatomy(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/input_otp.html" import input_otp %}'
+            '{{ input_otp("code", length=4, label="Code") }}'
+        ).render()
+        assert 'x-data="chirpuiInputOtp()"' in html
+        assert 'data-length="4"' in html
+        assert 'name="code"' in html
+        assert 'role="group"' in html
+        assert html.count("chirpui-input-otp__cell") == 4
+
+
+class TestHoverCard:
+    def test_hover_card_anatomy(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/hover_card.html" import hover_card %}'
+            "{% call hover_card() %}"
+            "{% slot trigger %}<button>Info</button>{% end %}"
+            "Preview text"
+            "{% end %}"
+        ).render()
+        assert 'x-data="chirpuiHoverCard' in html
+        assert "chirpui-hover-card__content" in html
+        assert 'role="tooltip"' in html
+        assert "Preview text" in html
+
+
+class TestMenubar:
+    def test_menubar_anatomy(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/menubar.html" import menubar %}'
+            '{{ menubar(items=[{"label": "File", "items": [{"label": "New", "action": "new"}]}]) }}'
+        ).render()
+        assert 'x-data="chirpuiMenubar()"' in html
+        assert 'role="menubar"' in html
+        assert 'role="menuitem"' in html
+        assert 'role="menu"' in html
+        assert "File" in html
+        assert "New" in html
+
+
+class TestNavigationMenu:
+    def test_navigation_menu_anatomy(self, env: Environment) -> None:
+        html = env.from_string(
+            '{% from "chirpui/navigation_menu.html" import navigation_menu %}'
+            '{{ navigation_menu(items=[{"label": "Products", "children": [{"label": "Analytics", "href": "/a"}]}, {"label": "Pricing", "href": "/pricing"}]) }}'
+        ).render()
+        assert 'x-data="chirpuiNavigationMenu()"' in html
+        assert 'role="menubar"' in html
+        assert "/pricing" in html
+        assert "Analytics" in html
 
 
 class TestTagInput:
