@@ -12,4 +12,4 @@
 {% set variant = variant | validate_variant(("", "default", "gradient"), "") %}
 {% set variant_class = " chirpui-text-reveal--" ~ variant if variant else "" %}
 <{{ tag }} class="chirpui-text-reveal{{ variant_class }}{{ " " ~ cls if cls else "" }}">{{ text }}</{{ tag }}>
-{% end %}
+{% enddef %}

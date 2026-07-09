@@ -18,10 +18,10 @@
         <nav class="chirpui-calendar__nav">
             {% if prev_url %}
             <a href="{{ prev_url }}" class="chirpui-calendar__nav-link" aria-label="Previous month"{{ route_link_attrs(prev_url) | html_attrs }}>←</a>
-            {% end %}
+            {% endif %}
             {% if next_url %}
             <a href="{{ next_url }}" class="chirpui-calendar__nav-link" aria-label="Next month"{{ route_link_attrs(next_url) | html_attrs }}>→</a>
-            {% end %}
+            {% endif %}
         </nav>
     </header>
     <div class="chirpui-calendar__weekdays">
@@ -33,10 +33,10 @@
         <div class="chirpui-calendar__day{{ " chirpui-calendar__day--empty" if day == 0 else "" }}">
             {% if day != 0 %}
             <span class="chirpui-calendar__day-num">{{ day }}</span>
-            {% end %}
+            {% endif %}
         </div>
-        {% end %}
-        {% end %}
+        {% endfor %}
+        {% endfor %}
     </div>
 </div>
-{% end %}
+{% enddef %}

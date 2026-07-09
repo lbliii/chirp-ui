@@ -33,18 +33,18 @@
 <a href="{{ href }}" class="chirpui-timeline__title chirpui-timeline__title-link"{{ route_link_attrs(href) | html_attrs }}>{{ title }}</a>
 {% else %}
 <span class="chirpui-timeline__title">{{ title }}</span>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def timeline_title(title, href=none, link_mode="overlay", hint=none, hint_position="top") %}
 {% if hint %}
 {% call tooltip(hint, position=hint_position, cls="chirpui-timeline__hint") %}
 {{ timeline_title_content(title, href, link_mode) }}
-{% end %}
+{% endcall %}
 {% else %}
 {{ timeline_title_content(title, href, link_mode) }}
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def timeline(items=none, hoverable=false, link_mode="overlay", density="", variant="", cls="") %}
 {# @consumes _surface_variant from: panel, surface — falls back to "" #}
@@ -61,34 +61,34 @@
         {% for item in items %}
         {% set _href = item.get("href") %}
         {% set _link_mode = (item.get("link_mode") or _default_link_mode) | validate_variant(("overlay", "title"), "overlay") %}
-        <div class="chirpui-timeline__item{% if item.get("variant") %} chirpui-timeline__item--{{ item.variant }}{% end %}{% if item.get("href") %} chirpui-timeline__item--link{% end %}">
+        <div class="chirpui-timeline__item{% if item.get("variant") %} chirpui-timeline__item--{{ item.variant }}{% endif %}{% if item.get("href") %} chirpui-timeline__item--link{% endif %}">
             {% if item.get("avatar") %}
             <img class="chirpui-timeline__avatar" src="{{ item.avatar }}" alt="" aria-hidden="true">
             {% elif item.get("icon") %}
             <div class="chirpui-timeline__icon" aria-hidden="true">{{ item.icon | icon }}</div>
             {% else %}
             <div class="chirpui-timeline__dot" aria-hidden="true"></div>
-            {% end %}
+            {% endif %}
             <div class="chirpui-timeline__content">
                 {% if item.get("time") %}
                 <span class="chirpui-timeline__time">{{ item.time }}</span>
-                {% end %}
+                {% endif %}
                 <div class="chirpui-timeline__header">
                     {{ timeline_title(item.title | default(""), _href, _link_mode, hint=item.get("hint"), hint_position=item.get("hint_position") or "top") }}
                     <span class="chirpui-timeline__date">{{ item.date | default("") }}</span>
                 </div>
                 {% if item.get("content") %}
                 <div class="chirpui-timeline__body">{{ item.content }}</div>
-                {% end %}
+                {% endif %}
             </div>
-            {% if _href and _link_mode == "overlay" %}<a href="{{ _href }}" class="chirpui-timeline__link-overlay" aria-label="{{ item.title | default("") }}"{{ route_link_attrs(_href) | html_attrs }}></a>{% end %}
+            {% if _href and _link_mode == "overlay" %}<a href="{{ _href }}" class="chirpui-timeline__link-overlay" aria-label="{{ item.title | default("") }}"{{ route_link_attrs(_href) | html_attrs }}></a>{% endif %}
         </div>
-        {% end %}
+        {% endfor %}
     {% else %}
         {% slot %}
-    {% end %}
+    {% endif %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def timeline_item(title, date, content=none, icon=none, avatar=none, variant="", time=none, href=none, link_mode="overlay", hint=none, hint_position="top", cls="") %}
 {% set variant_class = " chirpui-timeline__item--" ~ variant if variant else "" %}
@@ -101,11 +101,11 @@
     <div class="chirpui-timeline__icon" aria-hidden="true">{{ icon | icon }}</div>
     {% else %}
     <div class="chirpui-timeline__dot" aria-hidden="true"></div>
-    {% end %}
+    {% endif %}
     <div class="chirpui-timeline__content">
         {% if time %}
         <span class="chirpui-timeline__time">{{ time }}</span>
-        {% end %}
+        {% endif %}
         <div class="chirpui-timeline__header">
             {{ timeline_title(title, href, _link_mode, hint=hint, hint_position=hint_position) }}
             <span class="chirpui-timeline__date">{{ date }}</span>
@@ -115,8 +115,8 @@
         <div class="chirpui-timeline__body">{{ content }}</div>
         {% else %}
         <div class="chirpui-timeline__body">{% slot content %}</div>
-        {% end %}
+        {% endif %}
     </div>
-    {% if href and _link_mode == "overlay" %}<a href="{{ href }}" class="chirpui-timeline__link-overlay" aria-label="{{ title }}"{{ route_link_attrs(href) | html_attrs }}></a>{% end %}
+    {% if href and _link_mode == "overlay" %}<a href="{{ href }}" class="chirpui-timeline__link-overlay" aria-label="{{ title }}"{{ route_link_attrs(href) | html_attrs }}></a>{% endif %}
 </div>
-{% end %}
+{% enddef %}

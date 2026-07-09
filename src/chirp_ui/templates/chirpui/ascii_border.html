@@ -30,7 +30,7 @@
 {% set bl = "╚" if variant == "double" else "╰" if variant == "rounded" else "┗" if variant == "heavy" else "└" %}
 {% set br = "╝" if variant == "double" else "╯" if variant == "rounded" else "┛" if variant == "heavy" else "┘" %}
 <div class="chirpui-ascii-border{{ variant_class }}{{ " " ~ cls if cls else "" }}">
-    <div class="chirpui-ascii-border__top" aria-hidden="true"><span class="chirpui-ascii-border__corner">{{ tl }}</span><span class="chirpui-ascii-border__line">{% if glyph %}{{ h }}{{ h }} {{ glyph }} {{ h }}{{ h }}{% end %}</span><span class="chirpui-ascii-border__corner">{{ tr }}</span></div>
+    <div class="chirpui-ascii-border__top" aria-hidden="true"><span class="chirpui-ascii-border__corner">{{ tl }}</span><span class="chirpui-ascii-border__line">{% if glyph %}{{ h }}{{ h }} {{ glyph }} {{ h }}{{ h }}{% endif %}</span><span class="chirpui-ascii-border__corner">{{ tr }}</span></div>
     <div class="chirpui-ascii-border__mid">
         <span class="chirpui-ascii-border__side" aria-hidden="true">{{ v }}</span>
         <div class="chirpui-ascii-border__content">
@@ -40,4 +40,4 @@
     </div>
     <div class="chirpui-ascii-border__bottom" aria-hidden="true"><span class="chirpui-ascii-border__corner">{{ bl }}</span><span class="chirpui-ascii-border__line"></span><span class="chirpui-ascii-border__corner">{{ br }}</span></div>
 </div>
-{% end %}
+{% enddef %}

@@ -14,15 +14,15 @@
 <a href="{{ href }}" class="chirpui-trending-tag{{ tag_class }}{{ " " ~ cls if cls else "" }}"{{ route_link_attrs(href) | html_attrs }}>
 {% else %}
 <span class="chirpui-trending-tag{{ tag_class }}{{ " " ~ cls if cls else "" }}">
-{% end %}
+{% endif %}
     <span class="chirpui-trending-tag__hash">#</span>
     <span class="chirpui-trending-tag__name">{{ tag }}</span>
     {% if count %}
     <span class="chirpui-trending-tag__count">{{ count }}</span>
-    {% end %}
+    {% endif %}
 {% if href %}
 </a>
 {% else %}
 </span>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

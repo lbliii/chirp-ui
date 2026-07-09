@@ -27,7 +27,7 @@
                 <button class="chirpui-modal__close" aria-label="Close">&times;</button>
             </form>
         </header>
-    {% end %}
+    {% endif %}
     <div class="chirpui-modal__body">
         {% slot %}
     </div>
@@ -35,7 +35,7 @@
         {% slot footer %}
     </footer>
 </dialog>
-{% end %}
+{% enddef %}
 
 {% def modal_trigger(target, label="Open", cls="") %}
 <button class="chirpui-modal-trigger{{ " " ~ cls if cls else "" }}"
@@ -45,4 +45,4 @@
         @click="open()">
     {{ label }}
 </button>
-{% end %}
+{% enddef %}

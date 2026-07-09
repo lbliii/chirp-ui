@@ -24,13 +24,13 @@
             <span class="chirpui-conversation-item__name">{{ name }}</span>
             {% if time %}
             <span class="chirpui-conversation-item__time">{{ time }}</span>
-            {% end %}
+            {% endif %}
         </div>
         <p class="chirpui-conversation-item__preview">{{ preview }}</p>
     </div>
     {% if unread is not none and unread > 0 %}
     <span class="chirpui-conversation-item__unread">{{ unread }}</span>
-    {% end %}
+    {% endif %}
     <span class="chirpui-conversation-item__actions">{% slot actions %}</span>
 </a>
-{% end %}
+{% enddef %}

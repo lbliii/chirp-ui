@@ -14,7 +14,7 @@
         <button type="submit" class="chirpui-btn chirpui-btn--primary">{{ submit_label }}</button>
     </div>
 </form>
-{% end %}
+{% enddef %}
 
 {% def signup_form(action="/signup", username_name="username", email_name="email", password_name="password", csrf=none, submit_label="Create account") %}
 <form method="post" action="{{ action }}" class="chirpui-stack chirpui-stack--sm">
@@ -26,4 +26,4 @@
         <button type="submit" class="chirpui-btn chirpui-btn--primary">{{ submit_label }}</button>
     </div>
 </form>
-{% end %}
+{% enddef %}

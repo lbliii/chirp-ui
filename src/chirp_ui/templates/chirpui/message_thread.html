@@ -15,7 +15,7 @@
 -#}
 
 {% def message_thread(cls="", id="") %}
-<ul class="chirpui-message-thread{{ " " ~ cls if cls else "" }}" role="list"{% if id %} id="{{ id | e }}"{% end %}>
+<ul class="chirpui-message-thread{{ " " ~ cls if cls else "" }}" role="list"{% if id %} id="{{ id | e }}"{% endif %}>
     {% slot %}
 </ul>
-{% end %}
+{% enddef %}

@@ -24,7 +24,7 @@
     {% slot %}
     <span class="chirpui-notification-dot__ping" aria-hidden="true"></span>
     <span class="chirpui-notification-dot__dot" aria-label="{{ _label }}">
-        {%- if count %}{{ count }}{% end -%}
+        {%- if count %}{{ count }}{% endif %}
     </span>
 </span>
-{% end %}
+{% enddef %}

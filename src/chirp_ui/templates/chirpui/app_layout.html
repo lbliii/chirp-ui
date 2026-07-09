@@ -21,16 +21,16 @@
 <script nonce="{{ csp_nonce() }}">
 (function(){var t=localStorage.getItem("chirpui-theme")||"system";var s=localStorage.getItem("chirpui-style")||"default";document.documentElement.setAttribute("data-theme",t);document.documentElement.setAttribute("data-style",s);})();
 </script>
-{% block head_extra %}{% end %}
-{% end %}
+{% block head_extra %}{% endblock %}
+{% endblock %}
 {% block shell %}
 <div id="main" hx-boost="true" hx-target="#main" hx-swap="innerHTML" hx-select="#page-content">
   <div id="page-content">
-    {% block content %}{% end %}
+    {% block content %}{% endblock %}
   </div>
 </div>
-{% end %}
+{% endblock %}
 {% block body_after %}
 {% from "chirpui/toast.html" import toast_container %}
 {{ toast_container() }}
-{% end %}
+{% endblock %}

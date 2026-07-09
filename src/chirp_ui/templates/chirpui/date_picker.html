@@ -35,7 +35,7 @@
      @focusin.window="$refs.popover && !$root.contains($event.target) && close()">
     {% if label %}
     <label class="chirpui-date-picker__label" for="{{ _pid }}-input">{{ label }}</label>
-    {% end %}
+    {% endif %}
     <div class="chirpui-date-picker__control">
         <span class="chirpui-date-picker__icon" aria-hidden="true">▦</span>
         <input type="text" class="chirpui-date-picker__input" id="{{ _pid }}-input"
@@ -48,7 +48,7 @@
                @keydown.down.prevent="show()">
     </div>
     <input type="hidden" name="{{ name }}" x-ref="value" value="{{ value }}">
-    {% if range %}<input type="hidden" name="{{ _end_name }}" x-ref="endValueInput" value="{{ end_value }}">{% end %}
+    {% if range %}<input type="hidden" name="{{ _end_name }}" x-ref="endValueInput" value="{{ end_value }}">{% endif %}
     <div class="chirpui-date-picker__popover" id="{{ _pid }}-popover" x-ref="popover"
          role="dialog" aria-modal="false" :aria-label="dialogLabel"
          x-show="open" x-cloak x-transition>
@@ -60,7 +60,7 @@
                     @click="nextMonth()">›</button>
         </div>
         <div class="chirpui-date-picker__grid" role="grid" aria-label="Calendar"
-             {% if range %}aria-multiselectable="true"{% end %}
+             {% if range %}aria-multiselectable="true"{% endif %}
              @keydown="onGridKey($event)">
             <div class="chirpui-date-picker__weekdays" role="row">
                 <template x-for="wd in weekdays" :key="wd.short">
@@ -98,4 +98,4 @@
         </div>
     </div>
 </div>
-{% end %}
+{% enddef %}

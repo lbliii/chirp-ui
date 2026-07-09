@@ -15,6 +15,6 @@
 <kbd class="chirpui-kbd{{ size_class }}{{ " " ~ cls if cls else "" }}"{{ attrs_map | html_attrs }}>
     {% for key in _keys %}
     <span class="chirpui-kbd__key">{{ key }}</span>
-    {% end %}
+    {% endfor %}
 </kbd>
-{% end %}
+{% enddef %}

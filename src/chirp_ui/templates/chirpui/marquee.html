@@ -17,14 +17,14 @@
         {% if items %}
             {% for item in items %}
             <span class="chirpui-marquee__item">{{ item }}</span>
-            {% end %}
+            {% endfor %}
             {% for item in items %}
             <span class="chirpui-marquee__item" aria-hidden="true">{{ item }}</span>
-            {% end %}
+            {% endfor %}
         {% else %}
             {% slot %}
-        {% end %}
+        {% endif %}
     </div>
     <div class="chirpui-marquee__fade chirpui-marquee__fade--end" aria-hidden="true"></div>
 </div>
-{% end %}
+{% enddef %}

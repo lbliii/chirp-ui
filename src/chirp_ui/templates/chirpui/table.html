@@ -59,40 +59,40 @@
         <caption class="chirpui-table__caption">{% slot caption %}</caption>
         {% if widths %}
         <colgroup>
-            {% if selectable %}<col style="width: 1%">{% end %}
+            {% if selectable %}<col style="width: 1%">{% endif %}
             {% for w in widths %}
             <col style="width: {{ w }}">
-            {% end %}
-            {% if actions_header %}<col style="width: 1%">{% end %}
+            {% endfor %}
+            {% if actions_header %}<col style="width: 1%">{% endif %}
         </colgroup>
-        {% end %}
+        {% endif %}
         {% if headers %}
             <thead class="chirpui-table__head">
                 <tr>
                     {% if selectable %}
                     <th class="chirpui-table__th chirpui-table__th--select" scope="col">
                         <input type="checkbox" class="chirpui-table__select-all" aria-label="Select all rows on this page"
-                               {% if selection and selection.all_selected %}checked{% end %}>
+                               {% if selection and selection.all_selected %}checked{% endif %}>
                     </th>
-                    {% end %}
+                    {% endif %}
                     {% for header in headers %}
                         {% set col_align = align[loop.index0] if align and loop.index0 < align | length else "" %}
                         <th class="chirpui-table__th{{ " chirpui-table__th--" ~ col_align if col_align else "" }}"
                             {% if sortable and sort_url %}
                                 hx-get="{{ sort_url }}?sort={{ header | lower }}"
-                                {% if hx_target %}hx-target="{{ hx_target }}"{% end %}
+                                {% if hx_target %}hx-target="{{ hx_target }}"{% endif %}
                                 hx-swap="innerHTML"
                                 style="cursor: pointer"
-                            {% end %}>
+                            {% endif %}>
                             {{ header }}
                         </th>
-                    {% end %}
+                    {% endfor %}
                     {% if actions_header %}
                     <th class="chirpui-table__th chirpui-table__th--actions" scope="col"></th>
-                    {% end %}
+                    {% endif %}
                 </tr>
             </thead>
-        {% end %}
+        {% endif %}
         <tbody class="chirpui-table__body">
             {% if rows %}
                 {% for row_data in rows %}
@@ -102,25 +102,25 @@
                     <td class="chirpui-table__td chirpui-table__td--select">
                         <input type="checkbox" name="{{ select_name }}" value="{{ _rid }}"
                                aria-label="Select row {{ loop.index }}"
-                               {% if selection and selection.is_selected(_rid) %}checked{% end %}>
+                               {% if selection and selection.is_selected(_rid) %}checked{% endif %}>
                     </td>
-                    {% end %}
+                    {% endif %}
                     {% for cell in row_data %}
                         {% set col_align = align[loop.index0] if align and loop.index0 < align | length else "" %}
                         <td class="chirpui-table__td{{ " chirpui-table__td--" ~ col_align if col_align else "" }}">{{ cell }}</td>
-                    {% end %}
+                    {% endfor %}
                 </tr>
-                {% end %}
+                {% endfor %}
             {% else %}
                 {# @provides _table_align — consumed by: row #}
                 {% provide _table_align = align %}
                 {% slot %}
-                {% end %}
-            {% end %}
+                {% endprovide %}
+            {% endif %}
         </tbody>
     </table>
 </div>
-{% end %}
+{% enddef %}
 
 {% def row(*cells) %}
 {# @consumes _table_align from: data_table — falls back to none #}
@@ -129,9 +129,9 @@
     {% for cell in cells %}
         {% set col_align = _align[loop.index0] if _align and loop.index0 < _align | length else "" %}
         <td class="chirpui-table__td{{ " chirpui-table__td--" ~ col_align if col_align else "" }}">{{ cell }}</td>
-    {% end %}
+    {% endfor %}
 </tr>
-{% end %}
+{% enddef %}
 
 {# DEPRECATED: Use row() inside a table(align=...) call instead. Will be removed in 0.3.0. #}
 {% def aligned_row(cells, align) %}
@@ -139,9 +139,9 @@
     {% for cell in cells %}
         {% set col_align = align[loop.index0] if align and loop.index0 < align | length else "" %}
         <td class="chirpui-table__td{{ " chirpui-table__td--" ~ col_align if col_align else "" }}">{{ cell }}</td>
-    {% end %}
+    {% endfor %}
 </tr>
-{% end %}
+{% enddef %}
 
 {% def table_empty(message="No data available", icon="◇") %}
 <tr>
@@ -149,4 +149,4 @@
         <span aria-hidden="true">{{ icon }}</span> {{ message }}
     </td>
 </tr>
-{% end %}
+{% enddef %}

@@ -31,13 +31,13 @@
 <nav class="chirpui-ascii-tabs{{ variant_class }}{{ " " ~ cls if cls else "" }}" aria-label="ASCII tabs">
     {% slot %}
 </nav>
-{% end %}
+{% enddef %}
 
 {% def ascii_tab(id, label, url=none, hx_target=none, hx_swap="innerHTML", active=false, cls="") %}
 {% if url %}
 <a class="chirpui-ascii-tab{{ " chirpui-ascii-tab--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
    id="tab-{{ id }}"
-   {% if active %}aria-current="page"{% end %}
+   {% if active %}aria-current="page"{% endif %}
    href="{{ url }}"
    {% if hx_target %}
        hx-boost="false"
@@ -48,18 +48,18 @@
        hx-push-url="false"
    {% else %}
        {{ route_link_attrs(url) | html_attrs }}
-   {% end %}>
-    {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span>{% end %}
+   {% endif %}>
+    {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span>{% endif %}
     <span class="chirpui-ascii-tab__label">{{ label }}</span>
-    {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span>{% end %}
+    {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span>{% endif %}
 </a>
 {% else %}
 <span class="chirpui-ascii-tab{{ " chirpui-ascii-tab--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
       id="tab-{{ id }}"
-      {% if active %}aria-current="page"{% end %}>
-    {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span>{% end %}
+      {% if active %}aria-current="page"{% endif %}>
+    {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">┤</span>{% endif %}
     <span class="chirpui-ascii-tab__label">{{ label }}</span>
-    {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span>{% end %}
+    {% if active %}<span class="chirpui-ascii-tab__bracket" aria-hidden="true">├</span>{% endif %}
 </span>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

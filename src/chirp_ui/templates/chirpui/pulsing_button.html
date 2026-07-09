@@ -14,18 +14,18 @@
 {% set base = "chirpui-pulsing-btn" ~ variant_class ~ (" " ~ cls if cls else "") %}
 {% set _route_attrs = route_link_attrs(href, disabled=disabled) if href else {} %}
 {% if href %}
-<a{% if not disabled %} href="{{ href }}"{% end %} class="{{ base }}"
-   {% if disabled %}aria-disabled="true" tabindex="-1"{% end %}
+<a{% if not disabled %} href="{{ href }}"{% endif %} class="{{ base }}"
+   {% if disabled %}aria-disabled="true" tabindex="-1"{% endif %}
    {{ _route_attrs | html_attrs }}>
     <span class="chirpui-pulsing-btn__ring" aria-hidden="true"></span>
-    {% if icon %}<span class="chirpui-pulsing-btn__icon">{{ icon | icon }}</span>{% end %}
+    {% if icon %}<span class="chirpui-pulsing-btn__icon">{{ icon | icon }}</span>{% endif %}
     {{ text }}
 </a>
 {% else %}
-<button type="{{ type }}" class="{{ base }}" {% if disabled %}disabled{% end %}>
+<button type="{{ type }}" class="{{ base }}" {% if disabled %}disabled{% endif %}>
     <span class="chirpui-pulsing-btn__ring" aria-hidden="true"></span>
-    {% if icon %}<span class="chirpui-pulsing-btn__icon">{{ icon | icon }}</span>{% end %}
+    {% if icon %}<span class="chirpui-pulsing-btn__icon">{{ icon | icon }}</span>{% endif %}
     {{ text }}
 </button>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

@@ -13,4 +13,4 @@
 {% set color_cls = " chirpui-neon--" ~ color if color in ("cyan", "magenta", "green", "orange", "blue", "red") else " chirpui-neon--cyan" %}
 {% set anim_cls = " chirpui-neon--" ~ animation if animation in ("flicker", "pulse") else "" %}
 <{{ tag }} class="chirpui-neon{{ color_cls }}{{ anim_cls }}{{ " " ~ cls if cls else "" }}">{{ text }}</{{ tag }}>
-{% end %}
+{% enddef %}

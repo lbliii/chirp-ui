@@ -31,7 +31,7 @@
         {% for i in range(8, 0, -1) %}
         <span class="chirpui-ascii-fader__segment{{ " chirpui-ascii-fader__segment--filled" if i <= level else "" }}"
               :class="{ 'chirpui-ascii-fader__segment--filled': isFilled({{ i }}) }">│<span x-text="segmentGlyph({{ i }})">{{ "█" if i <= level else "░" }}</span>│</span>
-        {% end %}
+        {% endfor %}
         <span class="chirpui-ascii-fader__cap">└─┘</span>
     </div>
     <input class="chirpui-ascii-fader__input chirpui-visually-hidden"
@@ -40,16 +40,16 @@
            aria-label="{{ label or name }}"
            @input="setValue($event.target.value)"
            @change="setValue($event.target.value)">
-    {% if label %}<span class="chirpui-ascii-fader__label">{{ label }}</span>{% end %}
+    {% if label %}<span class="chirpui-ascii-fader__label">{{ label }}</span>{% endif %}
     <span class="chirpui-ascii-fader__value" x-text="value">{{ bounded_value }}</span>
 </div>
-{% end %}
+{% enddef %}
 
 {% def fader_bank(title=none, cls="") %}
 <div class="chirpui-ascii-fader-bank{{ " " ~ cls if cls else "" }}">
-    {% if title %}<div class="chirpui-ascii-fader-bank__title">{{ title }}</div>{% end %}
+    {% if title %}<div class="chirpui-ascii-fader-bank__title">{{ title }}</div>{% endif %}
     <div class="chirpui-ascii-fader-bank__faders">
         {% slot %}
     </div>
 </div>
-{% end %}
+{% enddef %}

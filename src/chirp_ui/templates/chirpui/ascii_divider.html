@@ -17,9 +17,9 @@
 {% set variant_class = " chirpui-ascii-divider--" ~ variant if variant else "" %}
 <div class="chirpui-ascii-divider{{ variant_class }}{{ " " ~ cls if cls else "" }}"
      role="separator"
-     {% if glyph %}aria-label="{{ glyph }}"{% end %}>
+     {% if glyph %}aria-label="{{ glyph }}"{% endif %}>
     {% if glyph %}
     <span class="chirpui-ascii-divider__glyph" aria-hidden="true">{{ glyph }}</span>
-    {% end %}
+    {% endif %}
 </div>
-{% end %}
+{% enddef %}

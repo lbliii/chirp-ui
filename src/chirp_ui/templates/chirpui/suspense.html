@@ -32,12 +32,12 @@
             {{ skeleton(variant=skeleton_variant, lines=lines, width=width, height=height) }}
         {% else %}
             {{ skeleton(width=width or "100%", height=height or "3rem") }}
-        {% end %}
+        {% endif %}
     {% fallback %}
         {{ skeleton(width=width or "100%", height=height or "3rem") }}
     {% end %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def suspense_group(cls="") %}
 {# @provides _suspense_busy — consumed by: btn, icon_btn #}
@@ -45,5 +45,5 @@
 <div class="chirpui-suspense-group{{ " " ~ cls if cls else "" }}" aria-busy="true">
     {% slot %}
 </div>
-{% end %}
-{% end %}
+{% endprovide %}
+{% enddef %}

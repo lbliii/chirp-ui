@@ -48,19 +48,19 @@
         {% if title %}
         <div class="chirpui-ascii-breaker-panel__title">{{ title }}</div>
         <div class="chirpui-ascii-breaker-panel__divider" aria-hidden="true"></div>
-        {% end %}
+        {% endif %}
         {% if master %}
         <div class="chirpui-ascii-breaker-panel__master">
             {{ ascii_switch(master, label="MAIN", variant="danger", size=size or "") }}
         </div>
         <div class="chirpui-ascii-breaker-panel__divider" aria-hidden="true"></div>
-        {% end %}
+        {% endif %}
         <div class="chirpui-ascii-breaker-panel__switches">
             {% slot %}
         </div>
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {% def breaker(name, label=none, checked=false, variant="", disabled=false) %}
 <div class="chirpui-ascii-breaker-panel__breaker">
@@ -71,4 +71,4 @@
         </span>
     </span>
 </div>
-{% end %}
+{% enddef %}

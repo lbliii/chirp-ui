@@ -28,17 +28,17 @@
     {% if title or description %}
     <div class="chirpui-data-table__header">
         <div class="chirpui-data-table__summary">
-            {% if title %}<h2 class="chirpui-data-table__title">{{ title }}</h2>{% end %}
-            {% if description %}<p class="chirpui-data-table__description">{{ description }}</p>{% end %}
+            {% if title %}<h2 class="chirpui-data-table__title">{{ title }}</h2>{% endif %}
+            {% if description %}<p class="chirpui-data-table__description">{{ description }}</p>{% endif %}
         </div>
     </div>
-    {% end %}
+    {% endif %}
 
     {% if filter_action %}
     <div class="chirpui-data-table__filters">
-        {% call filter_row(action=filter_action, method=filter_method) %}{% slot %}{% end %}{% end %}
+        {% call filter_row(action=filter_action, method=filter_method) %}{% slot %}{% end %}{% endcall %}
     </div>
-    {% end %}
+    {% endif %}
 
     <div class="chirpui-data-table__body">
         {% if rows %}
@@ -46,14 +46,14 @@
         {% else %}
             {% call table(headers=headers, compact=compact, striped=striped, sticky_header=sticky_header) %}
                 {{ table_empty(empty_message) }}
-            {% end %}
-        {% end %}
+            {% endcall %}
+        {% endif %}
     </div>
 
     {% if total > 1 and url_pattern %}
     <div class="chirpui-data-table__footer">
         {{ pagination(current=current, total=total, url_pattern=url_pattern) }}
     </div>
-    {% end %}
+    {% endif %}
 </section>
-{% end %}
+{% enddef %}

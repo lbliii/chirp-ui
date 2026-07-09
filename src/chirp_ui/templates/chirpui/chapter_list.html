@@ -14,7 +14,7 @@
 -#}
 
 {% def chapter_list(summary="Chapters", open=false, cls="") %}
-<details class="chirpui-chapter-list{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
+<details class="chirpui-chapter-list{{ " " ~ cls if cls else "" }}"{% if open %} open{% endif %}>
     <summary class="chirpui-chapter-list__summary">
         <span class="chirpui-chapter-list__summary-text">{{ summary }}</span>
         <span class="chirpui-chapter-list__summary-actions">{% slot summary_actions %}</span>
@@ -23,7 +23,7 @@
         {% slot %}
     </ol>
 </details>
-{% end %}
+{% enddef %}
 
 {% def chapter_item(title, timestamp, href=none, cls="") %}
 <li class="chirpui-chapter-item{{ " " ~ cls if cls else "" }}">
@@ -37,6 +37,6 @@
         <span class="chirpui-chapter-item__timestamp">{{ timestamp }}</span>
         <span class="chirpui-chapter-item__title">{{ title }}</span>
     </span>
-    {% end %}
+    {% endif %}
 </li>
-{% end %}
+{% enddef %}

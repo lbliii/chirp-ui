@@ -21,10 +21,10 @@
 <a href="#" class="chirpui-share-menu__copy" data-copy-url="{{ share_url }}">Copy link</a>
 <a href="https://twitter.com/intent/tweet?url={{ share_url | e }}" target="_blank" rel="noopener">Share on X</a>
 <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url | e }}" target="_blank" rel="noopener">Share on Facebook</a>
-{% end %}
+{% endcall %}
 {% else %}
 {% call dropdown(label=label, cls="chirpui-share-menu " ~ (cls or "")) %}
 {{ caller() }}
-{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% endif %}
+{% enddef %}

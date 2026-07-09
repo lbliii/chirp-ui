@@ -23,10 +23,10 @@
 <section{{ primitive_attrs(primitive, props=props, mount_id=mount_id, version=version, src=src, cls=_cls) }}>
 {% else %}
 <section{{ island_attrs(name, props=props, mount_id=mount_id, version=version, src=src, cls=_cls) }}>
-{% end %}
-{% end %}
+{% endif %}
+{% endif %}
     <div class="chirpui-island-fallback">
         {% slot %}
     </div>
 </section>
-{% end %}
+{% enddef %}

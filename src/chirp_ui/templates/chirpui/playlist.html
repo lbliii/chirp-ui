@@ -19,12 +19,12 @@
         <h3 class="chirpui-playlist__title">{{ title }}</h3>
         <div class="chirpui-playlist__header-actions">{% slot header_actions %}</div>
     </div>
-    {% end %}
+    {% endif %}
     <ol class="chirpui-playlist__list">
         {% slot %}
     </ol>
 </div>
-{% end %}
+{% enddef %}
 
 {% def playlist_item(href, title, duration=none, active=false, cls="") %}
 {% set active_class = " chirpui-playlist-item--active" if active else "" %}
@@ -33,7 +33,7 @@
         <span class="chirpui-playlist-item__title">{{ title }}</span>
         {% if duration %}
         <span class="chirpui-playlist-item__duration">{{ duration }}</span>
-        {% end %}
+        {% endif %}
     </a>
 </li>
-{% end %}
+{% enddef %}

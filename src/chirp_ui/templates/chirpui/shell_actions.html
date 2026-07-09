@@ -28,16 +28,16 @@
 ) }}
 {% elif action.kind == "form" %}
 <form method="{{ action.form_method }}" action="{{ action.form_action }}" class="chirpui-shell-action-form"
-      {% if action.hx_post %}hx-post="{{ action.hx_post }}"{% end %}
-      {% if action.hx_target %}hx-target="{{ action.hx_target }}"{% end %}
-      {% if action.hx_swap %}hx-swap="{{ action.hx_swap }}"{% end %}
-      {% if action.hx_disinherit %}hx-disinherit="{{ action.hx_disinherit }}"{% end %}
-      {% if action.hx_post and "hx-sync" not in action.attrs %}hx-sync="this:drop"{% end %}
-      {% if action.hx_post and "hx-disabled-elt" not in action.attrs %}hx-disabled-elt="find button, find input[type=submit]"{% end %}
+      {% if action.hx_post %}hx-post="{{ action.hx_post }}"{% endif %}
+      {% if action.hx_target %}hx-target="{{ action.hx_target }}"{% endif %}
+      {% if action.hx_swap %}hx-swap="{{ action.hx_swap }}"{% endif %}
+      {% if action.hx_disinherit %}hx-disinherit="{{ action.hx_disinherit }}"{% endif %}
+      {% if action.hx_post and "hx-sync" not in action.attrs %}hx-sync="this:drop"{% endif %}
+      {% if action.hx_post and "hx-disabled-elt" not in action.attrs %}hx-disabled-elt="find button, find input[type=submit]"{% endif %}
       {{ action.attrs | html_attrs }}>
   {% if action.include_csrf %}
   {{ csrf_field() }}
-  {% end %}
+  {% endif %}
   {% for name, value in action.hidden_fields %}
   <input type="hidden" name="{{ name }}" value="{{ value }}">
   {% endfor %}
@@ -47,14 +47,14 @@
   {{ pulsing_button(action.label, variant=action.variant, type="submit", disabled=action.disabled) }}
   {% else %}
   {{ btn(action.label, variant=action.variant | shell_action_btn_variant, size=action.size, type="submit", icon=action.icon, disabled=action.disabled) }}
-  {% end %}
+  {% endif %}
 </form>
 {% elif action.href %}
 {{ btn(action.label, variant=action.variant | shell_action_btn_variant, size=action.size, href=action.href, icon=action.icon, disabled=action.disabled, data_action=action.action, attrs=action.attrs | default("")) }}
 {% else %}
 {{ btn(action.label, variant=action.variant | shell_action_btn_variant, size=action.size, type="button", icon=action.icon, disabled=action.disabled, data_action=action.action, attrs=action.attrs | default("")) }}
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def shell_actions_bar(shell_actions, cls="", id_suffix="") %}
 {% if shell_actions and shell_actions.has_items %}
@@ -63,16 +63,16 @@
     <div class="chirpui-shell-actions__group chirpui-shell-actions__group--primary">
         {% for action in shell_actions.primary.items %}
         {{ shell_action(action, id_suffix=id_suffix) }}
-        {% end %}
+        {% endfor %}
     </div>
-    {% end %}
+    {% endif %}
     {% if shell_actions.controls.items %}
     <div class="chirpui-shell-actions__group chirpui-shell-actions__group--controls">
         {% for action in shell_actions.controls.items %}
         {{ shell_action(action, id_suffix=id_suffix) }}
-        {% end %}
+        {% endfor %}
     </div>
-    {% end %}
+    {% endif %}
     {% if shell_actions.overflow.items %}
     <div class="chirpui-shell-actions__group chirpui-shell-actions__group--overflow">
         {{ dropdown_menu(
@@ -81,7 +81,7 @@
             id=shell_actions.target ~ "-overflow" ~ id_suffix
         ) }}
     </div>
-    {% end %}
+    {% endif %}
 </div>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

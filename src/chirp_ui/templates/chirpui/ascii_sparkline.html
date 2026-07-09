@@ -25,6 +25,6 @@
     {%- for v in values -%}
         {%- set idx = (((v - vmin) / vrange) * 7) | int -%}
         <span class="chirpui-ascii-sparkline__bar">{{ BARS[idx] }}</span>
-    {%- end -%}
+    {% endfor %}
 </span>
-{% end %}
+{% enddef %}

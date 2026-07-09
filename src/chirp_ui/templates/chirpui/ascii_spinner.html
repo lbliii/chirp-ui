@@ -26,10 +26,10 @@
     <span class="chirpui-ascii-spinner__chars" aria-hidden="true">
         {% for ch in frames %}
         <span class="chirpui-ascii-spinner__char">{{ ch }}</span>
-        {% end %}
+        {% endfor %}
     </span>
     {% if label %}
     <span class="chirpui-ascii-spinner__label">{{ label }}</span>
-    {% end %}
+    {% endif %}
 </span>
-{% end %}
+{% enddef %}

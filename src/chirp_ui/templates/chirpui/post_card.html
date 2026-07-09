@@ -28,22 +28,22 @@
                 <a href="{{ href }}" class="chirpui-post-card__name"{{ route_link_attrs(href) | html_attrs }}>{{ name }}</a>
                 {% else %}
                 <span class="chirpui-post-card__name">{{ name }}</span>
-                {% end %}
+                {% endif %}
                 {% if handle %}
                 <span class="chirpui-post-card__handle">{{ handle }}</span>
-                {% end %}
+                {% endif %}
                 {% if time %}
                 <time class="chirpui-post-card__time">{{ time }}</time>
-                {% end %}
+                {% endif %}
             </div>
         </div>
     </header>
-    {% end %}
+    {% endif %}
     <div class="chirpui-post-card__body">{% slot %}</div>
     <div class="chirpui-post-card__media">{% slot media %}</div>
     <footer class="chirpui-post-card__actions">{% slot actions %}</footer>
 </article>
-{% end %}
+{% enddef %}
 
 {% def post_card_header(name, handle=none, time=none, href=none, cls="") %}
 <header class="chirpui-post-card__header{{ " " ~ cls if cls else "" }}">
@@ -54,32 +54,32 @@
             <a href="{{ href }}" class="chirpui-post-card__name"{{ route_link_attrs(href) | html_attrs }}>{{ name }}</a>
             {% else %}
             <span class="chirpui-post-card__name">{{ name }}</span>
-            {% end %}
+            {% endif %}
             {% if handle %}
             <span class="chirpui-post-card__handle">{{ handle }}</span>
-            {% end %}
+            {% endif %}
             {% if time %}
             <time class="chirpui-post-card__time">{{ time }}</time>
-            {% end %}
+            {% endif %}
         </div>
     </div>
 </header>
-{% end %}
+{% enddef %}
 
 {% def post_card_body(cls="") %}
 <div class="chirpui-post-card__body{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def post_card_media(cls="") %}
 <div class="chirpui-post-card__media{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def post_card_actions(cls="") %}
 <footer class="chirpui-post-card__actions{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </footer>
-{% end %}
+{% enddef %}

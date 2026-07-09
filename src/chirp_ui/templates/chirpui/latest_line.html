@@ -10,10 +10,10 @@
     {% if _detail %}
     {% call tooltip(title ~ " - " ~ _detail, position="top", cls="chirpui-latest-line__tooltip") %}
     <a class="chirpui-latest-line__title" href="{{ href }}"{{ route_link_attrs(href) | html_attrs }}>{{ title }}</a>
-    {% end %}
+    {% endcall %}
     {% else %}
     <a class="chirpui-latest-line__title" href="{{ href }}"{{ route_link_attrs(href) | html_attrs }}>{{ title }}</a>
-    {% end %}
+    {% endif %}
     {% if actor or meta %}
     <span class="chirpui-latest-line__meta">
         {% if actor %}
@@ -22,11 +22,11 @@
         <a href="{{ actor_href }}"{{ route_link_attrs(actor_href) | html_attrs }}>{{ actor }}</a>
         {% else %}
         {{ actor }}
-        {% end %}
-        {% end %}
-        {% if actor and meta %}<span aria-hidden="true">&middot;</span>{% end %}
-        {% if meta %}<span>{{ meta }}</span>{% end %}
+        {% endif %}
+        {% endif %}
+        {% if actor and meta %}<span aria-hidden="true">&middot;</span>{% endif %}
+        {% if meta %}<span>{{ meta }}</span>{% endif %}
     </span>
-    {% end %}
+    {% endif %}
 </div>
-{% end %}
+{% enddef %}

@@ -20,18 +20,18 @@
 {% def segmented_control(items, name="segmented", size="", cls="", sliding_pill=false) %}
 {% set size = size | validate_size("segmented", "") %}
 {% set size_class = " chirpui-segmented--" ~ size if size else "" %}
-<div class="chirpui-segmented{{ size_class }}{% if sliding_pill %} chirpui-segmented--sliding-pill{% end %}{{ " " ~ cls if cls else "" }}"
+<div class="chirpui-segmented{{ size_class }}{% if sliding_pill %} chirpui-segmented--sliding-pill{% endif %}{{ " " ~ cls if cls else "" }}"
      role="radiogroup" aria-label="{{ name }}"
      {% if sliding_pill %}data-chirpui-sliding-pill="horizontal" style="{{ segmented_pill_inline_style(items) }}"{% endif %}>
     {% if sliding_pill %}<span class="chirpui-nav-pill" aria-hidden="true"></span>{% endif %}
     {% for item in items %}
-    <label class="chirpui-segmented__option{% if item.get("active") %} chirpui-segmented__option--active{% end %}">
+    <label class="chirpui-segmented__option{% if item.get("active") %} chirpui-segmented__option--active{% endif %}">
         <input type="radio" name="{{ name }}" value="{{ item.value | default("") }}"
                class="chirpui-visually-hidden"
-               {% if item.get("active") %}checked{% end %}>
-        {% if item.get("icon") %}<span class="chirpui-segmented__icon">{{ item.icon | icon }}</span>{% end %}
+               {% if item.get("active") %}checked{% endif %}>
+        {% if item.get("icon") %}<span class="chirpui-segmented__icon">{{ item.icon | icon }}</span>{% endif %}
         <span class="chirpui-segmented__label">{{ item.label | default("") }}</span>
     </label>
-    {% end %}
+    {% endfor %}
 </div>
-{% end %}
+{% enddef %}

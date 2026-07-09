@@ -31,37 +31,37 @@
     {% if tags %}
     {% if hint %}
     <p class="chirpui-font-sm chirpui-text-muted">{{ hint }}</p>
-    {% end %}
+    {% endif %}
     {% call cluster() %}
       {% for tag in tags %}
       {% set _tag_href = tag_toggle_url(tag) %}
       <a href="{{ _tag_href }}"
          class="chirpui-badge chirpui-badge--{{ 'primary' if (tag | lower) in (selected_tags | map('lower') | list) else 'muted' }}"{{ route_link_attrs(_tag_href) | html_attrs }}>{{ tag }}</a>
-      {% end %}
-    {% end %}
+      {% endfor %}
+    {% endcall %}
     {% if selected_tags %}
     <a href="{{ clear_url }}" class="chirpui-badge chirpui-badge--muted"{{ route_link_attrs(clear_url) | html_attrs }}>Clear all</a>
-    {% end %}
+    {% endif %}
     {% else %}
     <p class="chirpui-text-muted chirpui-font-sm">No tags available.</p>
-    {% end %}
-  {% end %}
-{% end %}
-{% end %}
+    {% endif %}
+  {% endcall %}
+{% endcall %}
+{% enddef %}
 
 {% def tag_selection_badges(selected_tags, tag_toggle_url, clear_url) %}
 {% for tag in selected_tags %}
 {% set _tag_href = tag_toggle_url(tag) %}
 <a href="{{ _tag_href }}"
    class="chirpui-badge chirpui-badge--primary"{{ route_link_attrs(_tag_href) | html_attrs }}>{{ tag }} &times;</a>
-{% end %}
+{% endfor %}
 {% if selected_tags %}
 <a href="{{ clear_url }}" class="chirpui-badge chirpui-badge--muted"{{ route_link_attrs(clear_url) | html_attrs }}>Clear all</a>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def tag_filter_actions(selected_tags, clear_url) %}
 {% if selected_tags %}
 <a href="{{ clear_url }}" class="chirpui-badge chirpui-badge--muted"{{ route_link_attrs(clear_url) | html_attrs }}>Clear all</a>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

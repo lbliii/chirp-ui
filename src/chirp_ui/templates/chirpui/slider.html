@@ -14,10 +14,10 @@
 <div class="chirpui-slider{{ size_class }}{{ " chirpui-slider--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}">
     {% if label or show_value %}
     <div class="chirpui-slider__header">
-        {% if label %}<label class="chirpui-slider__label" for="{{ name }}">{{ label }}</label>{% end %}
-        {% if show_value %}<output class="chirpui-slider__value" for="{{ name }}">{{ value }}</output>{% end %}
+        {% if label %}<label class="chirpui-slider__label" for="{{ name }}">{{ label }}</label>{% endif %}
+        {% if show_value %}<output class="chirpui-slider__value" for="{{ name }}">{{ value }}</output>{% endif %}
     </div>
-    {% end %}
+    {% endif %}
     <input class="chirpui-slider__input"
            type="range"
            id="{{ name }}"
@@ -26,7 +26,7 @@
            min="{{ min }}"
            max="{{ max }}"
            step="{{ step }}"
-           {% if disabled %}disabled{% end %}
+           {% if disabled %}disabled{% endif %}
            {{ attrs_map | html_attrs }}>
 </div>
-{% end %}
+{% enddef %}

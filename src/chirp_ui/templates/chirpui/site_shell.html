@@ -21,11 +21,11 @@
 
 {% def site_shell(ambient=false, cls="") %}
 <div class="chirpui-site-shell{{ " chirpui-ambient-root" if ambient else "" }}{{ " " ~ cls if cls else "" }}">
-    {% if ambient %}<div class="chirpui-ambient" aria-hidden="true"></div>{% end %}
+    {% if ambient %}<div class="chirpui-ambient" aria-hidden="true"></div>{% endif %}
     {% slot header %}
     <div class="chirpui-site-shell__main">
         {% slot %}
     </div>
     {% slot footer %}
 </div>
-{% end %}
+{% enddef %}

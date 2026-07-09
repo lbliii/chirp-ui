@@ -23,5 +23,5 @@
 {% set link_cls = "chirpui-nav-link" ~ (" " ~ cls if cls else "") %}
 <a class="{{ link_cls }}"
    href="{{ href }}"
-   {{ shell_outlet_attrs(swap="innerHTML transition:true") }}>{% if label %}{{ label }}{% else %}{% slot %}{% end %}</a>
-{% end %}
+   {{ shell_outlet_attrs(swap="innerHTML transition:true") }}>{% if label %}{{ label }}{% else %}{% slot %}{% endif %}</a>
+{% enddef %}

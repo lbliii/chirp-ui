@@ -15,9 +15,9 @@
     {{ animated_counter(value, label=label, prefix=prefix, suffix=suffix) }}
     {% if trend %}
     <span class="chirpui-animated-stat-card__trend chirpui-animated-stat-card__trend--{{ trend_direction if trend_direction else "neutral" }}">
-        {% if trend_direction == "up" %}↑{% elif trend_direction == "down" %}↓{% end %}
+        {% if trend_direction == "up" %}↑{% elif trend_direction == "down" %}↓{% endif %}
         {{ trend }}
     </span>
-    {% end %}
+    {% endif %}
 </div>
-{% end %}
+{% enddef %}

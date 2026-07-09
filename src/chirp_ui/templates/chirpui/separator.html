@@ -13,8 +13,8 @@
 {% set _role = "none" if decorative else "separator" %}
 <div class="chirpui-separator chirpui-separator--{{ _orientation }}{{ " chirpui-separator--decorative" if decorative else "" }}{{ " " ~ cls if cls else "" }}"
      role="{{ _role }}"
-     {% if not decorative %}aria-orientation="{{ _orientation }}"{% end %}
+     {% if not decorative %}aria-orientation="{{ _orientation }}"{% endif %}
      {{ attrs_map | html_attrs }}>
-    {% if label %}<span class="chirpui-separator__label">{{ label }}</span>{% end %}
+    {% if label %}<span class="chirpui-separator__label">{{ label }}</span>{% endif %}
 </div>
-{% end %}
+{% enddef %}

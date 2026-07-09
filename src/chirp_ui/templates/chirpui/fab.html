@@ -41,21 +41,21 @@
 {% set _default_hx_disabled = hx_disabled_elt if hx_disabled_elt is not none else ("this" if _link_has_hx_mutation and not href and not _hx_disabled_from_dict else none) %}
 {% set _route_attrs = route_link_attrs(href) if href and not _link_has_hx_config and not _disabled else {} %}
 {% if href %}
-<a{% if not _disabled %} href="{{ href }}"{% end %} class="{{ base }}" aria-label="{{ aria_label }}"
-   {% if _disabled %}aria-disabled="true" tabindex="-1"{% end %}
-   {% if not _disabled and _link_has_hx_request %}hx-boost="false"{% end %}
-   {% if not _disabled %}{{ build_hx_attrs(hx_select=_default_hx_select, hx_sync=_default_hx_sync) | html_attrs }}{% end %}
-   {% if not _disabled %}{{ _route_attrs | html_attrs }}{% end %}
-   {% if not _disabled %}{{ _hx_dict | html_attrs }}{% end %}>
+<a{% if not _disabled %} href="{{ href }}"{% endif %} class="{{ base }}" aria-label="{{ aria_label }}"
+   {% if _disabled %}aria-disabled="true" tabindex="-1"{% endif %}
+   {% if not _disabled and _link_has_hx_request %}hx-boost="false"{% endif %}
+   {% if not _disabled %}{{ build_hx_attrs(hx_select=_default_hx_select, hx_sync=_default_hx_sync) | html_attrs }}{% endif %}
+   {% if not _disabled %}{{ _route_attrs | html_attrs }}{% endif %}
+   {% if not _disabled %}{{ _hx_dict | html_attrs }}{% endif %}>
     <span class="chirpui-fab__icon">{{ icon | icon }}</span>
 </a>
 {% else %}
 <button type="{{ type }}" class="{{ base }}" aria-label="{{ aria_label }}"
-        {% if _disabled %}disabled{% end %}
-        {% if target %}x-data="chirpuiDialogTarget()" data-dialog-target="{{ target }}" @click="open()"{% end %}
+        {% if _disabled %}disabled{% endif %}
+        {% if target %}x-data="chirpuiDialogTarget()" data-dialog-target="{{ target }}" @click="open()"{% endif %}
         {{ build_hx_attrs(hx_select=_default_hx_select, hx_sync=_default_hx_sync, hx_disabled_elt=_default_hx_disabled) | html_attrs }}
         {{ _hx_dict | html_attrs }}>
     <span class="chirpui-fab__icon">{{ icon | icon }}</span>
 </button>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

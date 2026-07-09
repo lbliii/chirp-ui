@@ -13,12 +13,12 @@
 {% set variant_class = " chirpui-animated-counter--" ~ variant if variant else "" %}
 <div class="chirpui-animated-counter{{ variant_class }}{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-animated-counter__display">
-        {%- if prefix %}<span class="chirpui-animated-counter__prefix">{{ prefix }}</span>{% end -%}
+        {%- if prefix %}<span class="chirpui-animated-counter__prefix">{{ prefix }}</span>{% endif %}
         <span class="chirpui-animated-counter__value" style="--chirpui-num: {{ value }}; --chirpui-num-target: {{ value }}" aria-label="{{ value }}"></span>
-        {%- if suffix %}<span class="chirpui-animated-counter__suffix">{{ suffix }}</span>{% end -%}
+        {%- if suffix %}<span class="chirpui-animated-counter__suffix">{{ suffix }}</span>{% endif %}
     </div>
     {% if label %}
     <span class="chirpui-animated-counter__label">{{ label }}</span>
-    {% end %}
+    {% endif %}
 </div>
-{% end %}
+{% enddef %}

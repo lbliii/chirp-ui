@@ -37,7 +37,7 @@
      role="listbox" {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def dnd_item(cls="", attrs="", attrs_unsafe="") %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
@@ -45,19 +45,19 @@
      role="option" {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def dnd_handle(cls="", attrs="", attrs_unsafe="") %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 <span class="chirpui-dnd__handle{{ " " ~ cls if cls else "" }}"
       aria-hidden="true" {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>&#x2630;</span>
-{% end %}
+{% enddef %}
 
 {% def dnd_drop_indicator(cls="", attrs="", attrs_unsafe="") %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 <span class="chirpui-dnd__drop-indicator{{ " " ~ cls if cls else "" }}"
       aria-hidden="true" {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}></span>
-{% end %}
+{% enddef %}
 
 {% def dnd_board(cls="", attrs="", attrs_unsafe="") %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
@@ -65,7 +65,7 @@
      role="group" aria-label="Board" {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def dnd_column(title=none, cls="", attrs="", attrs_unsafe="") %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
@@ -73,12 +73,12 @@
      role="group" {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
     {% if title %}
     <div class="chirpui-dnd__column-header">{{ title }}</div>
-    {% end %}
+    {% endif %}
     <div class="chirpui-dnd__column-body">
         {% slot %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {% def dnd_card(cls="", attrs="", attrs_unsafe="") %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
@@ -86,4 +86,4 @@
      role="article" {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
     {% slot %}
 </div>
-{% end %}
+{% enddef %}

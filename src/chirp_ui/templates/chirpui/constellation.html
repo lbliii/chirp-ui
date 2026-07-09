@@ -27,10 +27,10 @@
         {% for i in range(count) %}
         {% set pos = positions[i] %}
         <span class="chirpui-constellation__star" style="left: {{ pos[0] }}%; top: {{ pos[1] }}%">{{ glyphs[i % 16] }}</span>
-        {% end %}
+        {% endfor %}
     </div>
     <div class="chirpui-constellation__content">
         {% slot %}
     </div>
 </div>
-{% end %}
+{% enddef %}

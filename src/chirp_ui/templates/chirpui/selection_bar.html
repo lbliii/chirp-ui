@@ -20,13 +20,13 @@
 {% def selection_bar(count=0, label="selected", live_region=false, aria_label="Bulk actions", controlled=false, cls="") %}
 {% if controlled %}
 <div class="chirpui-selection-bar{{ " " ~ cls if cls else "" }}" role="toolbar" aria-label="{{ aria_label }}" x-show="count > 0" x-cloak>
-  <span class="chirpui-selection-bar__count"{% if live_region %} aria-live="polite" aria-atomic="true"{% end %} x-text="count + ' {{ label }}'">{{ count }} {{ label }}</span>
+  <span class="chirpui-selection-bar__count"{% if live_region %} aria-live="polite" aria-atomic="true"{% endif %} x-text="count + ' {{ label }}'">{{ count }} {{ label }}</span>
   <div class="chirpui-selection-bar__actions">{{ caller() }}</div>
 </div>
 {% elif count > 0 %}
 <div class="chirpui-selection-bar{{ " " ~ cls if cls else "" }}" role="toolbar" aria-label="{{ aria_label }}">
-  <span class="chirpui-selection-bar__count"{% if live_region %} aria-live="polite" aria-atomic="true"{% end %}>{{ count }} {{ label }}</span>
+  <span class="chirpui-selection-bar__count"{% if live_region %} aria-live="polite" aria-atomic="true"{% endif %}>{{ count }} {{ label }}</span>
   <div class="chirpui-selection-bar__actions">{{ caller() }}</div>
 </div>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

@@ -48,14 +48,14 @@
         <div class="chirpui-feature-section__actions">{% slot actions %}</div>
     </div>
     <div class="chirpui-feature-section__media">
-        {% if variant == "halo" %}<div class="chirpui-feature-section__halo" aria-hidden="true"></div>{% end %}
+        {% if variant == "halo" %}<div class="chirpui-feature-section__halo" aria-hidden="true"></div>{% endif %}
         {% slot media %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {% def feature_stack(cls="") %}
 <div class="chirpui-feature-stack{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}

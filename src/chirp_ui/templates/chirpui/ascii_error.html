@@ -96,14 +96,14 @@
 {% set _art = _info["art"] %}
 <div class="chirpui-ascii-error{{ " " ~ cls if cls else "" }}">
     <pre class="chirpui-ascii-error__art" aria-hidden="true">{% for line in _art %}{{ line }}
-{% end %}</pre>
+{% endfor %}</pre>
     {% if code != "empty" %}
     <span class="chirpui-ascii-error__code">{{ code }}</span>
-    {% end %}
+    {% endif %}
     <h2 class="chirpui-ascii-error__heading">{{ _heading }}</h2>
     <p class="chirpui-ascii-error__desc">{{ _description }}</p>
     <div class="chirpui-ascii-error__action">
         {% slot %}
     </div>
 </div>
-{% end %}
+{% enddef %}

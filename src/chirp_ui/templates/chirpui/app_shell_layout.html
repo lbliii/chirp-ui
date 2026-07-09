@@ -69,14 +69,14 @@
 {% block head %}
 {% if csrf_token is defined %}
 <meta name="csrf-token" content="{{ csrf_token() }}">
-{% end %}
+{% endif %}
 <link rel="stylesheet" href="/static/chirpui.css">
 <link rel="stylesheet" href="/static/chirpui-transitions.css">
 <script nonce="{{ csp_nonce() }}">
 (function(){var T=["system","light","dark","oled"];var t=localStorage.getItem("chirpui-theme");if(T.indexOf(t)<0){t="system";}var s=localStorage.getItem("chirpui-style")||"default";document.documentElement.setAttribute("data-theme",t);document.documentElement.setAttribute("data-style",s);})();
 </script>
-{% block head_extra %}{% end %}
-{% end %}
+{% block head_extra %}{% endblock %}
+{% endblock %}
 
 {% block shell %}
 {% from "chirpui/sidebar.html" import sidebar, sidebar_toggle, shell_brand_link %}
@@ -102,38 +102,38 @@
         content is NOT nested inside the brand anchor (#220). The built-in
         nav_drawer hamburger + collapsible sidebar_toggle render in the same
         wrapper. Always rendered (empty topbar-start is flex-shrink:0, inert). -#}
-    <div class="chirpui-app-shell__topbar-start">{% block topbar_leading %}{% end %}{% if _nav_drawer %}<button type="button" class="chirpui-app-shell__nav-toggle" data-chirpui-shell-drawer-toggle="sidebar" aria-controls="chirpui-app-shell-sidebar" aria-expanded="false" aria-label="Open {{ _nav_drawer_label }}"><span class="chirpui-app-shell__nav-toggle-bars" aria-hidden="true"></span></button>{% endif %}{% if _collapsible %}{{ sidebar_toggle() }}{% endif %}</div>
+    <div class="chirpui-app-shell__topbar-start">{% block topbar_leading %}{% endblock %}{% if _nav_drawer %}<button type="button" class="chirpui-app-shell__nav-toggle" data-chirpui-shell-drawer-toggle="sidebar" aria-controls="chirpui-app-shell-sidebar" aria-expanded="false" aria-label="Open {{ _nav_drawer_label }}"><span class="chirpui-app-shell__nav-toggle-bars" aria-hidden="true"></span></button>{% endif %}{% if _collapsible %}{{ sidebar_toggle() }}{% endif %}</div>
     {% block brand_link %}
     {% call shell_brand_link() %}
-      {% block brand %}{% end %}
-    {% end %}
-    {% end %}
-    <div id="chirpui-topbar-breadcrumbs" class="chirpui-app-shell__topbar-center" aria-live="polite" aria-atomic="true">{% block topbar_center %}{% end %}</div>
+      {% block brand %}{% endblock %}
+    {% endcall %}
+    {% endblock %}
+    <div id="chirpui-topbar-breadcrumbs" class="chirpui-app-shell__topbar-center" aria-live="polite" aria-atomic="true">{% block topbar_center %}{% endblock %}</div>
     <div class="chirpui-app-shell__topbar-end">
       {% if _nav_drawer and _context_rail %}<button type="button" class="chirpui-app-shell__rail-toggle" data-chirpui-shell-drawer-toggle="rail" aria-controls="chirpui-context-rail" aria-expanded="false" aria-label="Open {{ nav_drawer_rail_label | default('Context') }}">{{ nav_drawer_rail_label | default("Context") }}</button>{% endif %}
       <div id="{{ _shell_actions_target }}" class="chirpui-app-shell__shell-actions">
         {% if _shell_actions %}
         {{ shell_actions_bar(_shell_actions) }}
-        {% end %}
+        {% endif %}
       </div>
-      {% block topbar_end %}{% end %}
+      {% block topbar_end %}{% endblock %}
     </div>
   </header>
-  <aside id="chirpui-app-shell-sidebar" class="chirpui-app-shell__sidebar"{% if _nav_drawer %} data-chirpui-shell-drawer="sidebar" aria-labelledby="chirpui-app-shell-drawer-title"{% end %}>{% if _nav_drawer %}<div class="chirpui-app-shell__drawer-head"><span id="chirpui-app-shell-drawer-title" class="chirpui-app-shell__drawer-title">{{ _nav_drawer_label }}</span><button type="button" class="chirpui-app-shell__drawer-close" data-chirpui-shell-drawer-close aria-label="Close {{ _nav_drawer_label }}">&times;</button></div>{% endif %}<div id="chirpui-sidebar-nav" aria-live="polite" aria-atomic="true">{% block sidebar %}{% end %}</div></aside>
-  <main id="main" class="chirpui-app-shell__main{% block main_shell_class %}{% end %}"
+  <aside id="chirpui-app-shell-sidebar" class="chirpui-app-shell__sidebar"{% if _nav_drawer %} data-chirpui-shell-drawer="sidebar" aria-labelledby="chirpui-app-shell-drawer-title"{% endif %}>{% if _nav_drawer %}<div class="chirpui-app-shell__drawer-head"><span id="chirpui-app-shell-drawer-title" class="chirpui-app-shell__drawer-title">{{ _nav_drawer_label }}</span><button type="button" class="chirpui-app-shell__drawer-close" data-chirpui-shell-drawer-close aria-label="Close {{ _nav_drawer_label }}">&times;</button></div>{% endif %}<div id="chirpui-sidebar-nav" aria-live="polite" aria-atomic="true">{% block sidebar %}{% endblock %}</div></aside>
+  <main id="main" class="chirpui-app-shell__main{% block main_shell_class %}{% endblock %}"
         data-chirp-scroll="auto" tabindex="-1"
         {{ shell_outlet_attrs() }}>
     {% call shell_outlet(include_boost_attrs=false) %}
-      {% block content %}{% end %}
-    {% end %}
+      {% block content %}{% endblock %}
+    {% endcall %}
   </main>
   {% if _context_rail %}
   {#- Route-context rail outlet — same contract as app_shell(): a route response
       updates it via an OOB fragment targeting #chirpui-context-rail (context_rail_oob). -#}
   <aside id="chirpui-context-rail" class="chirpui-app-shell__context-rail"
-         aria-label="{% block context_rail_label %}Context{% end %}" aria-live="polite" aria-atomic="true"
-         data-chirpui-shell-context-rail{% if _nav_drawer %} data-chirpui-shell-drawer="rail"{% end %}>{% block context_rail %}{% end %}</aside>
-  {% end %}
+         aria-label="{% block context_rail_label %}Context{% endblock %}" aria-live="polite" aria-atomic="true"
+         data-chirpui-shell-context-rail{% if _nav_drawer %} data-chirpui-shell-drawer="rail"{% endif %}>{% block context_rail %}{% endblock %}</aside>
+  {% endif %}
   {% if _nav_drawer %}<div class="chirpui-app-shell__scrim" data-chirpui-shell-scrim hidden></div>{% endif %}
 </div>
 <script nonce="{{ csp_nonce() }}">
@@ -149,5 +149,5 @@ document.body.addEventListener("htmx:configRequest", function(event) {
 </script>
 {{ shell_runtime_script() }}
 {{ toast_container() }}
-{% block page_scripts %}{% end %}
-{% end %}
+{% block page_scripts %}{% endblock %}
+{% endblock %}

@@ -17,7 +17,7 @@
 {% def message_actions(is_last=false, can_delete=false, copy_text="", delete_url=none,
                        delete_target=none, confirm_id="chirpui-msg-del", cls="") %}
 <div class="chirpui-message-actions{{ " chirpui-message-actions--last" if is_last else "" }}{{ " " ~ cls if cls else "" }}"
-     {% if is_last %}data-last{% end %}>
+     {% if is_last %}data-last{% endif %}>
   <div class="chirpui-scroll-x">
     {% call action_bar() %}
       <button type="button" class="chirpui-action-bar__item" aria-label="Copy message" title="Copy"
@@ -33,14 +33,14 @@
               @click="if ($event.shiftKey) { var f = $el.closest('form'); if (f) f.requestSubmit(); } else { var d = document.getElementById($el.dataset.confirmTarget); if (d) d.showModal(); }">
         <span class="chirpui-action-bar__icon">🗑</span>
       </button>
-      {% end %}
-    {% end %}
+      {% endif %}
+    {% endcall %}
   </div>
   {% if can_delete and delete_url %}
   {{ confirm_dialog(confirm_id, title="Delete message?", message="This cannot be undone.",
                     confirm_label="Delete", variant="danger",
                     confirm_url=delete_url, confirm_method="DELETE",
                     hx_target=delete_target, hx_swap="outerHTML") }}
-  {% end %}
+  {% endif %}
 </div>
-{% end %}
+{% enddef %}

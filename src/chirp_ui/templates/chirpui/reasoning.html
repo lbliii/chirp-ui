@@ -21,28 +21,28 @@
 <div class="chirpui-reasoning{{ " chirpui-reasoning--pending" if not done else "" }}{{ " " ~ cls if cls else "" }}">
   {% call collapse(trigger=_label, open=open) %}
     {% slot %}{% end %}
-  {% end %}
+  {% endcall %}
   {% if not done %}
   <span class="chirpui-reasoning__shimmer" aria-hidden="true"></span>
-  {% end %}
+  {% endif %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def tool_call_card(name, status="pending", args=none, result=none, files=none, open=false, cls="") %}
 {% set _status = status | validate_variant(("pending", "running", "done", "error"), "pending") %}
 <div class="chirpui-tool-call chirpui-tool-call--{{ _status }}{{ " " ~ cls if cls else "" }}">
   {% call collapse(trigger=name ~ " — " ~ _status, open=open) %}
     {% slot header_actions %}
-      {% if _status in ("pending", "running") %}{{ spinner_thinking(size="sm") }}{% end %}
+      {% if _status in ("pending", "running") %}{{ spinner_thinking(size="sm") }}{% endif %}
       <span class="chirpui-tool-call__status" aria-label="Status: {{ _status }}">{{ _status }}</span>
     {% end %}
-    {% if args %}{{ description_list(items=args, variant="horizontal", compact=true) }}{% end %}
-    {% if result %}<div class="chirpui-tool-call__result chirpui-rendered-content">{{ result }}</div>{% end %}
+    {% if args %}{{ description_list(items=args, variant="horizontal", compact=true) }}{% endif %}
+    {% if result %}<div class="chirpui-tool-call__result chirpui-rendered-content">{{ result }}</div>{% endif %}
     {% if files %}
     <ul class="chirpui-tool-call__files">
-      {% for f in files %}<li class="chirpui-tool-call__file">{{ f }}</li>{% end %}
+      {% for f in files %}<li class="chirpui-tool-call__file">{{ f }}</li>{% endfor %}
     </ul>
-    {% end %}
-  {% end %}
+    {% endif %}
+  {% endcall %}
 </div>
-{% end %}
+{% enddef %}

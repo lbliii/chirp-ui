@@ -23,13 +23,13 @@
 <span class="chirpui-ascii-badge{{ variant_class }}{{ frame_class }}{{ " " ~ cls if cls else "" }}">
     {% if frame != "none" %}
     <span class="chirpui-ascii-badge__open" aria-hidden="true">{{ tl }}</span>
-    {% end %}
+    {% endif %}
     {% if glyph %}
     <span class="chirpui-ascii-badge__glyph" aria-hidden="true">{{ glyph }}</span>
-    {% end %}
+    {% endif %}
     <span class="chirpui-ascii-badge__text">{{ text }}</span>
     {% if frame != "none" %}
     <span class="chirpui-ascii-badge__close" aria-hidden="true">{{ tr }}</span>
-    {% end %}
+    {% endif %}
 </span>
-{% end %}
+{% enddef %}

@@ -16,14 +16,14 @@
 <div class="chirpui-params-table{{ " " ~ cls if cls else "" }}">
     {% if title %}
     <p class="chirpui-params-table__title">{{ title }}</p>
-    {% end %}
+    {% endif %}
     <div class="chirpui-params-table__wrap" tabindex="0" aria-label="{{ title if title else "Parameters" }}">
         <table class="chirpui-params-table__table">
             <thead class="chirpui-params-table__head">
                 <tr>
                     {% for col in cols %}
                     <th class="chirpui-params-table__th chirpui-params-table__th--{{ col }}">{{ col | capitalize }}</th>
-                    {% end %}
+                    {% endfor %}
                 </tr>
             </thead>
             <tbody class="chirpui-params-table__body">
@@ -40,18 +40,18 @@
                         <code class="chirpui-params-table__code chirpui-params-table__code--muted">{{ row.default }}</code>
                         {% else %}
                         <span class="chirpui-params-table__empty">—</span>
-                        {% end %}
+                        {% endif %}
                         {% elif col == "description" %}
                         {{ row.get("description", "") }}
                         {% else %}
                         {{ row.get(col, "") }}
-                        {% end %}
+                        {% endif %}
                     </td>
-                    {% end %}
+                    {% endfor %}
                 </tr>
-                {% end %}
+                {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
-{% end %}
+{% enddef %}

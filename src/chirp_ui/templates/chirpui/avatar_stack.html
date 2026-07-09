@@ -25,9 +25,9 @@
     {% slot %}
     {% if total is not none and total > max_visible %}
     <span class="chirpui-avatar-stack__more">+{{ total - max_visible }}</span>
-    {% end %}
+    {% endif %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def linked_avatar_stack(items, max_visible=4, total=none, label="Avatars", cls="") %}
 {% set _total = total if total is not none else (items | length) %}
@@ -42,11 +42,11 @@
     <span class="chirpui-avatar-stack__link" title="{{ item.label | default("") }}" aria-label="{{ item.label | default("") }}">
         {{ avatar(src=item.get("src"), initials=item.get("initials", ""), alt=item.get("label", ""), size=item.get("size", "sm")) }}
     </span>
-    {% end %}
-    {% end %}
-    {% end %}
+    {% endif %}
+    {% endif %}
+    {% endfor %}
     {% if _total > max_visible %}
     <span class="chirpui-avatar-stack__more">+{{ _total - max_visible }}</span>
-    {% end %}
+    {% endif %}
 </div>
-{% end %}
+{% enddef %}

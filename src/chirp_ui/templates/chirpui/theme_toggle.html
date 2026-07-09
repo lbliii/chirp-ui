@@ -18,7 +18,7 @@
         :title="'Theme: ' + theme">
     <span class="chirpui-theme-toggle__icon" aria-hidden="true" x-text="icons[theme] || icons.system">◐</span>
 </button>
-{% end %}
+{% enddef %}
 
 {% def style_toggle() %}
 <button type="button"
@@ -30,7 +30,7 @@
         :title="'Style: ' + style">
     <span class="chirpui-style-toggle__icon" aria-hidden="true" x-text="icons[style] || icons.default">▣</span>
 </button>
-{% end %}
+{% enddef %}
 
 {% def style_select(name="chirpui-style", cls="") %}
 <label class="chirpui-field__label chirpui-inline-flex {{ cls }}">Style
@@ -42,4 +42,4 @@
         <option value="neumorphic">Neumorphic</option>
     </select>
 </label>
-{% end %}
+{% enddef %}

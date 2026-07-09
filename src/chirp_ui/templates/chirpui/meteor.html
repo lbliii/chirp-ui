@@ -20,9 +20,9 @@
 <div class="chirpui-meteor{{ variant_class }}{{ " " ~ cls if cls else "" }}">
     {% for i in range(count) %}
     <span class="chirpui-meteor__streak" aria-hidden="true"></span>
-    {% end %}
+    {% endfor %}
     <div class="chirpui-meteor__content">
         {% slot %}
     </div>
 </div>
-{% end %}
+{% enddef %}

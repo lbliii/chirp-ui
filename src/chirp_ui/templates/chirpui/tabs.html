@@ -13,12 +13,12 @@
 -#}
 
 {% def tabs(active=none, cls="", sliding_pill=false) %}
-<nav class="chirpui-tabs{% if sliding_pill %} chirpui-tabs--sliding-pill{% end %}{{ " " ~ cls if cls else "" }}"
+<nav class="chirpui-tabs{% if sliding_pill %} chirpui-tabs--sliding-pill{% endif %}{{ " " ~ cls if cls else "" }}"
      role="tablist"{% if sliding_pill %} data-chirpui-sliding-pill="horizontal"{% endif %}>
     {% if sliding_pill %}<span class="chirpui-nav-pill" aria-hidden="true"></span>{% endif %}
     {% slot %}
 </nav>
-{% end %}
+{% enddef %}
 
 {% def tab(id, label, url=none, hx_target=none, hx_swap="innerHTML", active=false, cls="") %}
 <a class="chirpui-tab{{ " chirpui-tab--active" if active else "" }}{{ " " ~ cls if cls else "" }}"
@@ -36,8 +36,8 @@
            hx-push-url="false"
        {% else %}
            {{ route_link_attrs(url) | html_attrs }}
-       {% end %}
-   {% end %}>
+       {% endif %}
+   {% endif %}>
     {{ label }}
 </a>
-{% end %}
+{% enddef %}

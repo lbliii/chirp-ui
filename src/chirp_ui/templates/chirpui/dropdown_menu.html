@@ -58,7 +58,7 @@
         <button type="button" class="chirpui-dropdown__item chirpui-dropdown__item--{{ variant }}"
                 tabindex="-1"
                 data-label="{{ item.get("label", "") }}" data-action="{{ action }}" role="menuitem"
-                {% if _disabled %} aria-disabled="true"{% end %}
+                {% if _disabled %} aria-disabled="true"{% endif %}
                 @click="selectItem($el, $refs.trigger)">
             {% if icon %}<span class="chirpui-dropdown__icon" aria-hidden="true">{{ icon }}</span>{% endif %}
             {{ item.get("label", "") }}
@@ -76,7 +76,7 @@
         {% endfor %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {% def dropdown_select(trigger_label, items, selected=none, id="chirpui-dropdown-select") %}
 {% set sel = selected or (items[0].get("value", items[0].get("label"))) if items else "" %}
@@ -125,7 +125,7 @@
         {% endfor %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {% def dropdown_split(primary_label, primary_href=none, primary_action=none, items=[], icon=none) %}
 <div class="chirpui-dropdown chirpui-dropdown--split" x-id="['dropdown-split']"
@@ -191,4 +191,4 @@
         {% endfor %}
     </div>
 </div>
-{% end %}
+{% enddef %}

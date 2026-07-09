@@ -45,7 +45,7 @@
      @click.outside="close()">
     {% if label %}
     <label class="chirpui-combobox__label" for="{{ _cid }}-input">{{ label }}</label>
-    {% end %}
+    {% endif %}
     {% if multiple %}<div class="chirpui-combobox__control">
         <div class="chirpui-combobox__tokens" x-show="selected.length" x-cloak>
             <template x-for="t in selected" :key="t.value">
@@ -55,7 +55,7 @@
                             :aria-label="'Remove ' + t.label" @click="removeToken(t.value)">&times;</button>
                 </span>
             </template>
-        </div>{% end %}
+        </div>{% endif %}
     <input type="text" class="chirpui-combobox__input" id="{{ _cid }}-input"
            x-ref="input"
            role="combobox" aria-autocomplete="list" autocomplete="off"
@@ -77,16 +77,16 @@
     </template>
     {% else %}
     <input type="hidden" name="{{ name }}" x-ref="value" value="{{ value }}">
-    {% end %}
+    {% endif %}
     <ul class="chirpui-combobox__list" id="{{ _cid }}-list" role="listbox"
         aria-label="{{ label or name }}"
         x-show="open" x-cloak x-transition>
         {% for opt in options %}
         {% set _ov = opt.get("value", opt.get("label", "")) %}
         {% set _ol = opt.get("label", _ov) %}
-        <li class="chirpui-combobox__option{% if opt.get("disabled") %} chirpui-combobox__option--disabled{% end %}" id="{{ _cid }}-opt-{{ loop.index0 }}"
+        <li class="chirpui-combobox__option{% if opt.get("disabled") %} chirpui-combobox__option--disabled{% endif %}" id="{{ _cid }}-opt-{{ loop.index0 }}"
             role="option" data-value="{{ _ov }}" data-label="{{ _ol }}"
-            {% if opt.get("disabled") %}aria-disabled="true"{% end %}
+            {% if opt.get("disabled") %}aria-disabled="true"{% endif %}
             x-show="selected.length >= 0 && matches($el.dataset.label, $el.dataset.value)"
             :aria-selected="activeId === $el.id ? 'true' : 'false'"
             :class="{ 'chirpui-combobox__option--active': activeId === $el.id }"
@@ -94,9 +94,9 @@
             @mousemove="activeId = $el.id">
             {{ _ol }}
         </li>
-        {% end %}
+        {% endfor %}
         <li class="chirpui-combobox__empty" role="presentation"
             x-show="open && visibleCount() === 0">No matches</li>
     </ul>
 </div>
-{% end %}
+{% enddef %}

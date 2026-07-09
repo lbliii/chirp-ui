@@ -9,10 +9,10 @@
 
 {% def ui_label(text="", for_id="", required=false, hint=none, cls="", attrs_map=none) %}
 <label class="chirpui-label{{ " " ~ cls if cls else "" }}"
-       {% if for_id %}for="{{ for_id }}"{% end %}
+       {% if for_id %}for="{{ for_id }}"{% endif %}
        {{ attrs_map | html_attrs }}>
     <span class="chirpui-label__text">{{ text }}</span>
-    {% if required %}<span class="chirpui-label__required" aria-hidden="true">*</span>{% end %}
-    {% if hint %}<span class="chirpui-label__hint">{{ hint }}</span>{% end %}
+    {% if required %}<span class="chirpui-label__required" aria-hidden="true">*</span>{% endif %}
+    {% if hint %}<span class="chirpui-label__hint">{{ hint }}</span>{% endif %}
 </label>
-{% end %}
+{% enddef %}

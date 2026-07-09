@@ -9,5 +9,5 @@
 -#}
 
 {% def gradient_text(text, animated=false, tag="span", cls="") %}
-<{{ tag }} class="chirpui-gradient-text{% if animated %} chirpui-gradient-text--animated{% end %}{{ " " ~ cls if cls else "" }}">{{ text }}</{{ tag }}>
-{% end %}
+<{{ tag }} class="chirpui-gradient-text{% if animated %} chirpui-gradient-text--animated{% endif %}{{ " " ~ cls if cls else "" }}">{{ text }}</{{ tag }}>
+{% enddef %}

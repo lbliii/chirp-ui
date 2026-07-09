@@ -28,21 +28,21 @@
     <span class="chirpui-ascii-skeleton__line chirpui-ascii-skeleton__line--header">{{ fill }}</span>
     {% for i in range(lines if lines > 1 else 3) %}
     <span class="chirpui-ascii-skeleton__line">{{ fill if not loop.last else short_fill }}</span>
-    {% end %}
+    {% endfor %}
 </div>
 {% elif variant == "text" %}
 <div class="chirpui-ascii-skeleton chirpui-ascii-skeleton--text{{ " " ~ cls if cls else "" }}" aria-hidden="true">
     {% for i in range(lines) %}
     <span class="chirpui-ascii-skeleton__line">{{ fill if not loop.last else short_fill }}</span>
-    {% end %}
+    {% endfor %}
 </div>
 {% elif variant == "heading" %}
 <span class="chirpui-ascii-skeleton chirpui-ascii-skeleton--heading{{ " " ~ cls if cls else "" }}" aria-hidden="true">
     <span class="chirpui-ascii-skeleton__fill">{{ short_fill }}</span>
 </span>
 {% else %}
-<span class="chirpui-ascii-skeleton{{ " " ~ cls if cls else "" }}"{% if width %} style="width:{{ width }}"{% end %} aria-hidden="true">
+<span class="chirpui-ascii-skeleton{{ " " ~ cls if cls else "" }}"{% if width %} style="width:{{ width }}"{% endif %} aria-hidden="true">
     <span class="chirpui-ascii-skeleton__fill">{{ fill }}</span>
 </span>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

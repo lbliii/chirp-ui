@@ -11,4 +11,4 @@
 {% def glitch_text(text, variant="", tag="span", cls="") %}
 {% set variant_cls = " chirpui-glitch--" ~ variant if variant in ("subtle", "intense") else "" %}
 <{{ tag }} class="chirpui-glitch{{ variant_cls }}{{ " " ~ cls if cls else "" }}" data-text="{{ text | e }}" aria-label="{{ text | e }}">{{ text }}</{{ tag }}>
-{% end %}
+{% enddef %}

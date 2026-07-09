@@ -40,17 +40,17 @@
 {% let _card_mods = (["collapsible"] if collapsible else []) + (["gradient-border"] if border_variant == "gradient" else []) + (["gradient-header"] if header_variant == "gradient" else []) + (["hoverable"] if hoverable else []) %}
 {% let _card_class = "card" | bem(variant=variant, appearance=_appearance, tone=_tone, modifier=_card_mods, cls=cls) %}
 {% if collapsible %}
-<details class="{{ _card_class }}"{% if open %} open{% end %}{{ _attrs_raw | html_attrs }}{{ attrs_map | html_attrs }}>
+<details class="{{ _card_class }}"{% if open %} open{% endif %}{{ _attrs_raw | html_attrs }}{{ attrs_map | html_attrs }}>
     {% if title %}
         <summary class="chirpui-card__header">
-            {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% end %}
+            {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% endif %}
             <div class="chirpui-card__header-content" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
                 <span class="chirpui-card__title">{{ title }}</span>
-                {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% end %}
+                {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% endif %}
             </div>
             <div class="chirpui-card__header-actions" data-chirpui-role="actions" data-chirpui-pressure="rigid" data-chirpui-affinity="end">{% slot header_actions %}</div>
         </summary>
-    {% end %}
+    {% endif %}
     <div class="chirpui-card__media">{% slot media %}</div>
     <div class="chirpui-card__body">
         <div class="chirpui-card__body-content">{% slot %}</div>
@@ -63,14 +63,14 @@
 <article class="{{ _card_class }}"{{ _attrs_raw | html_attrs }}{{ attrs_map | html_attrs }}>
     {% if title %}
         <header class="chirpui-card__header">
-            {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% end %}
+            {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% endif %}
             <div class="chirpui-card__header-content" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
                 <span class="chirpui-card__title">{{ title }}</span>
-                {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% end %}
+                {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% endif %}
             </div>
             <div class="chirpui-card__header-actions" data-chirpui-role="actions" data-chirpui-pressure="rigid" data-chirpui-affinity="end">{% slot header_actions %}</div>
         </header>
-    {% end %}
+    {% endif %}
     <div class="chirpui-card__media">{% slot media %}</div>
     <div class="chirpui-card__body">
         <div class="chirpui-card__body-content">{% slot %}</div>
@@ -79,28 +79,28 @@
     {#- footer= string param is deprecated; use {% slot footer %} instead -#}
     <div class="chirpui-card__footer-wrap" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end">{% slot footer %}{{ _footer_text or "" }}</div>
 </article>
-{% end %}
-{% end %}
-{% end %}
+{% endif %}
+{% endprovide %}
+{% enddef %}
 
 {% def card_header(title, subtitle=none, icon=none, cls="") %}
 <header class="chirpui-card__header{{ " " ~ cls if cls else "" }}">
-    {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% end %}
+    {% if icon %}<span class="chirpui-card__icon">{{ icon | icon }}</span>{% endif %}
     <div class="chirpui-card__header-content" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
         <span class="chirpui-card__title">{{ title }}</span>
-        {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% end %}
+        {% if subtitle %}<p class="chirpui-text-muted chirpui-font-sm">{{ subtitle }}</p>{% endif %}
     </div>
     <div class="chirpui-card__header-actions" data-chirpui-role="actions" data-chirpui-pressure="rigid" data-chirpui-affinity="end">
         {% slot %}
     </div>
 </header>
-{% end %}
+{% enddef %}
 
 {% def card_media(cls="") %}
 <div class="chirpui-card__media{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {# Link-styled card for navigation/index grids.
    Named slots: header_badge (top-left chip/badge), header_subtitle (beneath title, e.g. aliases),
@@ -119,7 +119,7 @@
     </div>
     <div class="chirpui-card__footer-wrap" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end">{% slot footer %}</div>
 </a>
-{% end %}
+{% enddef %}
 
 {# Partially linked card for list grids with independent source/footer links.
    Named slots: top_meta (above main link), header_badge, header_subtitle, footer, default (body). #}
@@ -140,7 +140,7 @@
     </a>
     <div class="chirpui-card__footer-wrap" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end">{% slot footer %}</div>
 </article>
-{% end %}
+{% enddef %}
 
 {# Opinionated list/index card for app resources.
    Named slots: badges, subtitle, footer, default (body extras).
@@ -194,4 +194,4 @@
     <div class="chirpui-card__footer-wrap" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end">{% slot footer %}</div>
 </a>
 {% endif %}
-{% end %}
+{% enddef %}

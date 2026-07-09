@@ -29,7 +29,7 @@
 {% set divided_class = " chirpui-dl--divided" if divided else "" %}
 {% set align_class = " chirpui-dl--detail-" ~ detail_align if detail_align in ("left", "center", "right") else "" %}
 {% set style_attr = "" %}
-{% if term_width %}{% set style_attr = " style=\"--chirpui-dl-term-width: " ~ term_width ~ "\"" %}{% end %}
+{% if term_width %}{% set style_attr = " style=\"--chirpui-dl-term-width: " ~ term_width ~ "\"" %}{% endif %}
 <div class="chirpui-dl-wrap">
     <div class="chirpui-dl__header">{% slot header %}</div>
 <dl class="chirpui-dl chirpui-dl--{{ variant }}{{ compact_class }}{{ relaxed_class }}{{ hover_class }}{{ divided_class }}{{ align_class }}{{ " " ~ cls if cls else "" }}"{{ style_attr }}>
@@ -47,23 +47,23 @@
                 <span class="chirpui-dl__detail-unset">{{ _detail }}</span>
             {% else %}
                 {{ _detail }}
-            {% end %}
+            {% endif %}
             </dd>
         </div>
-        {% end %}
+        {% endfor %}
     {% else %}
         {% slot %}
-    {% end %}
+    {% endif %}
 </dl>
 </div>
-{% end %}
+{% enddef %}
 
 {% def description_item(term, detail, type=none, icon=none, cls="") %}
 {% set resolved_type = type if type else (detail | value_type) %}
 {% set type_class = " chirpui-dl__detail--" ~ resolved_type if resolved_type else "" %}
 {% set type_valid = (resolved_type or "") | validate_variant(("", "bool", "url", "path", "number", "unset"), "") %}
 <div class="chirpui-dl__row{{ " " ~ cls if cls else "" }}">
-    <dt class="chirpui-dl__term">{% if icon %}<span class="chirpui-dl__term-group"><span class="chirpui-dl__icon" aria-hidden="true">{{ icon }}</span>{{ term }}</span>{% else %}{{ term }}{% end %}</dt>
+    <dt class="chirpui-dl__term">{% if icon %}<span class="chirpui-dl__term-group"><span class="chirpui-dl__icon" aria-hidden="true">{{ icon }}</span>{{ term }}</span>{% else %}{{ term }}{% endif %}</dt>
     <dd class="chirpui-dl__detail{{ type_class if type_valid else "" }}">
     {% if type_valid == "bool" %}
         {% from "chirpui/badge.html" import badge %}
@@ -72,7 +72,7 @@
         <span class="chirpui-dl__detail-unset">{{ detail }}</span>
     {% else %}
         {{ detail }}
-    {% end %}
+    {% endif %}
     </dd>
 </div>
-{% end %}
+{% enddef %}

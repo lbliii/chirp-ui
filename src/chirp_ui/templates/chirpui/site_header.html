@@ -54,19 +54,19 @@
         <div class="chirpui-site-header__nav-end">{% slot nav_end %}{% slot tools %}</div>
         {% else %}
         <div class="chirpui-site-header__tools">{% slot tools %}</div>
-        {% end %}
+        {% endif %}
     </div>
 </header>
 {% endprovide %}
-{% end %}
+{% enddef %}
 
 {% def site_nav_link(href, label, glyph="", external=false, match="", active=false, cls="") %}
 {# @consumes _site_nav_current_path from: site_header — falls back to "" #}
 {% set _cp = consume("_site_nav_current_path", "") if match else "" %}
 {% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
 <a class="chirpui-site-nav__link{{ " chirpui-site-nav__link--active" if _active else "" }}{{ " chirpui-site-nav__link--external" if external else "" }}{{ " " ~ cls if cls else "" }}"
-   href="{{ href }}"{% if _active %} aria-current="page"{% end %}{% if external %} rel="noopener noreferrer"{% end %}{{ route_link_attrs(href, external=external) | html_attrs }}>
-    {%- if glyph %}<span class="chirpui-site-nav__glyph" aria-hidden="true">{{ glyph }}</span>{% end -%}
+   href="{{ href }}"{% if _active %} aria-current="page"{% endif %}{% if external %} rel="noopener noreferrer"{% endif %}{{ route_link_attrs(href, external=external) | html_attrs }}>
+    {%- if glyph %}<span class="chirpui-site-nav__glyph" aria-hidden="true">{{ glyph }}</span>{% endif %}
     {{ label -}}
 </a>
-{% end %}
+{% enddef %}

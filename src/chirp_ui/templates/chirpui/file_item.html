@@ -16,11 +16,11 @@
       id="attachment-{{ id }}"
       data-status="{{ _status }}"
       x-init="$root.dispatchEvent(new CustomEvent('chirpui:attachment-changed', {bubbles:true}))"
-      {% if _status == "error" %}role="alert"{% end %}>
+      {% if _status == "error" %}role="alert"{% endif %}>
     <span class="chirpui-attachment-chip__icon" aria-hidden="true">
         {% if _pending %}{{ spinner(size="sm") }}
         {% elif _status == "error" %}{{ "alert" | icon }}
-        {% else %}{{ "file" | icon }}{% end %}
+        {% else %}{{ "file" | icon }}{% endif %}
     </span>
     {% if preview_url %}
     <button type="button" class="chirpui-attachment-chip__name"
@@ -30,20 +30,20 @@
     <a class="chirpui-attachment-chip__name" href="{{ href }}">{{ name }}</a>
     {% else %}
     <span class="chirpui-attachment-chip__name">{{ name }}</span>
-    {% end %}
-    {% if size %}<span class="chirpui-attachment-chip__size">{{ size }}</span>{% end %}
+    {% endif %}
+    {% if size %}<span class="chirpui-attachment-chip__size">{{ size }}</span>{% endif %}
     {% if dismiss_url %}
     <button type="button" class="chirpui-attachment-chip__dismiss"
             aria-label="Remove {{ name }}"
             {{ build_hx_attrs(hx_post=dismiss_url, hx_target="#attachment-" ~ id,
                               hx_swap="outerHTML") | html_attrs }}
             hx-boost="false">{{ "x" | icon }}</button>
-    {% end %}
+    {% endif %}
 </span>
-{% end %}
+{% enddef %}
 
 
 {% def file_item(id, name, status="ready", size=none, href=none, cls="") %}
 {{ attachment_chip(id=id, name=name, status=status, size=size, href=href,
                    cls="chirpui-attachment-chip--row " ~ cls) }}
-{% end %}
+{% enddef %}

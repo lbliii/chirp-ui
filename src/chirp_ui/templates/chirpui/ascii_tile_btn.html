@@ -30,27 +30,27 @@
 {% if toggle %}
 <label class="chirpui-ascii-tile-btn{{ variant_class }}{{ lit_class }}{{ " chirpui-ascii-tile-btn--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}">
     <input class="chirpui-ascii-tile-btn__input chirpui-visually-hidden"
-           type="checkbox" {% if name %}name="{{ name }}"{% end %}
-           {% if lit %}checked{% end %}
-           {% if disabled %}disabled{% end %}>
+           type="checkbox" {% if name %}name="{{ name }}"{% endif %}
+           {% if lit %}checked{% endif %}
+           {% if disabled %}disabled{% endif %}>
     <span class="chirpui-ascii-tile-btn__face">
         <span class="chirpui-ascii-tile-btn__glyph">{{ glyph }}</span>
     </span>
-    {% if label %}<span class="chirpui-ascii-tile-btn__label">{{ label }}</span>{% end %}
+    {% if label %}<span class="chirpui-ascii-tile-btn__label">{{ label }}</span>{% endif %}
 </label>
 {% else %}
 <button class="chirpui-ascii-tile-btn{{ variant_class }}{{ lit_class }}{{ " chirpui-ascii-tile-btn--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}"
-        type="button" {% if disabled %}disabled{% end %}>
+        type="button" {% if disabled %}disabled{% endif %}>
     <span class="chirpui-ascii-tile-btn__face">
         <span class="chirpui-ascii-tile-btn__glyph">{{ glyph }}</span>
     </span>
-    {% if label %}<span class="chirpui-ascii-tile-btn__label">{{ label }}</span>{% end %}
+    {% if label %}<span class="chirpui-ascii-tile-btn__label">{{ label }}</span>{% endif %}
 </button>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def tile_grid(cols=4, cls="") %}
 <div class="chirpui-ascii-tile-grid{{ " " ~ cls if cls else "" }}" style="--_tile-cols: {{ cols }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}

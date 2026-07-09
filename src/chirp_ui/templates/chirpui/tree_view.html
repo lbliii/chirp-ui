@@ -27,8 +27,8 @@
         </details>
         {% else %}
         <span class="chirpui-tree__label chirpui-tree__label--leaf">{{ node.label | default("") }}</span>
-        {% end %}
+        {% endif %}
     </li>
-    {% end %}
+    {% endfor %}
 </ul>
-{% end %}
+{% enddef %}

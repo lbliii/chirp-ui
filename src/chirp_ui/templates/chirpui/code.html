@@ -8,16 +8,16 @@
 
 {% def code(text, cls="") %}
 <code class="chirpui-code{{ " " ~ cls if cls else "" }}">{{ text }}</code>
-{% end %}
+{% enddef %}
 
 {% def install_snippet(command, label="install", prompt="$", id=none, cls="") %}
 <div class="chirpui-install-snippet{{ " " ~ cls if cls else "" }}"
      x-data="chirpuiCopy()">
     {% if label %}
     <p class="chirpui-install-snippet__label chirpui-font-mono chirpui-font-xs chirpui-text-muted">{{ label }}</p>
-    {% end %}
+    {% endif %}
     <div class="chirpui-install-snippet__row">
-        <pre class="chirpui-install-snippet__command chirpui-font-mono"{% if id %} id="{{ id }}"{% end %}>{{ prompt }} {{ command }}</pre>
+        <pre class="chirpui-install-snippet__command chirpui-font-mono"{% if id %} id="{{ id }}"{% endif %}>{{ prompt }} {{ command }}</pre>
         <button type="button" class="chirpui-code-block__copy"
                 data-copy-text="{{ command | e }}"
                 data-copy-timeout="1600"
@@ -29,7 +29,7 @@
         </button>
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {% def code_block(text, cls="", copy=false) %}
 {% if copy %}
@@ -46,5 +46,5 @@
 </div>
 {% else %}
 <pre class="chirpui-code-block{{ " " ~ cls if cls else "" }}"><code>{{ text }}</code></pre>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

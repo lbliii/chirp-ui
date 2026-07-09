@@ -23,10 +23,10 @@
         {% for i in range(count) %}
         {% set pos = positions[i % 16] %}
         <span class="chirpui-particle-bg__dot" style="left: {{ pos[0] }}%; top: {{ pos[1] }}%"></span>
-        {% end %}
+        {% endfor %}
     </div>
     <div class="chirpui-particle-bg__content">
         {% slot %}
     </div>
 </div>
-{% end %}
+{% enddef %}

@@ -22,7 +22,7 @@
     {% if icon %}<span aria-hidden="true">{{ icon | icon }}</span>{% endif %}
     {{ label }}
 </button>
-{% end %}
+{% enddef %}
 
 {% def tray(id, title, position="right", persist_open=false, cls="") %}
 <div class="chirpui-tray chirpui-tray--{{ position }} chirpui-tray--closed{{ " " ~ cls if cls else "" }}" id="tray-{{ id }}"
@@ -47,4 +47,4 @@
         </div>
     </div>
 </div>
-{% end %}
+{% enddef %}

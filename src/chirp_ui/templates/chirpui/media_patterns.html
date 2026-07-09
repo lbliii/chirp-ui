@@ -29,11 +29,11 @@
                 {{ btn(secondary_label, href=secondary_href or href, variant="ghost", size="sm") }}
                 {% endif %}
                 {% yield actions %}
-            {% end %}
+            {% endcall %}
         </div>
     </div>
 </article>
-{% end %}
+{% enddef %}
 
 {% def catalog_rail(title, items, subtitle=none, artwork="", variant="compact", show_dots=false, cls="") %}
 <section class="chirpui-catalog-rail{{ " " ~ cls if cls else "" }}">
@@ -59,11 +59,11 @@
                 primary_label=item.primary_label | default("Open"),
                 secondary_label=item.secondary_label | default(none)
             ) }}
-        {% end %}
-        {% end %}
-    {% end %}
+        {% endcall %}
+        {% endfor %}
+    {% endcall %}
 </section>
-{% end %}
+{% enddef %}
 
 {% def media_hero_shelf(items, artwork="", cls="") %}
 <section class="chirpui-media-hero-shelf{{ " " ~ cls if cls else "" }}">
@@ -82,11 +82,11 @@
             primary_label=item.primary_label | default("Watch now"),
             secondary_label=item.secondary_label | default("Details")
         ) }}
-    {% end %}
-    {% end %}
-{% end %}
+    {% endcall %}
+    {% endfor %}
+{% endcall %}
 </section>
-{% end %}
+{% enddef %}
 
 {% def live_event_card(name, state, time, href=none, restriction=none, state_variant="info", cls="") %}
 <article class="chirpui-live-event-card{{ " " ~ cls if cls else "" }}">
@@ -98,13 +98,13 @@
         {% slot actions %}
             {% if href %}{{ btn("Details", href=href, size="sm", variant="ghost") }}{% endif %}
         {% end %}
-    {% end %}
+    {% endcall %}
 </article>
-{% end %}
+{% enddef %}
 
 {% def watch_companion_layout(cls="") %}
 <section class="chirpui-watch-companion-layout{{ " " ~ cls if cls else "" }}">
     <div class="chirpui-watch-companion-layout__player">{% slot player %}</div>
     <aside class="chirpui-watch-companion-layout__companion">{% slot companion %}</aside>
 </section>
-{% end %}
+{% enddef %}

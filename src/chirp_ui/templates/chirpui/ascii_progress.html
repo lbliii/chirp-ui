@@ -23,9 +23,9 @@
      aria-valuenow="{{ bounded_value }}"
      aria-valuemin="0"
      aria-valuemax="100"
-     {% if label %}aria-label="{{ label }}"{% end %}>
-    {% if label %}<span class="chirpui-ascii-progress__label">{{ label }}</span>{% end %}
-    <span class="chirpui-ascii-progress__track" aria-hidden="true">{% for i in range(filled) %}<span class="chirpui-ascii-progress__filled">█</span>{% end %}{% for i in range(empty) %}<span class="chirpui-ascii-progress__empty">░</span>{% end %}</span>
+     {% if label %}aria-label="{{ label }}"{% endif %}>
+    {% if label %}<span class="chirpui-ascii-progress__label">{{ label }}</span>{% endif %}
+    <span class="chirpui-ascii-progress__track" aria-hidden="true">{% for i in range(filled) %}<span class="chirpui-ascii-progress__filled">█</span>{% endfor %}{% for i in range(empty) %}<span class="chirpui-ascii-progress__empty">░</span>{% endfor %}</span>
     <span class="chirpui-ascii-progress__value">{{ bounded_value }}%</span>
 </div>
-{% end %}
+{% enddef %}

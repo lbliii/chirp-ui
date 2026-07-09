@@ -44,26 +44,26 @@
 {% set _select = hx_select if hx_select is not none else ("unset" if _has_hx else none) %}
 {% set _disinherit = "hx-select" if _has_hx and hx_select is none else none %}
 <form action="{{ action }}" method="{{ method }}"
-      {% if enctype %}enctype="{{ enctype }}"{% end %}
+      {% if enctype %}enctype="{{ enctype }}"{% endif %}
       class="chirpui-form{{ " " ~ cls if cls else "" }}"
       {{ _attrs_raw | html_attrs }}
       {{ attrs_map | html_attrs }}
-      {% if _reset %}hx-on::after-request="if(event.detail.successful) this.reset()"{% end %}
+      {% if _reset %}hx-on::after-request="if(event.detail.successful) this.reset()"{% endif %}
       {{ build_hx_attrs(hx_select=_select, hx_disinherit=_disinherit,
           hx_select_oob=hx_select_oob, hx_disabled_elt=_disabled_elt,
           hx_sync=_sync) | html_attrs }}
       {{ _hx_dict | html_attrs }}>
     {% slot %}
 </form>
-{% end %}
-{% end %}
+{% endprovide %}
+{% enddef %}
 
 {% def fieldset(legend=none, cls="") %}
 <fieldset class="chirpui-fieldset{{ " " ~ cls if cls else "" }}">
-    {% if legend %}<legend class="chirpui-fieldset__legend">{{ legend }}</legend>{% end %}
+    {% if legend %}<legend class="chirpui-fieldset__legend">{{ legend }}</legend>{% endif %}
     {% slot %}
 </fieldset>
-{% end %}
+{% enddef %}
 
 {# Shared wrapper: label, slot (control), hint, errors. modifier adds chirpui-field--X.
    field_id: override wrapper id (default: "field-{name}"). oob: emit hx-swap-oob="true". #}
@@ -75,25 +75,25 @@
 {% set _tone = tone | validate_tone_block("field", "") %}
 {# @consumes _form_density from: form — falls back to "" #}
 {% set _density = consume("_form_density", "") %}
-<div id="{{ _fid }}" class="{{ "field" | bem(variant=modifier, appearance=_appearance, tone=_tone, modifier=(["dense"] if _density else []) + (["error"] if _has_errors else [])) }}"{% if oob %} hx-swap-oob="true"{% end %}>
+<div id="{{ _fid }}" class="{{ "field" | bem(variant=modifier, appearance=_appearance, tone=_tone, modifier=(["dense"] if _density else []) + (["error"] if _has_errors else [])) }}"{% if oob %} hx-swap-oob="true"{% endif %}>
     {% if label %}
         <label class="chirpui-field__label" for="{{ name }}">
-            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% endif %}
         </label>
-    {% end %}
+    {% endif %}
     {% slot %}
     {% if hint and not _has_errors %}
         <span class="chirpui-field__hint">{{ hint }}</span>
-    {% end %}
+    {% endif %}
     <div id="{{ _eid }}" class="chirpui-field__errors" role="alert" aria-live="polite">
         {% if _has_errors %}
             {% for msg in errors | field_errors(name) %}
                 <span class="chirpui-field__error">{{ msg }}</span>
-            {% end %}
-        {% end %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
     Usage:
         from "chirpui/forms.html" import text_field, textarea_field, select_field
@@ -128,13 +128,13 @@
 <input class="chirpui-field__input"
        type="{{ type }}" id="{{ name }}" name="{{ name }}"
        value="{{ value }}"
-       {% if required %}required{% end %}
-       {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
-       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+       {% if required %}required{% endif %}
+       {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% endif %}
        aria-describedby="errors-{{ name }}"
        {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {# Password field with secure browser autocomplete defaults #}
 {% def password_field(name="password", value="", label=none, errors=none, required=true,
@@ -144,14 +144,14 @@
 <input class="chirpui-field__input"
        type="password" id="{{ name }}" name="{{ name }}"
        value="{{ value }}"
-       {% if required %}required{% end %}
-       {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
-       {% if autocomplete %}autocomplete="{{ autocomplete }}"{% end %}
-       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+       {% if required %}required{% endif %}
+       {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+       {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% endif %}
        aria-describedby="errors-{{ name }}"
        {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {# Textarea with label and error display #}
 {% def textarea_field(name, value="", label=none, errors=none,
@@ -159,12 +159,12 @@
 {% call field_wrapper(name, label, errors, required, hint, appearance=appearance, tone=tone) %}
 <textarea class="chirpui-field__input"
           id="{{ name }}" name="{{ name }}" rows="{{ rows }}"
-          {% if required %}required{% end %}
-          {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
-          {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+          {% if required %}required{% endif %}
+          {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+          {% if errors and errors | field_errors(name) %}aria-invalid="true"{% endif %}
           aria-describedby="errors-{{ name }}">{{ value }}</textarea>
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {# Select dropdown with label and error display #}
 {% def select_field(name, options, selected="", label=none, errors=none,
@@ -172,18 +172,18 @@
 {% call field_wrapper(name, label, errors, required, hint, appearance=appearance, tone=tone) %}
 <select class="chirpui-field__input"
         id="{{ name }}" name="{{ name }}"
-        {% if required %}required{% end %}
-        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+        {% if required %}required{% endif %}
+        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% endif %}
         aria-describedby="errors-{{ name }}">
     {% for opt in options %}
         <option value="{{ opt.get("value", "") }}"
-                {% if opt.get("value") == selected %}selected{% end %}>
+                {% if opt.get("value") == selected %}selected{% endif %}>
             {{ opt.get("label", opt.get("value", "")) }}
         </option>
-    {% end %}
+    {% endfor %}
 </select>
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {# Checkbox with label #}
 {% def checkbox_field(name, checked=false, label=none, errors=none) %}
@@ -192,7 +192,7 @@
     <label class="chirpui-field__label chirpui-field__label--inline">
         <input class="chirpui-field__checkbox"
                type="checkbox" id="{{ name }}" name="{{ name }}"
-               {% if checked %}checked{% end %}
+               {% if checked %}checked{% endif %}
                aria-describedby="errors-{{ name }}">
         {{ label if label else name }}
     </label>
@@ -200,11 +200,11 @@
         {% if _has_errors %}
             {% for msg in errors | field_errors(name) %}
                 <span class="chirpui-field__error">{{ msg }}</span>
-            {% end %}
-        {% end %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {# Toggle (switch-style checkbox) #}
 {# Supports size (sm/md/lg), color variant (success/danger/accent), and label_inside for ON/OFF text #}
@@ -216,14 +216,14 @@
     <label class="chirpui-field__label chirpui-field__label--inline chirpui-toggle-wrap{{ size_class }}{{ variant_class }}">
         <input class="chirpui-toggle chirpui-visually-hidden"
                type="checkbox" id="{{ name }}" name="{{ name }}"
-               {% if checked %}checked{% end %}
-               {% if _has_errors %}aria-invalid="true"{% end %}
+               {% if checked %}checked{% endif %}
+               {% if _has_errors %}aria-invalid="true"{% endif %}
                aria-describedby="errors-{{ name }}">
         <span class="chirpui-toggle__track" aria-hidden="true">
             {% if label_inside %}
             <span class="chirpui-toggle__track-label chirpui-toggle__track-label--on">ON</span>
             <span class="chirpui-toggle__track-label chirpui-toggle__track-label--off">OFF</span>
-            {% end %}
+            {% endif %}
         </span>
         <span class="chirpui-toggle__label">{{ label if label else name }}</span>
     </label>
@@ -231,11 +231,11 @@
         {% if _has_errors %}
             {% for msg in errors | field_errors(name) %}
                 <span class="chirpui-field__error">{{ msg }}</span>
-            {% end %}
-        {% end %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {# Radio group with label and error display #}
 {% def radio_field(name, options, selected="", label=none, errors=none,
@@ -245,33 +245,33 @@
           aria-describedby="errors-{{ name }}">
     {% if label %}
         <legend class="chirpui-field__label">
-            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% endif %}
         </legend>
-    {% end %}
+    {% endif %}
     <div class="chirpui-field__radio-group">
         {% for opt in options %}
         <label class="chirpui-field__radio-option">
             <input class="chirpui-field__input"
                    type="radio" name="{{ name }}" value="{{ opt.get("value", "") }}"
-                   {% if opt.get("value") == selected %}checked{% end %}
-                   {% if required %}required{% end %}
-                   {% if _has_errors %}aria-invalid="true"{% end %}>
+                   {% if opt.get("value") == selected %}checked{% endif %}
+                   {% if required %}required{% endif %}
+                   {% if _has_errors %}aria-invalid="true"{% endif %}>
             <span class="chirpui-field__radio-label">{{ opt.get("label", opt.get("value", "")) }}</span>
         </label>
-        {% end %}
+        {% endfor %}
     </div>
     {% if hint and not _has_errors %}
         <span class="chirpui-field__hint">{{ hint }}</span>
-    {% end %}
+    {% endif %}
     <div id="errors-{{ name }}" class="chirpui-field__errors" role="alert" aria-live="polite">
         {% if _has_errors %}
             {% for msg in errors | field_errors(name) %}
                 <span class="chirpui-field__error">{{ msg }}</span>
-            {% end %}
-        {% end %}
+            {% endfor %}
+        {% endif %}
     </div>
 </fieldset>
-{% end %}
+{% enddef %}
 
 {# Star rating — interactive CSS-only 1-N star picker.
    Renders radio inputs in reverse DOM order with row-reverse flex so the
@@ -283,34 +283,34 @@
 <div id="field-{{ name }}" class="chirpui-field{{ " chirpui-field--error" if _has_errors else "" }}">
     {% if label %}
         <label class="chirpui-field__label">
-            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% endif %}
         </label>
-    {% end %}
+    {% endif %}
     <fieldset class="chirpui-star-rating{{ " chirpui-star-rating--" ~ size if size else "" }}"
               aria-label="{{ label or name }}" aria-describedby="errors-{{ name }}">
         {% for i in range(count, 0, -1) %}
         <input class="chirpui-star-rating__input"
                type="radio" name="{{ name }}" value="{{ i }}"
                id="{{ name }}-{{ i }}"
-               {% if i == selected %}checked{% end %}
-               {% if required %}required{% end %}
-               {% if _has_errors %}aria-invalid="true"{% end %}>
+               {% if i == selected %}checked{% endif %}
+               {% if required %}required{% endif %}
+               {% if _has_errors %}aria-invalid="true"{% endif %}>
         <label class="chirpui-star-rating__label" for="{{ name }}-{{ i }}"
                title="{{ i }} star{{ "s" if i != 1 else "" }}">&#9733;</label>
-        {% end %}
+        {% endfor %}
     </fieldset>
     {% if hint and not _has_errors %}
         <span class="chirpui-field__hint">{{ hint }}</span>
-    {% end %}
+    {% endif %}
     <div id="errors-{{ name }}" class="chirpui-field__errors" role="alert" aria-live="polite">
         {% if _has_errors %}
             {% for msg in errors | field_errors(name) %}
                 <span class="chirpui-field__error">{{ msg }}</span>
-            {% end %}
-        {% end %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {# Thumbs up/down — binary sentiment input (radio pair). #}
 {% def thumbs(name, selected="", label=none, errors=none,
@@ -320,38 +320,38 @@
 <div id="field-{{ name }}" class="chirpui-field{{ " chirpui-field--error" if _has_errors else "" }}">
     {% if label %}
         <label class="chirpui-field__label">
-            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% endif %}
         </label>
-    {% end %}
+    {% endif %}
     <fieldset class="chirpui-thumbs{{ " chirpui-thumbs--" ~ size if size else "" }}"
               aria-label="{{ label or name }}" aria-describedby="errors-{{ name }}">
         <input class="chirpui-thumbs__input" type="radio" name="{{ name }}" value="up"
                id="{{ name }}-up"
-               {% if selected == "up" %}checked{% end %}
-               {% if required %}required{% end %}
-               {% if _has_errors %}aria-invalid="true"{% end %}>
+               {% if selected == "up" %}checked{% endif %}
+               {% if required %}required{% endif %}
+               {% if _has_errors %}aria-invalid="true"{% endif %}>
         <label class="chirpui-thumbs__label chirpui-thumbs__label--up" for="{{ name }}-up"
                title="Yes">&#x1F44D;</label>
         <input class="chirpui-thumbs__input" type="radio" name="{{ name }}" value="down"
                id="{{ name }}-down"
-               {% if selected == "down" %}checked{% end %}
-               {% if required %}required{% end %}
-               {% if _has_errors %}aria-invalid="true"{% end %}>
+               {% if selected == "down" %}checked{% endif %}
+               {% if required %}required{% endif %}
+               {% if _has_errors %}aria-invalid="true"{% endif %}>
         <label class="chirpui-thumbs__label chirpui-thumbs__label--down" for="{{ name }}-down"
                title="No">&#x1F44E;</label>
     </fieldset>
     {% if hint and not _has_errors %}
         <span class="chirpui-field__hint">{{ hint }}</span>
-    {% end %}
+    {% endif %}
     <div id="errors-{{ name }}" class="chirpui-field__errors" role="alert" aria-live="polite">
         {% if _has_errors %}
             {% for msg in errors | field_errors(name) %}
                 <span class="chirpui-field__error">{{ msg }}</span>
-            {% end %}
-        {% end %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {# Segmented control form field — connected button-group radio selector.
    Renamed from segmented_control() to avoid collision with the display-only
@@ -364,40 +364,40 @@
 <div id="field-{{ name }}" class="chirpui-field{{ " chirpui-field--error" if _has_errors else "" }}">
     {% if label %}
         <label class="chirpui-field__label">
-            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% endif %}
         </label>
-    {% end %}
+    {% endif %}
     <div class="chirpui-segmented{{ " chirpui-segmented--" ~ size if size else "" }}"
          role="radiogroup" aria-label="{{ label or name }}" aria-describedby="errors-{{ name }}">
         {% for opt in options %}
         {% set _ov = opt.get("value", "") %}
         <input class="chirpui-segmented__input" type="radio" name="{{ name }}"
                value="{{ _ov }}" id="{{ name }}-{{ _ov }}"
-               {% if _ov == selected %}checked{% end %}
-               {% if required %}required{% end %}
-               {% if _has_errors %}aria-invalid="true"{% end %}>
+               {% if _ov == selected %}checked{% endif %}
+               {% if required %}required{% endif %}
+               {% if _has_errors %}aria-invalid="true"{% endif %}>
         <label class="chirpui-segmented__label" for="{{ name }}-{{ _ov }}">{{ opt.get("label", _ov) }}</label>
-        {% end %}
+        {% endfor %}
     </div>
     {% if hint and not _has_errors %}
         <span class="chirpui-field__hint">{{ hint }}</span>
-    {% end %}
+    {% endif %}
     <div id="errors-{{ name }}" class="chirpui-field__errors" role="alert" aria-live="polite">
         {% if _has_errors %}
             {% for msg in errors | field_errors(name) %}
                 <span class="chirpui-field__error">{{ msg }}</span>
-            {% end %}
-        {% end %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {#- Deprecated alias — use segmented_control_field() instead. -#}
 {% def segmented_control(name, options, selected="", label=none, errors=none,
                          required=false, hint=none, size="") %}
 {{ segmented_control_field(name, options, selected=selected, label=label, errors=errors,
                            required=required, hint=hint, size=size) }}
-{% end %}
+{% enddef %}
 
 {# Number scale — horizontal numbered radio row (NPS-style 0-10 or 1-5). #}
 {% def number_scale(name, min=0, max=10, selected=none, label=none, errors=none,
@@ -406,38 +406,38 @@
 <div id="field-{{ name }}" class="chirpui-field{{ " chirpui-field--error" if _has_errors else "" }}">
     {% if label %}
         <label class="chirpui-field__label">
-            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% endif %}
         </label>
-    {% end %}
+    {% endif %}
     <div class="chirpui-number-scale" role="radiogroup" aria-label="{{ label or name }}"
          aria-describedby="errors-{{ name }}">
         {% for i in range(min, max + 1) %}
         <input class="chirpui-number-scale__input" type="radio" name="{{ name }}"
                value="{{ i }}" id="{{ name }}-{{ i }}"
-               {% if selected is not none and i == selected %}checked{% end %}
-               {% if required %}required{% end %}
-               {% if _has_errors %}aria-invalid="true"{% end %}>
+               {% if selected is not none and i == selected %}checked{% endif %}
+               {% if required %}required{% endif %}
+               {% if _has_errors %}aria-invalid="true"{% endif %}>
         <label class="chirpui-number-scale__label" for="{{ name }}-{{ i }}">{{ i }}</label>
-        {% end %}
+        {% endfor %}
     </div>
     {% if low_label or high_label %}
     <div class="chirpui-number-scale__labels">
         <span class="chirpui-font-xs chirpui-text-muted">{{ low_label }}</span>
         <span class="chirpui-font-xs chirpui-text-muted">{{ high_label }}</span>
     </div>
-    {% end %}
+    {% endif %}
     {% if hint and not _has_errors %}
         <span class="chirpui-field__hint">{{ hint }}</span>
-    {% end %}
+    {% endif %}
     <div id="errors-{{ name }}" class="chirpui-field__errors" role="alert" aria-live="polite">
         {% if _has_errors %}
             {% for msg in errors | field_errors(name) %}
                 <span class="chirpui-field__error">{{ msg }}</span>
-            {% end %}
-        {% end %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {# File input with label and error display #}
 {% def file_field(name, label=none, errors=none, accept="", multiple=false,
@@ -445,13 +445,13 @@
 {% call field_wrapper(name, label, errors, required, hint, modifier="file") %}
 <input class="chirpui-field__file"
        type="file" id="{{ name }}" name="{{ name }}"
-       {% if accept %}accept="{{ accept }}"{% end %}
-       {% if multiple %}multiple{% end %}
-       {% if required %}required{% end %}
-       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+       {% if accept %}accept="{{ accept }}"{% endif %}
+       {% if multiple %}multiple{% endif %}
+       {% if required %}required{% endif %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% endif %}
        aria-describedby="errors-{{ name }}">
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {# Date input with label and error display #}
 {% def date_field(name, value="", label=none, errors=none, required=false,
@@ -459,13 +459,13 @@
 {% call field_wrapper(name, label, errors, required, hint) %}
 <input class="chirpui-field__input"
        type="date" id="{{ name }}" name="{{ name }}" value="{{ value }}"
-       {% if required %}required{% end %}
-       {% if min %}min="{{ min }}"{% end %}
-       {% if max %}max="{{ max }}"{% end %}
-       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+       {% if required %}required{% endif %}
+       {% if min %}min="{{ min }}"{% endif %}
+       {% if max %}max="{{ max }}"{% endif %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% endif %}
        aria-describedby="errors-{{ name }}">
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {# Range slider with label and error display #}
 {% def range_field(name, value=50, min=0, max=100, step=1, label=none,
@@ -476,29 +476,29 @@
     <div class="chirpui-field__range-header">
         {% if label %}
             <label class="chirpui-field__label" for="{{ name }}">{{ label }}</label>
-        {% end %}
+        {% endif %}
         {% if show_value %}
             <output class="chirpui-field__range-value" for="{{ name }}">{{ value }}</output>
-        {% end %}
+        {% endif %}
     </div>
-    {% end %}
+    {% endif %}
     <input class="chirpui-field__range"
            type="range" id="{{ name }}" name="{{ name }}"
            value="{{ value }}" min="{{ min }}" max="{{ max }}" step="{{ step }}"
-           {% if _has_errors %}aria-invalid="true"{% end %}
+           {% if _has_errors %}aria-invalid="true"{% endif %}
            aria-describedby="errors-{{ name }}">
     {% if hint and not _has_errors %}
         <span class="chirpui-field__hint">{{ hint }}</span>
-    {% end %}
+    {% endif %}
     <div id="errors-{{ name }}" class="chirpui-field__errors" role="alert" aria-live="polite">
         {% if _has_errors %}
             {% for msg in errors | field_errors(name) %}
                 <span class="chirpui-field__error">{{ msg }}</span>
-            {% end %}
-        {% end %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {# Input with prefix/suffix. Use prefix/suffix params for text, or slot prefix/suffix for custom content (icons, etc). #}
 {% def input_group(name, prefix=none, suffix=none, value="", label=none,
@@ -509,41 +509,41 @@
 <div id="field-{{ name }}" class="chirpui-field chirpui-field--input-group{{ " chirpui-field--error" if _has_errors else "" }}">
     {% if label %}
         <label class="chirpui-field__label" for="{{ name }}">
-            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% end %}
+            {{ label }}{% if required %} <span class="chirpui-field__required" aria-hidden="true">*</span>{% endif %}
         </label>
-    {% end %}
+    {% endif %}
     <div class="chirpui-input-group">
         {% if prefix %}
         <span class="chirpui-input-group__prefix">{{ prefix }}</span>
         {% else %}
         <span class="chirpui-input-group__prefix">{% slot prefix %}</span>
-        {% end %}
+        {% endif %}
         <input class="chirpui-input-group__input"
                type="{{ type }}" id="{{ name }}" name="{{ name }}"
                value="{{ value }}"
-               {% if required %}required{% end %}
-               {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
-               {% if _has_errors %}aria-invalid="true"{% end %}
+               {% if required %}required{% endif %}
+               {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+               {% if _has_errors %}aria-invalid="true"{% endif %}
                aria-describedby="errors-{{ name }}"
                {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
         {% if suffix %}
         <span class="chirpui-input-group__suffix">{{ suffix }}</span>
         {% else %}
         <span class="chirpui-input-group__suffix">{% slot suffix %}</span>
-        {% end %}
+        {% endif %}
     </div>
     {% if hint and not _has_errors %}
         <span class="chirpui-field__hint">{{ hint }}</span>
-    {% end %}
+    {% endif %}
     <div id="errors-{{ name }}" class="chirpui-field__errors" role="alert" aria-live="polite">
         {% if _has_errors %}
             {% for msg in errors | field_errors(name) %}
                 <span class="chirpui-field__error">{{ msg }}</span>
-            {% end %}
-        {% end %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {# Masked text input — uses Alpine Mask plugin. Pass mask (static) or mask_dynamic (expression).
    Requires @alpinejs/mask loaded before Alpine core. See https://alpinejs.dev/plugins/mask
@@ -556,15 +556,15 @@
 <input class="chirpui-field__input"
        type="text" id="{{ name }}" name="{{ name }}"
        value="{{ value }}"
-       {% if mask %}x-mask="{{ mask }}"{% end %}
-       {% if mask_dynamic %}x-mask:dynamic="{{ mask_dynamic }}"{% end %}
-       {% if required %}required{% end %}
-       {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
-       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+       {% if mask %}x-mask="{{ mask }}"{% endif %}
+       {% if mask_dynamic %}x-mask:dynamic="{{ mask_dynamic }}"{% endif %}
+       {% if required %}required{% endif %}
+       {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% endif %}
        aria-describedby="errors-{{ name }}"
        {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {# Phone field — US format (999) 999-9999 by default. Use masked_field for other formats. #}
 {% def phone_field(name, value="", label=none, errors=none, format="us",
@@ -576,13 +576,13 @@
        type="tel" id="{{ name }}" name="{{ name }}"
        value="{{ value }}"
        x-mask="{{ _mask }}"
-       {% if required %}required{% end %}
-       {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
-       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+       {% if required %}required{% endif %}
+       {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% endif %}
        aria-describedby="errors-{{ name }}"
        {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {# Money/currency field — uses Alpine $money(). decimal_sep, thousands_sep, precision optional.
    $money($input, decimal, thousands, precision) — default ".", ",", 2 #}
@@ -596,13 +596,13 @@
        type="text" inputmode="decimal" id="{{ name }}" name="{{ name }}"
        value="{{ value }}"
        x-mask:dynamic="{{ _money_expr }}"
-       {% if required %}required{% end %}
-       {% if placeholder %}placeholder="{{ placeholder }}"{% end %}
-       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+       {% if required %}required{% endif %}
+       {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+       {% if errors and errors | field_errors(name) %}aria-invalid="true"{% endif %}
        aria-describedby="errors-{{ name }}"
        {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {# Multi-select dropdown with label and error display #}
 {% def multi_select_field(name, options, selected=none, label=none, errors=none,
@@ -611,18 +611,18 @@
 {% call field_wrapper(name, label, errors, required, hint) %}
 <select class="chirpui-field__input chirpui-field__input--multi"
         id="{{ name }}" name="{{ name }}" multiple size="{{ size }}"
-        {% if required %}required{% end %}
-        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}
+        {% if required %}required{% endif %}
+        {% if errors and errors | field_errors(name) %}aria-invalid="true"{% endif %}
         aria-describedby="errors-{{ name }}">
     {% for opt in options %}
         <option value="{{ opt.get("value", "") }}"
-                {% if opt.get("value") in selected %}selected{% end %}>
+                {% if opt.get("value") in selected %}selected{% endif %}>
             {{ opt.get("label", opt.get("value", "")) }}
         </option>
-    {% end %}
+    {% endfor %}
 </select>
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {# Search input with optional htmx debounced search #}
 {% def search_field(name, value="", label=none, search_url=none, search_target=none,
@@ -642,33 +642,33 @@
 <div id="field-{{ name }}" class="chirpui-field{{ " chirpui-field--error" if _has_errors else "" }}">
     {% if label %}
         <label class="chirpui-field__label" for="{{ name }}">{{ label }}</label>
-    {% end %}
+    {% endif %}
     <input class="chirpui-field__input"
            type="search" id="{{ name }}" name="{{ name }}"
            value="{{ value }}"
            placeholder="{{ placeholder }}"
-           {% if _has_errors %}aria-invalid="true"{% end %}
+           {% if _has_errors %}aria-invalid="true"{% endif %}
            aria-describedby="errors-{{ name }}"
            {{ _attrs_raw | html_attrs }}
            {{ attrs_map | html_attrs }}
            {{ search_attrs_map | html_attrs }}
-           {% if _search_live %}hx-get="{{ search_url }}"{% end %}
-           {% if _search_live %}hx-trigger="{{ search_trigger }}"{% end %}
-           {% if _search_live %}hx-target="{{ search_target }}"{% end %}
-           {% if _search_live %}hx-swap="innerHTML"{% end %}
-           {% if _search_live and _search_select %}hx-select="{{ _search_select }}"{% end %}
-           {% if _search_live and _search_disinherit %}hx-disinherit="{{ _search_disinherit }}"{% end %}
-           {% if _search_live and search_include %}hx-include="{{ search_include }}"{% end %}
-           {% if _search_sync %}hx-sync="{{ _search_sync }}"{% end %}>
+           {% if _search_live %}hx-get="{{ search_url }}"{% endif %}
+           {% if _search_live %}hx-trigger="{{ search_trigger }}"{% endif %}
+           {% if _search_live %}hx-target="{{ search_target }}"{% endif %}
+           {% if _search_live %}hx-swap="innerHTML"{% endif %}
+           {% if _search_live and _search_select %}hx-select="{{ _search_select }}"{% endif %}
+           {% if _search_live and _search_disinherit %}hx-disinherit="{{ _search_disinherit }}"{% endif %}
+           {% if _search_live and search_include %}hx-include="{{ search_include }}"{% endif %}
+           {% if _search_sync %}hx-sync="{{ _search_sync }}"{% endif %}>
     <div id="errors-{{ name }}" class="chirpui-field__errors" role="alert" aria-live="polite">
         {% if _has_errors %}
             {% for msg in errors | field_errors(name) %}
                 <span class="chirpui-field__error">{{ msg }}</span>
-            {% end %}
-        {% end %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {# Search bar — composite search input with layout variants. Use inside a form.
    variant: "solo" (input only, for live search), "with-button" (input + compact submit),
@@ -690,44 +690,44 @@
 <div id="field-{{ name }}" class="chirpui-field chirpui-search-bar chirpui-search-bar--{{ variant }}{{ " chirpui-field--error" if _has_errors else "" }}">
     {% if label %}
         <label class="chirpui-field__label" for="{{ name }}">{{ label }}</label>
-    {% end %}
+    {% endif %}
     <div class="chirpui-search-bar__inner">
         {% if variant == "with-icon" %}
         <span class="chirpui-search-bar__icon" aria-hidden="true">{{ button_icon | icon }}</span>
-        {% end %}
+        {% endif %}
         <input class="chirpui-search-bar__input"
                type="search" id="{{ name }}" name="{{ name }}"
                value="{{ value }}"
                placeholder="{{ placeholder }}"
-               {% if _has_errors %}aria-invalid="true"{% end %}
+               {% if _has_errors %}aria-invalid="true"{% endif %}
                aria-describedby="errors-{{ name }}"
                {{ _attrs_raw | html_attrs }}
                {{ attrs_map | html_attrs }}
                {{ search_attrs_map | html_attrs }}
-               {% if _search_live %}hx-get="{{ search_url }}"{% end %}
-               {% if _search_live %}hx-trigger="{{ search_trigger }}"{% end %}
-               {% if _search_live %}hx-target="{{ search_target }}"{% end %}
-               {% if _search_live %}hx-swap="innerHTML"{% end %}
-               {% if _search_live and _search_select %}hx-select="{{ _search_select }}"{% end %}
-               {% if _search_live and _search_disinherit %}hx-disinherit="{{ _search_disinherit }}"{% end %}
-               {% if _search_live and search_include %}hx-include="{{ search_include }}"{% end %}
-               {% if _search_sync %}hx-sync="{{ _search_sync }}"{% end %}>
+               {% if _search_live %}hx-get="{{ search_url }}"{% endif %}
+               {% if _search_live %}hx-trigger="{{ search_trigger }}"{% endif %}
+               {% if _search_live %}hx-target="{{ search_target }}"{% endif %}
+               {% if _search_live %}hx-swap="innerHTML"{% endif %}
+               {% if _search_live and _search_select %}hx-select="{{ _search_select }}"{% endif %}
+               {% if _search_live and _search_disinherit %}hx-disinherit="{{ _search_disinherit }}"{% endif %}
+               {% if _search_live and search_include %}hx-include="{{ search_include }}"{% endif %}
+               {% if _search_sync %}hx-sync="{{ _search_sync }}"{% endif %}>
         {% if variant == "with-button" %}
         <button type="submit" class="chirpui-btn chirpui-btn--primary chirpui-btn--sm chirpui-search-bar__btn">
             <span class="chirpui-btn__icon">{{ button_icon | icon }}</span>
             <span class="chirpui-btn__label">{{ button_label }}</span>
         </button>
-        {% end %}
+        {% endif %}
     </div>
     <div id="errors-{{ name }}" class="chirpui-field__errors" role="alert" aria-live="polite">
         {% if _has_errors %}
             {% for msg in errors | field_errors(name) %}
                 <span class="chirpui-field__error">{{ msg }}</span>
-            {% end %}
-        {% end %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
-{% end %}
+{% enddef %}
 
 {# Key-value form — inline key + value inputs + submit. For "Set config value" etc. -#}
 {% def key_value_form(action, method="post", key_placeholder="", value_placeholder="",
@@ -744,12 +744,12 @@
         <datalist id="key-value-form-datalist-{{ key_name }}">
             {% for opt in key_options %}
             <option value="{{ opt.get("value", "") if opt is mapping else opt }}">{{ opt.get("label", opt.get("value", "")) if opt is mapping else opt }}</option>
-            {% end %}
+            {% endfor %}
         </datalist>
         {% else %}
         <input class="chirpui-field__input" type="text" id="{{ key_name }}" name="{{ key_name }}"
                placeholder="{{ key_placeholder }}">
-        {% end %}
+        {% endif %}
     </div>
     <div class="chirpui-field chirpui-key-value-form__value">
         <label class="chirpui-field__label" for="{{ value_name }}">Value</label>
@@ -761,13 +761,13 @@
         {{ btn(submit_label, type="submit", variant="primary") }}
     </div>
 </div>
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {# Hidden field #}
 {% def hidden_field(name, value="") %}
 <input type="hidden" name="{{ name }}" value="{{ value }}">
-{% end %}
+{% enddef %}
 
 {# CSRF hidden field helper. Pass token for non-Chirp environments. #}
 {% def csrf_hidden(token=none, field_name="_csrf_token") %}
@@ -778,9 +778,9 @@
 {{ csrf_field() }}
 {% else %}
 {{ csrf_token() }}
-{% end %}
-{% end %}
-{% end %}
+{% endif %}
+{% endif %}
+{% enddef %}
 
 {# Form error summary — alert-style box listing all field errors with anchor links.
    Place at the top of the form. Renders nothing if no errors. oob: emit hx-swap-oob for OOB targeting. #}
@@ -788,28 +788,28 @@
 {% if errors and errors is mapping %}
 {% set _fields = [] %}
 {% for fname, msgs in errors.items() %}
-    {% if msgs %}{% set _ = _fields.append(fname) %}{% end %}
-{% end %}
+    {% if msgs %}{% set _ = _fields.append(fname) %}{% endif %}
+{% endfor %}
 {% if _fields %}
-<div id="{{ id }}" class="chirpui-form-error-summary" role="alert" aria-live="assertive"{% if oob %} hx-swap-oob="true"{% end %}>
+<div id="{{ id }}" class="chirpui-form-error-summary" role="alert" aria-live="assertive"{% if oob %} hx-swap-oob="true"{% endif %}>
     <p class="chirpui-form-error-summary__heading">Please fix {{ _fields | length }} error{{ "s" if _fields | length != 1 else "" }} below:</p>
     <ul class="chirpui-form-error-summary__list">
         {% for fname in _fields %}
         <li><a href="#field-{{ fname }}">{{ fname }}</a></li>
-        {% end %}
+        {% endfor %}
     </ul>
 </div>
 {% elif not oob %}
 <div id="{{ id }}" class="chirpui-form-error-summary" hidden></div>
 {% else %}
 <div id="{{ id }}" class="chirpui-form-error-summary" hidden hx-swap-oob="true"></div>
-{% end %}
+{% endif %}
 {% else %}
 {% if oob %}
 <div id="{{ id }}" class="chirpui-form-error-summary" hidden hx-swap-oob="true"></div>
-{% end %}
-{% end %}
-{% end %}
+{% endif %}
+{% endif %}
+{% enddef %}
 
 {# Form actions — submit/cancel button row. Use align="end" for right-aligned.
    btn() defaults to type="button"; pass type="submit" explicitly for form submission:
@@ -824,7 +824,7 @@
 <div class="chirpui-form-actions{{ align_class }}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {# Schema-driven config form. `fields` is a list of ProjectedField (from
    chirp_ui.config_schema.project_fields) or plain dicts with the same shape.
@@ -868,11 +868,11 @@
         {% else %}
             {{ text_field(_name, value=_value, label=_label, errors=errors,
                           required=_req, hint=_hint) }}
-        {% end %}
-    {% end %}
+        {% endif %}
+    {% endfor %}
     {% call form_actions(align="end") %}
         {% from "chirpui/button.html" import btn %}
         {{ btn(submit_label, type="submit", variant="primary") }}
-    {% end %}
-{% end %}
-{% end %}
+    {% endcall %}
+{% endcall %}
+{% enddef %}

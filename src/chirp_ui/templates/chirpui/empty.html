@@ -30,29 +30,29 @@
     <div class="chirpui-empty-state__illustration">{{ illustration }}</div>
     {% elif icon %}
     <div class="chirpui-empty-state__icon">{{ icon | icon }}</div>
-    {% end %}
+    {% endif %}
     <h2 class="chirpui-empty-state__title">{{ title }}</h2>
     {% if code %}
     <div class="chirpui-empty-state__code"><code>{{ code }}</code></div>
-    {% end %}
+    {% endif %}
     <div class="chirpui-empty-state__body">
         {% slot %}
         {% if search_hint %}
         <p class="chirpui-empty-state__search-hint">{{ search_hint }}</p>
-        {% end %}
+        {% endif %}
         {% if suggestions %}
         <ul class="chirpui-empty-state__suggestions">
             {% for item in suggestions %}
             <li>{{ item }}</li>
-            {% end %}
+            {% endfor %}
         </ul>
-        {% end %}
+        {% endif %}
         {% if action_label and action_href %}
         <a href="{{ action_href }}" class="chirpui-btn chirpui-btn--primary chirpui-empty-state__action"{{ route_link_attrs(action_href) | html_attrs }}>{{ action_label }}</a>
         {% else %}
         {# actions is the canonical name; action is kept for backward compat #}
         <div class="chirpui-empty-state__action">{% slot actions %}{% slot action %}</div>
-        {% end %}
+        {% endif %}
     </div>
 </div>
-{% end %}
+{% enddef %}

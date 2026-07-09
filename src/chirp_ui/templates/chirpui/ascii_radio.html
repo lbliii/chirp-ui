@@ -18,20 +18,20 @@
 <label class="chirpui-ascii-radio{{ " chirpui-ascii-radio--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}">
     <input class="chirpui-ascii-radio__input chirpui-visually-hidden"
            type="radio" name="{{ name }}" value="{{ value }}"
-           {% if checked %}checked{% end %}
-           {% if disabled %}disabled{% end %}>
+           {% if checked %}checked{% endif %}
+           {% if disabled %}disabled{% endif %}>
     <span class="chirpui-ascii-radio__dot" aria-hidden="true"></span>
-    {% if label %}<span class="chirpui-ascii-radio__label">{{ label }}</span>{% end %}
+    {% if label %}<span class="chirpui-ascii-radio__label">{{ label }}</span>{% endif %}
 </label>
-{% end %}
+{% enddef %}
 
 {% def ascii_radio_group(name=none, legend=none, layout="vertical", variant="", cls="") %}
 {% set variant = variant | validate_variant(("", "default", "accent"), "") %}
 {% set variant_class = " chirpui-ascii-radio-group--" ~ variant if variant and variant != "default" else "" %}
 {% set layout_class = " chirpui-ascii-radio-group--horizontal" if layout == "horizontal" else "" %}
 <fieldset class="chirpui-ascii-radio-group{{ layout_class }}{{ variant_class }}{{ " " ~ cls if cls else "" }}"
-          role="radiogroup"{% if legend or name %} aria-label="{{ legend or name }}"{% end %}>
-    {% if legend %}<legend class="chirpui-ascii-radio-group__legend">{{ legend }}</legend>{% end %}
+          role="radiogroup"{% if legend or name %} aria-label="{{ legend or name }}"{% endif %}>
+    {% if legend %}<legend class="chirpui-ascii-radio-group__legend">{{ legend }}</legend>{% endif %}
     {% slot %}
 </fieldset>
-{% end %}
+{% enddef %}

@@ -18,7 +18,7 @@
 <span class="chirpui-sparkle{{ variant_cls }}{{ " " ~ cls if cls else "" }}">
     {% for i in range(count) %}
     <span class="chirpui-sparkle__star" aria-hidden="true"></span>
-    {% end %}
+    {% endfor %}
     {% slot %}
 </span>
-{% end %}
+{% enddef %}

@@ -16,7 +16,7 @@
 <div role="radiogroup" class="chirpui-filter-group{{ " " ~ cls if cls else "" }}" aria-label="{{ name }}">
 {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def filter_chip(label, value="", color=none, active=false, href=none, cls="", hx_target=none, hx_push_url=false, hx_swap="innerHTML", hx_select=none) %}
 {% set resolved = color | resolve_color %}
@@ -26,18 +26,18 @@
 {% set badge_class = "badge" | bem(variant=badge_variant, cls=chip_cls) %}
 {% set _route_attrs = route_link_attrs(href) if href and not hx_target else {} %}
 {% if href %}
-<a class="{{ badge_class }}" href="{{ href }}"{% if style_attr %} style="{{ style_attr }}"{% end %}
+<a class="{{ badge_class }}" href="{{ href }}"{% if style_attr %} style="{{ style_attr }}"{% endif %}
    {% if hx_target %}
        hx-boost="false"
        hx-get="{{ href }}"
        hx-target="{{ hx_target }}"
        hx-swap="{{ hx_swap }}"
-       {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
-       {% if hx_push_url %}hx-push-url="true"{% end %}
+       {% if hx_select %}hx-select="{{ hx_select }}"{% endif %}
+       {% if hx_push_url %}hx-push-url="true"{% endif %}
    {% else %}
        {{ _route_attrs | html_attrs }}
-   {% end %}><span class="chirpui-badge__text">{{ label }}</span></a>
+   {% endif %}><span class="chirpui-badge__text">{{ label }}</span></a>
 {% else %}
-<span class="{{ badge_class }}"{% if style_attr %} style="{{ style_attr }}"{% end %}><span class="chirpui-badge__text">{{ label }}</span></span>
-{% end %}
-{% end %}
+<span class="{{ badge_class }}"{% if style_attr %} style="{{ style_attr }}"{% endif %}><span class="chirpui-badge__text">{{ label }}</span></span>
+{% endif %}
+{% enddef %}

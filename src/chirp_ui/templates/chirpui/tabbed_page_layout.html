@@ -34,18 +34,18 @@
 <div id="route-tabs">
 {{ render_route_tabs(_tab_items, _current_path, target=_tab_target) }}
 </div>
-{% end %}
-{% block page_header %}{% end %}
-{% block page_toolbar %}{% end %}
+{% endif %}
+{% block page_header %}{% endblock %}
+{% block page_toolbar %}{% endblock %}
 <div id="page-content-inner">
-{% block page_content %}{% end %}
+{% block page_content %}{% endblock %}
 </div>
 </div>
 {% endblock %}
 </div>
-{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% endcall %}
+{% endblock %}
 
 {% def tabbed_page_layout(tab_items=none, tabs=none, current_path="/", tab_target="#page-root") %}
 {% set _tab_items = tab_items if tab_items is not none else tabs %}
@@ -57,7 +57,7 @@
 <div id="route-tabs">
 {{ render_route_tabs(_tab_items, current_path, target=tab_target) }}
 </div>
-{% end %}
+{% endif %}
 {% slot page_header %}{% end %}
 {% slot page_toolbar %}{% end %}
 <div id="page-content-inner">
@@ -65,6 +65,6 @@
 </div>
 </div>
 </div>
-{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% endcall %}
+{% enddef %}

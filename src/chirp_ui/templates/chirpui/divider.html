@@ -18,9 +18,9 @@
 {% set horiz_class = " chirpui-divider--horizontal" if horizontal else "" %}
 <div class="chirpui-divider{{ variant_class }}{{ horiz_class }}{{ " " ~ cls if cls else "" }}"
      role="separator"
-     {% if text %}aria-label="{{ text }}"{% end %}>
+     {% if text %}aria-label="{{ text }}"{% endif %}>
     {% if text %}
         <span class="chirpui-divider__text">{{ text }}</span>
-    {% end %}
+    {% endif %}
 </div>
-{% end %}
+{% enddef %}

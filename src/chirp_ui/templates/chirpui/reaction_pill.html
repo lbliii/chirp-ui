@@ -17,12 +17,12 @@
     <span class="chirpui-reaction-pill__emoji">{{ emoji }}</span>
     {% if count > 0 %}
     <span class="chirpui-reaction-pill__count">{{ count }}</span>
-    {% end %}
+    {% endif %}
 </button>
-{% end %}
+{% enddef %}
 
 {% def message_reactions(cls="") %}
 <div class="chirpui-message-reactions{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}

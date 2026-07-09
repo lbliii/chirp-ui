@@ -66,21 +66,21 @@
            data-label="{{ _label }}" data-href="{{ _href }}"
            {{ route_link_attrs(_href) | html_attrs }}
            @click="selectItem($el)">
-            {% if _icon %}<span class="chirpui-context-menu__icon" aria-hidden="true">{{ _icon }}</span>{% end %}
+            {% if _icon %}<span class="chirpui-context-menu__icon" aria-hidden="true">{{ _icon }}</span>{% endif %}
             {{ _label }}
         </a>
         {% else %}
         <button type="button"
                 class="chirpui-context-menu__item chirpui-context-menu__item--{{ _variant }}"
                 role="menuitem" tabindex="-1" x-ref="item-{{ loop.index0 }}"
-                data-label="{{ _label }}"{% if _action %} data-action="{{ _action }}"{% end %}
-                {% if _disabled %} aria-disabled="true"{% end %}
+                data-label="{{ _label }}"{% if _action %} data-action="{{ _action }}"{% endif %}
+                {% if _disabled %} aria-disabled="true"{% endif %}
                 @click="selectItem($el)">
-            {% if _icon %}<span class="chirpui-context-menu__icon" aria-hidden="true">{{ _icon }}</span>{% end %}
+            {% if _icon %}<span class="chirpui-context-menu__icon" aria-hidden="true">{{ _icon }}</span>{% endif %}
             {{ _label }}
         </button>
-        {% end %}
-        {% end %}
+        {% endif %}
+        {% endfor %}
     </div>
 </div>
-{% end %}
+{% enddef %}

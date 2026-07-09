@@ -138,6 +138,10 @@ fresh checkout.
 
 Tasks:
 
+- Dev baseline stack (locked in `pyproject.toml` / `uv.lock`): **Kida 0.11**,
+  **Chirp 0.10**, **Pounce 0.8.2**. Run `uv sync --group dev` after pulling;
+  `uv run poe ci` includes `poe template-check` for strict chirpui template
+  verification.
 - Fix local `uv run` / cache setup issues so `poe build-manifest-check`,
   `poe build-css-check`, `poe build-docs-check`, and release preflight are
   reliable.
@@ -149,6 +153,7 @@ Tasks:
 
 Acceptance:
 
+- `uv run poe template-check` passes from a clean checkout.
 - `uv run poe build-manifest-check` passes from a clean checkout.
 - `uv run poe build-css-check` passes from a clean checkout.
 - `uv run poe build-docs-check` passes from a clean checkout.

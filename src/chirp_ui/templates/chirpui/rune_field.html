@@ -29,23 +29,23 @@
             {% for i in range(6) %}
             {% set pos = far_positions[i] %}
             <span class="chirpui-rune-field__rune" style="left: {{ pos[0] }}%; top: {{ pos[1] }}%">{{ far_runes[i] }}</span>
-            {% end %}
+            {% endfor %}
         </div>
         <div class="chirpui-rune-field__layer chirpui-rune-field__layer--mid">
             {% for i in range(5) %}
             {% set pos = mid_positions[i] %}
             <span class="chirpui-rune-field__rune" style="left: {{ pos[0] }}%; top: {{ pos[1] }}%">{{ mid_runes[i] }}</span>
-            {% end %}
+            {% endfor %}
         </div>
         <div class="chirpui-rune-field__layer chirpui-rune-field__layer--near">
             {% for i in range(4) %}
             {% set pos = near_positions[i] %}
             <span class="chirpui-rune-field__rune" style="left: {{ pos[0] }}%; top: {{ pos[1] }}%">{{ near_runes[i] }}</span>
-            {% end %}
+            {% endfor %}
         </div>
     </div>
     <div class="chirpui-rune-field__content">
         {% slot %}
     </div>
 </div>
-{% end %}
+{% enddef %}

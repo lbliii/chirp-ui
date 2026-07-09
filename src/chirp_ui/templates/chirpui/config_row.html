@@ -15,13 +15,13 @@
 
 {% def config_row_list(cls="", hoverable=false, divided=false, relaxed=false) %}
 {% set mods = "" %}
-{% if hoverable %}{% set mods = mods ~ " chirpui-config-row-list--hoverable" %}{% end %}
-{% if divided %}{% set mods = mods ~ " chirpui-config-row-list--divided" %}{% end %}
-{% if relaxed %}{% set mods = mods ~ " chirpui-config-row-list--relaxed" %}{% end %}
+{% if hoverable %}{% set mods = mods ~ " chirpui-config-row-list--hoverable" %}{% endif %}
+{% if divided %}{% set mods = mods ~ " chirpui-config-row-list--divided" %}{% endif %}
+{% if relaxed %}{% set mods = mods ~ " chirpui-config-row-list--relaxed" %}{% endif %}
 <div class="chirpui-config-row-list{{ mods }}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {# REQUIRES: form_action AND attrs_map together — omitting either silently renders a plain (non-htmx) toggle. #}
 {% def config_row_toggle(name, label, checked=false, form_action=none, attrs_map=none, errors=none, cls="", swap_id=none, oob=false) %}
@@ -36,10 +36,10 @@
         <label class="chirpui-field chirpui-field--toggle chirpui-toggle-wrap chirpui-config-row__toggle-wrap{{ " chirpui-field--error" if errors and errors | field_errors(name) else "" }}">
             <input class="chirpui-toggle chirpui-visually-hidden"
                    type="checkbox" id="{{ name }}" name="value" value="true"
-                   {% if checked %}checked {% end %}{% if attrs_map.get("hx-post") %}hx-post="{{ attrs_map.get("hx-post") }}" {% end %}{% if attrs_map.get("hx-target") %}hx-target="{{ attrs_map.get("hx-target") }}" {% end %}{% if attrs_map.get("hx-swap") %}hx-swap="{{ attrs_map.get("hx-swap") }}" {% end %}
+                   {% if checked %}checked {% endif %}{% if attrs_map.get("hx-post") %}hx-post="{{ attrs_map.get("hx-post") }}" {% endif %}{% if attrs_map.get("hx-target") %}hx-target="{{ attrs_map.get("hx-target") }}" {% endif %}{% if attrs_map.get("hx-swap") %}hx-swap="{{ attrs_map.get("hx-swap") }}" {% endif %}
                    hx-trigger="change"
                    hx-include="[name='key'],[name='value']"
-                   {% if errors and errors | field_errors(name) %} aria-invalid="true"{% end %}>
+                   {% if errors and errors | field_errors(name) %} aria-invalid="true"{% endif %}>
             <span class="chirpui-toggle__track" aria-hidden="true"></span>
         </label>
     </form>
@@ -48,15 +48,15 @@
         <label class="chirpui-toggle-wrap">
             <input class="chirpui-toggle chirpui-visually-hidden"
                    type="checkbox" id="{{ name }}" name="{{ name }}"
-                   {% if checked %}checked {% end %}
-                   {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+                   {% if checked %}checked {% endif %}
+                   {% if errors and errors | field_errors(name) %}aria-invalid="true"{% endif %}>
             <span class="chirpui-toggle__track" aria-hidden="true"></span>
         </label>
     </div>
-    {% end %}
+    {% endif %}
     </span>
 </div>
-{% end %}
+{% enddef %}
 
 {# REQUIRES: form_action AND attrs_map together — omitting either silently renders a plain (non-htmx) select. #}
 {% def config_row_select(name, label, options, selected="", form_action=none, attrs_map=none, errors=none, cls="") %}
@@ -68,42 +68,42 @@
         <input type="hidden" name="key" value="{{ name }}">
         <select class="chirpui-field__input chirpui-config-row__select"
                 id="{{ name }}" name="value"
-                {% if attrs_map.get("hx-post") %}hx-post="{{ attrs_map.get("hx-post") }}"{% end %}
-                {% if attrs_map.get("hx-target") %}hx-target="{{ attrs_map.get("hx-target") }}"{% end %}
-                {% if attrs_map.get("hx-swap") %}hx-swap="{{ attrs_map.get("hx-swap") }}"{% end %}
+                {% if attrs_map.get("hx-post") %}hx-post="{{ attrs_map.get("hx-post") }}"{% endif %}
+                {% if attrs_map.get("hx-target") %}hx-target="{{ attrs_map.get("hx-target") }}"{% endif %}
+                {% if attrs_map.get("hx-swap") %}hx-swap="{{ attrs_map.get("hx-swap") }}"{% endif %}
                 hx-trigger="change"
                 hx-include="[name='key'],[name='value']"
-                {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+                {% if errors and errors | field_errors(name) %}aria-invalid="true"{% endif %}>
             {% for opt in options %}
             <option value="{{ opt.get("value", "") if opt is mapping else opt }}"
-                    {% if (opt.get("value", "") if opt is mapping else opt) == selected %}selected{% end %}>
+                    {% if (opt.get("value", "") if opt is mapping else opt) == selected %}selected{% endif %}>
                 {{ opt.get("label", opt.get("value", "")) if opt is mapping else opt }}
             </option>
-            {% end %}
+            {% endfor %}
         </select>
     </form>
     {% else %}
     <select class="chirpui-field__input chirpui-config-row__select"
             id="{{ name }}" name="{{ name }}"
-            {% if errors and errors | field_errors(name) %}aria-invalid="true"{% end %}>
+            {% if errors and errors | field_errors(name) %}aria-invalid="true"{% endif %}>
         {% for opt in options %}
         <option value="{{ opt.get("value", "") if opt is mapping else opt }}"
-                {% if (opt.get("value", "") if opt is mapping else opt) == selected %}selected{% end %}>
+                {% if (opt.get("value", "") if opt is mapping else opt) == selected %}selected{% endif %}>
             {{ opt.get("label", opt.get("value", "")) if opt is mapping else opt }}
         </option>
-        {% end %}
+        {% endfor %}
     </select>
-    {% end %}
+    {% endif %}
     </span>
 </div>
-{% end %}
+{% enddef %}
 
 {% def config_row_display(term, detail, cls="") %}
 <div class="chirpui-config-row chirpui-config-row--display{{ " " ~ cls if cls else "" }}">
     <span class="chirpui-config-row__label chirpui-font-sm chirpui-font-medium">{{ term }}</span>
     <span class="chirpui-config-row__control chirpui-text-muted">{{ detail }}</span>
 </div>
-{% end %}
+{% enddef %}
 
 {% def config_row_editable(term, value, edit_url, swap_id=none, edit_label="Edit", cls="") %}
 {% set sid = swap_id or ("config-row-" ~ term | replace(".", "-")) %}
@@ -113,4 +113,4 @@
     {{ inline_edit_field_display(value=value, edit_url=edit_url, swap_target="#" ~ sid, swap_id=sid, edit_label=edit_label, cls="chirpui-config-row__editable") }}
     </span>
 </div>
-{% end %}
+{% enddef %}

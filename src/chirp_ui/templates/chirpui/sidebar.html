@@ -42,32 +42,32 @@
 {# @provides _nav_current_path — consumed by: sidebar_link #}
 {% provide _nav_current_path = current_path %}
 {% set _responsive_dropdowns = cls and "chirpui-sidebar--responsive-dropdowns" in cls %}
-<nav class="chirpui-sidebar{{ " " ~ cls if cls else "" }}"{% if aria_label %} aria-label="{{ aria_label }}"{% end %}
-     {% if _responsive_dropdowns %}x-data="chirpuiResponsiveSidebar()" x-init="init()" @keydown.escape.window="closeMenus()" @click.outside="closeMenus()"{% end %}>
+<nav class="chirpui-sidebar{{ " " ~ cls if cls else "" }}"{% if aria_label %} aria-label="{{ aria_label }}"{% endif %}
+     {% if _responsive_dropdowns %}x-data="chirpuiResponsiveSidebar()" x-init="init()" @keydown.escape.window="closeMenus()" @click.outside="closeMenus()"{% endif %}>
     <div class="chirpui-sidebar__header">{% slot header %}</div>
-    <div class="chirpui-sidebar__nav{% if sliding_pill %} chirpui-sidebar__nav--sliding-pill{% end %}"
+    <div class="chirpui-sidebar__nav{% if sliding_pill %} chirpui-sidebar__nav--sliding-pill{% endif %}"
          {% if sliding_pill %}data-chirpui-sliding-pill="rail"{% endif %}>
         {% if sliding_pill %}<span class="chirpui-nav-pill" aria-hidden="true"></span>{% endif %}
         {% slot %}
     </div>
     <div class="chirpui-sidebar__footer">{% slot footer %}</div>
 </nav>
-{% end %}
-{% end %}
+{% endprovide %}
+{% enddef %}
 
 {% def sidebar_section(title="", collapsible=false, cls="", open=true) %}
 {% if collapsible %}
-<details class="chirpui-sidebar__section{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
+<details class="chirpui-sidebar__section{{ " " ~ cls if cls else "" }}"{% if open %} open{% endif %}>
     <summary class="chirpui-sidebar__section-title">{{ title }}</summary>
     <div class="chirpui-sidebar__section-links">{% slot %}</div>
 </details>
 {% else %}
 <div class="chirpui-sidebar__section{{ " " ~ cls if cls else "" }}">
-    {% if title %}<span class="chirpui-sidebar__section-title">{{ title }}</span>{% end %}
+    {% if title %}<span class="chirpui-sidebar__section-title">{{ title }}</span>{% endif %}
     <div class="chirpui-sidebar__section-links">{% slot %}</div>
 </div>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def sidebar_link(href, label, icon="", active=false, match="", boost=true, cls="", badge=none, badge_label=none, badge_expected=false, badge_loading=false) %}
 {# @consumes _nav_current_path from: sidebar — falls back to "" #}
@@ -76,10 +76,10 @@
 {% set _badge_expected = badge_expected or badge_loading %}
 <a class="chirpui-sidebar__link{{ " chirpui-sidebar__link--active" if _active else "" }}{{ " " ~ cls if cls else "" }}"
    href="{{ href }}" title="{{ label }}"
-   {% if _active %}aria-current="page"{% end %}
-   {% if match %} data-chirpui-shell-match="{{ match }}"{% end %}
-   {% if boost %}{{ shell_outlet_attrs() }}{% end %}>{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% end %}<span class="chirpui-sidebar__label">{{ label }}</span>{% if badge is not none or _badge_expected %}<span class="chirpui-sidebar__badge{% if badge is none %} chirpui-sidebar__badge--reserved{% end %}{% if badge_loading %} chirpui-sidebar__badge--loading{% end %}"{% if badge_label and badge is not none %} aria-label="{{ badge_label }}"{% elif badge is none %} aria-hidden="true"{% end %}>{% if badge is not none %}{{ badge }}{% end %}</span>{% end %}</a>
-{% end %}
+   {% if _active %}aria-current="page"{% endif %}
+   {% if match %} data-chirpui-shell-match="{{ match }}"{% endif %}
+   {% if boost %}{{ shell_outlet_attrs() }}{% endif %}>{% if icon %}<span class="chirpui-sidebar__icon">{{ icon | icon }}</span>{% endif %}<span class="chirpui-sidebar__label">{{ label }}</span>{% if badge is not none or _badge_expected %}<span class="chirpui-sidebar__badge{% if badge is none %} chirpui-sidebar__badge--reserved{% endif %}{% if badge_loading %} chirpui-sidebar__badge--loading{% endif %}"{% if badge_label and badge is not none %} aria-label="{{ badge_label }}"{% elif badge is none %} aria-hidden="true"{% endif %}>{% if badge is not none %}{{ badge }}{% endif %}</span>{% endif %}</a>
+{% enddef %}
 
 {# Topbar brand — same shell outlet contract as sidebar_link. #}
 {# Do not use inside app_shell brand_slot: app_shell already wraps the slot in one <a>. #}
@@ -91,14 +91,14 @@
        fallback=build_hx_attrs(hx_boost="true", hx_target="#main", hx_swap="innerHTML", hx_select="#page-content")
    ) | html_attrs }}
 >{% slot %}</a>
-{% end %}
+{% enddef %}
 
 {# In-page boosted nav (buttons, evolution links) — same shell outlet contract. #}
 {% def shell_boosted_link(href, cls="", boost=true) %}
-<a href="{{ href }}"{% if cls %} class="{{ cls }}"{% end %}
-   {% if boost %}{{ shell_outlet_attrs() }}{% end %}
+<a href="{{ href }}"{% if cls %} class="{{ cls }}"{% endif %}
+   {% if boost %}{{ shell_outlet_attrs() }}{% endif %}
 >{% slot %}</a>
-{% end %}
+{% enddef %}
 
 {% def sidebar_toggle(cls="") %}
 <button type="button" class="chirpui-sidebar-toggle{{ " " ~ cls if cls else "" }}"
@@ -106,4 +106,4 @@
         @click="toggle()">
   <span class="chirpui-sidebar-toggle__icon">◀</span>
 </button>
-{% end %}
+{% enddef %}

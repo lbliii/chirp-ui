@@ -30,17 +30,17 @@
     {% set _pressed = item.get("pressed", false) or item.get("active", false) or _value in _values %}
     {% set _disabled = disabled or item.get("disabled", false) %}
     {% set _id = item.get("id", name ~ "-" ~ _value) %}
-    <label class="chirpui-toggle-group__item{% if _pressed %} chirpui-toggle-group__item--pressed{% end %}{% if _disabled %} chirpui-toggle-group__item--disabled{% end %}">
+    <label class="chirpui-toggle-group__item{% if _pressed %} chirpui-toggle-group__item--pressed{% endif %}{% if _disabled %} chirpui-toggle-group__item--disabled{% endif %}">
         <input class="chirpui-toggle-group__input chirpui-visually-hidden"
                type="{{ "checkbox" if _type == "multiple" else "radio" }}"
                id="{{ _id }}"
                name="{{ name }}{{ "[]" if _type == "multiple" else "" }}"
                value="{{ _value }}"
-               {% if _pressed %}checked{% end %}
-               {% if _disabled %}disabled{% end %}>
-        {% if item.get("icon") %}<span class="chirpui-toggle-group__icon">{{ item.icon | icon }}</span>{% end %}
+               {% if _pressed %}checked{% endif %}
+               {% if _disabled %}disabled{% endif %}>
+        {% if item.get("icon") %}<span class="chirpui-toggle-group__icon">{{ item.icon | icon }}</span>{% endif %}
         <span class="chirpui-toggle-group__label">{{ item.get("label", _value) }}</span>
     </label>
-    {% end %}
+    {% endfor %}
 </div>
-{% end %}
+{% enddef %}

@@ -31,23 +31,23 @@
             {% for i in range(5) %}
             {% set pos = far_positions[i] %}
             <span class="chirpui-holy-light__mote" style="left: {{ pos[0] }}%; bottom: {{ pos[1] }}%">{{ far_glyphs[i] }}</span>
-            {% end %}
+            {% endfor %}
         </div>
         <div class="chirpui-holy-light__layer chirpui-holy-light__layer--mid">
             {% for i in range(5) %}
             {% set pos = mid_positions[i] %}
             <span class="chirpui-holy-light__mote" style="left: {{ pos[0] }}%; bottom: {{ pos[1] }}%">{{ mid_glyphs[i] }}</span>
-            {% end %}
+            {% endfor %}
         </div>
         <div class="chirpui-holy-light__layer chirpui-holy-light__layer--near">
             {% for i in range(4) %}
             {% set pos = near_positions[i] %}
             <span class="chirpui-holy-light__mote" style="left: {{ pos[0] }}%; bottom: {{ pos[1] }}%">{{ near_glyphs[i] }}</span>
-            {% end %}
+            {% endfor %}
         </div>
     </div>
     <div class="chirpui-holy-light__content">
         {% slot %}
     </div>
 </div>
-{% end %}
+{% enddef %}

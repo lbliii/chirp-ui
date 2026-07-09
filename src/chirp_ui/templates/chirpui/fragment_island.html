@@ -32,10 +32,10 @@
         hx-trigger="{{ "load delay:" ~ delay if delay else "load" }}"
         hx-target="{{ target }}"
         hx-swap="{{ swap }}"
-        {% if select %}hx-select="{{ select }}"{% end %}
+        {% if select %}hx-select="{{ select }}"{% endif %}
         aria-hidden="true"
         {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}></button>
-{% end %}
+{% enddef %}
 
 {% def safe_region(
     id,
@@ -51,13 +51,13 @@
 <div id="{{ id }}"
      class="chirpui-fragment-island{{ " " ~ cls if cls else "" }}"
      hx-disinherit="{{ disinherit }}"
-     {% if hx_target %}hx-target="{{ hx_target }}"{% end %}
-     {% if hx_swap %}hx-swap="{{ hx_swap }}"{% end %}
-     {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
+     {% if hx_target %}hx-target="{{ hx_target }}"{% endif %}
+     {% if hx_swap %}hx-swap="{{ hx_swap }}"{% endif %}
+     {% if hx_select %}hx-select="{{ hx_select }}"{% endif %}
      {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
     {% try %}{% slot %}{% fallback %}{% end %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def fragment_island(
     id,
@@ -71,8 +71,8 @@
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
 {% call safe_region(id, hx_target=hx_target, hx_swap=hx_swap, hx_select=hx_select, cls=cls, attrs_unsafe=_attrs_raw) %}
 {{ caller() }}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {% def fragment_island_with_result(
     id,
@@ -88,5 +88,5 @@
 {% call safe_region(id, hx_target=hx_target, hx_swap=hx_swap, hx_select=hx_select, cls=cls, attrs_unsafe=_attrs_raw) %}
 <div id="{{ mutation_result_id }}" class="chirpui-fragment-island" aria-live="polite"></div>
 {{ caller() }}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}

@@ -32,22 +32,22 @@
      aria-valuenow="{{ bounded_value }}"
      aria-valuemin="0"
      aria-valuemax="100"
-     {% if label %}aria-label="{{ label }}"{% end %}>
-    {% if label %}<span class="chirpui-ascii-vu__label">{{ label }}</span>{% end %}
+     {% if label %}aria-label="{{ label }}"{% endif %}>
+    {% if label %}<span class="chirpui-ascii-vu__label">{{ label }}</span>{% endif %}
     <span class="chirpui-ascii-vu__track">
         <span class="chirpui-ascii-vu__bracket" aria-hidden="true">▐</span>
         {% for i in range(1, width + 1) %}
         <span class="chirpui-ascii-vu__cell{{ " chirpui-ascii-vu__cell--filled" if i <= filled else "" }}{{ " chirpui-ascii-vu__cell--hot" if i > hot_start and i <= filled else "" }}{{ " chirpui-ascii-vu__cell--peak" if peak and i == filled else "" }}" aria-hidden="true">{{ "█" if i <= filled else "░" }}</span>
-        {% end %}
+        {% endfor %}
         <span class="chirpui-ascii-vu__bracket" aria-hidden="true">▌</span>
     </span>
     <span class="chirpui-ascii-vu__readout">{{ bounded_value }}%</span>
 </div>
-{% end %}
+{% enddef %}
 
 {% def vu_meter_stack(title=none, cls="") %}
 <div class="chirpui-ascii-vu-stack{{ " " ~ cls if cls else "" }}">
-    {% if title %}<div class="chirpui-ascii-vu-stack__title">{{ title }}</div>{% end %}
+    {% if title %}<div class="chirpui-ascii-vu-stack__title">{{ title }}</div>{% endif %}
     {% slot %}
 </div>
-{% end %}
+{% enddef %}

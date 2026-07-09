@@ -25,24 +25,24 @@
     <div class="chirpui-media-object__actions">{% slot actions %}</div>
     {% else %}
     {% slot %}
-    {% end %}
+    {% endif %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def media_object_media(cls="") %}
 <div class="chirpui-media-object__media{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def media_object_body(cls="") %}
 <div class="chirpui-media-object__body{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def media_object_actions(cls="") %}
 <div class="chirpui-media-object__actions{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}

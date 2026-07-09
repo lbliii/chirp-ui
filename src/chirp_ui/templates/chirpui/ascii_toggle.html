@@ -35,16 +35,16 @@
     <input class="chirpui-ascii-toggle__input chirpui-visually-hidden"
            type="checkbox" role="switch" name="{{ name }}" id="{{ name }}"
            aria-checked="{{ "true" if checked else "false" }}"
-           {% if checked %}checked{% end %}
-           {% if disabled %}disabled{% end %}>
+           {% if checked %}checked{% endif %}
+           {% if disabled %}disabled{% endif %}>
     <span class="chirpui-ascii-toggle__track" aria-hidden="true">
         <span class="chirpui-ascii-toggle__rail">
             <span class="chirpui-ascii-toggle__knob"></span>
         </span>
     </span>
-    {% if label %}<span class="chirpui-ascii-toggle__label">{{ label }}</span>{% end %}
+    {% if label %}<span class="chirpui-ascii-toggle__label">{{ label }}</span>{% endif %}
 </label>
-{% end %}
+{% enddef %}
 
 {% def ascii_switch(name, checked=false, label=none, variant="", size="",
                     disabled=false, cls="") %}
@@ -55,8 +55,8 @@
     <input class="chirpui-ascii-switch__input chirpui-visually-hidden"
            type="checkbox" role="switch" name="{{ name }}" id="{{ name }}"
            aria-checked="{{ "true" if checked else "false" }}"
-           {% if checked %}checked{% end %}
-           {% if disabled %}disabled{% end %}>
+           {% if checked %}checked{% endif %}
+           {% if disabled %}disabled{% endif %}>
     <span class="chirpui-ascii-switch__body" aria-hidden="true">
         <span class="chirpui-ascii-switch__cap chirpui-ascii-switch__cap--top"></span>
         <span class="chirpui-ascii-switch__slot">
@@ -64,6 +64,6 @@
         </span>
         <span class="chirpui-ascii-switch__cap chirpui-ascii-switch__cap--bottom"></span>
     </span>
-    {% if label %}<span class="chirpui-ascii-switch__label">{{ label }}</span>{% end %}
+    {% if label %}<span class="chirpui-ascii-switch__label">{{ label }}</span>{% endif %}
 </label>
-{% end %}
+{% enddef %}

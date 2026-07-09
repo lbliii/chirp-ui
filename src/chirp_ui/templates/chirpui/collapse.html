@@ -11,7 +11,7 @@
 
 {% def collapse(trigger, open=false, cls="") %}
 <details class="chirpui-collapse{{ " " ~ cls if cls else "" }}"
-         {% if open %}open{% end %}>
+         {% if open %}open{% endif %}>
     <summary class="chirpui-collapse__trigger">
         <span class="chirpui-collapse__trigger-text">{{ trigger }}</span>
         <div class="chirpui-collapse__trigger-actions">{% slot header_actions %}</div>
@@ -20,4 +20,4 @@
         {% slot %}
     </div>
 </details>
-{% end %}
+{% enddef %}

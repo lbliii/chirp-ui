@@ -14,7 +14,7 @@
 {% def message_meta(model, timestamp=none, usage=none, cls="") %}
 <div class="chirpui-message-meta{{ " " ~ cls if cls else "" }}">
   <span class="chirpui-message-meta__model">{{ label_overline(model) }}</span>
-  {% if timestamp %}<time class="chirpui-message-meta__time">{{ timestamp }}</time>{% end %}
+  {% if timestamp %}<time class="chirpui-message-meta__time">{{ timestamp }}</time>{% endif %}
   {% if usage %}
   {% set _usage_tip = "in " ~ (usage.get("input") | default("0")) ~ ", out " ~ (usage.get("output") | default("0")) ~ ", total " ~ (usage.get("total") | default("0")) %}
   {% call tooltip(_usage_tip, position="top") %}
@@ -22,12 +22,12 @@
           aria-label="Token usage: {{ usage.get('input') | default('0') }} in, {{ usage.get('output') | default('0') }} out">
       {{ icon_btn("ℹ", variant="ghost", size="sm", aria_label="Token usage details") }}
     </span>
-  {% end %}
+  {% endcall %}
   <span class="chirpui-message-meta__usage-detail chirpui-visually-hidden">
-    {% if usage.get("input") is not none %}in {{ usage.input }} · {% end %}
-    {% if usage.get("output") is not none %}out {{ usage.output }} · {% end %}
-    {% if usage.get("total") is not none %}total {{ usage.total }}{% end %}
+    {% if usage.get("input") is not none %}in {{ usage.input }} · {% endif %}
+    {% if usage.get("output") is not none %}out {{ usage.output }} · {% endif %}
+    {% if usage.get("total") is not none %}total {{ usage.total }}{% endif %}
   </span>
-  {% end %}
+  {% endif %}
 </div>
-{% end %}
+{% enddef %}

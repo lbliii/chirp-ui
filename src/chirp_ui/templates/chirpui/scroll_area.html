@@ -12,10 +12,10 @@
 {% def scroll_area(max_block_size="", orientation="vertical", fade=false, cls="", attrs_map=none) %}
 {% set _orientation = "both" if orientation == "both" else "horizontal" if orientation == "horizontal" else "vertical" %}
 <div class="chirpui-scroll-area chirpui-scroll-area--{{ _orientation }}{{ " chirpui-scroll-area--fade" if fade else "" }}{{ " " ~ cls if cls else "" }}"
-     {% if max_block_size %}style="--chirpui-scroll-area-max-block-size: {{ max_block_size | e }};"{% end %}
+     {% if max_block_size %}style="--chirpui-scroll-area-max-block-size: {{ max_block_size | e }};"{% endif %}
      {{ attrs_map | html_attrs }}>
     <div class="chirpui-scroll-area__viewport">
         {% slot %}
     </div>
 </div>
-{% end %}
+{% enddef %}

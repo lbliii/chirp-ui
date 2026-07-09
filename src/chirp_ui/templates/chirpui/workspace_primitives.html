@@ -18,24 +18,24 @@
         {% slot %}
     </div>
 </nav>
-{% end %}
+{% enddef %}
 
 {% def filter_rail_item(href, label, count=none, meta=none, icon=none, active=false, cls="", attrs_map=none) %}
 <a class="chirpui-filter-rail__item{{ " is-active" if active else "" }}{{ " " ~ cls if cls else "" }}"
    href="{{ href }}"
-   {% if active %}aria-current="page"{% end %}
+   {% if active %}aria-current="page"{% endif %}
    data-chirpui-role="nav"
    data-chirpui-pressure="compress"
    data-chirpui-rhythm="group"
    {{ attrs_map | html_attrs }}>
-    {% if icon %}<span class="chirpui-filter-rail__mark" aria-hidden="true">{{ icon }}</span>{% end %}
+    {% if icon %}<span class="chirpui-filter-rail__mark" aria-hidden="true">{{ icon }}</span>{% endif %}
     <span class="chirpui-filter-rail__body">
         <strong class="chirpui-filter-rail__label">{{ label }}</strong>
-        {% if meta %}<small class="chirpui-filter-rail__meta">{{ meta }}</small>{% end %}
+        {% if meta %}<small class="chirpui-filter-rail__meta">{{ meta }}</small>{% endif %}
     </span>
-    {% if count is not none %}<span class="chirpui-filter-rail__count">{{ count }}</span>{% end %}
+    {% if count is not none %}<span class="chirpui-filter-rail__count">{{ count }}</span>{% endif %}
 </a>
-{% end %}
+{% enddef %}
 
 {% def metric_strip(label="Metrics", cls="") %}
 <div class="chirpui-metric-strip{{ " " ~ cls if cls else "" }}"
@@ -45,14 +45,14 @@
      data-chirpui-rhythm="group">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def metric_item(value, label, cls="") %}
 <span class="chirpui-metric-strip__item{{ " " ~ cls if cls else "" }}">
     <strong class="chirpui-metric-strip__value">{{ value }}</strong>
     <small class="chirpui-metric-strip__label">{{ label }}</small>
 </span>
-{% end %}
+{% enddef %}
 
 {% def result_collection(label="Results", title=none, cls="") %}
 <section class="chirpui-result-collection{{ " " ~ cls if cls else "" }}"
@@ -66,12 +66,12 @@
         <h2 class="chirpui-result-collection__title">{{ title }}</h2>
         <div class="chirpui-result-collection__meta">{% slot meta %}</div>
     </header>
-    {% end %}
+    {% endif %}
     <div class="chirpui-result-collection__items" role="list" data-chirpui-rhythm="stack">
         {% slot %}
     </div>
 </section>
-{% end %}
+{% enddef %}
 
 {% def result_card(title, subtitle=none, cls="", attrs_map=none) %}
 <article class="chirpui-result-card{{ " " ~ cls if cls else "" }}"
@@ -84,14 +84,14 @@
         <div class="chirpui-result-card__mark">{% slot mark %}</div>
         <div class="chirpui-result-card__copy" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
             <h3 class="chirpui-result-card__title">{{ title }}</h3>
-            {% if subtitle %}<p class="chirpui-result-card__subtitle">{{ subtitle }}</p>{% end %}
+            {% if subtitle %}<p class="chirpui-result-card__subtitle">{{ subtitle }}</p>{% endif %}
         </div>
         <div class="chirpui-result-card__actions" data-chirpui-role="actions" data-chirpui-pressure="rigid" data-chirpui-affinity="end">{% slot actions %}</div>
     </header>
     <div class="chirpui-result-card__body" data-chirpui-rhythm="stack">{% slot %}</div>
     <footer class="chirpui-result-card__footer" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end" data-chirpui-rhythm="group separated">{% slot footer %}</footer>
 </article>
-{% end %}
+{% enddef %}
 
 {% def inspector_panel(title=none, subtitle=none, cls="") %}
 <section class="chirpui-inspector-panel{{ " " ~ cls if cls else "" }}"
@@ -102,13 +102,13 @@
     {% if title or subtitle %}
     <header class="chirpui-inspector-panel__header" data-chirpui-rhythm="attached">
         <div class="chirpui-inspector-panel__copy" data-chirpui-role="content" data-chirpui-pressure="flex" data-chirpui-affinity="fill">
-            {% if title %}<h3 class="chirpui-inspector-panel__title">{{ title }}</h3>{% end %}
-            {% if subtitle %}<p class="chirpui-inspector-panel__subtitle">{{ subtitle }}</p>{% end %}
+            {% if title %}<h3 class="chirpui-inspector-panel__title">{{ title }}</h3>{% endif %}
+            {% if subtitle %}<p class="chirpui-inspector-panel__subtitle">{{ subtitle }}</p>{% endif %}
         </div>
         <div class="chirpui-inspector-panel__actions" data-chirpui-role="actions" data-chirpui-pressure="rigid" data-chirpui-affinity="end">{% slot actions %}</div>
     </header>
-    {% end %}
+    {% endif %}
     <div class="chirpui-inspector-panel__body" data-chirpui-rhythm="stack">{% slot %}</div>
     <footer class="chirpui-inspector-panel__footer" data-chirpui-role="metadata" data-chirpui-pressure="compress" data-chirpui-affinity="block-end" data-chirpui-rhythm="group separated">{% slot footer %}</footer>
 </section>
-{% end %}
+{% enddef %}

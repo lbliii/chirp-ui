@@ -27,7 +27,7 @@
 {% endif %}
 {% slot toolbar_controls %}
 {% end %}
-{% end %}
+{% endcall %}
 {% endif %}
 
 {% if filter_action %}
@@ -50,7 +50,7 @@
     {% slot filter_actions %}
     {% end %}
 </div>
-{% end %}
+{% endcall %}
 {% endif %}
 
 <div class="chirpui-selection-bar" role="toolbar" aria-label="{{ selected_aria_label or selected_label }}"{% if selected_count <= 0 %} hidden{% endif %}>
@@ -70,20 +70,20 @@
 
 {% if has_results %}
 {% if results_layout == "grid" %}
-<div class="chirpui-grid{% if results_cols == 2 %} chirpui-grid--cols-2{% elif results_cols == 3 %} chirpui-grid--cols-3{% elif results_cols == 4 %} chirpui-grid--cols-4{% end %}{% if results_gap == "sm" %} chirpui-grid--gap-sm{% elif results_gap == "md" %} chirpui-grid--gap-md{% elif results_gap == "lg" %} chirpui-grid--gap-lg{% end %} chirpui-resource-index__results">
-    {% if mutation_result_id %}<div id="{{ mutation_result_id }}" class="chirpui-fragment-island" aria-live="polite"></div>{% end %}
+<div class="chirpui-grid{% if results_cols == 2 %} chirpui-grid--cols-2{% elif results_cols == 3 %} chirpui-grid--cols-3{% elif results_cols == 4 %} chirpui-grid--cols-4{% endif %}{% if results_gap == "sm" %} chirpui-grid--gap-sm{% elif results_gap == "md" %} chirpui-grid--gap-md{% elif results_gap == "lg" %} chirpui-grid--gap-lg{% endif %} chirpui-resource-index__results">
+    {% if mutation_result_id %}<div id="{{ mutation_result_id }}" class="chirpui-fragment-island" aria-live="polite"></div>{% endif %}
     {{ caller() }}
 </div>
 {% else %}
-<div class="chirpui-stack{% if results_gap == "xs" %} chirpui-stack--xs{% elif results_gap == "sm" %} chirpui-stack--sm{% elif results_gap == "md" %} chirpui-stack--md{% elif results_gap == "lg" %} chirpui-stack--lg{% elif results_gap == "xl" %} chirpui-stack--xl{% end %} chirpui-resource-index__results">
-    {% if mutation_result_id %}<div id="{{ mutation_result_id }}" class="chirpui-fragment-island" aria-live="polite"></div>{% end %}
+<div class="chirpui-stack{% if results_gap == "xs" %} chirpui-stack--xs{% elif results_gap == "sm" %} chirpui-stack--sm{% elif results_gap == "md" %} chirpui-stack--md{% elif results_gap == "lg" %} chirpui-stack--lg{% elif results_gap == "xl" %} chirpui-stack--xl{% endif %} chirpui-resource-index__results">
+    {% if mutation_result_id %}<div id="{{ mutation_result_id }}" class="chirpui-fragment-island" aria-live="polite"></div>{% endif %}
     {{ caller() }}
 </div>
 {% endif %}
 {% else %}
 {% call empty_state(title=empty_title, icon=empty_icon, search_hint=empty_hint) %}
 {% if empty_message %}<p class="chirpui-text-muted">{{ empty_message }}</p>{% endif %}
-{% end %}
+{% endcall %}
 {% endif %}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}

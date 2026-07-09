@@ -12,8 +12,8 @@
 <div class="chirpui-stat{{ " " ~ cls if cls else "" }}">
     {% if icon %}
     <span class="chirpui-stat__icon">{{ icon | icon }}</span>
-    {% end %}
+    {% endif %}
     <span class="chirpui-stat__value">{{ value }}</span>
     <span class="chirpui-stat__label">{{ label }}</span>
 </div>
-{% end %}
+{% enddef %}
