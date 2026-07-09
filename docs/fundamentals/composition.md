@@ -49,4 +49,23 @@ Chirp injects the root-level `@view-transition` rule and meta tag when `AppConfi
 
 ## Explicit Kida end tags
 
-For deeply nested templates, prefer `{% endif %}`, `{% endcall %}`, `{% endfor %}`, `{% endblock %}`, and `{% enddef %}` over bare `{% end %}` so reviewers can match open/close pairs quickly. See the Kida README and `kida check` for CI-friendly parsing.
+For deeply nested templates, prefer `{% endif %}`, `{% endcall %}`, `{% endfor %}`, `{% endblock %}`, and `{% enddef %}` over bare `{% end %}` so reviewers can match open/close pairs quickly. See the [Kida README](https://github.com/lbliii/kida#cli) and [`kida check`](https://lbliii.github.io/kida/docs/reference/cli/#kida-check) for CI-friendly parsing.
+
+## Template verification (`kida check`)
+
+chirp-ui macros depend on filters and globals registered at runtime
+(`register_filters`, preview stubs). **`kida check` alone cannot validate the
+shipped template corpus** — use the repo wrapper instead:
+
+```bash
+uv run poe template-check    # strict gate; part of poe ci / poe check
+uv run poe ci                # full PR gate (lint, generated freshness, tests, …)
+```
+
+`scripts/template_check.py` mirrors `kida check <dir> --strict` with chirp-ui
+filter/global stubs wired (`make_preview_env`). For ad-hoc checks on app
+templates outside this repo, run `kida check templates/ --strict` directly.
+Kida 0.11 also supports `--format json|sarif`, `--validate-calls`, and `--typed`
+— the baseline gate here is `--strict`; typed validation extends in #367.
+
+See also [Kida diagnostics CLI reference](https://lbliii.github.io/kida/docs/reference/cli/#kida-check).

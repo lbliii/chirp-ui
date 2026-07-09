@@ -1,12 +1,23 @@
 # Standalone core — chirp-ui without Chirp
 
+**Scope:** **Kida renders macros; chirp-ui supplies the design system.** This
+guide covers chirp-ui loader/filters, static assets, Alpine bootstrap, and CSRF
+bridges — not how to install Kida in your web framework. For that, start with
+Kida 0.11's [framework tutorials](https://lbliii.github.io/kida/docs/tutorials/flask-integration/)
+(Flask, [Django](https://lbliii.github.io/kida/docs/tutorials/django-integration/),
+[Starlette/FastAPI](https://lbliii.github.io/kida/docs/tutorials/starlette-integration/))
+and the [Framework Integration API](https://lbliii.github.io/kida/docs/usage/framework-integration/)
+(`render_block`, introspection). Overlap between the two doc sets is audited in
+[kida-overlap-audit.md](kida-overlap-audit.md).
+
 Use this guide when you want chirp-ui in **Flask, FastAPI, Django, or any other
 Python web stack** without adopting the Chirp framework. The per-framework guides
 ([Flask](flask.md), [FastAPI](fastapi.md), [Django](django.md)) only cover
 framework-specific glue; everything in this document is shared.
 
 See also: [capability matrix](capability-matrix.md) — what Chirp gives you for
-free vs what you hand-roll standalone.
+free vs what you hand-roll standalone, and the [upgrade pitch](capability-matrix.md#upgrade-pitch-why-chirp)
+for when standalone seams outweigh the design-system win.
 
 ---
 
@@ -293,6 +304,18 @@ per route.
 | [fastapi.md](fastapi.md) | FastAPI / Starlette glue |
 | [django.md](django.md) | Django glue (most hand-roll, largest upgrade payoff) |
 | [csp.md](csp.md) | Content-Security-Policy contract for interactive macros |
+| [kida-overlap-audit.md](kida-overlap-audit.md) | How chirp-ui guides relate to Kida 0.11 framework docs |
+
+### See also (Kida engine)
+
+| Kida doc | When |
+|---|---|
+| [Flask Integration](https://lbliii.github.io/kida/docs/tutorials/flask-integration/) | `init_kida`, `render_template`, `render_block` in Flask |
+| [Django Integration](https://lbliii.github.io/kida/docs/tutorials/django-integration/) | `KidaTemplates` backend, `using="kida"` |
+| [Starlette & FastAPI Integration](https://lbliii.github.io/kida/docs/tutorials/starlette-integration/) | `KidaStarlette`, `TemplateResponse` |
+| [Framework Integration API](https://lbliii.github.io/kida/docs/usage/framework-integration/) | Block rendering, introspection, composition |
+| [`kida check` CLI](https://lbliii.github.io/kida/docs/reference/cli/#kida-check) | Template verification (`--strict`, `--format json\|sarif`) |
 
 When the standalone seams feel heavy, [Chirp's `use_chirp_ui`](https://lbliii.github.io/chirp/docs/guides/chirp-ui/)
-deletes the glue — it is the destination, not the requirement.
+and the [capability-matrix upgrade pitch](capability-matrix.md#upgrade-pitch-why-chirp)
+describe what gets deleted — Chirp is the destination, not the requirement.
