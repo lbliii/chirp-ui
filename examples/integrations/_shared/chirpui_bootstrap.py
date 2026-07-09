@@ -17,7 +17,9 @@ from chirp_ui import get_loader, register_filters, static_path
 ALPINE_VERSION = "3.15.8"
 CDN = "https://cdn.jsdelivr.net/npm"
 
-# Same inline bootstrap Chirp injects (src/chirp/server/alpine.py).
+# Byte-identical to Chirp 0.10+ ``_SAFE_DATA_BODY`` in
+# ``src/chirp/server/alpine.py`` (injected by ``use_chirp_ui`` via
+# ``safe_data_helper()``). Do not edit here unless Chirp source changed.
 SAFE_DATA_SHIM = """
 (function(){
   var q=[];

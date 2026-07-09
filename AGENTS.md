@@ -255,6 +255,14 @@ docs changes, or CI/workflow edits.
 
 - Prefer `uv run poe ci`; when narrower checks run, state exactly which checks
   ran and why full CI did not.
+- **Template verification:** `uv run poe template-check` runs strict Kida
+  verification over `src/chirp_ui/templates/chirpui` with production filter/global
+  stubs (`scripts/template_check.py`). It is wired into `poe ci` and `poe check`
+  after lint/format and before CSS checks. For local iteration on a single
+  template directory, `kida check <dir> --strict` is the underlying engine — see
+  [Kida `kida check` CLI docs](https://lbliii.github.io/kida/docs/reference/cli/#kida-check).
+  Use `poe ci` (or at minimum `poe check` + `poe test`) before opening a PR;
+  `template-check` alone is not sufficient.
 - Generated projections must be rebuilt and committed when affected.
 - Public behavior needs changelog fragments, migration notes, docs/examples, and
   steward notes when contracts change.

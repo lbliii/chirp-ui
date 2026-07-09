@@ -152,4 +152,11 @@ Chirp — not because Flask failed, but because you have already mapped the seam
 
 - [standalone-core.md](standalone-core.md)
 - [fastapi.md](fastapi.md) · [django.md](django.md)
+- [kida-overlap-audit.md](kida-overlap-audit.md) — how this guide relates to Kida 0.11 docs
 - Issue [#286](https://github.com/lbliii/chirp-ui/issues/286)
+
+### See also (Kida engine)
+
+- [Kida Flask Integration tutorial](https://lbliii.github.io/kida/docs/tutorials/flask-integration/) — `init_kida`, `render_block`, typed components
+- [Kida Framework Integration API](https://lbliii.github.io/kida/docs/usage/framework-integration/) — block rendering and introspection
+- [Kida `flask_components` example](https://github.com/lbliii/kida/tree/main/examples/flask_components) — runnable smoke-tested app; pair with [capability-matrix upgrade pitch](capability-matrix.md#upgrade-pitch-why-chirp) when standalone glue accumulates

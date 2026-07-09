@@ -96,6 +96,12 @@ thing that removes your glue code.
 ## Related
 
 - [standalone-core.md](standalone-core.md) — copy-paste bootstrap
+- [kida-overlap-audit.md](kida-overlap-audit.md) — overlap with Kida 0.11 framework tutorials
 - [anti-footguns.md](../safety/anti-footguns.md) — Alpine and registration pitfalls
 - [alpine-magics.md](../components/alpine-magics.md) — controller API contract
 - Saga: [#284](https://github.com/lbliii/chirp-ui/issues/284) Framework-Agnostic Adoption On-Ramp
+
+### See also (Kida engine)
+
+- [Kida framework tutorials](https://lbliii.github.io/kida/docs/tutorials/flask-integration/) — Flask, Django, and FastAPI engine wiring
+- [Framework Integration API](https://lbliii.github.io/kida/docs/usage/framework-integration/) — `render_block`, introspection
