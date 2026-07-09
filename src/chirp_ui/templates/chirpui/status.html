@@ -15,12 +15,12 @@
 {% set resolved = color | resolve_color %}
 {% set st_variant = ("custom" if resolved else (variant | validate_variant_block("status-indicator", "default"))) %}
 <div class="chirpui-status-indicator chirpui-status-indicator--{{ st_variant }}{{ _on_surface }}{{ " chirpui-status-indicator--pulse" if pulse else "" }}{{ " " ~ cls if cls else "" }}"
-     {% if resolved %}style="--chirpui-status-color: {{ resolved }}"{% end %}>
+     {% if resolved %}style="--chirpui-status-color: {{ resolved }}"{% endif %}>
     {% if icon %}
         <span class="chirpui-status-indicator__icon">{{ icon }}</span>
     {% else %}
         <span class="chirpui-status-indicator__dot"></span>
-    {% end %}
+    {% endif %}
     <span class="chirpui-status-indicator__label">{{ label }}</span>
 </div>
-{% end %}
+{% enddef %}

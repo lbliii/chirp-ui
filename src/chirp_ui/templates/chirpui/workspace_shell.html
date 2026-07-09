@@ -23,10 +23,10 @@
              data-chirpui-affinity="fill">
             {% if title %}
             <h1 class="chirpui-workspace-shell__title">{{ title }}</h1>
-            {% end %}
+            {% endif %}
             {% if subtitle %}
             <p class="chirpui-workspace-shell__subtitle">{{ subtitle }}</p>
-            {% end %}
+            {% endif %}
         </div>
         <div class="chirpui-workspace-shell__toolbar"
              data-chirpui-role="actions"
@@ -41,7 +41,7 @@
              data-chirpui-affinity="start">
         {% call panel(title=sidebar_title, surface_variant=sidebar_surface_variant, scroll_body=true, cls="chirpui-workspace-shell__sidebar-panel") %}
         {% yield sidebar %}
-        {% end %}
+        {% endcall %}
         </div>
     {% end %}
     {% slot secondary %}
@@ -60,17 +60,17 @@
                      data-chirpui-affinity="end">
                 {% call panel(title=inspector_title, surface_variant=inspector_surface_variant, scroll_body=true, cls="chirpui-workspace-shell__inspector-panel") %}
                 {% yield inspector %}
-                {% end %}
+                {% endcall %}
                 </div>
             {% end %}
-            {% end %}
+            {% endcall %}
         {% else %}
         <div class="chirpui-workspace-shell__main"
              data-chirpui-role="content"
              data-chirpui-pressure="flex"
              data-chirpui-affinity="fill">{% yield %}</div>
-        {% end %}
+        {% endif %}
     {% end %}
-    {% end %}
+    {% endcall %}
 </section>
-{% end %}
+{% enddef %}

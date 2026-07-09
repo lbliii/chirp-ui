@@ -28,10 +28,10 @@
     <span class="chirpui-confetti__piece chirpui-confetti__piece--{{ shapes[loop.index0 - (loop.index0 // nshapes) * nshapes] }}"
           :class="active ? 'chirpui-confetti__piece--active' : ''"
           style="left: {{ (loop.index0 * 2.5) | round(1) }}%; background: {{ colors[loop.index0 - (loop.index0 // ncolors) * ncolors] }}; --chirpui-confetti-duration: {{ 2 + loop.index0 * 0.05 }}s; animation-delay: {{ loop.index0 * 80 }}ms;"></span>
-    {% end %}
+    {% endfor %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def confetti_trigger(label, event="confetti", tag="button", cls="") %}
 <{{ tag }} class="{{ cls }}" x-data data-confetti-event="{{ event }}" @click="$dispatch($el.dataset.confettiEvent)">{{ label }}</{{ tag }}>
-{% end %}
+{% enddef %}

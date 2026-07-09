@@ -30,7 +30,7 @@
         <span class="chirpui-ripple-btn__ripple"
               :style="`left:${r.x}px;top:${r.y}px;width:${r.size}px;height:${r.size}px`"></span>
     </template>
-    {% if icon %}<span class="chirpui-ripple-btn__icon">{{ icon | icon }}</span>{% end %}
+    {% if icon %}<span class="chirpui-ripple-btn__icon">{{ icon | icon }}</span>{% endif %}
     {{ text }}
 </button>
-{% end %}
+{% enddef %}

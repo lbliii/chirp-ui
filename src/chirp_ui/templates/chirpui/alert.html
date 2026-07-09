@@ -49,11 +49,11 @@
 <div class="{{ alert_class }}" role="alert" x-data>
     {% if icon %}
         <span class="chirpui-alert__icon">{{ icon | icon }}</span>
-    {% end %}
+    {% endif %}
     <div class="chirpui-alert__body">
         {% if title %}
             <div class="chirpui-alert__title">{{ title }}</div>
-        {% end %}
+        {% endif %}
         {% slot %}
         {# header_actions is the canonical name; actions is kept for backward compat #}
         <div class="chirpui-alert__actions">{% slot header_actions %}{% slot actions %}</div>
@@ -63,7 +63,7 @@
                 type="button"
                 aria-label="Dismiss"
                 @click="$el.closest('.chirpui-alert').remove()">&times;</button>
-    {% end %}
+    {% endif %}
 </div>
 {% endif %}
-{% end %}
+{% enddef %}

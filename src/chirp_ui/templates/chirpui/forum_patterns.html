@@ -29,8 +29,8 @@
             {% endif %}
         </div>
     {% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {% def answer_card(title="Answer", accepted=false, closed=false, author=none, href=none, cls="") %}
 {% set variant = "success" if accepted else ("muted" if closed else "default") %}
@@ -47,10 +47,10 @@
         {% call cluster(gap="sm") %}
             {% if href %}{{ btn("Open answer", href=href, size="sm", variant="ghost") }}{% endif %}
             {% yield footer %}
-        {% end %}
+        {% endcall %}
     {% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {% def moderation_queue_item(href, title, reason, state="needs review", state_variant="warning",
                              target=none, actor=none, cls="") %}
@@ -63,8 +63,8 @@
                 {{ btn("Review", href=href, size="sm", variant="primary") }}
                 {{ btn("Defer", href=href ~ "/defer", size="sm", variant="ghost") }}
                 {% yield actions %}
-            {% end %}
+            {% endcall %}
         </div>
     {% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}

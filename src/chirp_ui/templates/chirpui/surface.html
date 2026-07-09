@@ -30,8 +30,8 @@
 {# @provides _surface_variant — consumed by: badge, callout, divider, settings_row_list, status_indicator, timeline #}
 {% provide _surface_variant = _variant %}
 {% let _mods = (["full"] if full_width else []) + (["no-padding"] if not padding else []) %}
-<div class="{{ "surface" | bem(variant=_variant, appearance=_appearance, tone=_tone, modifier=_mods, cls=cls) }}"{% if style %} style="{{ style }}"{% end %}{{ _attrs_raw | html_attrs }}{{ attrs_map | html_attrs }}>
+<div class="{{ "surface" | bem(variant=_variant, appearance=_appearance, tone=_tone, modifier=_mods, cls=cls) }}"{% if style %} style="{{ style }}"{% endif %}{{ _attrs_raw | html_attrs }}{{ attrs_map | html_attrs }}>
     {% slot %}
 </div>
-{% end %}
-{% end %}
+{% endprovide %}
+{% enddef %}

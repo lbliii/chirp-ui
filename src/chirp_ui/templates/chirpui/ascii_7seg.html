@@ -17,15 +17,15 @@
 {% set variant = variant | validate_variant(("", "default", "accent", "success", "warning", "error"), "") %}
 {% set variant_class = " chirpui-ascii-7seg--" ~ variant if variant and variant != "default" else "" %}
 <div class="chirpui-ascii-7seg{{ variant_class }}{{ " " ~ cls if cls else "" }}">
-    {% if label %}<span class="chirpui-ascii-7seg__label">{{ label }}</span>{% end %}
+    {% if label %}<span class="chirpui-ascii-7seg__label">{{ label }}</span>{% endif %}
     <span class="chirpui-ascii-7seg__display"
           role="img"
           aria-label="{{ label ~ ': ' if label else '7-segment display: ' }}{{ text }}">
         <span class="chirpui-ascii-7seg__frame" aria-hidden="true">┌</span>
         {% for ch in text %}
         <span class="chirpui-ascii-7seg__digit" data-char="{{ ch }}">{{ ch }}</span>
-        {% end %}
+        {% endfor %}
         <span class="chirpui-ascii-7seg__frame" aria-hidden="true">┐</span>
     </span>
 </div>
-{% end %}
+{% enddef %}

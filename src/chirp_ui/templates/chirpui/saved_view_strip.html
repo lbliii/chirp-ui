@@ -13,9 +13,9 @@
     {% set href = item.get("href") %}
     {% set selected = item.get("selected") if item.get("selected") is not none else (href and current_href == href) %}
     {{ chip(item.get("label", ""), href=href, selected=selected, muted=item.get("muted", false), color=item.get("color"), cls=item.get("cls", "")) }}
-    {% end %}
+    {% endfor %}
     {% else %}
     {% slot %}
-    {% end %}
+    {% endif %}
 </nav>
-{% end %}
+{% enddef %}

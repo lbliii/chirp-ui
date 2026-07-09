@@ -25,15 +25,15 @@
     <nav class="chirpui-carousel__dots" aria-label="Slide navigation">
         {% for i in range(1, slide_count + 1) %}
         <a href="#slide-{{ i }}" class="chirpui-carousel__dot" aria-label="Slide {{ i }}"></a>
-        {% end %}
+        {% endfor %}
     </nav>
-    {% end %}
+    {% endif %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def carousel_slide(id, cls="") %}
 <div id="slide-{{ id }}" class="chirpui-carousel__slide{{ " " ~ cls if cls else "" }}"
      role="group" aria-roledescription="slide">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}

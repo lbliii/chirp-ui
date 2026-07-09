@@ -11,5 +11,5 @@
 -#}
 
 {% def signature(text, language=none, cls="") %}
-<pre class="chirpui-signature{{ " " ~ cls if cls else "" }}"{% if language %} data-language="{{ language }}"{% end %}><code class="chirpui-signature__code">{{ text }}</code></pre>
-{% end %}
+<pre class="chirpui-signature{{ " " ~ cls if cls else "" }}"{% if language %} data-language="{{ language }}"{% endif %}><code class="chirpui-signature__code">{{ text }}</code></pre>
+{% enddef %}

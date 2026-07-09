@@ -21,16 +21,16 @@
                hx-get="{{ _prev_url }}"
                hx-target="{{ hx_target }}"
                hx-swap="{{ hx_swap }}"
-               {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
-               {% if hx_push_url %}hx-push-url="true"{% end %}
+               {% if hx_select %}hx-select="{{ hx_select }}"{% endif %}
+               {% if hx_push_url %}hx-push-url="true"{% endif %}
            {% else %}
                {{ route_link_attrs(_prev_url) | html_attrs }}
-           {% end %}
+           {% endif %}
            aria-label="Previous page">&laquo;</a>
     {% else %}
         <button type="button" class="chirpui-pagination__link chirpui-pagination__prev chirpui-pagination__link--disabled"
                 disabled aria-label="Previous page">&laquo;</button>
-    {% end %}
+    {% endif %}
 
     {# Page numbers #}
     {% for page in range(1, total + 1) %}
@@ -46,15 +46,15 @@
                    hx-get="{{ _page_url }}"
                    hx-target="{{ hx_target }}"
                    hx-swap="{{ hx_swap }}"
-                   {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
-                   {% if hx_push_url %}hx-push-url="true"{% end %}
+                   {% if hx_select %}hx-select="{{ hx_select }}"{% endif %}
+                   {% if hx_push_url %}hx-push-url="true"{% endif %}
                {% else %}
                    {{ route_link_attrs(_page_url) | html_attrs }}
-               {% end %}>{{ page }}</a>
+               {% endif %}>{{ page }}</a>
         {% elif page == current - window - 1 or page == current + window + 1 %}
             <span class="chirpui-pagination__ellipsis">&hellip;</span>
-        {% end %}
-    {% end %}
+        {% endif %}
+    {% endfor %}
 
     {# Next #}
     {% if current < total %}
@@ -66,16 +66,16 @@
                hx-get="{{ _next_url }}"
                hx-target="{{ hx_target }}"
                hx-swap="{{ hx_swap }}"
-               {% if hx_select %}hx-select="{{ hx_select }}"{% end %}
-               {% if hx_push_url %}hx-push-url="true"{% end %}
+               {% if hx_select %}hx-select="{{ hx_select }}"{% endif %}
+               {% if hx_push_url %}hx-push-url="true"{% endif %}
            {% else %}
                {{ route_link_attrs(_next_url) | html_attrs }}
-           {% end %}
+           {% endif %}
            aria-label="Next page">&raquo;</a>
     {% else %}
         <button type="button" class="chirpui-pagination__link chirpui-pagination__next chirpui-pagination__link--disabled"
                 disabled aria-label="Next page">&raquo;</button>
-    {% end %}
+    {% endif %}
 </nav>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

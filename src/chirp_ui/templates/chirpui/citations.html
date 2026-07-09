@@ -16,11 +16,11 @@
 {% set _href = build_text_fragment_url(href, chunk) if chunk else href %}
 <sup class="chirpui-citation{{ " " ~ cls if cls else "" }}">
   <a class="chirpui-citation__link" href="{{ _href }}"
-     {% if source_id %}data-source-id="{{ source_id }}"{% end %}
+     {% if source_id %}data-source-id="{{ source_id }}"{% endif %}
      aria-label="Citation {{ index }}: {{ title }}" title="{{ title }}"
      target="_blank" rel="noopener">{{ index }}</a>
 </sup>
-{% end %}
+{% enddef %}
 
 {% def sources_summary(sources, max_visible=4, label="Sources", cls="") %}
 {% set _total = sources | length %}
@@ -33,14 +33,14 @@
        data-source-id="{{ s.get("id") | default("") }}">
       <span class="chirpui-sources-summary__index">{{ loop.index }}</span>
     </a>
-    {% end %}
-    {% end %}
+    {% endif %}
+    {% endfor %}
     {% if _total > max_visible %}
     <span class="chirpui-avatar-stack__more">+{{ _total - max_visible }}</span>
-    {% end %}
+    {% endif %}
   </span>
 </div>
-{% end %}
+{% enddef %}
 
 {% def citation_modal(source, cls="") %}
 {% set _id = "citation-" ~ (source.get("id") | default("src")) %}
@@ -48,8 +48,8 @@
   <div class="chirpui-prose">
     {% if source.get("href") %}
     <p><a href="{{ source.href }}" target="_blank" rel="noopener">{{ source.href }}</a></p>
-    {% end %}
-    {% if source.get("excerpt") %}<blockquote>{{ source.excerpt }}</blockquote>{% end %}
+    {% endif %}
+    {% if source.get("excerpt") %}<blockquote>{{ source.excerpt }}</blockquote>{% endif %}
   </div>
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}

@@ -44,23 +44,23 @@
     </div>
     <div class="chirpui-site-footer__colophon">{% slot colophon %}</div>
 </footer>
-{% end %}
+{% enddef %}
 
 {% def footer_column(title="", cls="") %}
 <div class="chirpui-site-footer__column{{ " " ~ cls if cls else "" }}">
-    {% if title %}<h3 class="chirpui-site-footer__column-title">{{ title }}</h3>{% end %}
+    {% if title %}<h3 class="chirpui-site-footer__column-title">{{ title }}</h3>{% endif %}
     <ul class="chirpui-site-footer__list">
         {% slot %}
     </ul>
 </div>
-{% end %}
+{% enddef %}
 
 {% def footer_link(href, label, glyph="", external=false, cls="") %}
 <li>
     <a class="chirpui-site-footer__link{{ " chirpui-site-footer__link--external" if external else "" }}{{ " " ~ cls if cls else "" }}"
-       href="{{ href }}"{% if external %} rel="noopener noreferrer"{% end %}{{ route_link_attrs(href, external=external) | html_attrs }}>
-        {%- if glyph %}<span class="chirpui-site-footer__link-glyph" aria-hidden="true">{{ glyph }}</span>{% end -%}
+       href="{{ href }}"{% if external %} rel="noopener noreferrer"{% endif %}{{ route_link_attrs(href, external=external) | html_attrs }}>
+        {%- if glyph %}<span class="chirpui-site-footer__link-glyph" aria-hidden="true">{{ glyph }}</span>{% endif %}
         {{ label -}}
     </a>
 </li>
-{% end %}
+{% enddef %}

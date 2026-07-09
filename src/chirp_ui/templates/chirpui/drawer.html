@@ -28,13 +28,13 @@
                 <button class="chirpui-drawer__close" aria-label="Close">&times;</button>
             </form>
         </header>
-        {% end %}
+        {% endif %}
         <div class="chirpui-drawer__body">
             {% slot %}
         </div>
     </div>
 </dialog>
-{% end %}
+{% enddef %}
 
 {% def drawer_trigger(target, label="Open", cls="") %}
 <button class="chirpui-drawer-trigger{{ " " ~ cls if cls else "" }}"
@@ -44,4 +44,4 @@
         @click="open()">
     {{ label }}
 </button>
-{% end %}
+{% enddef %}

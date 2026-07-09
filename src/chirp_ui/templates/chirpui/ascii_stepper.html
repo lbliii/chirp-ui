@@ -27,13 +27,13 @@
         {% set state = "complete" if loop.index0 < active_index else ("active" if loop.index0 == active_index else "pending") %}
         {% if not loop.first %}
         <span class="chirpui-ascii-stepper__connector{{ " chirpui-ascii-stepper__connector--complete" if loop.index0 <= active_index else "" }}" aria-hidden="true">───</span>
-        {% end %}
+        {% endif %}
         <span class="chirpui-ascii-stepper__step chirpui-ascii-stepper__step--{{ state }}"
-              {% if state == "active" %}aria-current="step"{% end %}>
-            <span class="chirpui-ascii-stepper__node" aria-hidden="true">{% if state == "complete" %}[✓]{% elif state == "active" %}[●]{% else %}[○]{% end %}</span>
+              {% if state == "active" %}aria-current="step"{% endif %}>
+            <span class="chirpui-ascii-stepper__node" aria-hidden="true">{% if state == "complete" %}[✓]{% elif state == "active" %}[●]{% else %}[○]{% endif %}</span>
             <span class="chirpui-ascii-stepper__label">{{ step_label }}</span>
         </span>
-        {% end %}
+        {% endfor %}
     </div>
 </div>
-{% end %}
+{% enddef %}

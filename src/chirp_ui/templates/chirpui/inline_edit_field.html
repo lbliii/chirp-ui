@@ -28,11 +28,11 @@
             hx-sync="this:replace"
             title="{{ edit_label }}"
             aria-label="{{ edit_label }}">
-        {% if edit_icon %}<span class="chirpui-inline-edit__icon" aria-hidden="true">&#9998;</span>{% end %}
+        {% if edit_icon %}<span class="chirpui-inline-edit__icon" aria-hidden="true">&#9998;</span>{% endif %}
         {{ edit_label }}
     </button>
 </div>
-{% end %}
+{% enddef %}
 
 {% def inline_edit_field_form(name, value, save_url, cancel_url=none, swap_target=none, swap_id=none,
                               save_label="Save", cancel_label="Cancel", cls="") %}
@@ -59,4 +59,4 @@
         </div>
     </form>
 </div>
-{% end %}
+{% enddef %}

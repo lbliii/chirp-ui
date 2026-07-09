@@ -70,7 +70,7 @@
 {% if col.sortable %}
 <th class="chirpui-table__th{{ " chirpui-table__th--" ~ _align if _align else "" }}" scope="col" aria-sort="{{ col.aria_sort }}">
     <button type="button" class="chirpui-table__sort"
-            {% if selection_id %}id="{{ selection_id }}-sort-{{ col.key }}"{% end %}
+            {% if selection_id %}id="{{ selection_id }}-sort-{{ col.key }}"{% endif %}
             {#- Boost-safe sort: select the grid's OWN region from the response
                 (hx-select = the swap target = the grid id) and stop inheriting the
                 shell's hx-select="#page-content". Without this, inside a boosted
@@ -85,8 +85,8 @@
 </th>
 {% else %}
 <th class="chirpui-table__th{{ " chirpui-table__th--" ~ _align if _align else "" }}" scope="col">{{ col.label }}</th>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {#- Load-more sentinel — a stable-id container (`#{selection_id}-load-more`) that
     holds the load-more button. Rendered once by `data_grid` (oob=false) and
@@ -100,16 +100,16 @@
                       load_more_swap="beforeend", oob=false) %}
 {% set _lm_id = selection_id ~ "-load-more" %}
 {% set _body = body_id or (selection_id ~ "-grid-body") %}
-<div id="{{ _lm_id }}" class="chirpui-data-grid__load-more"{% if oob %} hx-swap-oob="true"{% end %}>
+<div id="{{ _lm_id }}" class="chirpui-data-grid__load-more"{% if oob %} hx-swap-oob="true"{% endif %}>
     {% if load_more_url and has_more %}
     <button type="button" class="chirpui-btn chirpui-btn--secondary chirpui-data-grid__load-more-btn"
             hx-boost="false"
             {{ build_hx_attrs(hx_get=load_more_url, hx_target="#" ~ _body, hx_swap=load_more_swap, hx_trigger=load_more_trigger, hx_select="unset", hx_disinherit="hx-select") | html_attrs }}>
         {{ load_more_label }}
     </button>
-    {% end %}
+    {% endif %}
 </div>
-{% end %}
+{% enddef %}
 
 {#- Body rows, plus — when called as the load-more fragment with `load_more_url`
     set — the load-more sentinel emitted as an `hx-swap-oob` update to the stable
@@ -141,22 +141,22 @@
                aria-label="Select {{ _rlabel }}"
                :checked="selected.has('{{ _rid }}')"
                @change="toggle('{{ _rid }}', $event.target.checked)"
-               {% if selection and selection.is_selected(_rid) %}checked{% end %}>
+               {% if selection and selection.is_selected(_rid) %}checked{% endif %}>
     </td>
-    {% end %}
+    {% endif %}
     {% for cell in row_data %}
         {% set _col = columns[loop.index0] if loop.index0 < (columns | length) else none %}
         <td class="chirpui-table__td{{ " chirpui-table__td--" ~ _col.align if _col and _col.align else "" }}">{{ cell }}</td>
-    {% end %}
+    {% endfor %}
 </tr>
-{% end %}
+{% endfor %}
 {#- When rendered as the load-more fragment, refresh/remove the button via OOB. -#}
 {% if load_more_url %}
 {{ grid_load_more(selection_id=selection_id, load_more_url=load_more_url, has_more=has_more,
                   load_more_label=load_more_label, load_more_trigger=load_more_trigger,
                   load_more_swap=load_more_swap, oob=true) }}
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def data_grid(title=none, description=none, columns=none, rows=none, row_ids=none,
                  row_labels=none,
@@ -189,16 +189,16 @@
          {{ attrs_map | html_attrs }}>
     {% if title or description %}
     <div class="chirpui-data-grid__header">
-        {% if title %}<h2 class="chirpui-data-grid__title">{{ title }}</h2>{% end %}
-        {% if description %}<p class="chirpui-data-grid__description">{{ description }}</p>{% end %}
+        {% if title %}<h2 class="chirpui-data-grid__title">{{ title }}</h2>{% endif %}
+        {% if description %}<p class="chirpui-data-grid__description">{{ description }}</p>{% endif %}
     </div>
-    {% end %}
+    {% endif %}
 
     {% if filter_action %}
     <div class="chirpui-data-grid__filters">
-        {% call filter_row(action=filter_action, method=filter_method) %}{% slot toolbar %}{% end %}{% end %}
+        {% call filter_row(action=filter_action, method=filter_method) %}{% slot toolbar %}{% end %}{% endcall %}
     </div>
-    {% end %}
+    {% endif %}
 
     {% if selectable %}
     {% call selection_bar(live_region=true, controlled=true, cls="chirpui-data-grid__selection") %}
@@ -207,8 +207,8 @@
            selection bar. kida shadows a bare {% slot %} inside a nested {% call %},
            so capture the caller explicitly. #}
         {{ caller() if caller is defined else "" }}
-    {% end %}
-    {% end %}
+    {% endcall %}
+    {% endif %}
 
     <div class="chirpui-table-wrap{{ " chirpui-table-wrap--sticky" if sticky_header else "" }} chirpui-data-grid__body">
         <table class="chirpui-table chirpui-data-grid__table{{ " chirpui-table--striped" if striped else "" }}{{ " chirpui-table--compact" if compact else "" }}{{ " chirpui-table--sticky-col" if sticky_first_col else "" }}">
@@ -222,12 +222,12 @@
                                :checked="allSelected"
                                x-effect="$el.indeterminate = someSelected"
                                @change="toggleAll($event)"
-                               {% if selection and selection.all_selected %}checked{% end %}>
+                               {% if selection and selection.all_selected %}checked{% endif %}>
                     </th>
-                    {% end %}
+                    {% endif %}
                     {% for col in _columns %}
                         {{ grid_head_cell(col, hx_target=(hx_target or ("#" ~ _grid_id)), selection_id=selection_id) }}
-                    {% end %}
+                    {% endfor %}
                 </tr>
             </thead>
             <tbody id="{{ _body_id }}" class="chirpui-table__body">
@@ -239,7 +239,7 @@
                             <span aria-hidden="true">◇</span> {{ empty_message }}
                         </td>
                     </tr>
-                {% end %}
+                {% endif %}
             </tbody>
         </table>
     </div>
@@ -251,6 +251,6 @@
     <div class="chirpui-data-grid__footer">
         {{ pagination(current=current, total=total, url_pattern=url_pattern, hx_target=("#" ~ _body_id)) }}
     </div>
-    {% end %}
+    {% endif %}
 </section>
-{% end %}
+{% enddef %}

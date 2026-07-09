@@ -20,4 +20,4 @@
 {% set variant = variant | validate_variant(("dark","gradient-bottom","gradient-top"), "dark") %}
 <div class="chirpui-overlay chirpui-overlay--{{ variant }}{{ " " ~ cls if cls else "" }}"
      aria-hidden="true"></div>
-{% end %}
+{% enddef %}

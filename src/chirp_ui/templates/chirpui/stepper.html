@@ -16,20 +16,20 @@
         {% set idx = loop.index %}
         {% set status = "completed" if idx < current else ("active" if idx == current else "pending") %}
         <li class="chirpui-stepper__item chirpui-stepper__item--{{ status }}"
-            {% if idx == current %}aria-current="step"{% end %}>
+            {% if idx == current %}aria-current="step"{% endif %}>
             <span class="chirpui-stepper__indicator">
                 {% if status == "completed" %}
                 <span class="chirpui-stepper__check" aria-hidden="true">✓</span>
                 {% else %}
                 <span class="chirpui-stepper__number">{{ idx }}</span>
-                {% end %}
+                {% endif %}
             </span>
             <span class="chirpui-stepper__label">{{ step.label }}</span>
             {% if not loop.last %}
             <span class="chirpui-stepper__connector" aria-hidden="true"></span>
-            {% end %}
+            {% endif %}
         </li>
-        {% end %}
+        {% endfor %}
     </ol>
 </nav>
-{% end %}
+{% enddef %}

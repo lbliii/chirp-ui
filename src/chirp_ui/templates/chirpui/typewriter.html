@@ -15,4 +15,4 @@
 {% set cursor_cls = "" if cursor else " chirpui-typewriter--no-cursor" %}
 {% set steps = text | length %}
 <{{ tag }} class="chirpui-typewriter{{ speed_cls }}{{ delay_cls }}{{ cursor_cls }}{{ " " ~ cls if cls else "" }}"><span class="chirpui-typewriter__text" style="--chirpui-typewriter-steps: {{ steps }}">{{ text }}</span></{{ tag }}>
-{% end %}
+{% enddef %}

@@ -22,18 +22,18 @@
         <div class="chirpui-panel__heading">
             {% if title %}
             <h2 class="chirpui-panel__title">{{ title }}</h2>
-            {% end %}
+            {% endif %}
             {% if subtitle %}
             <p class="chirpui-panel__subtitle">{{ subtitle }}</p>
-            {% end %}
+            {% endif %}
         </div>
         <div class="chirpui-panel__actions">{% slot actions %}</div>
     </header>
-    {% end %}
+    {% endif %}
     <div class="chirpui-panel__body{{ " chirpui-panel__body--scroll" if scroll_body else "" }}">
         {% slot %}
     </div>
     <footer class="chirpui-panel__footer">{% slot footer %}</footer>
 </section>
-{% end %}
-{% end %}
+{% endprovide %}
+{% enddef %}

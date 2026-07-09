@@ -13,28 +13,28 @@
 {% if href and not disabled %}
 <a class="chirpui-item{{ state_class }}{{ " " ~ cls if cls else "" }}"
    href="{{ href }}"
-   {% if selected %}aria-current="page"{% end %}
+   {% if selected %}aria-current="page"{% endif %}
    {{ attrs_map | html_attrs }}>
-    {% if icon %}<span class="chirpui-item__icon" aria-hidden="true">{{ icon | icon }}</span>{% end %}
+    {% if icon %}<span class="chirpui-item__icon" aria-hidden="true">{{ icon | icon }}</span>{% endif %}
     <span class="chirpui-item__content">
         <span class="chirpui-item__title">{{ title }}</span>
-        {% if description %}<span class="chirpui-item__description">{{ description }}</span>{% end %}
+        {% if description %}<span class="chirpui-item__description">{{ description }}</span>{% endif %}
     </span>
-    {% if meta %}<span class="chirpui-item__meta">{{ meta }}</span>{% end %}
+    {% if meta %}<span class="chirpui-item__meta">{{ meta }}</span>{% endif %}
     <span class="chirpui-item__action">{% slot action %}</span>
 </a>
 {% else %}
 <div class="chirpui-item{{ state_class }}{{ " " ~ cls if cls else "" }}"
-     {% if selected %}aria-current="page"{% end %}
-     {% if disabled %}aria-disabled="true"{% end %}
+     {% if selected %}aria-current="page"{% endif %}
+     {% if disabled %}aria-disabled="true"{% endif %}
      {{ attrs_map | html_attrs }}>
-    {% if icon %}<span class="chirpui-item__icon" aria-hidden="true">{{ icon | icon }}</span>{% end %}
+    {% if icon %}<span class="chirpui-item__icon" aria-hidden="true">{{ icon | icon }}</span>{% endif %}
     <span class="chirpui-item__content">
         <span class="chirpui-item__title">{{ title }}</span>
-        {% if description %}<span class="chirpui-item__description">{{ description }}</span>{% end %}
+        {% if description %}<span class="chirpui-item__description">{{ description }}</span>{% endif %}
     </span>
-    {% if meta %}<span class="chirpui-item__meta">{{ meta }}</span>{% end %}
+    {% if meta %}<span class="chirpui-item__meta">{{ meta }}</span>{% endif %}
     <span class="chirpui-item__action">{% slot action %}</span>
 </div>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

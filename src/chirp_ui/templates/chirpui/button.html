@@ -45,36 +45,36 @@
 {% set _route_attrs = route_link_attrs(href, disabled=_disabled, attrs=_attrs_raw, attrs_map=attrs_map) if not _btn_has_hx_config else {} %}
 {% if href %}
 <a class="{{ base_class }}"{% if not _disabled %} href="{{ href }}"{% endif %}
-   {% if aria_label %}aria-label="{{ aria_label }}"{% end %}
-   {% if data_action %}data-action="{{ data_action }}"{% end %}
-   {% if _disabled %}aria-disabled="true" tabindex="-1"{% end %}
+   {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+   {% if data_action %}data-action="{{ data_action }}"{% endif %}
+   {% if _disabled %}aria-disabled="true" tabindex="-1"{% endif %}
    {{ _attrs_raw | html_attrs }}
    {{ attrs_map | html_attrs }}
-   {% if not _disabled and _btn_has_hx_request %}hx-boost="false"{% end %}
-   {% if not _disabled %}{{ build_hx_attrs(hx_select=_default_hx_select, hx_sync=_default_hx_sync) | html_attrs }}{% end %}
-   {% if not _disabled %}{{ _route_attrs | html_attrs }}{% end %}
-   {% if not _disabled %}{{ _hx_dict | html_attrs }}{% end %}>
-    {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% end %}
+   {% if not _disabled and _btn_has_hx_request %}hx-boost="false"{% endif %}
+   {% if not _disabled %}{{ build_hx_attrs(hx_select=_default_hx_select, hx_sync=_default_hx_sync) | html_attrs }}{% endif %}
+   {% if not _disabled %}{{ _route_attrs | html_attrs }}{% endif %}
+   {% if not _disabled %}{{ _hx_dict | html_attrs }}{% endif %}>
+    {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% endif %}
     <span class="chirpui-btn__label">{{ label }}</span>
 </a>
 {% else %}
-<button type="{{ type }}" class="{{ base_class }}" {% if loading %}aria-busy="true"{% end %}
-        {% if aria_label %}aria-label="{{ aria_label }}"{% end %}
-        {% if data_action %}data-action="{{ data_action }}"{% end %}
-        {% if _disabled %}disabled{% end %}
+<button type="{{ type }}" class="{{ base_class }}" {% if loading %}aria-busy="true"{% endif %}
+        {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+        {% if data_action %}data-action="{{ data_action }}"{% endif %}
+        {% if _disabled %}disabled{% endif %}
         {{ _attrs_raw | html_attrs }}
         {{ attrs_map | html_attrs }}
         {{ build_hx_attrs(hx_select=_default_hx_select, hx_sync=_default_hx_sync, hx_disabled_elt=_default_hx_disabled) | html_attrs }}
         {{ _hx_dict | html_attrs }}>
-    {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% end %}
+    {% if icon %}<span class="chirpui-btn__icon">{{ icon | icon }}</span>{% endif %}
     <span class="chirpui-btn__label">{{ label }}</span>
     <span class="chirpui-btn__spinner" aria-hidden="true">{{ spinner(size="sm") }}</span>
 </button>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def button_group(cls="") %}
 <div class="chirpui-btn-group{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}

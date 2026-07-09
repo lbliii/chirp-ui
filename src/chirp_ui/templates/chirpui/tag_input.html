@@ -17,7 +17,7 @@
 <div class="chirpui-tag-input{{ " " ~ cls if cls else "" }}">
     {% if label %}
     <label class="chirpui-field__label chirpui-tag-input__label">{{ label }}</label>
-    {% end %}
+    {% endif %}
     <div class="chirpui-tag-input__chips">
         {% for tag in tags %}
         <span class="chirpui-tag">
@@ -28,16 +28,16 @@
                 <input type="hidden" name="{{ name }}" value="{{ tag }}">
                 <button type="submit" class="chirpui-tag__remove-btn" aria-label="Remove {{ tag }}">&times;</button>
             </form>
-            {% end %}
+            {% endif %}
         </span>
-        {% end %}
+        {% endfor %}
         {% if add_url %}
         <form method="post" action="{{ add_url }}" class="chirpui-tag-input__add">
             <input type="text" name="{{ name }}" placeholder="{{ placeholder }}"
                    class="chirpui-tag-input__add-field" autocomplete="off">
             <button type="submit" class="chirpui-btn chirpui-btn--secondary">Add</button>
         </form>
-        {% end %}
+        {% endif %}
     </div>
 </div>
-{% end %}
+{% enddef %}

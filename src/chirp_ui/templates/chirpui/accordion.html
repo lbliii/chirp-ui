@@ -21,15 +21,15 @@
 <div class="chirpui-accordion{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
-{% end %}
+{% endprovide %}
+{% enddef %}
 
 {% def accordion_item(title, open=false, name="", cls="") %}
 {# @consumes _accordion_name from: accordion — falls back to "accordion" if not in accordion context #}
 {% set _name = name if name else consume("_accordion_name", "accordion") %}
 <details class="chirpui-accordion__item{{ " " ~ cls if cls else "" }}"
          name="{{ _name }}"
-         {% if open %}open{% end %}>
+         {% if open %}open{% endif %}>
     <summary class="chirpui-accordion__trigger">
         <span class="chirpui-accordion__trigger-text">{{ title }}</span>
         <div class="chirpui-accordion__trigger-actions">{% slot header_actions %}</div>
@@ -38,4 +38,4 @@
         {% slot %}
     </div>
 </details>
-{% end %}
+{% enddef %}

@@ -26,11 +26,11 @@
     <span class="chirpui-visually-hidden">{{ text }}</span>
     <span aria-hidden="true">
     {% for ch in text %}
-    <span class="chirpui-split-flap__char" style="{% if animate %}animation-delay: {{ loop.index0 * 0.06 }}s{% end %}">{% if ch == " " %}&nbsp;{% else %}{{ ch }}{% end %}</span>
-    {% end %}
+    <span class="chirpui-split-flap__char" style="{% if animate %}animation-delay: {{ loop.index0 * 0.06 }}s{% endif %}">{% if ch == " " %}&nbsp;{% else %}{{ ch }}{% endif %}</span>
+    {% endfor %}
     </span>
 </span>
-{% end %}
+{% enddef %}
 
 {% def split_flap_row(cells, cls="") %}
 <div class="chirpui-split-flap-row{{ " " ~ cls if cls else "" }}">
@@ -39,13 +39,13 @@
         <span class="chirpui-visually-hidden">{{ cell }}</span>
         <span aria-hidden="true">
         {% for ch in cell %}
-        <span class="chirpui-split-flap__char" style="animation-delay: {{ loop.index0 * 0.06 }}s">{% if ch == " " %}&nbsp;{% else %}{{ ch }}{% end %}</span>
-        {% end %}
+        <span class="chirpui-split-flap__char" style="animation-delay: {{ loop.index0 * 0.06 }}s">{% if ch == " " %}&nbsp;{% else %}{{ ch }}{% endif %}</span>
+        {% endfor %}
         </span>
     </span>
-    {% end %}
+    {% endfor %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def split_flap_board(title=none, variant="", cls="") %}
 {% set variant = variant | validate_variant(("", "default", "amber", "green"), "") %}
@@ -53,9 +53,9 @@
 <div class="chirpui-split-flap-board{{ variant_class }}{{ " " ~ cls if cls else "" }}">
     {% if title %}
     <div class="chirpui-split-flap-board__title">{{ title }}</div>
-    {% end %}
+    {% endif %}
     <div class="chirpui-split-flap-board__body">
         {% slot %}
     </div>
 </div>
-{% end %}
+{% enddef %}

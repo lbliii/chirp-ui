@@ -14,8 +14,8 @@
 {% set variant_class = " chirpui-number-ticker--" ~ variant if variant else "" %}
 {% set size_class = " chirpui-number-ticker--" ~ size if size else "" %}
 <span class="chirpui-number-ticker{{ variant_class }}{{ size_class }}{{ " " ~ cls if cls else "" }}">
-    {%- if prefix %}<span class="chirpui-number-ticker__prefix">{{ prefix }}</span>{% end -%}
+    {%- if prefix %}<span class="chirpui-number-ticker__prefix">{{ prefix }}</span>{% endif %}
     <span class="chirpui-number-ticker__value" style="--chirpui-num: {{ value }}; --chirpui-num-target: {{ value }}" aria-label="{{ value }}"></span>
-    {%- if suffix %}<span class="chirpui-number-ticker__suffix">{{ suffix }}</span>{% end -%}
+    {%- if suffix %}<span class="chirpui-number-ticker__suffix">{{ suffix }}</span>{% endif %}
 </span>
-{% end %}
+{% enddef %}

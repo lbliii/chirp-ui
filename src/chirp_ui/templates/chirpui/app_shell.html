@@ -69,7 +69,7 @@
      :class="{ 'chirpui-app-shell--sidebar-collapsed': collapsed }">
 {% else %}
 <div class="chirpui-app-shell{{ rail_shell_class }}{{ nav_drawer_class }}{{ " " ~ cls if cls else "" }}">
-{% end %}
+{% endif %}
     <header class="chirpui-app-shell__topbar{{ topbar_class }}" data-chirpui-shell-topbar>
         {#- Always-available non-anchor leading zone (left of the brand <a>).
             Authors put a hamburger/back/menu affordance in topbar_leading so
@@ -90,7 +90,7 @@
                     aria-label="Open {{ nav_drawer_label }}">
                 <span class="chirpui-app-shell__nav-toggle-bars" aria-hidden="true"></span>
             </button>
-            {% end %}
+            {% endif %}
         </div>
         <a href="{{ brand_url }}" class="chirpui-app-shell__brand"{{ route_link_attrs(
             brand_url,
@@ -101,7 +101,7 @@
             {% slot brand %}
             {% else %}
             {{ brand }}
-            {% end %}
+            {% endif %}
         </a>
         <div id="chirpui-topbar-breadcrumbs" class="chirpui-app-shell__topbar-center" aria-live="polite" aria-atomic="true">{% slot topbar %}</div>
         <div class="chirpui-app-shell__topbar-end">
@@ -112,16 +112,16 @@
                     data-chirpui-shell-drawer-toggle="rail"
                     aria-controls="chirpui-context-rail" aria-expanded="false"
                     aria-label="Open {{ context_rail_label }}">{{ context_rail_label }}</button>
-            {% end %}
+            {% endif %}
             <div id="{{ shell_actions_target }}" class="chirpui-app-shell__shell-actions">
                 {% if shell_actions %}
                 {{ shell_actions_bar(shell_actions) }}
-                {% end %}
+                {% endif %}
             </div>
             {% slot topbar_end %}
         </div>
     </header>
-    <aside id="chirpui-app-shell-sidebar" class="chirpui-app-shell__sidebar{{ sidebar_class }}"{% if nav_drawer %} data-chirpui-shell-drawer="sidebar" aria-labelledby="chirpui-app-shell-drawer-title"{% end %}>
+    <aside id="chirpui-app-shell-sidebar" class="chirpui-app-shell__sidebar{{ sidebar_class }}"{% if nav_drawer %} data-chirpui-shell-drawer="sidebar" aria-labelledby="chirpui-app-shell-drawer-title"{% endif %}>
         {% if nav_drawer %}
         <div class="chirpui-app-shell__drawer-head">
             {#- The title id names the slide-over once it becomes role=dialog on mobile
@@ -130,7 +130,7 @@
             <button type="button" class="chirpui-app-shell__drawer-close"
                     data-chirpui-shell-drawer-close aria-label="Close {{ nav_drawer_label }}">&times;</button>
         </div>
-        {% end %}
+        {% endif %}
         <div id="chirpui-sidebar-nav" aria-live="polite" aria-atomic="true">{% slot sidebar %}</div>
         {% if sidebar_collapsible %}
         <div class="chirpui-app-shell__sidebar-resize" data-chirpui-sidebar-toggle
@@ -140,7 +140,7 @@
              @keydown="onKeydown($event)"
              @keydown.enter.prevent="toggle()"
              @keydown.space.prevent="toggle()"></div>
-        {% end %}
+        {% endif %}
     </aside>
     {#- No whitespace before/after slot: stray text nodes inside grid main break layout/scroll. -#}
     <main id="main" class="chirpui-app-shell__main" data-chirp-scroll="auto" tabindex="-1">{%- slot -%}</main>
@@ -149,12 +149,12 @@
         with an OOB fragment targeting #chirpui-context-rail (see context_rail_oob in oob.html). -#}
     <aside id="chirpui-context-rail" class="chirpui-app-shell__context-rail{{ rail_variant_class }}"
            aria-label="{{ context_rail_label }}" aria-live="polite" aria-atomic="true"
-           data-chirpui-shell-context-rail{% if nav_drawer %} data-chirpui-shell-drawer="rail"{% end %}>{%- slot context_rail -%}</aside>
-    {%- end %}
+           data-chirpui-shell-context-rail{% if nav_drawer %} data-chirpui-shell-drawer="rail"{% endif %}>{%- slot context_rail -%}</aside>
+    {% endif %}
     {%- if nav_drawer %}
     {#- Shared scrim for the mobile drawers — shown by shell_runtime_script() while a drawer is open. -#}
     <div class="chirpui-app-shell__scrim" data-chirpui-shell-scrim hidden></div>
-    {%- end %}
+    {% endif %}
 </div>
 {{ shell_runtime_script() }}
-{% end %}
+{% enddef %}

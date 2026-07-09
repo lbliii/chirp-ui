@@ -8,32 +8,32 @@
 {% def render_route_tabs(tab_items, current_path, target="#page-root", is_active=none, sliding_pill=true) %}
 {% set _is_active = is_active if is_active is not none else tab_is_active %}
 <nav role="navigation" aria-label="Subsection navigation"
-     class="chirpui-route-tabs{% if sliding_pill %} chirpui-route-tabs--sliding-pill{% end %}"
-     {% if sliding_pill %}data-chirpui-sliding-pill="horizontal" style="{{ nav_pill_inline_style(tab_items, current_path, _is_active) }}"{% end %}>
+     class="chirpui-route-tabs{% if sliding_pill %} chirpui-route-tabs--sliding-pill{% endif %}"
+     {% if sliding_pill %}data-chirpui-sliding-pill="horizontal" style="{{ nav_pill_inline_style(tab_items, current_path, _is_active) }}"{% endif %}>
   {% if sliding_pill %}<span class="chirpui-nav-pill" aria-hidden="true"></span>{% endif %}
   {% for tab in tab_items %}
   {% set badge = tab.get("badge") %}
   {% set badge_label = tab.get("badge_label") %}
   {% set badge_expected = tab.get("badge_expected") or tab.get("badge_reserved") or tab.get("badge_loading") %}
   <a href="{{ tab.href | default("") }}"
-     class="chirpui-route-tab{% if _is_active(tab, current_path) %} chirpui-route-tab--active{% end %}"
-     {% if _is_active(tab, current_path) %}aria-current="page"{% end %}
+     class="chirpui-route-tab{% if _is_active(tab, current_path) %} chirpui-route-tab--active{% endif %}"
+     {% if _is_active(tab, current_path) %}aria-current="page"{% endif %}
      hx-boost="false"
      hx-select="unset"
      hx-get="{{ tab.href | default("") }}"
      hx-target="{{ target }}"
      hx-push-url="true"
      hx-swap="innerHTML">
-    {% if tab.get("icon") %}<span class="chirpui-route-tab__icon">{{ tab.icon | icon }}</span>{% end %}
+    {% if tab.get("icon") %}<span class="chirpui-route-tab__icon">{{ tab.icon | icon }}</span>{% endif %}
     <span class="chirpui-route-tab__label">{{ tab.label | default("") }}</span>
     {% if badge is not none or badge_expected %}
-    <span class="chirpui-route-tab__badge{% if badge is none %} chirpui-route-tab__badge--reserved{% end %}{% if tab.get("badge_loading") %} chirpui-route-tab__badge--loading{% end %}"{% if badge_label and badge is not none %} aria-label="{{ badge_label }}"{% elif badge is none %} aria-hidden="true"{% end %}>{% if badge is not none %}{{ badge }}{% end %}</span>
-    {% end %}
+    <span class="chirpui-route-tab__badge{% if badge is none %} chirpui-route-tab__badge--reserved{% endif %}{% if tab.get("badge_loading") %} chirpui-route-tab__badge--loading{% endif %}"{% if badge_label and badge is not none %} aria-label="{{ badge_label }}"{% elif badge is none %} aria-hidden="true"{% endif %}>{% if badge is not none %}{{ badge }}{% endif %}</span>
+    {% endif %}
   </a>
-  {% end %}
+  {% endfor %}
 </nav>
-{% end %}
+{% enddef %}
 
 {% def route_tabs(tabs, current_path, target="#page-root", is_active=none, sliding_pill=true) %}
 {{ render_route_tabs(tabs, current_path, target=target, is_active=is_active, sliding_pill=sliding_pill) }}
-{% end %}
+{% enddef %}

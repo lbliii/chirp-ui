@@ -26,7 +26,7 @@
                 {% set alt = item.alt | default(name) %}
                 {% if href %}
                 <a class="chirpui-logo-cloud__item chirpui-logo-cloud__link"
-                   href="{{ href }}"{% if external %} rel="noopener noreferrer"{% end %}{{ route_link_attrs(href, external=external) | html_attrs }}>
+                   href="{{ href }}"{% if external %} rel="noopener noreferrer"{% endif %}{{ route_link_attrs(href, external=external) | html_attrs }}>
                     {% if src %}
                     <img class="chirpui-logo-cloud__img" src="{{ src }}" alt="{{ alt }}">
                     {% else %}
@@ -48,4 +48,4 @@
         {% endif %}
     </div>
 </section>
-{% end %}
+{% enddef %}

@@ -15,8 +15,8 @@
 {% if hint %}
 {% call tooltip(hint) %}
 {{ badge(text, variant=variant, icon=icon, cls=cls) }}
-{% end %}
+{% endcall %}
 {% else %}
 {{ badge(text, variant=variant, icon=icon, cls=cls) }}
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

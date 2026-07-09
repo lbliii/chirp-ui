@@ -40,7 +40,7 @@
     <button type="button" class="chirpui-btn chirpui-split-btn__primary{{ variant_class }}">
         {{ primary_label }}
     </button>
-    {% end %}
+    {% endif %}
     <div class="chirpui-split-btn__dropdown">
         <button type="button" class="chirpui-split-btn__trigger" x-ref="trigger"
                 aria-label="More options" aria-haspopup="menu" :aria-expanded="open"
@@ -55,4 +55,4 @@
         </div>
     </div>
 </div>
-{% end %}
+{% enddef %}

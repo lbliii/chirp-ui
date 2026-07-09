@@ -27,8 +27,8 @@
 
 {% def shell_outlet_attrs(target="#main", swap="innerHTML", select="#page-content", sync="auto") %}
 {% set _sync = (target ~ ":replace") if sync == "auto" else sync %}
-hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-select="{{ select }}"{% end %}{% if _sync %} hx-sync="{{ _sync }}"{% end %}
-{% end %}
+hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-select="{{ select }}"{% endif %}{% if _sync %} hx-sync="{{ _sync }}"{% endif %}
+{% enddef %}
 
 {% def shell_outlet(
     id="page-content",
@@ -42,16 +42,16 @@ hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-
     sync="auto"
 ) %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe")) %}
-<div id="{{ id }}"{% if cls %} class="{{ cls }}"{% end %}{% if include_boost_attrs %} {{ shell_outlet_attrs(target=target, swap=swap, select=select, sync=sync) }}{% end %}{% if _attrs_raw %} {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}{% end %}>
+<div id="{{ id }}"{% if cls %} class="{{ cls }}"{% endif %}{% if include_boost_attrs %} {{ shell_outlet_attrs(target=target, swap=swap, select=select, sync=sync) }}{% endif %}{% if _attrs_raw %} {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}{% endif %}>
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def shell_region(id, cls="") %}
 <div id="{{ id }}" class="chirpui-shell-region{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def shell_runtime_script() %}
 <script nonce="{{ csp_nonce() }}">
@@ -496,4 +496,4 @@ hx-boost="true" hx-target="{{ target }}" hx-swap="{{ swap }}"{% if select %} hx-
   syncShellGeometry();
 })();
 </script>
-{% end %}
+{% enddef %}

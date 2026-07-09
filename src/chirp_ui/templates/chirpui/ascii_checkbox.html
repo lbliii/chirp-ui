@@ -22,16 +22,16 @@
 <label class="chirpui-ascii-checkbox{{ variant_class }}{{ " chirpui-ascii-checkbox--disabled" if disabled else "" }}{{ " " ~ cls if cls else "" }}">
     <input class="chirpui-ascii-checkbox__input chirpui-visually-hidden"
            type="checkbox" name="{{ name }}" id="{{ name }}"
-           {% if checked %}checked{% end %}
-           {% if disabled %}disabled{% end %}>
+           {% if checked %}checked{% endif %}
+           {% if disabled %}disabled{% endif %}>
     <span class="chirpui-ascii-checkbox__box" aria-hidden="true"></span>
-    {% if label %}<span class="chirpui-ascii-checkbox__label">{{ label }}</span>{% end %}
+    {% if label %}<span class="chirpui-ascii-checkbox__label">{{ label }}</span>{% endif %}
 </label>
-{% end %}
+{% enddef %}
 
 {% def ascii_checkbox_group(legend=none, cls="") %}
 <fieldset class="chirpui-ascii-checkbox-group{{ " " ~ cls if cls else "" }}">
-    {% if legend %}<legend class="chirpui-ascii-checkbox-group__legend">{{ legend }}</legend>{% end %}
+    {% if legend %}<legend class="chirpui-ascii-checkbox-group__legend">{{ legend }}</legend>{% endif %}
     {% slot %}
 </fieldset>
-{% end %}
+{% enddef %}

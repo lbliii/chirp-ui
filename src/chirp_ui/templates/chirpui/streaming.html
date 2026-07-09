@@ -23,7 +23,7 @@
 {# @provides _streaming_role — consumed by: copy_button #}
 {% provide _streaming_role = role_valid %}
 <article class="chirpui-message-bubble{{ role_class }}{{ state_class }}{{ " " ~ cls if cls else "" }}"
-         {% if sse_connect %}hx-ext="sse" sse-connect="{{ sse_connect }}" sse-close="{{ sse_close }}" hx-disinherit="hx-target hx-swap" {% end %}aria-label="{{ _aria_labels[role_valid] if role_valid in _aria_labels else "message" }}"{% if _state == "error" %} role="alert"{% end %}{% if _state == "thinking" %} aria-busy="true"{% end %}>
+         {% if sse_connect %}hx-ext="sse" sse-connect="{{ sse_connect }}" sse-close="{{ sse_close }}" hx-disinherit="hx-target hx-swap" {% endif %}aria-label="{{ _aria_labels[role_valid] if role_valid in _aria_labels else "message" }}"{% if _state == "error" %} role="alert"{% endif %}{% if _state == "thinking" %} aria-busy="true"{% endif %}>
     <div class="chirpui-streaming-block{{ " chirpui-streaming-block--active" if streaming else "" }}"
          {% if sse_connect or sse_swap_target %}x-data="chirpuiStreamLifecycle()" sse-swap="fragment" hx-target="this" hx-swap="beforeend" {% endif %}role="log" aria-relevant="additions text">
         {% try %}
@@ -32,7 +32,7 @@
         <span class="chirpui-streaming-bubble__thinking" aria-hidden="true"></span>
         {% elif streaming %}
         <span class="chirpui-streaming-block__cursor" aria-hidden="true"></span>
-        {% end %}
+        {% endif %}
         {% fallback %}
         <div class="chirpui-streaming--error" role="alert">
             <span class="chirpui-text-muted">Content unavailable</span>
@@ -40,8 +40,8 @@
         {% end %}
     </div>
 </article>
-{% end %}
-{% end %}
+{% endprovide %}
+{% enddef %}
 
 {% def streaming_block(streaming=false, sse_swap_target=false, cls="") %}
 <div class="chirpui-streaming-block{{ " chirpui-streaming-block--active" if streaming else "" }}{{ " " ~ cls if cls else "" }}"
@@ -51,14 +51,14 @@
     {% slot %}
     {% if streaming %}
     <span class="chirpui-streaming-block__cursor" aria-hidden="true"></span>
-    {% end %}
+    {% endif %}
     {% fallback %}
     <div class="chirpui-streaming--error" role="alert">
         <span class="chirpui-text-muted">Content unavailable</span>
     </div>
     {% end %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def copy_btn(label="Copy", copy_text="", cls="") %}
 <button type="button"
@@ -72,16 +72,16 @@
     <span class="chirpui-copy-btn__label" x-show="!copied">{{ label }}</span>
     <span class="chirpui-copy-btn__done" x-show="copied" x-cloak>Copied!</span>
 </button>
-{% end %}
+{% enddef %}
 
 {% def model_card(title, badge=none, footer=none, cls="", sse_connect=none, sse_close="done", sse_streaming=false) %}
 <article class="chirpui-model-card chirpui-card{{ " " ~ cls if cls else "" }}"
-         {% if sse_connect %}hx-ext="sse" sse-connect="{{ sse_connect }}" sse-close="{{ sse_close }}" hx-disinherit="hx-target hx-swap" {% end %}aria-label="{{ title }} response">
+         {% if sse_connect %}hx-ext="sse" sse-connect="{{ sse_connect }}" sse-close="{{ sse_close }}" hx-disinherit="hx-target hx-swap" {% endif %}aria-label="{{ title }} response">
     <header class="chirpui-card__header chirpui-model-card__header">
         <span class="chirpui-model-card__title">{{ title }}</span>
         {% if badge %}
         <span class="chirpui-model-card__badge">{{ badge }}</span>
-        {% end %}
+        {% endif %}
     </header>
     <div class="chirpui-card__body chirpui-model-card__body">
         {% if sse_streaming %}
@@ -92,28 +92,28 @@
         </div>
         {% else %}
         {% slot %}
-        {% end %}
+        {% endif %}
     </div>
     {% if footer %}
     <footer class="chirpui-card__footer chirpui-model-card__footer">
         {{ footer }}
     </footer>
-    {% end %}
+    {% endif %}
 </article>
-{% end %}
+{% enddef %}
 
 {% def load_sentinel(label="Loading more", cls="", busy=false) %}
 {#- Accessible infinite-scroll / load-more sentinel — announces loading state
     without stealing focus. Pair with HTMX hx-indicator or append-only lists. -#}
 <div class="chirpui-load-sentinel{{ " " ~ cls if cls else "" }}"
      role="status"
-     aria-label="{{ label }}"{% if busy %} aria-busy="true"{% end %}>
+     aria-label="{{ label }}"{% if busy %} aria-busy="true"{% endif %}>
     <span class="chirpui-load-sentinel__label">{{ label }}</span>
 </div>
-{% end %}
+{% enddef %}
 
 {% def prose(content, cls="") %}
 {#- Thin wrapper for markdown-rendered assistant content. Prefer rendered_content()
     when you need a slot; use prose() for a one-liner with pre-rendered HTML. -#}
 <div class="chirpui-prose{{ " " ~ cls if cls else "" }}">{{ content | safe(reason="prose content pre-rendered by caller") }}</div>
-{% end %}
+{% enddef %}

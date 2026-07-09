@@ -27,17 +27,17 @@
                 <a href="{{ channel_href }}" class="chirpui-video-card__channel-link">{{ channel }}</a>
                 {% else %}
                 {{ channel }}
-                {% end %}
+                {% endif %}
             </p>
-            {% end %}
+            {% endif %}
             {% if views or date %}
             <p class="chirpui-video-card__meta">
-                {% if views %}<span>{{ views }} views</span>{% end %}
-                {% if views and date %} · {% end %}
-                {% if date %}<span>{{ date }}</span>{% end %}
+                {% if views %}<span>{{ views }} views</span>{% endif %}
+                {% if views and date %} · {% endif %}
+                {% if date %}<span>{{ date }}</span>{% endif %}
             </p>
-            {% end %}
+            {% endif %}
         </div>
     </a>
 </article>
-{% end %}
+{% enddef %}

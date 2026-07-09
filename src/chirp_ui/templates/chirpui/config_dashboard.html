@@ -40,24 +40,24 @@
 {% call page_header(title, subtitle=subtitle, meta=meta, breadcrumb_items=breadcrumb_items) %}
 {% slot header_actions %}
 {% end %}
-{% end %}
+{% endcall %}
 
 {% if form_action %}
 {% call section("Set config value", surface_variant="muted") %}
 {{ key_value_form(form_action, attrs_unsafe=_form_attrs_raw, attrs_map=form_attrs_map, key_placeholder=form_key_placeholder, value_placeholder=form_value_placeholder) }}
 {% slot form_result %}
 {% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% endif %}
 
 {% call grid(cols=2, gap="md") %}
 {% slot config_cards %}
 {% end %}
-{% end %}
+{% endcall %}
 
 {% call action_strip() %}
 {% slot action_strip %}
 {% end %}
-{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% endcall %}
+{% enddef %}

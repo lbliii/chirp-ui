@@ -38,14 +38,14 @@
 {% set _default_select = "unset" if _has_hx_request and _has_hx_target and not hx.get("hx-select") else none %}
 {% set _default_disinherit = "hx-select" if _default_select and not hx.get("hx-disinherit") else none %}
 {% set _default_sync = "this:replace" if _has_hx_request and _has_hx_target and not hx.get("hx-sync") else none %}
-<form{% if action %} action="{{ action }}"{% end %} method="{{ method }}"
+<form{% if action %} action="{{ action }}"{% endif %} method="{{ method }}"
       class="chirpui-cluster chirpui-cluster--gap-{{ gap }} chirpui-filter-row chirpui-font-sm{{ " " ~ cls if cls else "" }}"
       {{ hx | html_attrs }}
       {{ build_hx_attrs(hx_select=_default_select, hx_disinherit=_default_disinherit, hx_sync=_default_sync) | html_attrs }}
       {{ _attrs_raw | safe(reason="attrs_unsafe trust boundary") }}>
     {% slot %}
 </form>
-{% end %}
+{% enddef %}
 
 {% def filter_bar(action, method="get", attrs="", attrs_unsafe="", attrs_map=none, surface_variant="muted", density="sm", wrap="wrap", sticky=false, cls="") %}
 {% set _attrs_raw = attrs_unsafe or (attrs | deprecate_param("attrs", "attrs_unsafe or attrs_map")) %}
@@ -56,8 +56,8 @@
 {% call form(action, method=method, attrs_unsafe=_attrs_raw, attrs_map=attrs_map, cls="chirpui-filter-bar__form") %}
 {% call action_strip(surface_variant=surface_variant, density=density, wrap=wrap, sticky=sticky, role="region", aria_label="Filter controls", cls="chirpui-filter-bar" ~ (" " ~ cls if cls else "")) %}
 {{ caller() }}
-{% end %}
-{% end %}
-{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% endcall %}
+{% endprovide %}
+{% endprovide %}
+{% enddef %}

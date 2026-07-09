@@ -27,23 +27,23 @@
 {# @provides _hero_variant — consumed by: constellation, holy_light, meteor, particle_bg, rune_field, spotlight_card, symbol_rain #}
 {% provide _hero_variant = variant %}
 {% if effect == "particles" %}
-    {% call particle_bg(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
+    {% call particle_bg(variant=variant, cls=hero_cls) %}{{ caller() }}{% endcall %}
 {% elif effect == "meteors" %}
-    {% call meteor(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
+    {% call meteor(variant=variant, cls=hero_cls) %}{{ caller() }}{% endcall %}
 {% elif effect == "spotlight" %}
-    {% call spotlight_card(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
+    {% call spotlight_card(variant=variant, cls=hero_cls) %}{{ caller() }}{% endcall %}
 {% elif effect == "symbol-rain" %}
-    {% call symbol_rain(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
+    {% call symbol_rain(variant=variant, cls=hero_cls) %}{{ caller() }}{% endcall %}
 {% elif effect == "holy-light" %}
-    {% call holy_light(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
+    {% call holy_light(variant=variant, cls=hero_cls) %}{{ caller() }}{% endcall %}
 {% elif effect == "runes" %}
-    {% call rune_field(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
+    {% call rune_field(variant=variant, cls=hero_cls) %}{{ caller() }}{% endcall %}
 {% elif effect == "constellation" %}
-    {% call constellation(variant=variant, cls=hero_cls) %}{{ caller() }}{% end %}
+    {% call constellation(variant=variant, cls=hero_cls) %}{{ caller() }}{% endcall %}
 {% else %}
     <div class="chirpui-hero-effects{{ " " ~ cls if cls else "" }}">
         {{ caller() }}
     </div>
-{% end %}
-{% end %}
-{% end %}
+{% endif %}
+{% endprovide %}
+{% enddef %}

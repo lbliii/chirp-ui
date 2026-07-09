@@ -31,21 +31,21 @@
             {% from "chirpui/tooltip.html" import tooltip %}
             {% call tooltip(locked_reason or "Locked", position="left") %}
                 {{ badge("Locked", variant="muted", icon="lock") }}
-            {% end %}
-        {% end %}
+            {% endcall %}
+        {% endif %}
     </div>
     <div class="chirpui-param__mode" role="radiogroup" aria-label="{{ _label }} source">
         <label class="chirpui-param__mode-opt">
             <input type="radio" name="{{ name }}__mode" value="default"
-                   {% if not _overridden %}checked{% end %}
-                   {% if locked %}disabled{% end %}
+                   {% if not _overridden %}checked{% endif %}
+                   {% if locked %}disabled{% endif %}
                    @change="overridden = false">
             <span>Default <span class="chirpui-param__default-val">{{ default }}</span></span>
         </label>
         <label class="chirpui-param__mode-opt">
             <input type="radio" name="{{ name }}__mode" value="custom"
-                   {% if _overridden %}checked{% end %}
-                   {% if locked %}disabled{% end %}
+                   {% if _overridden %}checked{% endif %}
+                   {% if locked %}disabled{% endif %}
                    @change="overridden = true">
             <span>Custom</span>
         </label>
@@ -65,21 +65,21 @@
         {% else %}
             {{ text_field(name, value=(value if value is not none else default),
                           label=none, errors=errors) }}
-        {% end %}
+        {% endif %}
     </div>
-    {% if hint %}<span class="chirpui-field__hint">{{ hint }}</span>{% end %}
+    {% if hint %}<span class="chirpui-field__hint">{{ hint }}</span>{% endif %}
 </div>
-{% end %}
+{% enddef %}
 
 {# Collapsible advanced-parameters disclosure. Wrap param_field calls. #}
 {% def advanced_params(label="Advanced parameters", open=false, cls="") %}
-<details class="chirpui-advanced-params{{ " " ~ cls if cls else "" }}"{% if open %} open{% end %}>
+<details class="chirpui-advanced-params{{ " " ~ cls if cls else "" }}"{% if open %} open{% endif %}>
     <summary class="chirpui-advanced-params__summary">{{ label }}</summary>
     <div class="chirpui-advanced-params__body">
         {% slot %}
     </div>
 </details>
-{% end %}
+{% enddef %}
 
 {# Scope indicator — communicates whether a value is inherited or overridden.
    scope: "default" | "override". source labels the origin (e.g. "model", "chat"). #}
@@ -89,9 +89,9 @@
       role="status">
     <span class="chirpui-scope-indicator__dot" aria-hidden="true"></span>
     {% if _override %}
-        Overridden{% if source %} for this {{ source }}{% end %}
+        Overridden{% if source %} for this {{ source }}{% endif %}
     {% else %}
         Using {{ source or "model" }} default
-    {% end %}
+    {% endif %}
 </span>
-{% end %}
+{% enddef %}

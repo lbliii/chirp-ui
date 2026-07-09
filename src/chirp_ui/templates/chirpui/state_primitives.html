@@ -15,8 +15,8 @@
     primitive="state_sync"
 ) %}
     {% slot %}{{ caller() }}{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {% def action_queue(action_id, mount_id=none, cls="") %}
 {% call island_root(
@@ -28,8 +28,8 @@
     primitive="action_queue"
 ) %}
     {% slot %}{{ caller() }}{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {% def draft_store(draft_key, mount_id=none, cls="") %}
 {% call island_root(
@@ -41,8 +41,8 @@
     primitive="draft_store"
 ) %}
     {% slot %}{{ caller() }}{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {% def error_boundary(boundary_id, mount_id=none, cls="") %}
 {% call island_root(
@@ -54,8 +54,8 @@
     primitive="error_boundary"
 ) %}
     {% slot %}{{ caller() }}{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {% def grid_state(state_key, columns, mount_id=none, cls="") %}
 {% call island_root(
@@ -67,8 +67,8 @@
     primitive="grid_state"
 ) %}
     {% slot %}{{ caller() }}{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {% def wizard_state(state_key, steps, mount_id=none, cls="") %}
 {% call island_root(
@@ -80,8 +80,8 @@
     primitive="wizard_state"
 ) %}
     {% slot %}{{ caller() }}{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}
 
 {% def upload_state(state_key, endpoint, mount_id=none, cls="") %}
 {% call island_root(
@@ -93,5 +93,5 @@
     primitive="upload_state"
 ) %}
     {% slot %}{{ caller() }}{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}

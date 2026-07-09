@@ -31,7 +31,7 @@ fields.
 The curated theme-pack gallery lives at `/theme-packs` and renders the packaged
 Atlas, Ember, and Sage token packs across light, dark, and system modes.
 
-> **Note:** The showcase extra installs `bengal-chirp>=0.8.0` (CSP nonce
+> **Note:** The showcase extra installs `bengal-chirp>=0.10.0` (CSP nonce
 > auto-wiring via `use_chirp_ui`) and `kida-templates>=0.9.0`. If you see
 > `ModuleNotFoundError`, ensure you're using the same Python environment where
 > the showcase extra was installed.
@@ -113,6 +113,6 @@ After deploying to https://chirp-ui-showcase-production.up.railway.app:
 ```
 
 If any step fails, check the browser console for CSP nonce violations and confirm
-the deploy image installed `bengal-chirp>=0.8.0` via `pip install ".[showcase]"`.
+the deploy image installed `bengal-chirp>=0.10.0` via `pip install ".[showcase]"`.
 Browser proof for composer Enter-to-send:
 `uv sync --group browser && playwright install chromium && pytest tests/browser/test_composer_gauntlet.py -q`.

@@ -21,7 +21,7 @@
 <header class="chirpui-profile-header{{ " " ~ cls if cls else "" }}">
     {% if cover_url %}
     <div class="chirpui-profile-header__cover" style="background-image: url({{ cover_url }})"></div>
-    {% end %}
+    {% endif %}
     <div class="chirpui-profile-header__content">
         {% if use_slots %}
         <div class="chirpui-profile-header__avatar">{% slot avatar %}</div>
@@ -31,8 +31,8 @@
             <h1 class="chirpui-profile-header__name"><a href="{{ href }}"{{ route_link_attrs(href) | html_attrs }}>{{ name }}</a></h1>
             {% else %}
             <h1 class="chirpui-profile-header__name">{{ name }}</h1>
-            {% end %}
-            {% end %}
+            {% endif %}
+            {% endif %}
             <div class="chirpui-profile-header__bio">{% slot bio %}</div>
             <div class="chirpui-profile-header__stats">{% slot stats %}</div>
             {# actions is the canonical name; action is kept for backward compat #}
@@ -40,16 +40,16 @@
         </div>
         {% else %}
         {% slot %}
-        {% end %}
+        {% endif %}
     </div>
 </header>
-{% end %}
+{% enddef %}
 
 {% def profile_header_avatar(cls="") %}
 <div class="chirpui-profile-header__avatar{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def profile_header_info(name, href=none, cls="") %}
 <div class="chirpui-profile-header__info{{ " " ~ cls if cls else "" }}">
@@ -57,19 +57,19 @@
     <h1 class="chirpui-profile-header__name"><a href="{{ href }}"{{ route_link_attrs(href) | html_attrs }}>{{ name }}</a></h1>
     {% else %}
     <h1 class="chirpui-profile-header__name">{{ name }}</h1>
-    {% end %}
+    {% endif %}
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def profile_header_stats(cls="") %}
 <div class="chirpui-profile-header__stats{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def profile_header_action(cls="") %}
 <div class="chirpui-profile-header__action{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}

@@ -27,7 +27,7 @@
      aria-relevant="additions text"
      x-data="chirpuiToastStack({ limit: {{ limit | int }} })">
 </div>
-{% end %}
+{% enddef %}
 
 {% def _toast_inner(message, variant, id=none, dismissible=true, cls="", duration=none, oob_swap=none) %}
 {% set variant = variant | validate_variant(("info","success","warning","error","danger","loading"), "info") %}
@@ -47,7 +47,7 @@
                 aria-label="Dismiss">&times;</button>
     {% endif %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def toast(message, variant="info", id=none, dismissible=true, oob=true, replace=false, container_id="chirpui-toasts", cls="", duration=none) %}
 {% if replace and id %}
@@ -58,13 +58,13 @@
 </div>
 {% else %}
 {{ _toast_inner(message, variant, id=id, dismissible=dismissible, cls=cls, duration=duration) }}
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def toast_pending(message, id, dismissible=false, container_id="chirpui-toasts", cls="") %}
 {{ toast(message, variant="loading", id=id, dismissible=dismissible, container_id=container_id, cls=cls) }}
-{% end %}
+{% enddef %}
 
 {% def toast_resolve(message, id, variant="success", dismissible=true, duration=5000, cls="") %}
 {{ toast(message, variant=variant, id=id, dismissible=dismissible, replace=true, duration=duration, cls=cls) }}
-{% end %}
+{% enddef %}

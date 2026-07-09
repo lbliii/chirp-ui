@@ -19,7 +19,7 @@
 {% set variant_class = " chirpui-ascii-knob--" ~ variant if variant and variant != "default" else "" %}
 <fieldset class="chirpui-ascii-knob{{ variant_class }}{{ " " ~ cls if cls else "" }}"
           role="radiogroup" aria-label="{{ label or name }}">
-    {% if label %}<legend class="chirpui-ascii-knob__legend">{{ label }}</legend>{% end %}
+    {% if label %}<legend class="chirpui-ascii-knob__legend">{{ label }}</legend>{% endif %}
     <div class="chirpui-ascii-knob__dial" aria-hidden="true">
         <span class="chirpui-ascii-knob__frame">╭───╮</span>
         <span class="chirpui-ascii-knob__frame">│ ◉ │</span>
@@ -31,13 +31,13 @@
             <input class="chirpui-ascii-knob__input chirpui-visually-hidden"
                    type="radio" name="{{ name }}"
                    value="{{ opt.value if opt is mapping else opt }}"
-                   {% if (opt.value if opt is mapping else opt) == selected %}checked{% end %}>
+                   {% if (opt.value if opt is mapping else opt) == selected %}checked{% endif %}>
             <span class="chirpui-ascii-knob__notch">
                 <span class="chirpui-ascii-knob__tick" aria-hidden="true">│</span>
                 <span class="chirpui-ascii-knob__value">{{ opt.label if opt is mapping else opt }}</span>
             </span>
         </label>
-        {% end %}
+        {% endfor %}
     </div>
 </fieldset>
-{% end %}
+{% enddef %}

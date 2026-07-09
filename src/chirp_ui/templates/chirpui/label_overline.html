@@ -8,5 +8,5 @@
 -#}
 
 {% def label_overline(text, section=false, tag="span", cls="") %}
-<{{ tag }} class="chirpui-font-xs chirpui-text-muted chirpui-label-overline{% if section %} chirpui-label-overline--section{% end %}{{ " " ~ cls if cls else "" }}">{{ text }}</{{ tag }}>
-{% end %}
+<{{ tag }} class="chirpui-font-xs chirpui-text-muted chirpui-label-overline{% if section %} chirpui-label-overline--section{% endif %}{{ " " ~ cls if cls else "" }}">{{ text }}</{{ tag }}>
+{% enddef %}

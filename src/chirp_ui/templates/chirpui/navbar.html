@@ -35,16 +35,16 @@
 {% def navbar(brand=none, brand_url="/", cls="", use_slots=false, brand_slot=false, current_path="", aria_label="") %}
 {# @provides _nav_current_path — consumed by: navbar_link, navbar_dropdown #}
 {% provide _nav_current_path = current_path %}
-<nav class="chirpui-navbar{{ " " ~ cls if cls else "" }}"{% if aria_label %} aria-label="{{ aria_label }}"{% end %}>
+<nav class="chirpui-navbar{{ " " ~ cls if cls else "" }}"{% if aria_label %} aria-label="{{ aria_label }}"{% endif %}>
     {% if brand or brand_slot %}
     <a class="chirpui-navbar__brand" href="{{ brand_url }}"{{ route_link_attrs(brand_url) | html_attrs }}>
         {% if brand_slot %}
         {% slot brand %}
         {% else %}
         {{ brand }}
-        {% end %}
+        {% endif %}
     </a>
-    {% end %}
+    {% endif %}
     {% if use_slots %}
     <div class="chirpui-navbar__links">{% slot %}</div>
     <div class="chirpui-navbar__links chirpui-navbar__links--end">{% slot end %}</div>
@@ -52,24 +52,24 @@
     <div class="chirpui-navbar__links">
         {% slot %}
     </div>
-    {% end %}
+    {% endif %}
 </nav>
-{% end %}
-{% end %}
+{% endprovide %}
+{% enddef %}
 
 {% def navbar_link(href, label, active=false, match="", cls="") %}
 {# @consumes _nav_current_path from: navbar — falls back to "" #}
 {% set _cp = (consume("_nav_current_path", "") or (current_path | default(""))) if match else "" %}
 {% set _active = active if not match else ((_cp == href) if match == "exact" else (_cp == href or _cp.startswith(href ~ "/")) if match == "prefix" else active) %}
 <a class="chirpui-navbar__link{{ " chirpui-navbar__link--active" if _active else "" }}{{ " " ~ cls if cls else "" }}"
-   href="{{ href }}"{% if _active %} aria-current="page"{% end %}{% if match %} data-chirpui-shell-match="{{ match }}"{% end %}{{ route_link_attrs(href) | html_attrs }}>{{ label }}</a>
-{% end %}
+   href="{{ href }}"{% if _active %} aria-current="page"{% endif %}{% if match %} data-chirpui-shell-match="{{ match }}"{% endif %}{{ route_link_attrs(href) | html_attrs }}>{{ label }}</a>
+{% enddef %}
 
 {% def navbar_end(cls="") %}
 <div class="chirpui-navbar__links chirpui-navbar__links--end{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def navbar_dropdown(label, active=false, match="", href="", cls="") %}
 {# @consumes _nav_current_path from: navbar — falls back to "" #}
@@ -81,4 +81,4 @@
         {% slot %}
     </div>
 </details>
-{% end %}
+{% enddef %}

@@ -22,33 +22,33 @@
 -#}
 
 {% def oob_fragment(id, swap="true", tag="div", cls="") %}
-<{{ tag }} id="{{ id }}" hx-swap-oob="{{ swap }}"{% if cls %} class="{{ cls }}"{% end %}>
+<{{ tag }} id="{{ id }}" hx-swap-oob="{{ swap }}"{% if cls %} class="{{ cls }}"{% endif %}>
     {% try %}{% slot %}{% fallback %}{% end %}
 </{{ tag }}>
-{% end %}
+{% enddef %}
 
 {% def oob_toast(message, variant="info", dismissible=true, container_id="chirpui-toasts", cls="") %}
 {% from "chirpui/toast.html" import toast %}
 {{ toast(message, variant=variant, dismissible=dismissible, oob=true, container_id=container_id, cls=cls) }}
-{% end %}
+{% enddef %}
 
 {% def oob_toast_pending(message, id, container_id="chirpui-toasts", cls="") %}
 {% from "chirpui/toast.html" import toast_pending %}
 {{ toast_pending(message, id=id, container_id=container_id, cls=cls) }}
-{% end %}
+{% enddef %}
 
 {% def oob_toast_resolve(message, id, variant="success", dismissible=true, duration=5000, cls="") %}
 {% from "chirpui/toast.html" import toast_resolve %}
 {{ toast_resolve(message, id=id, variant=variant, dismissible=dismissible, duration=duration, cls=cls) }}
-{% end %}
+{% enddef %}
 
 {% def counter_badge(id, count=0, variant="", max_count=99, oob=false, cls="") %}
 {% set variant = variant | validate_variant(("", "default", "warning", "danger"), "") %}
 {% set variant_class = " chirpui-counter-badge--" ~ variant if variant else "" %}
 {% set display = (count | string) if count <= max_count else (max_count | string ~ "+") %}
-<span id="{{ id }}" class="chirpui-counter-badge{{ variant_class }}{{ " " ~ cls if cls else "" }}"{% if oob %} hx-swap-oob="true"{% end %}{% if count == 0 %} hidden{% end %}
+<span id="{{ id }}" class="chirpui-counter-badge{{ variant_class }}{{ " " ~ cls if cls else "" }}"{% if oob %} hx-swap-oob="true"{% endif %}{% if count == 0 %} hidden{% endif %}
       aria-label="{{ count }} notification{{ "s" if count != 1 else "" }}">{{ display }}</span>
-{% end %}
+{% enddef %}
 
 {#- Update the app_shell route-context rail (#chirpui-context-rail) from any route
     response. Include alongside the #main content so boosted nav swaps both:
@@ -58,4 +58,4 @@
     Default innerHTML swap preserves the rail wrapper + its aria landmark. -#}
 {% def context_rail_oob(swap="innerHTML") %}
 <aside id="chirpui-context-rail" hx-swap-oob="{{ swap }}">{% try %}{% slot %}{% fallback %}{% end %}</aside>
-{% end %}
+{% enddef %}

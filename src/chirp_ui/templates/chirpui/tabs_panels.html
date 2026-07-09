@@ -28,10 +28,10 @@
         @click="selectTab($el)">
     {{ label }}
 </button>
-{% end %}
+{% enddef %}
 
 {#- Deprecated alias — use tab_button() instead. -#}
-{% def tab(id, label, active=false) %}{{ tab_button(id, label, active=active) }}{% end %}
+{% def tab(id, label, active=false) %}{{ tab_button(id, label, active=active) }}{% enddef %}
 
 {% def tab_panel(id, active=false) %}
 <div class="chirpui-tab-panel" data-tab-id="{{ id }}" :id="$id('tabpanel', $el.dataset.tabId)" role="tabpanel"
@@ -39,10 +39,10 @@
      x-show="active === $el.dataset.tabId" x-cloak x-transition>
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def tabs_container(active=none) %}
 <div class="chirpui-tabs" x-id="['tab', 'tabpanel']" x-data="chirpuiTabs()" data-active="{{ active or '' }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}

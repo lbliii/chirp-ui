@@ -54,7 +54,7 @@
     </div>
 </dialog>
 </div>
-{% end %}
+{% enddef %}
 
 {#- One command-palette result. role="option" with a stable id so the combobox
     input can track it via aria-activedescendant. Plain (no Alpine directives) so
@@ -66,21 +66,21 @@
 <a class="chirpui-command-palette__item" id="{{ id }}" role="option" aria-selected="false"
    href="{{ href }}"{{ route_link_attrs(href) | html_attrs }}>
     <span class="chirpui-command-palette__item-label">{{ label }}</span>
-    {% if hint %}<span class="chirpui-command-palette__item-hint">{{ hint }}</span>{% end %}
+    {% if hint %}<span class="chirpui-command-palette__item-hint">{{ hint }}</span>{% endif %}
 </a>
 {% else %}
 <button type="button" class="chirpui-command-palette__item" id="{{ id }}" role="option"
-        aria-selected="false"{% if action %} data-action="{{ action }}"{% end %}>
+        aria-selected="false"{% if action %} data-action="{{ action }}"{% endif %}>
     <span class="chirpui-command-palette__item-label">{{ label }}</span>
-    {% if hint %}<span class="chirpui-command-palette__item-hint">{{ hint }}</span>{% end %}
+    {% if hint %}<span class="chirpui-command-palette__item-hint">{{ hint }}</span>{% endif %}
 </button>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def command_palette_fab(target="command-palette", icon="search", aria_label="Open command palette", variant="primary", corner="bottom-end", cls="") %}
 {% from "chirpui/fab.html" import fab %}
 {{ fab(icon, aria_label, variant=variant, corner=corner, visibility="mobile-only", target=target, cls=cls) }}
-{% end %}
+{% enddef %}
 
 {% def command_palette_trigger(target="command-palette", label="Search", placeholder=none, shortcut="⌘K", icon=none, aria_label=none, density="md", desktop_only=false, cls="") %}
 {% set density = density | validate_variant(("sm","md"), "md") %}
@@ -93,8 +93,8 @@
         x-data="chirpuiDialogTarget()"
         data-dialog-target="{{ target }}"
         @click="open()">
-    {% if icon %}<span class="chirpui-command-palette__trigger-icon" aria-hidden="true">{{ icon | icon }}</span>{% end %}
+    {% if icon %}<span class="chirpui-command-palette__trigger-icon" aria-hidden="true">{{ icon | icon }}</span>{% endif %}
     <span class="chirpui-command-palette__trigger-label">{{ visible_label }}</span>
-    {% if shortcut %}<kbd class="chirpui-command-palette__kbd">{{ shortcut }}</kbd>{% end %}
+    {% if shortcut %}<kbd class="chirpui-command-palette__kbd">{{ shortcut }}</kbd>{% endif %}
 </button>
-{% end %}
+{% enddef %}

@@ -37,17 +37,17 @@
             {% for header in headers %}
             {% set col_align = align[loop.index0] if align and loop.index0 < align | length else "" %}
             <span class="chirpui-ascii-table__th{{ " chirpui-ascii-table__cell--" ~ col_align if col_align else "" }}" role="columnheader">{{ header }}</span>
-            {% end %}
+            {% endfor %}
         </div>
         <div class="chirpui-ascii-table__border chirpui-ascii-table__border--mid" aria-hidden="true"></div>
     </div>
-    {% end %}
+    {% endif %}
     <div class="chirpui-ascii-table__body" role="rowgroup">
         {% slot %}
     </div>
     <div class="chirpui-ascii-table__border chirpui-ascii-table__border--bottom" aria-hidden="true"></div>
 </div>
-{% end %}
+{% enddef %}
 
 {% def ascii_row(*cells, align=none) %}
 {% set row_cells = ([align] + (cells | list)) if align is not none else cells %}
@@ -55,6 +55,6 @@
     {% for cell in row_cells %}
     {% set col_align = "" %}
     <span class="chirpui-ascii-table__td{{ " chirpui-ascii-table__cell--" ~ col_align if col_align else "" }}" role="cell">{{ cell }}</span>
-    {% end %}
+    {% endfor %}
 </div>
-{% end %}
+{% enddef %}

@@ -28,25 +28,25 @@
 <span class="chirpui-hover-wobble{{ " " ~ cls if cls else "" }}">{% slot %}</span>
 {% else %}
 <span class="chirpui-wobble{{ " " ~ cls if cls else "" }}">{% slot %}</span>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def jello(trigger="load", cls="") %}
 {% if trigger == "hover" %}
 <span class="chirpui-hover-jello{{ " " ~ cls if cls else "" }}">{% slot %}</span>
 {% else %}
 <span class="chirpui-jello{{ " " ~ cls if cls else "" }}">{% slot %}</span>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def rubber_band(trigger="load", cls="") %}
 {% if trigger == "hover" %}
 <span class="chirpui-hover-rubber{{ " " ~ cls if cls else "" }}">{% slot %}</span>
 {% else %}
 <span class="chirpui-rubber-band{{ " " ~ cls if cls else "" }}">{% slot %}</span>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def bounce_in(cls="") %}
 <span class="chirpui-bounce-in{{ " " ~ cls if cls else "" }}">{% slot %}</span>
-{% end %}
+{% enddef %}

@@ -32,14 +32,14 @@
                         <dt class="chirpui-shortcuts-help__label">{{ sc.label }}</dt>
                         <dd class="chirpui-shortcuts-help__keys">{{ kbd(sc.keys, size="sm") }}</dd>
                     </div>
-                    {% end %}
+                    {% endfor %}
                 </dl>
             </section>
-            {% end %}
+            {% endfor %}
         </div>
     </dialog>
 </div>
-{% end %}
+{% enddef %}
 
 {% def shortcuts_help_trigger(target="shortcuts-help", label="Keyboard shortcuts", cls="") %}
 <button type="button"
@@ -48,4 +48,4 @@
         @click="open()" aria-label="{{ label }}">
     {{ kbd("?", size="sm") }}
 </button>
-{% end %}
+{% enddef %}

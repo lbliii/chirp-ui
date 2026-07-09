@@ -11,7 +11,7 @@
 {% provide _bar_density = density %}
 {% call action_strip(surface_variant=surface_variant, density=density, wrap=wrap, sticky=sticky, role="toolbar", aria_label=aria_label, cls="chirpui-command-bar" ~ (" " ~ cls if cls else "")) %}
 {{ caller() }}
-{% end %}
-{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% endprovide %}
+{% endprovide %}
+{% enddef %}

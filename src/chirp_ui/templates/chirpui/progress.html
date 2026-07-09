@@ -17,7 +17,7 @@
      aria-valuenow="{{ value }}"
      aria-valuemin="0"
      aria-valuemax="{{ max }}"
-     {% if resolved %}style="--chirpui-progress-color: {{ resolved }}"{% end %}>
+     {% if resolved %}style="--chirpui-progress-color: {{ resolved }}"{% endif %}>
     <div class="chirpui-progress-bar__track">
         <div class="chirpui-progress-bar__fill"
              style="width: {{ (value / max * 100) if max > 0 else 0 }}%">
@@ -25,6 +25,6 @@
     </div>
     {% if label %}
         <span class="chirpui-progress-bar__label">{{ label }}</span>
-    {% end %}
+    {% endif %}
 </div>
-{% end %}
+{% enddef %}

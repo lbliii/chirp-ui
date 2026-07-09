@@ -28,23 +28,23 @@
 <a class="{{ root_cls }}" href="{{ href }}"{{ route_link_attrs(href) | html_attrs }}>
     {% if should_show_image %}
     <img class="chirpui-logo__img" src="{{ image_src }}" alt="{{ resolved_alt }}">
-    {% end %}
+    {% endif %}
     {% if should_show_text %}
     <span class="chirpui-logo__text">{{ text }}</span>
     {% elif has_accessible_text_fallback %}
     <span class="chirpui-visually-hidden">{{ text }}</span>
-    {% end %}
+    {% endif %}
 </a>
 {% else %}
 <span class="{{ root_cls }}">
     {% if should_show_image %}
     <img class="chirpui-logo__img" src="{{ image_src }}" alt="{{ resolved_alt }}">
-    {% end %}
+    {% endif %}
     {% if should_show_text %}
     <span class="chirpui-logo__text">{{ text }}</span>
     {% elif has_accessible_text_fallback %}
     <span class="chirpui-visually-hidden">{{ text }}</span>
-    {% end %}
+    {% endif %}
 </span>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

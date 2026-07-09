@@ -9,17 +9,17 @@
 {% set style_attr = ("--chirpui-facet-chip-color: " ~ resolved) if resolved else "" %}
 {% set chip_cls = "chirpui-facet-chip" ~ (" chirpui-facet-chip--selected" if selected else "") ~ (" chirpui-facet-chip--muted" if muted else "") ~ (" chirpui-facet-chip--custom" if resolved else "") ~ (" chirpui-facet-chip--removable" if remove_href else "") ~ (" " ~ cls if cls else "") %}
 {% if href %}
-<a class="{{ chip_cls }}" href="{{ href }}"{% if selected %} aria-current="page"{% end %}{% if style_attr %} style="{{ style_attr }}"{% end %}{{ route_link_attrs(href) | html_attrs }}>
+<a class="{{ chip_cls }}" href="{{ href }}"{% if selected %} aria-current="page"{% endif %}{% if style_attr %} style="{{ style_attr }}"{% endif %}{{ route_link_attrs(href) | html_attrs }}>
     <span class="chirpui-facet-chip__label">{{ label }}</span>
     {% if count is not none %}<span class="chirpui-facet-chip__count">{{ count }}</span>{% endif %}
 </a>
 {% else %}
-<span class="{{ chip_cls }}"{% if style_attr %} style="{{ style_attr }}"{% end %}>
+<span class="{{ chip_cls }}"{% if style_attr %} style="{{ style_attr }}"{% endif %}>
     <span class="chirpui-facet-chip__label">{{ label }}</span>
     {% if count is not none %}<span class="chirpui-facet-chip__count">{{ count }}</span>{% endif %}
 </span>
-{% end %}
+{% endif %}
 {% if remove_href %}
 <a class="chirpui-facet-chip__remove" href="{{ remove_href }}" aria-label="{{ remove_label or ("Remove " ~ label) }}"{{ route_link_attrs(remove_href) | html_attrs }}>&times;</a>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}

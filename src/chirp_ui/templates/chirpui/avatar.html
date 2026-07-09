@@ -15,13 +15,13 @@
 {% set size_class = " chirpui-avatar--" ~ size if size else "" %}
 {% set status_class = " chirpui-avatar--" ~ status if status else "" %}
 <span class="chirpui-avatar{{ size_class }}{{ status_class }}{{ " " ~ cls if cls else "" }}"
-      {% if decorative %}role="presentation" aria-hidden="true"{% else %}role="img" aria-label="{{ alt or 'Avatar' }}"{% end %}>
+      {% if decorative %}role="presentation" aria-hidden="true"{% else %}role="img" aria-label="{{ alt or 'Avatar' }}"{% endif %}>
     {% if src %}
     <img class="chirpui-avatar__img" src="{{ src }}" alt="{{ alt }}" loading="lazy">
     {% elif initials %}
     <span class="chirpui-avatar__initials">{{ initials }}</span>
     {% else %}
     <span class="chirpui-avatar__placeholder" aria-hidden="true">?</span>
-    {% end %}
+    {% endif %}
 </span>
-{% end %}
+{% enddef %}

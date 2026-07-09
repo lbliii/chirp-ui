@@ -13,7 +13,7 @@
     {% for item in items %}
     {% set item_id = item.id | default("stage-" ~ loop.index) %}
     {{ tab_button(item_id, item.label | default(item.title | default(item_id)), active=item_id == active_id) }}
-    {% end %}
+    {% endfor %}
 
     {% for item in items %}
     {% set item_id = item.id | default("stage-" ~ loop.index) %}
@@ -25,11 +25,11 @@
             {% slot media %}
                 {% call surface(variant=item.surface_variant | default("muted")) %}
                     {{ item.media | default(item.title | default("")) }}
-                {% end %}
+                {% endcall %}
             {% end %}
-        {% end %}
-    {% end %}
-    {% end %}
-{% end %}
+        {% endcall %}
+    {% endcall %}
+    {% endfor %}
+{% endcall %}
 </section>
-{% end %}
+{% enddef %}

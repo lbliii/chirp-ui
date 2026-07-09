@@ -27,7 +27,7 @@
         <h2 class="chirpui-modal__title"><span class="chirpui-confirm__icon" aria-hidden="true">&#x26A0;</span> {{ title }}</h2>
         {% else %}
         <h2 class="chirpui-modal__title">{{ title }}</h2>
-        {% end %}
+        {% endif %}
         <div class="chirpui-modal__header-actions">{% slot header_actions %}</div>
         <form method="dialog">
             <button class="chirpui-modal__close" aria-label="Close">&times;</button>
@@ -38,14 +38,14 @@
         <p class="chirpui-confirm__message">{{ message }}</p>
         {% else %}
         <div class="chirpui-confirm__message">{% slot message %}</div>
-        {% end %}
+        {% endif %}
         <footer class="chirpui-confirm__footer">
             <form method="dialog">
                 <button type="submit" class="chirpui-btn">{{ cancel_label }}</button>
             </form>
             {% if confirm_url %}
             <form method="{{ confirm_method }}" action="{{ confirm_url }}"
-                  {% if hx_target %}{% if confirm_method == "DELETE" %}hx-delete="{{ confirm_url }}"{% else %}hx-post="{{ confirm_url }}"{% end %} hx-disinherit="{{ hx_disinherit }}" hx-target="{{ hx_target }}" hx-swap="{{ hx_swap }}"{% if hx_select %} hx-select="{{ hx_select }}"{% end %}{% if hx_push_url %} hx-push-url="{{ hx_push_url }}"{% end %} hx-sync="this:drop" hx-disabled-elt="find button, find input[type=submit]"{% end %}>
+                  {% if hx_target %}{% if confirm_method == "DELETE" %}hx-delete="{{ confirm_url }}"{% else %}hx-post="{{ confirm_url }}"{% endif %} hx-disinherit="{{ hx_disinherit }}" hx-target="{{ hx_target }}" hx-swap="{{ hx_swap }}"{% if hx_select %} hx-select="{{ hx_select }}"{% endif %}{% if hx_push_url %} hx-push-url="{{ hx_push_url }}"{% endif %} hx-sync="this:drop" hx-disabled-elt="find button, find input[type=submit]"{% endif %}>
                 {% slot form_content %}
                 <button type="submit" class="chirpui-btn chirpui-btn--{{ variant if variant == "danger" else "primary" }}">{{ confirm_label }}</button>
             </form>
@@ -53,11 +53,11 @@
             <form method="dialog">
                 <button type="submit" class="chirpui-btn chirpui-btn--{{ variant if variant == "danger" else "primary" }}">{{ confirm_label }}</button>
             </form>
-            {% end %}
+            {% endif %}
         </footer>
     </div>
 </dialog>
-{% end %}
+{% enddef %}
 
 {% def confirm_trigger(target, label="Confirm", cls="") %}
 <button class="chirpui-modal-trigger chirpui-confirm-trigger{{ " " ~ cls if cls else "" }}"
@@ -67,4 +67,4 @@
         @click="open()">
     {{ label }}
 </button>
-{% end %}
+{% enddef %}

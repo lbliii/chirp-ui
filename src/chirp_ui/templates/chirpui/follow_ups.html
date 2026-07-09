@@ -22,8 +22,8 @@
                 @click="$dispatch('chirpui:suggestion', {prompt: $el.dataset.prompt, mode: '{{ _mode }}'})">
           {{ item.get("label") or item.get("prompt") | default("") }}
         </button>
-      {% end %}
+      {% endif %}
     {% endfor %}
-  {% end %}
+  {% endcall %}
 </div>
-{% end %}
+{% enddef %}

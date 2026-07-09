@@ -21,10 +21,10 @@
 -#}
 
 {% def bento_grid(cols=3, cls="") %}
-<div class="chirpui-bento{{ " " ~ cls if cls else "" }}" style="{% if cols != 3 %}grid-template-columns: repeat({{ cols }}, 1fr){% end %}">
+<div class="chirpui-bento{{ " " ~ cls if cls else "" }}" style="{% if cols != 3 %}grid-template-columns: repeat({{ cols }}, 1fr){% endif %}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def bento_item(span=none, span_row=false, cls="") %}
 {% set span_class = " chirpui-bento__item--span-2" if span == 2 else " chirpui-bento__item--span-full" if span == "full" else "" %}
@@ -32,4 +32,4 @@
 <div class="chirpui-bento__item{{ span_class }}{{ row_class }}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}

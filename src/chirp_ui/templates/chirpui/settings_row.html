@@ -25,7 +25,7 @@
 <div class="chirpui-settings-row-list{{ _on_ctx }}{{ " " ~ mods | join(" ") if mods else "" }}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </div>
-{% end %}
+{% enddef %}
 
 {% def settings_row(label, status=none, detail=none, status_variant=none, cls="") %}
 {% set v = status_variant if status_variant is not none else (status | resolve_status_variant("muted") if status else "muted") %}
@@ -34,12 +34,12 @@
     <span class="chirpui-settings-row__status">
     {% if status %}
     {{ badge(status, variant=v) }}
-    {% end %}
+    {% endif %}
     </span>
     <span class="chirpui-settings-row__detail">
     {% if detail %}
     <span class="chirpui-text-muted chirpui-font-sm chirpui-font-mono">{{ detail }}</span>
-    {% end %}
+    {% endif %}
     </span>
 </div>
-{% end %}
+{% enddef %}

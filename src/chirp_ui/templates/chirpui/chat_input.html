@@ -44,7 +44,7 @@
     <span class="chirpui-btn__icon" aria-hidden="true">{{ "stop" | icon }}</span>
     <span class="chirpui-btn__label">{{ stop_label }}</span>
 </button>
-{% end %}
+{% enddef %}
 
 
 {% def composer(action="", name="message", placeholder="Type a message...",
@@ -87,7 +87,7 @@
             name="{{ name }}" rows="{{ rows }}"
             x-ref="field" x-model="value"
             placeholder="{{ placeholder }}"
-            {% if maxlength %}maxlength="{{ maxlength }}"{% end %}
+            {% if maxlength %}maxlength="{{ maxlength }}"{% endif %}
             @compositionstart="onCompositionStart()"
             @compositionend="onCompositionEnd()"
             @keydown.enter="onEnter($event)"
@@ -103,10 +103,10 @@
                               stop_action=stop_action,
                               send_disabled_reason=send_disabled_reason,
                               hx_target=hx_target) }}
-        {% end %}
+        {% endif %}
     </footer>
 </form>
-{% end %}
+{% enddef %}
 
 
 {# Back-compat: the old bare-form signature forwards to composer(). #}
@@ -116,10 +116,10 @@
 {% call composer(action=action, name=name, placeholder=placeholder,
                  rows=rows, maxlength=maxlength, cls=cls, show_send_stop=false) %}
 {% slot footer %}{{ caller() }}{% end %}
-{% end %}
+{% endcall %}
 {% else %}
 {% call composer(action=action, name=name, placeholder=placeholder,
                  rows=rows, maxlength=maxlength, cls=cls) %}
-{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% endif %}
+{% enddef %}

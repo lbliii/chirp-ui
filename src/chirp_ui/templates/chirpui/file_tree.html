@@ -22,7 +22,7 @@
 {% slot actions %}{% yield actions %}{% end %}
 {% call nav_tree(items=items, show_icons=show_icons, branch_mode=branch_mode, cls="chirpui-file-tree__nav") %}
 {% slot header %}{% yield header %}{% end %}
-{% end %}
+{% endcall %}
 {% slot footer %}{% yield footer %}{% end %}
-{% end %}
-{% end %}
+{% endcall %}
+{% enddef %}

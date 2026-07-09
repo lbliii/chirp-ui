@@ -26,19 +26,19 @@
             {{ item.get("label", item) }}
         {% else %}
             {{ item }}
-        {% end %}
+        {% endif %}
     </li>
-    {% end %}
+    {% endfor %}
 </ul>
 {% else %}
 <ul class="chirpui-list{{ bordered_class }}{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </ul>
-{% end %}
-{% end %}
+{% endif %}
+{% enddef %}
 
 {% def list_item(cls="") %}
 <li class="chirpui-list__item{{ " " ~ cls if cls else "" }}">
     {% slot %}
 </li>
-{% end %}
+{% enddef %}

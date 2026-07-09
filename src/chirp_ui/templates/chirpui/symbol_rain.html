@@ -22,10 +22,10 @@
     <div class="chirpui-symbol-rain__canvas" aria-hidden="true">
         {% for i in range(count) %}
         <span class="chirpui-symbol-rain__drop" style="left: {{ (i * 15 + 8) % 92 }}%">{{ glyphs[i % 10] }}</span>
-        {% end %}
+        {% endfor %}
     </div>
     <div class="chirpui-symbol-rain__content">
         {% slot %}
     </div>
 </div>
-{% end %}
+{% enddef %}

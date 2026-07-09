@@ -32,11 +32,11 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "kida-templates>=0.9.0", # Template engine (strict undefined, Mapping-soft optional chaining, markdown-safe Markup)
+    "kida-templates>=0.11.0", # Template engine (strict undefined, Mapping-soft optional chaining, markdown-safe Markup)
 ]
 
 [project.optional-dependencies]
-showcase = ["bengal-chirp>=0.8.0"] # For examples/component-showcase (0.8+ auto-wires CSP nonces via use_chirp_ui)
+showcase = ["bengal-chirp>=0.10.0"] # For examples/component-showcase (0.10+ auto-wires CSP nonces via use_chirp_ui)
 mcp = ["mcp>=1.0"]
 
 [project.scripts]
@@ -198,7 +198,7 @@ dev = [
     # Bengal-backed theme packaging/build tests run in the normal test suite
     "bengal>=0.5.1",
     # Showcase HTTP integration (tests/test_data_integration.py) — first-class CI proof
-    "bengal-chirp>=0.8.0",
+    "bengal-chirp>=0.10.0",
     # Task runner (poe tasks in [tool.poe.tasks])
     "poethepoet>=0.32.0",
     # Testing
@@ -218,13 +218,14 @@ dev = [
     "towncrier>=24.8.0",
     # MCP server tests (optional runtime extra)
     "mcp>=1.0",
+    "itsdangerous>=2.2.0",
 ]
 browser = [
     # Browser integration tests (Playwright + real Chirp app)
-    "bengal-chirp>=0.8.0",
+    "bengal-chirp>=0.10.0",
     "playwright>=1.50.0",
     "pytest-asyncio>=0.25.0",
-    "bengal-pounce>=0.8.0",
+    "bengal-pounce>=0.8.2",
 ]
 
 # =============================================================================
@@ -285,6 +286,7 @@ css-check = { cmd = "pytest tests/test_css_syntax.py -q", help = "Validate CSS p
 css-contract-check = { cmd = "pytest tests/test_template_css_contract.py -q", help = "Check template classes exist in CSS" }
 css-transition-check = { cmd = "pytest tests/test_motion_tokens.py -q", help = "Check transitions and animations use motion tokens" }
 css-concat-check = { cmd = "pytest tests/test_chirpui_css_concat.py -q", help = "Check chirpui.css matches partials" }
+template-check = { cmd = "python scripts/template_check.py", help = "Strict Kida template verification for chirpui partials (kida check --strict + chirp-ui filter stubs)" }
 
 # Documentation
 docs-serve = { cmd = "python scripts/docs_site.py serve", help = "Serve docs site locally" }
@@ -298,6 +300,7 @@ ci = { sequence = [
     "lint",
     "format-check",
     "verify-generated",
+    "template-check",
     "css-check",
     "css-contract-check",
     "css-transition-check",
@@ -310,6 +313,7 @@ check = { sequence = [
     "lint",
     "format-check",
     "verify-generated",
+    "template-check",
     "css-check",
     "css-contract-check",
     "css-transition-check",

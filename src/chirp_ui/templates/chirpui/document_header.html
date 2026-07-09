@@ -14,27 +14,27 @@
 <section class="chirpui-document-header{{ " " ~ cls if cls else "" }}">
     {% if eyebrow %}
     <p class="chirpui-document-header__eyebrow">{{ eyebrow }}</p>
-    {% end %}
+    {% endif %}
     {% call page_header(title, subtitle=subtitle, meta=meta, breadcrumb_items=breadcrumb_items, cls="chirpui-document-header__page-header") %}
     {% slot actions %}{% yield actions %}{% end %}
-    {% end %}
+    {% endcall %}
     {% if path or provenance or status or meta_items %}
     <div class="chirpui-document-header__details">
         {% if path %}
         <code class="chirpui-document-header__path">{{ path }}</code>
-        {% end %}
+        {% endif %}
         {% if provenance %}
         <span class="chirpui-document-header__detail">{{ provenance }}</span>
-        {% end %}
+        {% endif %}
         {% if status %}
         <span class="chirpui-document-header__status">{{ status }}</span>
-        {% end %}
+        {% endif %}
         {% if meta_items %}
             {% for item in meta_items %}
             <span class="chirpui-document-header__detail">{{ item }}</span>
-            {% end %}
-        {% end %}
+            {% endfor %}
+        {% endif %}
     </div>
-    {% end %}
+    {% endif %}
 </section>
-{% end %}
+{% enddef %}

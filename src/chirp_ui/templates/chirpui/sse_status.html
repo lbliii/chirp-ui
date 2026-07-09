@@ -28,7 +28,7 @@
     <span class="chirpui-sse-status__dot" aria-hidden="true"></span>
     {{ _label }}
 </span>
-{% end %}
+{% enddef %}
 
 {% def sse_retry(url, label="Retry", method="get", target="closest [hx-ext]", swap="outerHTML", cls="") %}
 {# @consumes _sse_state from: (external provider) — falls back to "" #}
@@ -43,8 +43,8 @@
         hx-select="unset"
         hx-{{ method }}="{{ url }}"
         hx-target="{{ target }}"
-        hx-swap="{{ swap }}"{% if _parent_state == "connected" %} disabled aria-disabled="true"{% end %}>
+        hx-swap="{{ swap }}"{% if _parent_state == "connected" %} disabled aria-disabled="true"{% endif %}>
     <span x-show="!retrying">{{ label }}</span>
     <span x-show="retrying" x-cloak class="chirpui-sse-retry__loading" aria-hidden="true">Retrying…</span>
 </button>
-{% end %}
+{% enddef %}
