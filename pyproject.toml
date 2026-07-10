@@ -36,7 +36,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-showcase = ["bengal-chirp>=0.10.0"] # For examples/component-showcase (0.10+ auto-wires CSP nonces via use_chirp_ui)
+showcase = [
+    "bengal-chirp>=0.10.0", # 0.10+ auto-wires CSP nonces via use_chirp_ui
+    # Chirp imports its session middleware while validating middleware order.
+    "itsdangerous>=2.2.0",
+] # For examples/component-showcase
 mcp = ["mcp>=1.0"]
 
 [project.scripts]

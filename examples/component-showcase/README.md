@@ -32,7 +32,8 @@ The curated theme-pack gallery lives at `/theme-packs` and renders the packaged
 Atlas, Ember, and Sage token packs across light, dark, and system modes.
 
 > **Note:** The showcase extra installs `bengal-chirp>=0.10.0` (CSP nonce
-> auto-wiring via `use_chirp_ui`) and `kida-templates>=0.9.0`. If you see
+> auto-wiring via `use_chirp_ui`), `kida-templates>=0.9.0`, and
+> `itsdangerous>=2.2.0` for Chirp's session middleware import. If you see
 > `ModuleNotFoundError`, ensure you're using the same Python environment where
 > the showcase extra was installed.
 >

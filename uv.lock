@@ -152,6 +152,7 @@ mcp = [
 ]
 showcase = [
     { name = "bengal-chirp" },
+    { name = "itsdangerous" },
 ]
 
 [package.dev-dependencies]
@@ -186,6 +187,7 @@ docs = [
 [package.metadata]
 requires-dist = [
     { name = "bengal-chirp", marker = "extra == 'showcase'", specifier = ">=0.10.0" },
+    { name = "itsdangerous", marker = "extra == 'showcase'", specifier = ">=2.2.0" },
     { name = "kida-templates", specifier = ">=0.11.0" },
     { name = "mcp", marker = "extra == 'mcp'", specifier = ">=1.0" },
 ]
