@@ -54,7 +54,7 @@ pip install "bengal-chirp[ui]"
 
 ```python
 import chirp_ui
-print(chirp_ui.__version__)  # e.g. "0.11.1"
+print(chirp_ui.__version__)  # e.g. "0.11.2"
 ```
 
 ## Apply the chirp-theme Bengal Theme

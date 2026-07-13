@@ -68,7 +68,7 @@ from chirp_ui.validation import (
 # Declare free-threading support (PEP 703)
 _Py_mod_gil = 0
 
-__version__ = "0.11.1"
+__version__ = "0.11.2"
 
 __all__ = [
     "ALPINE_REQUIRED_COMPONENTS",

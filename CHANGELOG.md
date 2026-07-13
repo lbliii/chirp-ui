@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.11.2] - 2026-07-13
+
+### Fixed
+
+- Make dark-mode Bengal pages print with a white paper palette, high-contrast body and syntax text, readable table and code sizes, compact lists, and no single-item list tails stranded on a final page.
+
+
 ## [0.11.1] - 2026-07-13
 
 ### Fixed

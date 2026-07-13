@@ -1287,12 +1287,12 @@ async def test_bengal_release_index_promotes_latest_card(page, static_site_url):
     assert metrics["groupCount"] >= 2, metrics
     assert metrics["timelineCount"] >= 1, metrics
     assert metrics["latestTop"] < metrics["regularTop"], metrics
-    assert metrics["latestTitle"] == "0.11.1", metrics
+    assert metrics["latestTitle"] == "0.11.2", metrics
     assert metrics["regularTitle"] == "chirp-ui 0.11.0", metrics
-    assert "uv add chirp-ui==0.11.1" in (metrics["latestInstallText"] or ""), metrics
+    assert "uv add chirp-ui==0.11.2" in (metrics["latestInstallText"] or ""), metrics
     assert "uv add chirp-ui==0.11.0" in (metrics["regularInstallText"] or ""), metrics
     assert "Install a specific version" in (metrics["heroSubtitle"] or ""), metrics
-    await expect(latest.locator(".chirp-theme-release-patch__title")).to_have_text("0.11.1")
+    await expect(latest.locator(".chirp-theme-release-patch__title")).to_have_text("0.11.2")
     await expect(first_regular.locator(".chirpui-timeline__title-link")).to_have_text(
         "chirp-ui 0.11.0"
     )
