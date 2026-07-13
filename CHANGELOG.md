@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.11.1] - 2026-07-13
+
+### Fixed
+
+- Make Bengal chirp-theme PDF exports preserve every tab and disclosure body, label non-printable interactive embeds, restore interactive state after printing, use wide paper sizes effectively, and keep related content together across page breaks.
+
+
 ## [0.11.0] - 2026-06-23
 
 ### Added
