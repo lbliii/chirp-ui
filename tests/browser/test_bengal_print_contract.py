@@ -120,6 +120,58 @@ async def test_print_preserves_tabs_and_closed_disclosures(page, static_repo_url
     assert not await disclosure.evaluate("element => element.open")
 
 
+async def test_dark_mode_print_forces_legible_light_paper_palette(page, static_repo_url):
+    await open_print_fixture(page, static_repo_url)
+    await page.evaluate("document.documentElement.dataset.theme = 'dark'")
+    await page.emulate_media(media="print", color_scheme="dark")
+    await dispatch_print_event(page, "beforeprint")
+
+    styles = await page.evaluate(
+        """() => {
+            const read = (selector) => {
+                const style = getComputedStyle(document.querySelector(selector));
+                return {
+                    background: style.backgroundColor,
+                    color: style.color,
+                    fontSize: parseFloat(style.fontSize),
+                    lineHeight: parseFloat(style.lineHeight),
+                    opacity: style.opacity,
+                };
+            };
+            const list = document.querySelector('.print-related-list');
+            const penultimate = list.children[list.children.length - 2];
+            const listItemStyle = getComputedStyle(list.children[0]);
+            return {
+                root: read('html'),
+                body: read('body'),
+                paragraph: read('.print-lead-in'),
+                callout: read('.print-callout-copy'),
+                table: read('.print-table-copy'),
+                code: read('.rosettes code'),
+                keyword: read('.syntax-control'),
+                string: read('.syntax-string'),
+                listMargin: parseFloat(listItemStyle.marginBlockStart),
+                penultimateBreakAfter: getComputedStyle(penultimate).breakAfter,
+            };
+        }"""
+    )
+
+    assert styles["root"]["background"] == "rgb(255, 255, 255)"
+    assert styles["body"]["background"] == "rgb(255, 255, 255)"
+    for name in ("paragraph", "callout", "table", "code"):
+        assert styles[name]["color"] == "rgb(17, 17, 17)", {name: styles[name]}
+        assert styles[name]["opacity"] == "1", {name: styles[name]}
+
+    assert styles["paragraph"]["fontSize"] >= 14.5
+    assert styles["callout"]["fontSize"] >= 14.5
+    assert styles["table"]["fontSize"] >= 12
+    assert styles["code"]["fontSize"] >= 12
+    assert styles["keyword"]["color"] == "rgb(91, 33, 182)"
+    assert styles["string"]["color"] == "rgb(22, 101, 52)"
+    assert styles["listMargin"] <= 3
+    assert styles["penultimateBreakAfter"] == "avoid-page"
+
+
 @pytest.mark.parametrize(("width", "paper"), PRINT_WIDTHS)
 async def test_print_layout_uses_available_paper_width(
     page, static_repo_url, width: int, paper: str
