@@ -239,7 +239,7 @@
   /* Show all panes when printing */
   .tabs--native .tab-pane {
     display: block !important;
-    page-break-inside: avoid;
+    break-inside: avoid-page;
   }
 
   /* Add tab title before each pane */
@@ -254,6 +254,6 @@
 
   /* Hide tab navigation */
   .tabs--native .tab-nav {
-    display: none;
+    display: none !important;
   }
 }
