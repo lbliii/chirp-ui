@@ -314,7 +314,8 @@ uv run python chirp-ui/examples/component-showcase/app.py
 ```bash
 git clone https://github.com/lbliii/chirp-ui.git
 cd chirp-ui
-uv sync --group dev
+uv sync --group dev --group browser
+uv run playwright install chromium
 uv run poe ci
 ```
 
@@ -325,7 +326,7 @@ uv run poe ci
 | Lint | `uv run ruff check .` or `uv run poe lint` |
 | Build CSS | `uv run poe build-css` |
 | Check manifest | `uv run poe build-manifest-check` |
-| Full CI | `uv run poe ci` |
+| Full CI (includes focused browser smoke) | `uv run poe ci` |
 | Docs site | `uv sync --group docs` then `uv run poe docs-build-all` |
 
 If you edit CSS, change `src/chirp_ui/templates/css/partials/*.css`, run

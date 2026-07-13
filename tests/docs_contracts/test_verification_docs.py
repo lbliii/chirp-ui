@@ -5,6 +5,13 @@ from tests.helpers import REPO_ROOT
 PYPROJECT = REPO_ROOT / "pyproject.toml"
 DOC = REPO_ROOT / "docs" / "safety" / "verification.md"
 INDEX = REPO_ROOT / "docs" / "INDEX.md"
+TESTS_WORKFLOW = REPO_ROOT / ".github" / "workflows" / "tests.yml"
+
+BLOCKING_BROWSER_TESTS = {
+    "tests/browser/test_composer_gauntlet.py::test_composer_enter_to_send_appends_message_bubble",
+    "tests/browser/test_context_menu_gauntlet.py::test_escape_closes_and_returns_focus_to_region",
+    "tests/browser/test_menubar_gauntlet.py::test_arrow_right_moves_between_top_level_triggers",
+}
 
 
 def test_verify_generated_task_groups_generated_artifact_checks() -> None:
@@ -30,6 +37,11 @@ def test_verification_gate_policy_matches_poe_tasks() -> None:
     assert "test-js" in tasks["ci"]["sequence"]
     assert "test-cov" not in tasks["ci"]["sequence"]
     assert "test-browser" not in tasks["ci"]["sequence"]
+    assert "test-browser-ci" in tasks["ci"]["sequence"]
+    blocking_browser_cmd = tasks["test-browser-ci"]["cmd"]
+    assert {
+        token for token in blocking_browser_cmd.split() if token.startswith("tests/browser/")
+    } == BLOCKING_BROWSER_TESTS
     assert tasks["test-browser-chrome"]["sequence"] == [
         "docs-build-all",
         "test-browser-chrome-check",
@@ -45,6 +57,13 @@ def test_verification_gate_policy_matches_poe_tasks() -> None:
     assert "tests/browser/test_bengal_docs_chrome.py" in chrome_check_cmd
     assert tasks["ci-browser"]["sequence"] == ["test-browser"]
     assert coverage["fail_under"] == 80
+
+
+def test_required_workflow_installs_blocking_browser_runtime() -> None:
+    workflow = TESTS_WORKFLOW.read_text(encoding="utf-8")
+
+    assert "uv sync --group dev --group browser" in workflow
+    assert "uv run playwright install --with-deps chromium" in workflow
 
 
 def test_verification_doc_names_locked_environment_and_kida_failure() -> None:
@@ -66,7 +85,8 @@ def test_verification_doc_names_locked_environment_and_kida_failure() -> None:
         "uv run poe test-browser-chrome",
         "Bengal docs chrome",
         "fail_under = 80",
-        "Browser tests stay outside",
+        "three-contract browser smoke",
+        "uv run playwright install chromium",
     ]:
         assert required in text
 
