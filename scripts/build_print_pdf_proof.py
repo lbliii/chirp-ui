@@ -4,19 +4,20 @@
 from __future__ import annotations
 
 import argparse
+import asyncio
 import hashlib
 import json
-from contextlib import contextmanager
+from contextlib import asynccontextmanager, contextmanager
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Thread
 from typing import TYPE_CHECKING
 
-from playwright.sync_api import sync_playwright
+from playwright.async_api import async_playwright
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import AsyncIterator, Iterator
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 FIXTURE_PATH = "/tests/browser/templates/bengal_print_contract.html"
@@ -63,29 +64,36 @@ def static_repo_url() -> Iterator[str]:
         server.server_close()
 
 
-def build_proofs(output_dir: Path) -> list[dict[str, object]]:
+@asynccontextmanager
+async def async_static_repo_url() -> AsyncIterator[str]:
+    """Adapt the threaded fixture server to the async Playwright lifecycle."""
+    with static_repo_url() as base_url:
+        yield base_url
+
+
+async def build_proofs(output_dir: Path) -> list[dict[str, object]]:
     output_dir.mkdir(parents=True, exist_ok=True)
     manifest: list[dict[str, object]] = []
 
-    with static_repo_url() as base_url, sync_playwright() as playwright:
-        browser = playwright.chromium.launch()
+    async with async_static_repo_url() as base_url, async_playwright() as playwright:
+        browser = await playwright.chromium.launch()
         try:
             for scenario in SCENARIOS:
-                page = browser.new_page(viewport={"width": 1124, "height": 1000})
+                page = await browser.new_page(viewport={"width": 1124, "height": 1000})
                 print_events: list[str] = []
-                page.expose_function(
+                await page.expose_function(
                     "recordPrintEvent", lambda event, events=print_events: events.append(event)
                 )
-                page.add_init_script(
+                await page.add_init_script(
                     """
                     window.addEventListener('beforeprint', () => window.recordPrintEvent('beforeprint'));
                     window.addEventListener('afterprint', () => window.recordPrintEvent('afterprint'));
                     """
                 )
-                page.goto(f"{base_url}{FIXTURE_PATH}", wait_until="networkidle")
-                page.wait_for_function("() => window.BengalMain")
+                await page.goto(f"{base_url}{FIXTURE_PATH}", wait_until="networkidle")
+                await page.wait_for_function("() => window.BengalMain")
                 if scenario["grayscale"]:
-                    page.add_style_tag(
+                    await page.add_style_tag(
                         content="""
                         @media print {
                           *, *::before, *::after {
@@ -100,7 +108,7 @@ def build_proofs(output_dir: Path) -> list[dict[str, object]]:
                     )
 
                 output = output_dir / f"bengal-print-{scenario['name']}.pdf"
-                page.pdf(
+                await page.pdf(
                     path=str(output),
                     format=str(scenario["format"]),
                     print_background=bool(scenario["print_background"]),
@@ -118,7 +126,7 @@ def build_proofs(output_dir: Path) -> list[dict[str, object]]:
                 ):
                     msg = f"unexpected print lifecycle for {scenario['name']}: {print_events}"
                     raise RuntimeError(msg)
-                if page.locator("[data-print-generated]").count() != 0:
+                if await page.locator("[data-print-generated]").count() != 0:
                     msg = f"print metadata was not restored after {scenario['name']}"
                     raise RuntimeError(msg)
 
@@ -133,9 +141,9 @@ def build_proofs(output_dir: Path) -> list[dict[str, object]]:
                         "outline": True,
                     }
                 )
-                page.close()
+                await page.close()
         finally:
-            browser.close()
+            await browser.close()
 
     (output_dir / "manifest.json").write_text(
         json.dumps({"fixture": FIXTURE_PATH, "scenarios": manifest}, indent=2) + "\n",
@@ -153,7 +161,7 @@ def main() -> None:
         help="Directory for proof PDFs and manifest (default: output/pdf)",
     )
     args = parser.parse_args()
-    manifest = build_proofs(args.output_dir.resolve())
+    manifest = asyncio.run(build_proofs(args.output_dir.resolve()))
     for item in manifest:
         print(f"built {item['file']} ({item['bytes']} bytes)")
 
