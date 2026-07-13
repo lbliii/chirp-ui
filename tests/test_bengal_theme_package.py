@@ -1695,7 +1695,7 @@ result_path.write_text(
     assert result["release_has_custom_entries"]
     assert result["releases_has_install_snippet"]
     assert result["releases_no_dead_filter"]
-    assert result["release_patch_titles"][:3] == ["0.11.3", "0.11.2", "0.11.1"]
+    assert result["release_patch_titles"][:4] == ["0.11.4", "0.11.3", "0.11.2", "0.11.1"]
     assert result["release_titles"][:5] == [
         "chirp-ui 0.11.0",
         "chirp-ui 0.10.0",

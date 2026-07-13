@@ -1,7 +1,7 @@
 {
   "schema": "chirpui-blocks-gallery@1",
   "manifest_schema": "chirpui-manifest@5",
-  "version": "0.11.3",
+  "version": "0.11.4",
   "generated_from": "src/chirp_ui/manifest.json",
   "stats": {
     "blocks": 379,
