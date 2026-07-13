@@ -7,6 +7,29 @@ The component registry is the source of truth. Discovery should start from the
 manifest and `find` helpers instead of guessing macro names, CSS classes, slots,
 or maturity status.
 
+## Two Layers Of Agent Discovery
+
+Chirp applications and the Chirp UI component library expose different MCP
+surfaces. Use both when an agent needs to understand an application and choose
+the component vocabulary used to change it.
+
+| Question | MCP surface | Read-only tools | Use it for |
+|---|---|---|---|
+| What routes and hypermedia contracts does this application ship? | Chirp's Milo-backed MCP server (`chirp --mcp`) | `check`, `diff`, `routes` | Inspecting an app import, validating route/template/target contracts, or comparing the app contract with a git baseline. |
+| Which Chirp UI surface should the application use? | Chirp UI's manifest MCP server (`chirp-ui mcp`) | `find_components`, `get_component`, `list_categories` | Searching the installed component registry, inspecting one manifest entry, or narrowing discovery by category. |
+
+Start with Chirp when the question contains application state: which handler
+owns a route, whether an HTMX target resolves, or what changed in the compiled
+app contract. Then use Chirp UI when the question is about authoring vocabulary:
+which component or primitive exists, whether it is preferred or experimental,
+which slots it exposes, and which runtime it requires.
+
+The Chirp UI MCP server reads the installed `chirpui-manifest@5`; it does not
+load or validate a Chirp application. Conversely, Chirp's app inspection tools
+do not replace component-level registry discovery. See Chirp 0.10's
+[CLI and Milo MCP agent-inspection reference](https://lbliii.github.io/chirp/docs/reference/cli/)
+for the app import boundary, MCP allowlist, and structured results.
+
 ## CLI
 
 Use `python -m chirp_ui find` for local human and agent discovery. It searches

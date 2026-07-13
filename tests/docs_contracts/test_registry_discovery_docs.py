@@ -7,6 +7,20 @@ INVENTORY = ROOT / "docs" / "agents" / "agent-source-inventory.md"
 SOURCE_MAP = ROOT / "docs" / "agents" / "agent-source-map.md"
 
 
+def test_registry_discovery_doc_separates_app_and_component_mcp_layers() -> None:
+    text = DOC.read_text(encoding="utf-8")
+
+    for required in [
+        "Chirp's Milo-backed MCP server (`chirp --mcp`)",
+        "`check`, `diff`, `routes`",
+        "Chirp UI's manifest MCP server (`chirp-ui mcp`)",
+        "`find_components`, `get_component`, `list_categories`",
+        "load or validate a Chirp application",
+        "https://lbliii.github.io/chirp/docs/reference/cli/",
+    ]:
+        assert required in text
+
+
 def test_registry_discovery_doc_covers_cli_audits_and_boundaries() -> None:
     text = DOC.read_text(encoding="utf-8")
 
