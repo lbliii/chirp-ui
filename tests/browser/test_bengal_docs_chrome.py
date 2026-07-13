@@ -1665,7 +1665,12 @@ async def test_bengal_docs_child_entries_use_compact_iterable_rows(page, static_
         ".chirp-theme-docs-nav__section--depth-1.is-active "
         "> .chirpui-sidebar__section-links > .chirp-theme-docs-nav__leaf-link"
     )
-    await expect(active_children).to_have_count(2)
+    await expect(active_children).to_have_count(3)
+    assert await active_children.locator(".chirp-theme-docs-nav__label").all_text_contents() == [
+        "chirp-theme",
+        "Bengal theme controls anatomy",
+        "Print and PDF",
+    ]
     metrics = await active_children.first.evaluate(
         """(el) => {
             const branch = document.querySelector(

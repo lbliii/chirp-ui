@@ -55,6 +55,7 @@ For fully static Bengal sites, `chirp-ui` now also ships `chirp-theme`, a
 static-first docs and marketing theme packaged in this project.
 
 - [chirp-theme](/docs/theming/chirp-theme/) - packaged Bengal theme with the `b-site`-inspired aesthetic
+- [Print and PDF](/docs/theming/print-pdf/) - readable browser print and tagged PDF proof contract
 - [Bengal theme controls anatomy](/docs/theming/bengal-theme-controls/) - packaged theme hooks for appearance, search, mobile navigation, TOC, and docs tabs
 
 ## Motion

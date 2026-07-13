@@ -61,6 +61,7 @@ manifest fields, and migration rules should come from the canonical source.
 | `site/content/docs/theming/_index.md` | Theming | `docs/theming/app-theme.md`, `docs/fundamentals/tokens.md`, `docs/fundamentals/css-override-surface.md` | Keep theme-pack names and load order in sync with catalog docs. |
 | `site/content/docs/theming/bengal-theme-controls.md` | Theming | `docs/theming/bengal-theme-anatomy.md`, `docs/theming/chirp-theme.md` | Keep as a published mirror for packaged theme controls; do not describe them as registry-owned Chirp UI component APIs. |
 | `site/content/docs/theming/chirp-theme.md` | Theming | `docs/theming/chirp-theme.md`, `docs/theming/chirp-theme-parity-matrix.md` | Keep Bengal theme package guidance aligned with transitional alias mapping. |
+| `site/content/docs/theming/print-pdf.md` | Theming | `docs/theming/print-pdf.md` | Keep the reader-facing print contract aligned with browser, tagged-PDF, and raster proof. |
 
 ## SSG Source Enrichment Map
 
