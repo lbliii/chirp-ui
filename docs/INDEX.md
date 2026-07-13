@@ -18,6 +18,7 @@ per-framework glue. Part of saga [#284](https://github.com/lbliii/chirp-ui/issue
 - [standalone-core.md](integration/standalone-core.md) — Bare kida bootstrap, static assets, Alpine.safeData shim, CSRF, checklist
 - [csp.md](integration/csp.md) — Content-Security-Policy contract (`unsafe-eval`, nonces, Chirp vs standalone)
 - [capability-matrix.md](integration/capability-matrix.md) — Chirp (free) vs standalone (hand-roll) vs lost/degraded
+- [kida-overlap-audit.md](integration/kida-overlap-audit.md) — Kida 0.11 framework-guide ownership, overlap, and cross-link audit
 - [flask.md](integration/flask.md) — Flask integration guide *(#286)*
 - [fastapi.md](integration/fastapi.md) — FastAPI integration guide *(#287)*
 - [django.md](integration/django.md) — Django integration guide *(#288)*

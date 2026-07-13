@@ -139,7 +139,7 @@ See [capability-matrix.md](capability-matrix.md) for the full comparison.
 
 Flask glue is moderate — one render helper, one static route, one CSRF bridge,
 and the Alpine bootstrap from [standalone-core.md](standalone-core.md). Chirp's
-[`use_chirp_ui(app)`](https://lbliii.github.io/chirp/docs/guides/chirp-ui/)
+[`use_chirp_ui(app)`](https://lbliii.github.io/chirp/docs/build-apps/ui-extensions/chirp-ui/)
 removes all of that and adds route-aware HTMX attrs, OOB shell updates, and
 streaming/SSE response helpers you would otherwise write per route.
 

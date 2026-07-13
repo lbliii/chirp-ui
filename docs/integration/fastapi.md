@@ -133,6 +133,6 @@ If your FastAPI app grows htmx fragment routes, consider Chirp the thing that
 
 ### See also (Kida engine)
 
-- [Kida Starlette & FastAPI Integration tutorial](https://lbliii.github.io/kida/docs/tutorials/starlette-integration/) — `KidaStarlette`, `TemplateResponse`, `render_block`
+- [Kida Starlette & FastAPI Integration tutorial](https://lbliii.github.io/kida/docs/tutorials/starlette-integration/) — `KidaTemplates`, `TemplateResponse`, `render_block`
 - [Kida Framework Integration API](https://lbliii.github.io/kida/docs/usage/framework-integration/) — block rendering and introspection
 - [Kida `fastapi_components` example](https://github.com/lbliii/kida/tree/main/examples/fastapi_components) — runnable smoke-tested app; pair with [capability-matrix upgrade pitch](capability-matrix.md#upgrade-pitch-why-chirp) when fragment-route boilerplate grows

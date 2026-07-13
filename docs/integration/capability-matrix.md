@@ -80,7 +80,9 @@ Legend:
 ## Upgrade pitch (why Chirp)
 
 Standalone is the **on-ramp**, not the destination. The rows marked **Hand-roll**
-or **Lost** above are exactly what `use_chirp_ui(app)` deletes:
+or **Lost** above are exactly what
+[`use_chirp_ui(app)`](https://lbliii.github.io/chirp/docs/build-apps/ui-extensions/chirp-ui/)
+deletes:
 
 1. Alpine + safeData + htmx injection and deduplication
 2. CSRF and route-aware HTMX attrs
