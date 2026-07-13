@@ -1,1 +1,0 @@
-Make Bengal chirp-theme PDF exports preserve every tab and disclosure body, label non-printable interactive embeds, restore interactive state after printing, use wide paper sizes effectively, and keep related content together across page breaks.

@@ -1,7 +1,7 @@
 {
   "schema": "chirpui-blocks-gallery@1",
   "manifest_schema": "chirpui-manifest@5",
-  "version": "0.11.0",
+  "version": "0.11.3",
   "generated_from": "src/chirp_ui/manifest.json",
   "stats": {
     "blocks": 379,
@@ -82,7 +82,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/actions.html\" import actions %}\n\n{{ actions() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/actions.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/actions.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "advanced-params",
@@ -124,7 +124,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ambient.html\" import ambient %}\n\n{{ ambient() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ambient.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ambient.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ambient-root",
@@ -138,7 +138,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ambient_root.html\" import ambient_root %}\n\n{{ ambient_root() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ambient_root.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ambient_root.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "animated-counter",
@@ -151,7 +151,7 @@
       "template": "animated_counter.html",
       "summary": "Animated Counter",
       "copy_snippet": "{% from \"chirpui/animated_counter.html\" import animated_counter %}\n\n{{ animated_counter(1250, label=\"Active Users\") }}\n{{ animated_counter(99, prefix=\"$\", suffix=\"M\", label=\"Revenue\", variant=\"mono\") }}",
-      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n\n\n<div class=\"chirpui-animated-counter\">\n    <div class=\"chirpui-animated-counter__display\"><span class=\"chirpui-animated-counter__value\" style=\"--chirpui-num: 1250; --chirpui-num-target: 1250\" aria-label=\"1250\"></span></div>\n    \n    <span class=\"chirpui-animated-counter__label\">Active Users</span>\n    \n</div>\n\n\n\n\n<div class=\"chirpui-animated-counter chirpui-animated-counter--mono\">\n    <div class=\"chirpui-animated-counter__display\"><span class=\"chirpui-animated-counter__prefix\">$</span><span class=\"chirpui-animated-counter__value\" style=\"--chirpui-num: 99; --chirpui-num-target: 99\" aria-label=\"99\"></span><span class=\"chirpui-animated-counter__suffix\">M</span></div>\n    \n    <span class=\"chirpui-animated-counter__label\">Revenue</span>\n    \n</div>\n\n\n</div>",
+      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n\n\n<div class=\"chirpui-animated-counter\">\n    <div class=\"chirpui-animated-counter__display\">\n        <span class=\"chirpui-animated-counter__value\" style=\"--chirpui-num: 1250; --chirpui-num-target: 1250\" aria-label=\"1250\"></span>\n    </div>\n    \n    <span class=\"chirpui-animated-counter__label\">Active Users</span>\n    \n</div>\n\n\n\n\n<div class=\"chirpui-animated-counter chirpui-animated-counter--mono\">\n    <div class=\"chirpui-animated-counter__display\"><span class=\"chirpui-animated-counter__prefix\">$</span>\n        <span class=\"chirpui-animated-counter__value\" style=\"--chirpui-num: 99; --chirpui-num-target: 99\" aria-label=\"99\"></span><span class=\"chirpui-animated-counter__suffix\">M</span>\n    </div>\n    \n    <span class=\"chirpui-animated-counter__label\">Revenue</span>\n    \n</div>\n\n\n</div>",
       "preview_error": null
     },
     {
@@ -165,7 +165,7 @@
       "template": "animated_stat_card.html",
       "summary": "Animated Stat Card",
       "copy_snippet": "{% from \"chirpui/animated_stat_card.html\" import animated_stat_card %}\n\n{{ animated_stat_card(1250, label=\"Active Users\", trend=\"+12%\", trend_direction=\"up\") }}\n{{ animated_stat_card(48, label=\"Revenue\", prefix=\"$\", suffix=\"M\", effect=\"beam\") }}",
-      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n<div class=\"chirpui-animated-stat-card\">\n    \n\n\n<div class=\"chirpui-animated-counter\">\n    <div class=\"chirpui-animated-counter__display\"><span class=\"chirpui-animated-counter__value\" style=\"--chirpui-num: 1250; --chirpui-num-target: 1250\" aria-label=\"1250\"></span></div>\n    \n    <span class=\"chirpui-animated-counter__label\">Active Users</span>\n    \n</div>\n\n    \n    <span class=\"chirpui-animated-stat-card__trend chirpui-animated-stat-card__trend--up\">\n        \u2191\n        +12%\n    </span>\n    \n</div>\n\n\n<div class=\"chirpui-animated-stat-card\">\n    \n\n\n<div class=\"chirpui-animated-counter\">\n    <div class=\"chirpui-animated-counter__display\"><span class=\"chirpui-animated-counter__prefix\">$</span><span class=\"chirpui-animated-counter__value\" style=\"--chirpui-num: 48; --chirpui-num-target: 48\" aria-label=\"48\"></span><span class=\"chirpui-animated-counter__suffix\">M</span></div>\n    \n    <span class=\"chirpui-animated-counter__label\">Revenue</span>\n    \n</div>\n\n    \n</div>\n\n\n</div>",
+      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n<div class=\"chirpui-animated-stat-card\">\n    \n\n\n<div class=\"chirpui-animated-counter\">\n    <div class=\"chirpui-animated-counter__display\">\n        <span class=\"chirpui-animated-counter__value\" style=\"--chirpui-num: 1250; --chirpui-num-target: 1250\" aria-label=\"1250\"></span>\n    </div>\n    \n    <span class=\"chirpui-animated-counter__label\">Active Users</span>\n    \n</div>\n\n    \n    <span class=\"chirpui-animated-stat-card__trend chirpui-animated-stat-card__trend--up\">\n        \u2191\n        +12%\n    </span>\n    \n</div>\n\n\n<div class=\"chirpui-animated-stat-card\">\n    \n\n\n<div class=\"chirpui-animated-counter\">\n    <div class=\"chirpui-animated-counter__display\"><span class=\"chirpui-animated-counter__prefix\">$</span>\n        <span class=\"chirpui-animated-counter__value\" style=\"--chirpui-num: 48; --chirpui-num-target: 48\" aria-label=\"48\"></span><span class=\"chirpui-animated-counter__suffix\">M</span>\n    </div>\n    \n    <span class=\"chirpui-animated-counter__label\">Revenue</span>\n    \n</div>\n\n    \n</div>\n\n\n</div>",
       "preview_error": null
     },
     {
@@ -208,7 +208,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii.html\" import ascii %}\n\n{{ ascii() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ascii-7seg",
@@ -306,7 +306,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_checkbox_group.html\" import ascii_checkbox_group %}\n\n{{ ascii_checkbox_group() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_checkbox_group.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_checkbox_group.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ascii-divider",
@@ -376,7 +376,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_fader_bank.html\" import ascii_fader_bank %}\n\n{{ ascii_fader_bank() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_fader_bank.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_fader_bank.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ascii-fill",
@@ -390,7 +390,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_fill.html\" import ascii_fill %}\n\n{{ ascii_fill() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_fill.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_fill.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ascii-fill-hover",
@@ -404,7 +404,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_fill_hover.html\" import ascii_fill_hover %}\n\n{{ ascii_fill_hover() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_fill_hover.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_fill_hover.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ascii-indicator",
@@ -432,7 +432,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_indicator_row.html\" import ascii_indicator_row %}\n\n{{ ascii_indicator_row() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_indicator_row.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_indicator_row.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ascii-knob",
@@ -474,7 +474,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_modal_trigger.html\" import ascii_modal_trigger %}\n\n{{ ascii_modal_trigger() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_modal_trigger.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_modal_trigger.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ascii-progress",
@@ -502,7 +502,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_radio.html\" import ascii_radio %}\n\n{{ ascii_radio() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_ascii_radio() missing 2 required positional arguments: 'name' and 'value'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/ascii_radio.html\" import ascii_radio %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_ascii_radio() missing 2 required positional arguments: 'name' and 'value'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/ascii_radio.html\" import ascii_radio %}\n   4 | \n   |"
     },
     {
       "name": "ascii-radio-group",
@@ -543,7 +543,7 @@
       "template": "ascii_sparkline.html",
       "summary": "ASCII Sparkline",
       "copy_snippet": "{% from \"chirpui/ascii_sparkline.html\" import ascii_sparkline %}\n\n    {{ ascii_sparkline(values=[1, 3, 5, 7, 4, 2, 6]) }}\n    {{ ascii_sparkline(values=[2, 8, 4, 6], variant=\"accent\") }}\n    {{ ascii_sparkline(values=[1, 2, 3, 4, 5, 6, 7, 8], variant=\"gradient\") }}\n\nValues are normalized to 1-8 range automatically.",
-      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n    \n\n\n\n\n\n<span class=\"chirpui-ascii-sparkline\"\n      role=\"img\"\n      aria-label=\"Sparkline: 1, 3, 5, 7, 4, 2, 6\"><span class=\"chirpui-ascii-sparkline__bar\">\u2581</span><span class=\"chirpui-ascii-sparkline__bar\">\u2583</span><span class=\"chirpui-ascii-sparkline__bar\">\u2585</span><span class=\"chirpui-ascii-sparkline__bar\">\u2588</span><span class=\"chirpui-ascii-sparkline__bar\">\u2584</span><span class=\"chirpui-ascii-sparkline__bar\">\u2582</span><span class=\"chirpui-ascii-sparkline__bar\">\u2586</span></span>\n\n    \n\n\n\n\n\n<span class=\"chirpui-ascii-sparkline chirpui-ascii-sparkline--accent\"\n      role=\"img\"\n      aria-label=\"Sparkline: 2, 8, 4, 6\"><span class=\"chirpui-ascii-sparkline__bar\">\u2581</span><span class=\"chirpui-ascii-sparkline__bar\">\u2588</span><span class=\"chirpui-ascii-sparkline__bar\">\u2583</span><span class=\"chirpui-ascii-sparkline__bar\">\u2585</span></span>\n\n    \n\n\n\n\n\n<span class=\"chirpui-ascii-sparkline chirpui-ascii-sparkline--gradient\"\n      role=\"img\"\n      aria-label=\"Sparkline: 1, 2, 3, 4, 5, 6, 7, 8\"><span class=\"chirpui-ascii-sparkline__bar\">\u2581</span><span class=\"chirpui-ascii-sparkline__bar\">\u2582</span><span class=\"chirpui-ascii-sparkline__bar\">\u2583</span><span class=\"chirpui-ascii-sparkline__bar\">\u2584</span><span class=\"chirpui-ascii-sparkline__bar\">\u2585</span><span class=\"chirpui-ascii-sparkline__bar\">\u2586</span><span class=\"chirpui-ascii-sparkline__bar\">\u2587</span><span class=\"chirpui-ascii-sparkline__bar\">\u2588</span></span>\n\n\nValues are normalized to 1-8 range automatically.\n\n</div>",
+      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n    \n\n\n\n\n\n<span class=\"chirpui-ascii-sparkline\"\n      role=\"img\"\n      aria-label=\"Sparkline: 1, 3, 5, 7, 4, 2, 6\"><span class=\"chirpui-ascii-sparkline__bar\">\u2581</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2583</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2585</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2588</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2584</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2582</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2586</span>\n    \n</span>\n\n    \n\n\n\n\n\n<span class=\"chirpui-ascii-sparkline chirpui-ascii-sparkline--accent\"\n      role=\"img\"\n      aria-label=\"Sparkline: 2, 8, 4, 6\"><span class=\"chirpui-ascii-sparkline__bar\">\u2581</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2588</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2583</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2585</span>\n    \n</span>\n\n    \n\n\n\n\n\n<span class=\"chirpui-ascii-sparkline chirpui-ascii-sparkline--gradient\"\n      role=\"img\"\n      aria-label=\"Sparkline: 1, 2, 3, 4, 5, 6, 7, 8\"><span class=\"chirpui-ascii-sparkline__bar\">\u2581</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2582</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2583</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2584</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2585</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2586</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2587</span>\n    <span class=\"chirpui-ascii-sparkline__bar\">\u2588</span>\n    \n</span>\n\n\nValues are normalized to 1-8 range automatically.\n\n</div>",
       "preview_error": null
     },
     {
@@ -586,7 +586,7 @@
       "summary": "ASCII Toggle",
       "copy_snippet": "{% from \"chirpui/ascii_toggle.html\" import ascii_switch %}\n\n{{ ascii_switch() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_ascii_switch() missing 1 required positional argument: 'name'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/ascii_toggle.html\" import ascii_switch %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_ascii_switch() missing 1 required positional argument: 'name'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/ascii_toggle.html\" import ascii_switch %}\n   4 | \n   |"
     },
     {
       "name": "ascii-tab",
@@ -670,7 +670,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_tile_grid.html\" import ascii_tile_grid %}\n\n{{ ascii_tile_grid() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_tile_grid.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_tile_grid.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ascii-toggle",
@@ -684,7 +684,7 @@
       "summary": "ASCII Toggle",
       "copy_snippet": "{% from \"chirpui/ascii_toggle.html\" import ascii_toggle %}\n\n{{ ascii_toggle() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_ascii_toggle() missing 1 required positional argument: 'name'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/ascii_toggle.html\" import ascii_toggle %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_ascii_toggle() missing 1 required positional argument: 'name'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/ascii_toggle.html\" import ascii_toggle %}\n   4 | \n   |"
     },
     {
       "name": "ascii-vu",
@@ -712,7 +712,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ascii_vu_stack.html\" import ascii_vu_stack %}\n\n{{ ascii_vu_stack() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ascii_vu_stack.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ascii_vu_stack.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "aspect-ratio",
@@ -740,7 +740,7 @@
       "summary": "File item / attachment chip",
       "copy_snippet": "{% from \"chirpui/file_item.html\" import attachment_chip %}\n\n{{ attachment_chip() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_attachment_chip() missing 2 required positional arguments: 'id' and 'name'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/file_item.html\" import attachment_chip %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_attachment_chip() missing 2 required positional arguments: 'id' and 'name'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/file_item.html\" import attachment_chip %}\n   4 | \n   |"
     },
     {
       "name": "aura",
@@ -768,7 +768,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/aura_tone.html\" import aura_tone %}\n\n{{ aura_tone() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/aura_tone.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/aura_tone.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "aurora",
@@ -852,7 +852,7 @@
       "summary": "Bar Chart component",
       "copy_snippet": "{% from \"chirpui/bar_chart.html\" import bar_chart %}\n\n    {{ bar_chart(items=[ }}\n        {\"label\": \"create-rule\", \"value\": 42},\n        {\"label\": \"debug-agent\", \"value\": 18},\n    ], max=50)\n\n    {{ bar_chart(items=tag_counts, max=10, show_value=true, variant=\"gold\") }}\n    {{ bar_chart(items=..., label_href=lambda i: f\"/skills?tag={i['label']}\") }}\n\nitems: list of {label, value} or {label, value, href?}\nmax: scale for bar width (default: max of values)\nshow_value: show numeric value after bar (default: true)\nvariant: gold, radiant, success, muted (default: gold)\nsize: sm, md, lg (default: md)",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_bar_chart() missing 1 required positional argument: 'items'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/bar_chart.html\" import bar_chart %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_bar_chart() missing 1 required positional argument: 'items'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/bar_chart.html\" import bar_chart %}\n   4 | \n   |"
     },
     {
       "name": "bento",
@@ -866,7 +866,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/bento.html\" import bento %}\n\n{{ bento() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/bento.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/bento.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "bg-pattern",
@@ -880,7 +880,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/bg_pattern.html\" import bg_pattern %}\n\n{{ bg_pattern() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/bg_pattern.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/bg_pattern.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "blade",
@@ -894,7 +894,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/blade.html\" import blade %}\n\n{{ blade() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/blade.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/blade.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "block",
@@ -936,7 +936,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/bounce_in.html\" import bounce_in %}\n\n{{ bounce_in() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/bounce_in.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/bounce_in.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "breadcrumbs",
@@ -950,7 +950,7 @@
       "summary": "Breadcrumbs component",
       "copy_snippet": "{% from \"chirpui/breadcrumbs.html\" import breadcrumbs %}\n\n{{ breadcrumbs([ }}\n    {\"label\": \"Home\", \"href\": \"/\"},\n    {\"label\": \"Docs\", \"href\": \"/docs\"},\n    {\"label\": \"Getting Started\"}\n])",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_breadcrumbs() missing 1 required positional argument: 'items'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/breadcrumbs.html\" import breadcrumbs %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_breadcrumbs() missing 1 required positional argument: 'items'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/breadcrumbs.html\" import breadcrumbs %}\n   4 | \n   |"
     },
     {
       "name": "btn",
@@ -964,7 +964,7 @@
       "summary": "Button component. Use chirpui-btn with variants. Supports loading state for htmx.",
       "copy_snippet": "{% from \"chirpui/button.html\" import btn %}\n\n{% call btn() %}\n  Content\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_btn() missing 1 required positional argument: 'label'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/button.html\" import btn %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_btn() missing 1 required positional argument: 'label'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/button.html\" import btn %}\n   4 | \n   |"
     },
     {
       "name": "btn-group",
@@ -978,7 +978,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/btn_group.html\" import btn_group %}\n\n{{ btn_group() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/btn_group.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/btn_group.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "bulk-bar",
@@ -992,7 +992,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/bulk_bar.html\" import bulk_bar %}\n\n{{ bulk_bar() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/bulk_bar.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/bulk_bar.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "calendar",
@@ -1006,7 +1006,7 @@
       "summary": "Calendar component",
       "copy_snippet": "{% from \"chirpui/calendar.html\" import calendar %}\n\n    {{ calendar(weeks=[[0,0,1,2,3,4,5],[6,7,8,...],...], }}\n             month_label=\"January 2025\",\n             prev_url=\"/calendar/2024/12\", next_url=\"/calendar/2025/2\")\n\nweeks: from calendar.monthcalendar(year, month) \u2014 0 = empty cell.",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_calendar() missing 2 required positional arguments: 'weeks' and 'month_label'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/calendar.html\" import calendar %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_calendar() missing 2 required positional arguments: 'weeks' and 'month_label'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/calendar.html\" import calendar %}\n   4 | \n   |"
     },
     {
       "name": "callout",
@@ -1062,7 +1062,7 @@
       "summary": "Media pattern assets",
       "copy_snippet": "{% from \"chirpui/media_patterns.html\" import catalog_rail %}\n\n{% call catalog_rail(\"actions\") %}\n  Content\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_catalog_rail() missing 1 required positional argument: 'items'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/media_patterns.html\" import catalog_rail %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_catalog_rail() missing 1 required positional argument: 'items'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/media_patterns.html\" import catalog_rail %}\n   4 | \n   |"
     },
     {
       "name": "channel-card",
@@ -1146,7 +1146,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/children.html\" import children %}\n\n{{ children() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/children.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/children.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "chip",
@@ -1160,7 +1160,7 @@
       "summary": "Chip group",
       "copy_snippet": "{% from \"chirpui/chip_group.html\" import chip %}\n\n{{ chip() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_chip() missing 1 required positional argument: 'label'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/chip_group.html\" import chip %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_chip() missing 1 required positional argument: 'label'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/chip_group.html\" import chip %}\n   4 | \n   |"
     },
     {
       "name": "chip-group",
@@ -1202,7 +1202,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/clamp_2.html\" import clamp_2 %}\n\n{{ clamp_2() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/clamp_2.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/clamp_2.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "clamp-3",
@@ -1216,7 +1216,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/clamp_3.html\" import clamp_3 %}\n\n{{ clamp_3() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/clamp_3.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/clamp_3.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "click-jello",
@@ -1230,7 +1230,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/click_jello.html\" import click_jello %}\n\n{{ click_jello() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/click_jello.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/click_jello.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "click-wobble",
@@ -1244,7 +1244,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/click_wobble.html\" import click_wobble %}\n\n{{ click_wobble() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/click_wobble.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/click_wobble.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "cluster",
@@ -1272,7 +1272,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/code.html\" import code %}\n\n{{ code() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_code() missing 1 required positional argument: 'text'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/code.html\" import code %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_code() missing 1 required positional argument: 'text'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/code.html\" import code %}\n   4 | \n   |"
     },
     {
       "name": "code-block",
@@ -1286,7 +1286,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/code_block.html\" import code_block %}\n\n{{ code_block() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/code_block.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/code_block.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "code-block-wrapper",
@@ -1300,7 +1300,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/code_block_wrapper.html\" import code_block_wrapper %}\n\n{{ code_block_wrapper() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/code_block_wrapper.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/code_block_wrapper.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "collapse",
@@ -1328,7 +1328,7 @@
       "summary": "Typeahead combobox for form fields \u2014 text input over a filtered",
       "copy_snippet": "{% from \"chirpui/combobox.html\" import combobox %}\n\n{{ combobox(name=\"country\", label=\"Country\",\n            placeholder=\"Search countries\u2026\", value=\"us\",\n            options=[{\"label\": \"Canada\", \"value\": \"ca\"},\n                     {\"label\": \"United States\", \"value\": \"us\"}]) }}\n\n{{ combobox(name=\"tags\", label=\"Tags\", multiple=true,\n            placeholder=\"Add tags\u2026\", options=[...]) }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_combobox() missing 2 required positional arguments: 'name' and 'options'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/combobox.html\" import combobox %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_combobox() missing 2 required positional arguments: 'name' and 'options'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/combobox.html\" import combobox %}\n   4 | \n   |"
     },
     {
       "name": "command-bar",
@@ -1342,7 +1342,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/command_bar.html\" import command_bar %}\n\n{{ command_bar() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: Cannot compare NoneType with NoneType\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/command_bar.html\" import command_bar %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m\n  Expression: <see stack trace>\n  Values:\n    left = None (NoneType)\n    right = None (NoneType)\n\n  \u001b[32mSuggestion:\u001b[0m Use | default(fallback) to provide a fallback for None values before sorting"
+      "preview_error": "Runtime Error: Cannot compare NoneType with NoneType\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/command_bar.html\" import command_bar %}\n   4 | \n   |\n  Expression: <see stack trace>\n  Values:\n    left = None (NoneType)\n    right = None (NoneType)\n\n  Suggestion: Use | default(fallback) to provide a fallback for None values before sorting"
     },
     {
       "name": "command-palette",
@@ -1384,7 +1384,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/comment_thread.html\" import comment_thread %}\n\n{{ comment_thread() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/comment_thread.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/comment_thread.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "composer-shell",
@@ -1426,7 +1426,7 @@
       "summary": "Config row \u2014 label | control (toggle, select, editable)",
       "copy_snippet": "{% from \"chirpui/config_row.html\" import config_row_list, config_row_toggle, config_row_select, config_row_editable %}\n\n{% call config_row_list() %}\n    {{ config_row_toggle(\"acp.enabled\", \"ACP enabled\", checked=config.acp.enabled, form_action=\"/config/set\", attrs_map={...}) }}\n    {{ config_row_select(\"logs.level\", \"Log level\", options=[...], selected=config.logs.level, form_action=\"/config/set\", attrs_map={...}) }}\n    {{ config_row_editable(\"endpoint\", config.acp.endpoint, edit_url=\"/config/edit/acp.endpoint\", swap_id=\"acp-endpoint\") }}\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_config_row_toggle() missing 2 required positional arguments: 'name' and 'label'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/config_row.html\" import config_row_toggle %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_config_row_toggle() missing 2 required positional arguments: 'name' and 'label'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/config_row.html\" import config_row_toggle %}\n   4 | \n   |"
     },
     {
       "name": "config-row-list",
@@ -1440,7 +1440,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/config_row_list.html\" import config_row_list %}\n\n{{ config_row_list() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/config_row_list.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/config_row_list.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "confirm",
@@ -1454,7 +1454,7 @@
       "summary": "Confirm dialog component",
       "copy_snippet": "{% from \"chirpui/confirm.html\" import confirm_dialog, confirm_trigger %}\n\n    {{ confirm_trigger(\"del-dlg\", label=\"Delete\") }}\n\n    {% call confirm_dialog(\"del-dlg\", title=\"Delete item?\", message=\"This cannot be undone.\", %}\n                       confirm_label=\"Delete\", cancel_label=\"Cancel\", variant=\"danger\",\n                       confirm_url=\"/items/1/delete\", confirm_method=\"POST\")\n    {% end %}\n\nWhen confirm_url is provided, confirm submits the form (htmx or native).\nCancel closes the dialog via form method=\"dialog\".",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_confirm_dialog() missing 1 required positional argument: 'title'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/confirm.html\" import confirm_dialog %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_confirm_dialog() missing 1 required positional argument: 'title'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/confirm.html\" import confirm_dialog %}\n   4 | \n   |"
     },
     {
       "name": "constellation",
@@ -1566,7 +1566,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/counter_badge.html\" import counter_badge %}\n\n{{ counter_badge() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/counter_badge.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/counter_badge.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "cta-band",
@@ -1580,7 +1580,7 @@
       "summary": "CTA Band",
       "copy_snippet": "{% from \"chirpui/cta_band.html\" import cta_band %}\n\n{{ cta_band( }}\n    title=\"Start building\",\n    body=\"Improve each step of the lifecycle.\",\n    primary_label=\"Start\",\n    primary_href=\"/start\",\n    secondary_label=\"Get a demo\",\n    secondary_href=\"/demo\",\n)",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_cta_band() missing 1 required positional argument: 'title'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/cta_band.html\" import cta_band %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_cta_band() missing 1 required positional argument: 'title'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/cta_band.html\" import cta_band %}\n   4 | \n   |"
     },
     {
       "name": "data-grid",
@@ -1636,7 +1636,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/density.html\" import density %}\n\n{{ density() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/density.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/density.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "description_list",
@@ -1678,7 +1678,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/display.html\" import display %}\n\n{{ display() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/display.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/display.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "divider",
@@ -1706,7 +1706,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/dl.html\" import dl %}\n\n{{ dl() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/dl.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/dl.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "dnd",
@@ -1804,7 +1804,7 @@
       "summary": "Dropdown menu, select, and split-button primitives \u2014 dropdown_select",
       "copy_snippet": "{% from \"chirpui/dropdown_menu.html\" import dropdown_menu, dropdown_select, dropdown_split %}\n{% from \"chirpui/button.html\" import btn %}\n\n{{ dropdown_menu(btn(\"Actions\", icon=\"\u25be\"), items=[...]) }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_dropdown_select() missing 2 required positional arguments: 'trigger_label' and 'items'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/dropdown_menu.html\" import dropdown_select %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_dropdown_select() missing 2 required positional arguments: 'trigger_label' and 'items'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/dropdown_menu.html\" import dropdown_select %}\n   4 | \n   |"
     },
     {
       "name": "dropdown__item",
@@ -1818,7 +1818,7 @@
       "summary": "Dropdown menu, select, and split-button primitives \u2014 dropdown_select",
       "copy_snippet": "{% from \"chirpui/dropdown_menu.html\" import dropdown_menu, dropdown_select, dropdown_split %}\n{% from \"chirpui/button.html\" import btn %}\n\n{{ dropdown_menu(btn(\"Actions\", icon=\"\u25be\"), items=[...]) }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_dropdown_menu() missing 2 required positional arguments: 'trigger' and 'items'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/dropdown_menu.html\" import dropdown_menu %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_dropdown_menu() missing 2 required positional arguments: 'trigger' and 'items'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/dropdown_menu.html\" import dropdown_menu %}\n   4 | \n   |"
     },
     {
       "name": "empty-panel-state",
@@ -1860,7 +1860,7 @@
       "summary": "Entity header (dashboard-grade)",
       "copy_snippet": "{% from \"chirpui/entity_header.html\" import entity_header %}\n\n{% call entity_header(title=\"Chain: My Workflow\", meta=\"3 steps \u00b7 Updated 2h ago\") %}\n    {% slot actions %}\n    {{ btn(\"Edit\", href=\"/chains/1/edit\") }}\n    {{ confirm_trigger(\"del-chain\", label=\"Delete\") }}\n    {% end %}\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_entity_header() missing 1 required positional argument: 'title'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/entity_header.html\" import entity_header %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_entity_header() missing 1 required positional argument: 'title'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/entity_header.html\" import entity_header %}\n   4 | \n   |"
     },
     {
       "name": "fab",
@@ -1874,7 +1874,7 @@
       "summary": "Floating Action Button",
       "copy_snippet": "{% from \"chirpui/fab.html\" import fab %}\n\n    {{ fab(\"search\", aria_label=\"Search\", href=\"/search\") }}\n    {{ fab(\"plus\", aria_label=\"Create\", variant=\"primary\", corner=\"bottom-end\", }}\n        visibility=\"mobile-only\", hx={\"post\": \"/new\", \"target\": \"#main\"})\n\n`target` wires the FAB to open a native ``<dialog>`` via ``chirpuiDialogTarget()``\n(focus returns to the FAB on close). Pair with ``command_palette_fab()`` for\nmobile command-palette access.\n\nhx={...} \u2014 preferred for htmx attributes on button FABs.",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_fab() missing 2 required positional arguments: 'icon' and 'aria_label'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/fab.html\" import fab %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_fab() missing 2 required positional arguments: 'icon' and 'aria_label'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/fab.html\" import fab %}\n   4 | \n   |"
     },
     {
       "name": "facet-chip",
@@ -1888,7 +1888,7 @@
       "summary": "Facet chip",
       "copy_snippet": "{% from \"chirpui/facet_chip.html\" import facet_chip %}\n\n{{ facet_chip() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_facet_chip() missing 1 required positional argument: 'label'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/facet_chip.html\" import facet_chip %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_facet_chip() missing 1 required positional argument: 'label'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/facet_chip.html\" import facet_chip %}\n   4 | \n   |"
     },
     {
       "name": "feature-section",
@@ -1930,7 +1930,7 @@
       "summary": "Form field macros",
       "copy_snippet": "{% from \"chirpui/forms.html\" import field_wrapper %}\n\n{% call field_wrapper() %}\n  Content\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_field_wrapper() missing 1 required positional argument: 'name'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/forms.html\" import field_wrapper %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_field_wrapper() missing 1 required positional argument: 'name'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/forms.html\" import field_wrapper %}\n   4 | \n   |"
     },
     {
       "name": "fieldset",
@@ -1958,7 +1958,7 @@
       "summary": "File tree",
       "copy_snippet": "{% from \"chirpui/file_tree.html\" import file_tree %}\n\n{% call file_tree(items=items, title=\"Files\", show_icons=true) %}\n{% slot actions %}<button type=\"button\">Refresh</button>{% end %}\n{% slot header %}<input type=\"search\" placeholder=\"Filter files\">{% end %}\n{% slot footer %}<span>12 files</span>{% end %}\n{% end %}\n\nLinked branch parents:\n{{ file_tree(items=items, branch_mode=\"linked\") }}",
       "preview_html": null,
-      "preview_error": "Undefined attribute/key 'str.get' in \u001b[36mchirpui/nav_tree.html:66\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m  64\u001b[0m | \u001b[2m    <ul class=\"chirpui-nav-tree__list\">\u001b[0m\n\u001b[33m  65\u001b[0m | \u001b[2m        {% for item in items %}\u001b[0m\n\u001b[33m> 66\u001b[0m | \u001b[91m        <li class=\"chirpui-nav-tree__item{% if item.get(\"active\") %} chirpui-nav-tree__item--active{% end %}{% if item.get(\"children\") %} chirpui-nav-tree__item--branch{% end %}{% if item.get(\"open\") %} chirpui-nav-tree__item--open{% end %}{% if item.get(\"muted\") %} chirpui-nav-tree__item--muted{% end %}\">\u001b[0m\n\u001b[33m  67\u001b[0m | \u001b[2m            {% if item.get(\"children\") %}\u001b[0m\n\u001b[33m  68\u001b[0m | \u001b[2m            {% if branch_mode == \"linked\" %}\u001b[0m\n\u001b[2m   |\u001b[0m\n  \u001b[32mHint:\u001b[0m Use {{ str.get | default('') }} for optional variables\n  \u001b[32mHint:\u001b[0m For optional access: `x?.y` (None on missing Mapping keys), `x?.y ?? \"\"` (covers object-attr misses too), or `x | get(\"y\", '')`."
+      "preview_error": "Undefined attribute/key 'str.get' in chirpui/nav_tree.html:66. Did you mean 'str.center'?\n   |\n  64 |     <ul class=\"chirpui-nav-tree__list\">\n  65 |         {% for item in items %}\n> 66 |         <li class=\"chirpui-nav-tree__item{% if item.get(\"active\") %} chirpui-nav-tree__item--active{% endif %}{% if item.get(\"children\") %} chirpui-nav-tree__item--branch{% endif %}{% if item.get(\"open\") %} chirpui-nav-tree__item--open{% endif %}{% if item.get(\"muted\") %} chirpui-nav-tree__item--muted{% endif %}\">\n  67 |             {% if item.get(\"children\") %}\n  68 |             {% if branch_mode == \"linked\" %}\n   |\n\nComponent stack:\n  \u2022 blocks-gallery-preview:2 \u2192 stack()\n  \u2022 blocks-gallery-preview:5 \u2192 file_tree()\n  \u2022 chirpui/file_tree.html:21 \u2192 panel()\n  \u2022 chirpui/file_tree.html:23 \u2192 nav_tree()\n\nTemplate stack:\n  \u2022 blocks-gallery-preview:2\n  \u2022 blocks-gallery-preview:5\n  \u2022 chirpui/file_tree.html:21\n  \u2022 chirpui/file_tree.html:23\n  Hint: Use {{ str.get | default('') }} for optional variables\n  Hint: For optional access: `x?.y` (None on missing Mapping keys), `x?.y ?? \"\"` (covers object-attr misses too), or `x | get(\"y\", '')`."
     },
     {
       "name": "filter-bar",
@@ -1972,7 +1972,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/filter_bar.html\" import filter_bar %}\n\n{{ filter_bar() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_filter_bar() missing 1 required positional argument: 'action'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/filter_bar.html\" import filter_bar %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_filter_bar() missing 1 required positional argument: 'action'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/filter_bar.html\" import filter_bar %}\n   4 | \n   |"
     },
     {
       "name": "filter-group",
@@ -2028,7 +2028,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/flow.html\" import flow %}\n\n{{ flow() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/flow.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/flow.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "focus-ring",
@@ -2042,7 +2042,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/focus_ring.html\" import focus_ring %}\n\n{{ focus_ring() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/focus_ring.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/focus_ring.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "follow-ups",
@@ -2056,7 +2056,7 @@
       "summary": "Follow-up / suggestion chips",
       "copy_snippet": "{% from \"chirpui/follow_ups.html\" import suggestion_chips %}\n\n{{ suggestion_chips() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_suggestion_chips() missing 1 required positional argument: 'suggestions'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/follow_ups.html\" import suggestion_chips %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_suggestion_chips() missing 1 required positional argument: 'suggestions'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/follow_ups.html\" import suggestion_chips %}\n   4 | \n   |"
     },
     {
       "name": "font-2xl",
@@ -2070,7 +2070,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_2xl.html\" import font_2xl %}\n\n{{ font_2xl() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_2xl.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_2xl.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "font-base",
@@ -2084,7 +2084,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_base.html\" import font_base %}\n\n{{ font_base() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_base.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_base.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "font-lg",
@@ -2098,7 +2098,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_lg.html\" import font_lg %}\n\n{{ font_lg() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_lg.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_lg.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "font-medium",
@@ -2112,7 +2112,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_medium.html\" import font_medium %}\n\n{{ font_medium() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_medium.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_medium.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "font-mono",
@@ -2126,7 +2126,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_mono.html\" import font_mono %}\n\n{{ font_mono() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_mono.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_mono.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "font-sm",
@@ -2140,7 +2140,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_sm.html\" import font_sm %}\n\n{{ font_sm() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_sm.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "font-xl",
@@ -2154,7 +2154,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_xl.html\" import font_xl %}\n\n{{ font_xl() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_xl.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_xl.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "font-xs",
@@ -2168,7 +2168,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/font_xs.html\" import font_xs %}\n\n{{ font_xs() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/font_xs.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/font_xs.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "form",
@@ -2182,7 +2182,7 @@
       "summary": "Form field macros",
       "copy_snippet": "{% from \"chirpui/forms.html\" import form %}\n\n{% call form() %}\n  Content\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_form() missing 1 required positional argument: 'action'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/forms.html\" import form %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_form() missing 1 required positional argument: 'action'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/forms.html\" import form %}\n   4 | \n   |"
     },
     {
       "name": "form-actions",
@@ -2210,7 +2210,7 @@
       "summary": "Form field macros",
       "copy_snippet": "{% from \"chirpui/forms.html\" import form_error_summary %}\n\n{{ form_error_summary() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_form_error_summary() missing 1 required positional argument: 'errors'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/forms.html\" import form_error_summary %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_form_error_summary() missing 1 required positional argument: 'errors'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/forms.html\" import form_error_summary %}\n   4 | \n   |"
     },
     {
       "name": "frame",
@@ -2364,7 +2364,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/hover_jello.html\" import hover_jello %}\n\n{{ hover_jello() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/hover_jello.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/hover_jello.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "hover-rubber",
@@ -2378,7 +2378,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/hover_rubber.html\" import hover_rubber %}\n\n{{ hover_rubber() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/hover_rubber.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/hover_rubber.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "hover-wobble",
@@ -2392,7 +2392,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/hover_wobble.html\" import hover_wobble %}\n\n{{ hover_wobble() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/hover_wobble.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/hover_wobble.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "icon-btn",
@@ -2448,7 +2448,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/inline.html\" import inline %}\n\n{{ inline() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/inline.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/inline.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "inline-counter",
@@ -2462,7 +2462,7 @@
       "summary": "Inline counter",
       "copy_snippet": "{% from \"chirpui/inline_counter.html\" import inline_counter %}\n\n{{ inline_counter() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_inline_counter() missing 3 required positional arguments: 'mark', 'value', and 'label'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/inline_counter.html\" import inline_counter %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_inline_counter() missing 3 required positional arguments: 'mark', 'value', and 'label'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/inline_counter.html\" import inline_counter %}\n   4 | \n   |"
     },
     {
       "name": "inline-edit",
@@ -2476,7 +2476,7 @@
       "summary": "Inline edit field",
       "copy_snippet": "{% from \"chirpui/inline_edit_field.html\" import inline_edit_field_display, inline_edit_field_form %}\n\n{# Display block \u2014 swap target for edit form",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_inline_edit_field_display() missing 2 required positional arguments: 'value' and 'edit_url'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/inline_edit_field.html\" import inline_edit_field_display %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_inline_edit_field_display() missing 2 required positional arguments: 'value' and 'edit_url'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/inline_edit_field.html\" import inline_edit_field_display %}\n   4 | \n   |"
     },
     {
       "name": "input-group",
@@ -2532,7 +2532,7 @@
       "summary": "Code macros",
       "copy_snippet": "{% from \"chirpui/code.html\" import install_snippet %}\n\n{% call install_snippet() %}\n  Content\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_install_snippet() missing 1 required positional argument: 'command'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/code.html\" import install_snippet %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_install_snippet() missing 1 required positional argument: 'command'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/code.html\" import install_snippet %}\n   4 | \n   |"
     },
     {
       "name": "island-root",
@@ -2546,7 +2546,7 @@
       "summary": "Framework-agnostic island mount wrappers",
       "copy_snippet": "{% from \"chirpui/islands.html\" import island_root %}\n\n{% call island_root() %}\n  Content\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_island_root() missing 1 required positional argument: 'name'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/islands.html\" import island_root %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_island_root() missing 1 required positional argument: 'name'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/islands.html\" import island_root %}\n   4 | \n   |"
     },
     {
       "name": "item",
@@ -2574,7 +2574,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/jello.html\" import jello %}\n\n{{ jello() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/jello.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/jello.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "kbd",
@@ -2602,7 +2602,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/key_value_form.html\" import key_value_form %}\n\n{{ key_value_form() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/key_value_form.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/key_value_form.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "label",
@@ -2644,7 +2644,7 @@
       "summary": "Latest line",
       "copy_snippet": "{% from \"chirpui/latest_line.html\" import latest_line %}\n\n{{ latest_line() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_latest_line() missing 3 required positional arguments: 'label', 'href', and 'title'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/latest_line.html\" import latest_line %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_latest_line() missing 3 required positional arguments: 'label', 'href', and 'title'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/latest_line.html\" import latest_line %}\n   4 | \n   |"
     },
     {
       "name": "layer",
@@ -2672,7 +2672,7 @@
       "summary": "Marketing pattern assets",
       "copy_snippet": "{% from \"chirpui/marketing_patterns.html\" import lifecycle_showcase %}\n\n{{ lifecycle_showcase() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_lifecycle_showcase() missing 1 required positional argument: 'items'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/marketing_patterns.html\" import lifecycle_showcase %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_lifecycle_showcase() missing 1 required positional argument: 'items'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/marketing_patterns.html\" import lifecycle_showcase %}\n   4 | \n   |"
     },
     {
       "name": "link",
@@ -2714,7 +2714,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/list_reset.html\" import list_reset %}\n\n{{ list_reset() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/list_reset.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/list_reset.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "live-badge",
@@ -2742,7 +2742,7 @@
       "summary": "Media pattern assets",
       "copy_snippet": "{% from \"chirpui/media_patterns.html\" import live_event_card %}\n\n{{ live_event_card() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_live_event_card() missing 3 required positional arguments: 'name', 'state', and 'time'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/media_patterns.html\" import live_event_card %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_live_event_card() missing 3 required positional arguments: 'name', 'state', and 'time'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/media_patterns.html\" import live_event_card %}\n   4 | \n   |"
     },
     {
       "name": "load-sentinel",
@@ -2812,7 +2812,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/mb_md.html\" import mb_md %}\n\n{{ mb_md() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/mb_md.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/mb_md.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "measure-lg",
@@ -2826,7 +2826,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/measure_lg.html\" import measure_lg %}\n\n{{ measure_lg() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/measure_lg.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/measure_lg.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "measure-md",
@@ -2840,7 +2840,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/measure_md.html\" import measure_md %}\n\n{{ measure_md() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/measure_md.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/measure_md.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "measure-sm",
@@ -2854,7 +2854,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/measure_sm.html\" import measure_sm %}\n\n{{ measure_sm() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/measure_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/measure_sm.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "media-hero-shelf",
@@ -2868,7 +2868,7 @@
       "summary": "Media pattern assets",
       "copy_snippet": "{% from \"chirpui/media_patterns.html\" import media_hero_shelf %}\n\n{{ media_hero_shelf() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_media_hero_shelf() missing 1 required positional argument: 'items'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/media_patterns.html\" import media_hero_shelf %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_media_hero_shelf() missing 1 required positional argument: 'items'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/media_patterns.html\" import media_hero_shelf %}\n   4 | \n   |"
     },
     {
       "name": "media-object",
@@ -2896,7 +2896,7 @@
       "summary": "Mention component",
       "copy_snippet": "{% from \"chirpui/mention.html\" import mention %}\n\n{{ mention(\"alice\", href=\"/user/alice\") }}\n{{ mention(\"bob\")  # span if no href }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_mention() missing 1 required positional argument: 'username'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/mention.html\" import mention %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_mention() missing 1 required positional argument: 'username'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/mention.html\" import mention %}\n   4 | \n   |"
     },
     {
       "name": "menubar",
@@ -2966,7 +2966,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/message_reactions.html\" import message_reactions %}\n\n{{ message_reactions() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/message_reactions.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/message_reactions.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "message-thread",
@@ -3022,7 +3022,7 @@
       "summary": "Metric grid/card",
       "copy_snippet": "{% from \"chirpui/metric_grid.html\" import metric_card %}\n\n{{ metric_card() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_metric_card() missing 2 required positional arguments: 'value' and 'label'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/metric_grid.html\" import metric_card %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_metric_card() missing 2 required positional arguments: 'value' and 'label'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/metric_grid.html\" import metric_card %}\n   4 | \n   |"
     },
     {
       "name": "metric-grid",
@@ -3064,7 +3064,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/min_w_0.html\" import min_w_0 %}\n\n{{ min_w_0() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/min_w_0.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/min_w_0.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "modal",
@@ -3078,7 +3078,7 @@
       "summary": "Modal component",
       "copy_snippet": "{% from \"chirpui/modal.html\" import modal, modal_trigger %}\n\n{{ modal_trigger(\"my-modal\", label=\"Open Settings\") }}\n\n{% call modal(\"my-modal\", title=\"Settings\") %}\n    <p>Modal body content.</p>\n    {% fill footer %}\n        <button class=\"chirpui-btn chirpui-btn--ghost\" onclick=\"this.closest('dialog').close()\">Cancel</button>\n        <button class=\"chirpui-btn chirpui-btn--primary\">Save</button>\n    {% end %}\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_modal() missing 1 required positional argument: 'id'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/modal.html\" import modal %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_modal() missing 1 required positional argument: 'id'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/modal.html\" import modal %}\n   4 | \n   |"
     },
     {
       "name": "model-card",
@@ -3092,7 +3092,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/model_card.html\" import model_card %}\n\n{{ model_card() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/model_card.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/model_card.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "moderation-queue-item",
@@ -3106,7 +3106,7 @@
       "summary": "Forum and social pattern assets",
       "copy_snippet": "{% from \"chirpui/forum_patterns.html\" import moderation_queue_item %}\n\n{% call moderation_queue_item(\"actions\") %}\n  Content\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_moderation_queue_item() missing 2 required positional arguments: 'title' and 'reason'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/forum_patterns.html\" import moderation_queue_item %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_moderation_queue_item() missing 2 required positional arguments: 'title' and 'reason'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/forum_patterns.html\" import moderation_queue_item %}\n   4 | \n   |"
     },
     {
       "name": "mt-md",
@@ -3120,7 +3120,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/mt_md.html\" import mt_md %}\n\n{{ mt_md() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/mt_md.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/mt_md.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "mt-sm",
@@ -3134,7 +3134,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/mt_sm.html\" import mt_sm %}\n\n{{ mt_sm() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/mt_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/mt_sm.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "nav-link",
@@ -3162,7 +3162,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/nav_pill.html\" import nav_pill %}\n\n{{ nav_pill() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/nav_pill.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/nav_pill.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "nav-progress",
@@ -3190,7 +3190,7 @@
       "summary": "Nav tree component",
       "copy_snippet": "{% from \"chirpui/nav_tree.html\" import nav_tree %}\n\n{% call nav_tree(items=items, show_icons=false) %}\n    slot header: version selector, search\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_nav_tree() missing 1 required positional argument: 'items'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/nav_tree.html\" import nav_tree %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_nav_tree() missing 1 required positional argument: 'items'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/nav_tree.html\" import nav_tree %}\n   4 | \n   |"
     },
     {
       "name": "navbar",
@@ -3259,7 +3259,7 @@
       "template": "notification_dot.html",
       "summary": "Notification Dot",
       "copy_snippet": "{% from \"chirpui/notification_dot.html\" import notification_dot %}\n\n{% call notification_dot() %}\n    <button>Inbox</button>\n{% end %}\n\n{% call notification_dot(variant=\"success\", count=3) %}\n    <span>Messages</span>\n{% end %}",
-      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n\n\n\n\n\n\n<span class=\"chirpui-notification-dot\">\n    \n    <button>Inbox</button>\n\n    <span class=\"chirpui-notification-dot__ping\" aria-hidden=\"true\"></span>\n    <span class=\"chirpui-notification-dot__dot\" aria-label=\"notification\"></span>\n</span>\n\n\n\n\n\n\n\n\n\n<span class=\"chirpui-notification-dot chirpui-notification-dot--success chirpui-notification-dot--count\">\n    \n    <span>Messages</span>\n\n    <span class=\"chirpui-notification-dot__ping\" aria-hidden=\"true\"></span>\n    <span class=\"chirpui-notification-dot__dot\" aria-label=\"3 notifications\">3</span>\n</span>\n\n\n</div>",
+      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n\n\n\n\n\n\n<span class=\"chirpui-notification-dot\">\n    \n    <button>Inbox</button>\n\n    <span class=\"chirpui-notification-dot__ping\" aria-hidden=\"true\"></span>\n    <span class=\"chirpui-notification-dot__dot\" aria-label=\"notification\">\n    </span>\n</span>\n\n\n\n\n\n\n\n\n\n<span class=\"chirpui-notification-dot chirpui-notification-dot--success chirpui-notification-dot--count\">\n    \n    <span>Messages</span>\n\n    <span class=\"chirpui-notification-dot__ping\" aria-hidden=\"true\"></span>\n    <span class=\"chirpui-notification-dot__dot\" aria-label=\"3 notifications\">3\n    </span>\n</span>\n\n\n</div>",
       "preview_error": null
     },
     {
@@ -3274,7 +3274,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/number_scale.html\" import number_scale %}\n\n{{ number_scale() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/number_scale.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/number_scale.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "number-ticker",
@@ -3287,7 +3287,7 @@
       "template": "number_ticker.html",
       "summary": "Number Ticker",
       "copy_snippet": "{% from \"chirpui/number_ticker.html\" import number_ticker %}\n\n{{ number_ticker(1250) }}\n{{ number_ticker(99, prefix=\"$\", suffix=\"+\", variant=\"mono\", size=\"xl\") }}",
-      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n\n\n\n\n<span class=\"chirpui-number-ticker\"><span class=\"chirpui-number-ticker__value\" style=\"--chirpui-num: 1250; --chirpui-num-target: 1250\" aria-label=\"1250\"></span></span>\n\n\n\n\n\n\n<span class=\"chirpui-number-ticker chirpui-number-ticker--mono chirpui-number-ticker--xl\"><span class=\"chirpui-number-ticker__prefix\">$</span><span class=\"chirpui-number-ticker__value\" style=\"--chirpui-num: 99; --chirpui-num-target: 99\" aria-label=\"99\"></span><span class=\"chirpui-number-ticker__suffix\">+</span></span>\n\n\n</div>",
+      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n\n\n\n\n<span class=\"chirpui-number-ticker\">\n    <span class=\"chirpui-number-ticker__value\" style=\"--chirpui-num: 1250; --chirpui-num-target: 1250\" aria-label=\"1250\"></span>\n</span>\n\n\n\n\n\n\n<span class=\"chirpui-number-ticker chirpui-number-ticker--mono chirpui-number-ticker--xl\"><span class=\"chirpui-number-ticker__prefix\">$</span>\n    <span class=\"chirpui-number-ticker__value\" style=\"--chirpui-num: 99; --chirpui-num-target: 99\" aria-label=\"99\"></span><span class=\"chirpui-number-ticker__suffix\">+</span>\n</span>\n\n\n</div>",
       "preview_error": null
     },
     {
@@ -3330,7 +3330,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/page_fill.html\" import page_fill %}\n\n{{ page_fill() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/page_fill.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/page_fill.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "page_header",
@@ -3372,7 +3372,7 @@
       "summary": "Pagination component",
       "copy_snippet": "{% from \"chirpui/pagination.html\" import pagination %}\n\n{{ pagination(current=3, total=10, url_pattern=\"/items?page=...\", }}\n           hx_target=\"#item-list\", hx_select=\"#main\")",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_pagination() missing 3 required positional arguments: 'current', 'total', and 'url_pattern'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/pagination.html\" import pagination %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_pagination() missing 3 required positional arguments: 'current', 'total', and 'url_pattern'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/pagination.html\" import pagination %}\n   4 | \n   |"
     },
     {
       "name": "panel",
@@ -3400,7 +3400,7 @@
       "summary": "Parameter override controls",
       "copy_snippet": "{% from \"chirpui/param_override.html\" import param_field, advanced_params, scope_indicator %}\n\n{% call advanced_params() %}\n    {{ param_field(\"temperature\", value=0.9, default=0.7, widget=\"range\",\n                   min=0, max=2, step=0.1, label=\"Temperature\") }}\n    {{ param_field(\"model\", value=none, default=\"gpt-4o\", widget=\"select\",\n                   choices=models, label=\"Model\",\n                   locked=true, locked_reason=\"Set by your workspace admin\") }}\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_param_field() missing 1 required positional argument: 'name'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/param_override.html\" import param_field %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_param_field() missing 1 required positional argument: 'name'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/param_override.html\" import param_field %}\n   4 | \n   |"
     },
     {
       "name": "params-table",
@@ -3414,7 +3414,7 @@
       "summary": "Params table component",
       "copy_snippet": "{% from \"chirpui/params_table.html\" import params_table %}\n\n{{ params_table(rows=params, title=\"Parameters\") }}\n{{ params_table(rows=params, title=\"Returns\", columns=[\"name\", \"type\", \"description\"]) }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_params_table() missing 1 required positional argument: 'rows'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/params_table.html\" import params_table %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_params_table() missing 1 required positional argument: 'rows'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/params_table.html\" import params_table %}\n   4 | \n   |"
     },
     {
       "name": "particle-bg",
@@ -3442,7 +3442,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/placeholder_inline.html\" import placeholder_inline %}\n\n{{ placeholder_inline() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/placeholder_inline.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/placeholder_inline.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "playlist",
@@ -3470,7 +3470,7 @@
       "summary": "Playlist component",
       "copy_snippet": "{% from \"chirpui/playlist.html\" import playlist, playlist_item %}\n\n{% call playlist(title=\"Up next\") %}\n    {% call playlist_item(href=\"/watch/1\", title=\"Video 1\", duration=\"4:32\", active=true) %}{% end %}\n    {% end %}\n    {% call playlist_item(href=\"/watch/2\", title=\"Video 2\", duration=\"8:15\") %}{% end %}\n    {% end %}\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_playlist_item() missing 2 required positional arguments: 'href' and 'title'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/playlist.html\" import playlist_item %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_playlist_item() missing 2 required positional arguments: 'href' and 'title'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/playlist.html\" import playlist_item %}\n   4 | \n   |"
     },
     {
       "name": "popover",
@@ -3512,7 +3512,7 @@
       "summary": "Primary navigation",
       "copy_snippet": "{% from \"chirpui/primary_nav.html\" import primary_nav %}\n\n{{ primary_nav() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_primary_nav() missing 1 required positional argument: 'items'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/primary_nav.html\" import primary_nav %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_primary_nav() missing 1 required positional argument: 'items'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/primary_nav.html\" import primary_nav %}\n   4 | \n   |"
     },
     {
       "name": "profile-header",
@@ -3540,7 +3540,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/progress.html\" import progress %}\n\n{{ progress() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: Macro 'progress' not found in template 'chirpui/progress.html'\n  Location: \u001b[36mchirpui/layout.html\u001b[0m\n\n  \u001b[32mSuggestion:\u001b[0m Check the imported template defines this macro. Verify name and import path."
+      "preview_error": "Runtime Error: Macro 'progress' not found in template 'chirpui/progress.html'\n  Location: blocks-gallery-preview\n\n  Suggestion: Check the imported template defines this macro. Verify name and import path."
     },
     {
       "name": "progress-bar",
@@ -3568,7 +3568,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/prose.html\" import prose %}\n\n{{ prose() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/prose.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/prose.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "prose-lg",
@@ -3582,7 +3582,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/prose_lg.html\" import prose_lg %}\n\n{{ prose_lg() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/prose_lg.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/prose_lg.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "prose-sm",
@@ -3596,7 +3596,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/prose_sm.html\" import prose_sm %}\n\n{{ prose_sm() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/prose_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/prose_sm.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "pulsing-btn",
@@ -3666,7 +3666,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/resource_card.html\" import resource_card %}\n\n{{ resource_card() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/resource_card.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/resource_card.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "resource-index",
@@ -3680,7 +3680,7 @@
       "summary": "Resource Index composite",
       "copy_snippet": "{% from \"chirpui/resource_index.html\" import resource_index %}\n\n{% call resource_index() %}\n  Content\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_resource_index() missing 2 required positional arguments: 'title' and 'search_action'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/resource_index.html\" import resource_index %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_resource_index() missing 2 required positional arguments: 'title' and 'search_action'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/resource_index.html\" import resource_index %}\n   4 | \n   |"
     },
     {
       "name": "result-card",
@@ -3694,7 +3694,7 @@
       "summary": "Dense workspace primitives",
       "copy_snippet": "{% from \"chirpui/workspace_primitives.html\" import result_card %}\n\n{% call result_card() %}\n  Content\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_result_card() missing 1 required positional argument: 'title'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/workspace_primitives.html\" import result_card %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_result_card() missing 1 required positional argument: 'title'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/workspace_primitives.html\" import result_card %}\n   4 | \n   |"
     },
     {
       "name": "result-collection",
@@ -3722,7 +3722,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/result_slot.html\" import result_slot %}\n\n{{ result_slot() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/result_slot.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/result_slot.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "reveal-on-scroll",
@@ -3764,7 +3764,7 @@
       "summary": "Route-backed subsection tabs",
       "copy_snippet": "{% from \"chirpui/route_tabs.html\" import render_route_tabs %}\n\n{{ render_route_tabs() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_render_route_tabs() missing 2 required positional arguments: 'tab_items' and 'current_path'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/route_tabs.html\" import render_route_tabs %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_render_route_tabs() missing 2 required positional arguments: 'tab_items' and 'current_path'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/route_tabs.html\" import render_route_tabs %}\n   4 | \n   |"
     },
     {
       "name": "route-tabs",
@@ -3778,7 +3778,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/route_tabs.html\" import route_tabs %}\n\n{{ route_tabs() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_route_tabs() missing 2 required positional arguments: 'tabs' and 'current_path'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/route_tabs.html\" import route_tabs %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_route_tabs() missing 2 required positional arguments: 'tabs' and 'current_path'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/route_tabs.html\" import route_tabs %}\n   4 | \n   |"
     },
     {
       "name": "row-actions",
@@ -3792,7 +3792,7 @@
       "summary": "Row actions (kebab menu)",
       "copy_snippet": "{% from \"chirpui/row_actions.html\" import row_actions %}\n\n{{ row_actions(items=[ }}\n    {\"label\": \"Edit\", \"href\": \"/items/1/edit\"},\n    {\"label\": \"Duplicate\", \"action\": \"duplicate\"},\n    {\"divider\": true},\n    {\"label\": \"Delete\", \"href\": \"/items/1/delete\", \"variant\": \"danger\", \"icon\": \"\u2715\"}\n], id=\"row-1-actions\")",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_row_actions() missing 1 required positional argument: 'items'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/row_actions.html\" import row_actions %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_row_actions() missing 1 required positional argument: 'items'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/row_actions.html\" import row_actions %}\n   4 | \n   |"
     },
     {
       "name": "rubber-band",
@@ -3806,7 +3806,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/rubber_band.html\" import rubber_band %}\n\n{{ rubber_band() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/rubber_band.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/rubber_band.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "rune-field",
@@ -3876,7 +3876,7 @@
       "summary": "Scope switcher",
       "copy_snippet": "{% from \"chirpui/scope_switcher.html\" import scope_switcher %}\n\n{{ scope_switcher() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_scope_switcher() missing 2 required positional arguments: 'label' and 'items'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/scope_switcher.html\" import scope_switcher %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_scope_switcher() missing 2 required positional arguments: 'label' and 'items'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/scope_switcher.html\" import scope_switcher %}\n   4 | \n   |"
     },
     {
       "name": "scroll-area",
@@ -3904,7 +3904,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/scroll_x.html\" import scroll_x %}\n\n{{ scroll_x() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/scroll_x.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/scroll_x.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "search-bar",
@@ -3918,7 +3918,7 @@
       "summary": "Form field macros",
       "copy_snippet": "{% from \"chirpui/forms.html\" import search_bar %}\n\n{{ search_bar() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_search_bar() missing 1 required positional argument: 'name'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/forms.html\" import search_bar %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_search_bar() missing 1 required positional argument: 'name'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/forms.html\" import search_bar %}\n   4 | \n   |"
     },
     {
       "name": "search-header",
@@ -3932,7 +3932,7 @@
       "summary": "Search Header composite",
       "copy_snippet": "{% from \"chirpui/search_header.html\" import search_header %}\n\n{{ search_header() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_search_header() missing 2 required positional arguments: 'title' and 'form_action'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/search_header.html\" import search_header %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_search_header() missing 2 required positional arguments: 'title' and 'form_action'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/search_header.html\" import search_header %}\n   4 | \n   |"
     },
     {
       "name": "section-collapsible",
@@ -3946,7 +3946,7 @@
       "summary": "Layout primitives \u2014 container, grid (flow), frame (structural), stack, cluster, layer (overlap deck), block.",
       "copy_snippet": "{% from \"chirpui/layout.html\" import section_collapsible %}\n\n{% call section_collapsible() %}\n  Content\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_section_collapsible() missing 1 required positional argument: 'title'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import section_collapsible %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_section_collapsible() missing 1 required positional argument: 'title'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/layout.html\" import section_collapsible %}\n   4 | \n   |"
     },
     {
       "name": "section_header",
@@ -3974,7 +3974,7 @@
       "summary": "Segmented Control",
       "copy_snippet": "{% from \"chirpui/segmented_control.html\" import segmented_control %}\n\n{{ segmented_control(items=[ }}\n    {\"label\": \"Grid\", \"value\": \"grid\", \"active\": true},\n    {\"label\": \"List\", \"value\": \"list\"},\n    {\"label\": \"Table\", \"value\": \"table\"},\n], name=\"view_mode\")\n\n{{ segmented_control(items=[ }}\n    {\"label\": \"Day\", \"value\": \"day\", \"icon\": \"\u25ce\"},\n    {\"label\": \"Week\", \"value\": \"week\"},\n    {\"label\": \"Month\", \"value\": \"month\"},\n], name=\"range\", size=\"sm\")",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_segmented_control() missing 1 required positional argument: 'items'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/segmented_control.html\" import segmented_control %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_segmented_control() missing 1 required positional argument: 'items'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/segmented_control.html\" import segmented_control %}\n   4 | \n   |"
     },
     {
       "name": "selection-bar",
@@ -4044,7 +4044,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/shell_action_form.html\" import shell_action_form %}\n\n{{ shell_action_form() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/shell_action_form.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/shell_action_form.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "shell-actions",
@@ -4058,7 +4058,7 @@
       "summary": "Shell actions renderer",
       "copy_snippet": "{% from \"chirpui/shell_actions.html\" import shell_actions_bar %}\n    {{ shell_actions_bar(shell_actions) }}\n\nkind=\"form\" \u2014 POST form with optional HTMX (set hx_post, hx_target, \u2026 on ShellAction).\nCSRF: {{ csrf_field() }} when include_csrf is true (Chirp provides csrf_field in globals).\n\nid_suffix=\"\" \u2014 append a per-instance suffix (e.g. \"-drawer\") to namespace the\noverflow dropdown id and each menu action id when rendering the bar in two\n{{ regions (e.g. a topbar copy plus a mobile drawer copy). Default \"\" preserves }}\nthe canonical ids, keeping every single-instance render byte-identical.\nThreaded by shell_actions_bar into shell_action.",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_shell_actions_bar() missing 1 required positional argument: 'shell_actions'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/shell_actions.html\" import shell_actions_bar %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_shell_actions_bar() missing 1 required positional argument: 'shell_actions'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/shell_actions.html\" import shell_actions_bar %}\n   4 | \n   |"
     },
     {
       "name": "shell-section",
@@ -4072,7 +4072,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/shell_section.html\" import shell_section %}\n\n{{ shell_section() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/shell_section.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/shell_section.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "shimmer-btn",
@@ -4155,7 +4155,7 @@
       "template": "site_footer.html",
       "summary": "Site Footer component",
       "copy_snippet": "{% from \"chirpui/site_footer.html\" import site_footer, footer_column, footer_link %}\n\n{% call site_footer(layout=\"columns\") %}\n    {% slot brand %}\n        <a href=\"/\">Logo</a>\n        <p>Tagline text.</p>\n    {% end %}\n    {% call footer_column(title=\"Product\") %}\n        {{ footer_link(\"/docs\", \"Docs\") }}\n        {{ footer_link(\"/pricing\", \"Pricing\") }}\n    {% end %}\n    {% call footer_column(title=\"Company\") %}\n        {{ footer_link(\"/about\", \"About\") }}\n        {{ footer_link(\"https://github.com/...\", \"GitHub\", external=true) }}\n    {% end %}\n    {% slot rule %}<span>\u2022</span>{% end %}\n    {% slot colophon %}\u00a9 2026 My Company{% end %}\n{% end %}",
-      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n\n\n<footer class=\"chirpui-site-footer\">\n    <div class=\"chirpui-site-footer__grid\">\n        <div class=\"chirpui-site-footer__brand\">\n        <a href=\"/\">Logo</a>\n        <p>Tagline text.</p>\n    </div>\n        \n    \n    \n<div class=\"chirpui-site-footer__column\">\n    <h3 class=\"chirpui-site-footer__column-title\">Product</h3>\n    <ul class=\"chirpui-site-footer__list\">\n        \n        \n<li>\n    <a class=\"chirpui-site-footer__link\"\n       href=\"/docs\">Docs</a>\n</li>\n\n        \n<li>\n    <a class=\"chirpui-site-footer__link\"\n       href=\"/pricing\">Pricing</a>\n</li>\n\n    \n    </ul>\n</div>\n\n    \n<div class=\"chirpui-site-footer__column\">\n    <h3 class=\"chirpui-site-footer__column-title\">Company</h3>\n    <ul class=\"chirpui-site-footer__list\">\n        \n        \n<li>\n    <a class=\"chirpui-site-footer__link\"\n       href=\"/about\">About</a>\n</li>\n\n        \n<li>\n    <a class=\"chirpui-site-footer__link chirpui-site-footer__link--external\"\n       href=\"https://github.com/...\" rel=\"noopener noreferrer\">GitHub</a>\n</li>\n\n    \n    </ul>\n</div>\n\n    \n    \n\n    </div>\n    <div class=\"chirpui-site-footer__rule\">\n        <span class=\"chirpui-site-footer__rule-line\"></span>\n        <span>\u2022</span>\n        <span class=\"chirpui-site-footer__rule-line\"></span>\n    </div>\n    <div class=\"chirpui-site-footer__colophon\">\u00a9 2026 My Company</div>\n</footer>\n\n\n</div>",
+      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n\n\n<footer class=\"chirpui-site-footer\">\n    <div class=\"chirpui-site-footer__grid\">\n        <div class=\"chirpui-site-footer__brand\">\n        <a href=\"/\">Logo</a>\n        <p>Tagline text.</p>\n    </div>\n        \n    \n    \n<div class=\"chirpui-site-footer__column\">\n    <h3 class=\"chirpui-site-footer__column-title\">Product</h3>\n    <ul class=\"chirpui-site-footer__list\">\n        \n        \n<li>\n    <a class=\"chirpui-site-footer__link\"\n       href=\"/docs\">\n        Docs</a>\n</li>\n\n        \n<li>\n    <a class=\"chirpui-site-footer__link\"\n       href=\"/pricing\">\n        Pricing</a>\n</li>\n\n    \n    </ul>\n</div>\n\n    \n<div class=\"chirpui-site-footer__column\">\n    <h3 class=\"chirpui-site-footer__column-title\">Company</h3>\n    <ul class=\"chirpui-site-footer__list\">\n        \n        \n<li>\n    <a class=\"chirpui-site-footer__link\"\n       href=\"/about\">\n        About</a>\n</li>\n\n        \n<li>\n    <a class=\"chirpui-site-footer__link chirpui-site-footer__link--external\"\n       href=\"https://github.com/...\" rel=\"noopener noreferrer\">\n        GitHub</a>\n</li>\n\n    \n    </ul>\n</div>\n\n    \n    \n\n    </div>\n    <div class=\"chirpui-site-footer__rule\">\n        <span class=\"chirpui-site-footer__rule-line\"></span>\n        <span>\u2022</span>\n        <span class=\"chirpui-site-footer__rule-line\"></span>\n    </div>\n    <div class=\"chirpui-site-footer__colophon\">\u00a9 2026 My Company</div>\n</footer>\n\n\n</div>",
       "preview_error": null
     },
     {
@@ -4169,7 +4169,7 @@
       "template": "site_header.html",
       "summary": "Site Header component",
       "copy_snippet": "{% from \"chirpui/site_header.html\" import site_header, site_nav_link %}\n\n{% call site_header(brand_url=\"/\", layout=\"start\", variant=\"glass\") %}\n    {% slot brand %}<img src=\"/logo.svg\" alt=\"Logo\">{% end %}\n    {% slot nav %}\n        {{ site_nav_link(\"/docs\", \"Docs\", glyph=\"#\", match=\"prefix\") }}\n        {{ site_nav_link(\"/about\", \"About\", match=\"exact\") }}\n    {% end %}\n    {% slot tools %}theme_toggle(){% end %}\n{% end %}\n\n{% call site_header(layout=\"center-brand\", variant=\"solid\") %}\n    {% slot nav %}left links{% end %}\n    {% slot brand %}LOGO{% end %}\n    {% slot nav_end %}right links{% end %}\n    {% slot tools %}CTA button{% end %}\n{% end %}",
-      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n\n\n\n\n\n\n<header class=\"chirpui-site-header chirpui-site-header--sticky chirpui-site-header--glass\">\n    <div class=\"chirpui-site-header__inner\">\n        <a href=\"/\" class=\"chirpui-site-header__brand\"><img src=\"/logo.svg\" alt=\"Logo\"></a>\n        <nav class=\"chirpui-site-header__nav\" aria-label=\"Primary\">\n        \n\n\n\n<a class=\"chirpui-site-nav__link\"\n   href=\"/docs\"><span class=\"chirpui-site-nav__glyph\" aria-hidden=\"true\">#</span>Docs</a>\n\n        \n\n\n\n<a class=\"chirpui-site-nav__link\"\n   href=\"/about\">About</a>\n\n    </nav>\n        \n        <div class=\"chirpui-site-header__tools\">theme_toggle()</div>\n        \n    </div>\n</header>\n\n\n\n\n\n\n\n\n\n\n<header class=\"chirpui-site-header chirpui-site-header--sticky\">\n    <div class=\"chirpui-site-header__inner chirpui-site-header__inner--center-brand\">\n        <a href=\"/\" class=\"chirpui-site-header__brand\">LOGO</a>\n        <nav class=\"chirpui-site-header__nav\" aria-label=\"Primary\">left links</nav>\n        \n        <div class=\"chirpui-site-header__nav-end\">right linksCTA button</div>\n        \n    </div>\n</header>\n\n\n\n</div>",
+      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n\n\n\n\n\n\n<header class=\"chirpui-site-header chirpui-site-header--sticky chirpui-site-header--glass\">\n    <div class=\"chirpui-site-header__inner\">\n        <a href=\"/\" class=\"chirpui-site-header__brand\"><img src=\"/logo.svg\" alt=\"Logo\"></a>\n        <nav class=\"chirpui-site-header__nav\" aria-label=\"Primary\">\n        \n\n\n\n<a class=\"chirpui-site-nav__link\"\n   href=\"/docs\"><span class=\"chirpui-site-nav__glyph\" aria-hidden=\"true\">#</span>\n    Docs</a>\n\n        \n\n\n\n<a class=\"chirpui-site-nav__link\"\n   href=\"/about\">\n    About</a>\n\n    </nav>\n        \n        <div class=\"chirpui-site-header__tools\">theme_toggle()</div>\n        \n    </div>\n</header>\n\n\n\n\n\n\n\n\n\n\n<header class=\"chirpui-site-header chirpui-site-header--sticky\">\n    <div class=\"chirpui-site-header__inner chirpui-site-header__inner--center-brand\">\n        <a href=\"/\" class=\"chirpui-site-header__brand\">LOGO</a>\n        <nav class=\"chirpui-site-header__nav\" aria-label=\"Primary\">left links</nav>\n        \n        <div class=\"chirpui-site-header__nav-end\">right linksCTA button</div>\n        \n    </div>\n</header>\n\n\n\n</div>",
       "preview_error": null
     },
     {
@@ -4183,7 +4183,7 @@
       "template": "site_header.html",
       "summary": "Site Header component",
       "copy_snippet": "{% from \"chirpui/site_header.html\" import site_header, site_nav_link %}\n\n{% call site_header(brand_url=\"/\", layout=\"start\", variant=\"glass\") %}\n    {% slot brand %}<img src=\"/logo.svg\" alt=\"Logo\">{% end %}\n    {% slot nav %}\n        {{ site_nav_link(\"/docs\", \"Docs\", glyph=\"#\", match=\"prefix\") }}\n        {{ site_nav_link(\"/about\", \"About\", match=\"exact\") }}\n    {% end %}\n    {% slot tools %}theme_toggle(){% end %}\n{% end %}\n\n{% call site_header(layout=\"center-brand\", variant=\"solid\") %}\n    {% slot nav %}left links{% end %}\n    {% slot brand %}LOGO{% end %}\n    {% slot nav_end %}right links{% end %}\n    {% slot tools %}CTA button{% end %}\n{% end %}",
-      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n\n\n\n\n\n\n<header class=\"chirpui-site-header chirpui-site-header--sticky chirpui-site-header--glass\">\n    <div class=\"chirpui-site-header__inner\">\n        <a href=\"/\" class=\"chirpui-site-header__brand\"><img src=\"/logo.svg\" alt=\"Logo\"></a>\n        <nav class=\"chirpui-site-header__nav\" aria-label=\"Primary\">\n        \n\n\n\n<a class=\"chirpui-site-nav__link\"\n   href=\"/docs\"><span class=\"chirpui-site-nav__glyph\" aria-hidden=\"true\">#</span>Docs</a>\n\n        \n\n\n\n<a class=\"chirpui-site-nav__link\"\n   href=\"/about\">About</a>\n\n    </nav>\n        \n        <div class=\"chirpui-site-header__tools\">theme_toggle()</div>\n        \n    </div>\n</header>\n\n\n\n\n\n\n\n\n\n\n<header class=\"chirpui-site-header chirpui-site-header--sticky\">\n    <div class=\"chirpui-site-header__inner chirpui-site-header__inner--center-brand\">\n        <a href=\"/\" class=\"chirpui-site-header__brand\">LOGO</a>\n        <nav class=\"chirpui-site-header__nav\" aria-label=\"Primary\">left links</nav>\n        \n        <div class=\"chirpui-site-header__nav-end\">right linksCTA button</div>\n        \n    </div>\n</header>\n\n\n\n</div>",
+      "preview_html": "<div class=\"chirpui-stack\">\n    \n\n\n\n\n\n\n\n\n\n<header class=\"chirpui-site-header chirpui-site-header--sticky chirpui-site-header--glass\">\n    <div class=\"chirpui-site-header__inner\">\n        <a href=\"/\" class=\"chirpui-site-header__brand\"><img src=\"/logo.svg\" alt=\"Logo\"></a>\n        <nav class=\"chirpui-site-header__nav\" aria-label=\"Primary\">\n        \n\n\n\n<a class=\"chirpui-site-nav__link\"\n   href=\"/docs\"><span class=\"chirpui-site-nav__glyph\" aria-hidden=\"true\">#</span>\n    Docs</a>\n\n        \n\n\n\n<a class=\"chirpui-site-nav__link\"\n   href=\"/about\">\n    About</a>\n\n    </nav>\n        \n        <div class=\"chirpui-site-header__tools\">theme_toggle()</div>\n        \n    </div>\n</header>\n\n\n\n\n\n\n\n\n\n\n<header class=\"chirpui-site-header chirpui-site-header--sticky\">\n    <div class=\"chirpui-site-header__inner chirpui-site-header__inner--center-brand\">\n        <a href=\"/\" class=\"chirpui-site-header__brand\">LOGO</a>\n        <nav class=\"chirpui-site-header__nav\" aria-label=\"Primary\">left links</nav>\n        \n        <div class=\"chirpui-site-header__nav-end\">right linksCTA button</div>\n        \n    </div>\n</header>\n\n\n\n</div>",
       "preview_error": null
     },
     {
@@ -4296,7 +4296,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/spinner_thinking.html\" import spinner_thinking %}\n\n{{ spinner_thinking() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/spinner_thinking.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/spinner_thinking.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "split-btn",
@@ -4338,7 +4338,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/split_flap_board.html\" import split_flap_board %}\n\n{{ split_flap_board() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/split_flap_board.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/split_flap_board.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "split-flap-row",
@@ -4352,7 +4352,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/split_flap_row.html\" import split_flap_row %}\n\n{{ split_flap_row() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/split_flap_row.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/split_flap_row.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "split-layout",
@@ -4408,7 +4408,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/sse_retry.html\" import sse_retry %}\n\n{{ sse_retry() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/sse_retry.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/sse_retry.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "sse-status",
@@ -4450,7 +4450,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/star_rating.html\" import star_rating %}\n\n{{ star_rating() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/star_rating.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/star_rating.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "stat",
@@ -4534,7 +4534,7 @@
       "summary": "Story Card",
       "copy_snippet": "{% from \"chirpui/story_card.html\" import story_card %}\n\n{{ story_card( }}\n    customer=\"Acme\",\n    outcome=\"Reduced review time\",\n    summary=\"Teams debugged production runs without escalating.\",\n    href=\"/customers/acme\",\n    metric=\"80%\",\n)",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_story_card() missing 2 required positional arguments: 'customer' and 'outcome'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/story_card.html\" import story_card %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_story_card() missing 2 required positional arguments: 'customer' and 'outcome'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/story_card.html\" import story_card %}\n   4 | \n   |"
     },
     {
       "name": "streaming",
@@ -4548,7 +4548,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/streaming.html\" import streaming %}\n\n{{ streaming() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: Macro 'streaming' not found in template 'chirpui/streaming.html'\n  Location: \u001b[36mchirpui/layout.html\u001b[0m\n\n  \u001b[32mSuggestion:\u001b[0m Check the imported template defines this macro. Verify name and import path."
+      "preview_error": "Runtime Error: Macro 'streaming' not found in template 'chirpui/streaming.html'\n  Location: blocks-gallery-preview\n\n  Suggestion: Check the imported template defines this macro. Verify name and import path."
     },
     {
       "name": "streaming-block",
@@ -4562,7 +4562,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/streaming_block.html\" import streaming_block %}\n\n{{ streaming_block() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/streaming_block.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/streaming_block.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "streaming_bubble",
@@ -4604,7 +4604,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/suspense_group.html\" import suspense_group %}\n\n{{ suspense_group() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/suspense_group.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/suspense_group.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "symbol-rain",
@@ -4646,7 +4646,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/tab_panel.html\" import tab_panel %}\n\n{{ tab_panel() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/tab_panel.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/tab_panel.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "table",
@@ -4702,7 +4702,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/tabular.html\" import tabular %}\n\n{{ tabular() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/tabular.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/tabular.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "tag",
@@ -4716,7 +4716,7 @@
       "summary": "Tag input component",
       "copy_snippet": "{% from \"chirpui/tag_input.html\" import tag_input %}\n\n    {{ tag_input(\"tags\", tags=[\"python\", \"rust\"], label=\"Tags\", }}\n              add_url=\"/tags/add\", remove_url=\"/tags/remove\",\n              placeholder=\"Add tag...\")\n\nWhen add_url/remove_url provided, renders add form and remove buttons.\nServer: add_url accepts POST with \"tag\" param; remove_url accepts POST with \"tag\" param.",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_tag_input() missing 1 required positional argument: 'name'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/tag_input.html\" import tag_input %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_tag_input() missing 1 required positional argument: 'name'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/tag_input.html\" import tag_input %}\n   4 | \n   |"
     },
     {
       "name": "tag-browse",
@@ -4744,7 +4744,7 @@
       "summary": "Tag input component",
       "copy_snippet": "{% from \"chirpui/tag_input.html\" import tag_input %}\n\n    {{ tag_input(\"tags\", tags=[\"python\", \"rust\"], label=\"Tags\", }}\n              add_url=\"/tags/add\", remove_url=\"/tags/remove\",\n              placeholder=\"Add tag...\")\n\nWhen add_url/remove_url provided, renders add form and remove buttons.\nServer: add_url accepts POST with \"tag\" param; remove_url accepts POST with \"tag\" param.",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_tag_input() missing 1 required positional argument: 'name'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/tag_input.html\" import tag_input %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_tag_input() missing 1 required positional argument: 'name'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/tag_input.html\" import tag_input %}\n   4 | \n   |"
     },
     {
       "name": "text-muted",
@@ -4758,7 +4758,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/text_muted.html\" import text_muted %}\n\n{{ text_muted() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/text_muted.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/text_muted.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "text-reveal",
@@ -4786,7 +4786,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/texture.html\" import texture %}\n\n{{ texture() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/texture.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/texture.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "theme-toggle",
@@ -4828,7 +4828,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/thumbs.html\" import thumbs %}\n\n{{ thumbs() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/thumbs.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/thumbs.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "timeline",
@@ -4856,7 +4856,7 @@
       "summary": "Media pattern assets",
       "copy_snippet": "{% from \"chirpui/media_patterns.html\" import title_card %}\n\n{% call title_card(\"actions\") %}\n  Content\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_title_card() missing 1 required positional argument: 'title'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/media_patterns.html\" import title_card %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_title_card() missing 1 required positional argument: 'title'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/media_patterns.html\" import title_card %}\n   4 | \n   |"
     },
     {
       "name": "toast",
@@ -4884,7 +4884,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/toast_container.html\" import toast_container %}\n\n{{ toast_container() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/toast_container.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/toast_container.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "toggle",
@@ -4898,7 +4898,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/toggle.html\" import toggle %}\n\n{{ toggle() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/toggle.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/toggle.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "toggle-group",
@@ -4912,7 +4912,7 @@
       "summary": "Toggle Group",
       "copy_snippet": "{% from \"chirpui/toggle_group.html\" import toggle_group %}\n\n{{ toggle_group(\n    items=[\n        {\"label\": \"Bold\", \"value\": \"bold\", \"pressed\": true},\n        {\"label\": \"Italic\", \"value\": \"italic\"},\n    ],\n    name=\"format\",\n    type=\"multiple\",\n) }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_toggle_group() missing 1 required positional argument: 'items'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/toggle_group.html\" import toggle_group %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_toggle_group() missing 1 required positional argument: 'items'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/toggle_group.html\" import toggle_group %}\n   4 | \n   |"
     },
     {
       "name": "toggle-wrap",
@@ -4926,7 +4926,7 @@
       "summary": "Form field macros",
       "copy_snippet": "{% from \"chirpui/forms.html\" import toggle_field %}\n\n{{ toggle_field() }}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_toggle_field() missing 1 required positional argument: 'name'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/forms.html\" import toggle_field %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_toggle_field() missing 1 required positional argument: 'name'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/forms.html\" import toggle_field %}\n   4 | \n   |"
     },
     {
       "name": "token-input",
@@ -4982,7 +4982,7 @@
       "summary": "Forum and social pattern assets",
       "copy_snippet": "{% from \"chirpui/forum_patterns.html\" import topic_card %}\n\n{% call topic_card(\"badges\") %}\n  Content\n{% end %}",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_topic_card() missing 1 required positional argument: 'title'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/forum_patterns.html\" import topic_card %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_topic_card() missing 1 required positional argument: 'title'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/forum_patterns.html\" import topic_card %}\n   4 | \n   |"
     },
     {
       "name": "tray",
@@ -5010,7 +5010,7 @@
       "summary": "Tree view component",
       "copy_snippet": "{% from \"chirpui/tree_view.html\" import tree_view %}\n\n    {{ tree_view(nodes=[ }}\n        {\"id\": \"1\", \"label\": \"Docs\", \"children\": [\n            {\"id\": \"1a\", \"label\": \"API\", \"children\": []},\n            {\"id\": \"1b\", \"label\": \"Guide\", \"children\": []}\n        ]},\n        {\"id\": \"2\", \"label\": \"Source\", \"children\": []}\n    ])\n\nnodes: list of {id, label, children} where children is list of same structure.\nvariant: \"branch\" (default), \"explorer\", or \"plain\".",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: render.<locals>._def_tree_view() missing 1 required positional argument: 'nodes'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/tree_view.html\" import tree_view %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: render.<locals>._def_tree_view() missing 1 required positional argument: 'nodes'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/tree_view.html\" import tree_view %}\n   4 | \n   |"
     },
     {
       "name": "trending-tag",
@@ -5038,7 +5038,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/truncate.html\" import truncate %}\n\n{{ truncate() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/truncate.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/truncate.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "typewriter",
@@ -5080,7 +5080,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_base.html\" import ui_base %}\n\n{{ ui_base() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_base.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_base.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ui-bold",
@@ -5094,7 +5094,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_bold.html\" import ui_bold %}\n\n{{ ui_bold() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_bold.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_bold.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ui-label",
@@ -5108,7 +5108,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_label.html\" import ui_label %}\n\n{{ ui_label() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_label.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_label.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ui-lg",
@@ -5122,7 +5122,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_lg.html\" import ui_lg %}\n\n{{ ui_lg() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_lg.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_lg.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ui-medium",
@@ -5136,7 +5136,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_medium.html\" import ui_medium %}\n\n{{ ui_medium() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_medium.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_medium.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ui-meta",
@@ -5150,7 +5150,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_meta.html\" import ui_meta %}\n\n{{ ui_meta() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_meta.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_meta.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ui-normal",
@@ -5164,7 +5164,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_normal.html\" import ui_normal %}\n\n{{ ui_normal() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_normal.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_normal.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ui-semibold",
@@ -5178,7 +5178,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_semibold.html\" import ui_semibold %}\n\n{{ ui_semibold() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_semibold.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_semibold.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ui-sm",
@@ -5192,7 +5192,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_sm.html\" import ui_sm %}\n\n{{ ui_sm() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_sm.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_sm.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ui-title",
@@ -5206,7 +5206,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_title.html\" import ui_title %}\n\n{{ ui_title() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_title.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_title.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ui-xl",
@@ -5220,7 +5220,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_xl.html\" import ui_xl %}\n\n{{ ui_xl() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_xl.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_xl.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "ui-xs",
@@ -5234,7 +5234,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/ui_xs.html\" import ui_xs %}\n\n{{ ui_xs() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/ui_xs.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/ui_xs.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "video-card",
@@ -5276,7 +5276,7 @@
       "summary": "",
       "copy_snippet": "{% from \"chirpui/visually_hidden.html\" import visually_hidden %}\n\n{{ visually_hidden() }}",
       "preview_html": null,
-      "preview_error": "Template 'chirpui/visually_hidden.html' not found in: /Users/llane/conductor/workspaces/chirp-ui/jerusalem-v3/src/chirp_ui/templates"
+      "preview_error": "Template 'chirpui/visually_hidden.html' not found in: /private/tmp/chirp-ui-s-tier/src/chirp_ui/templates"
     },
     {
       "name": "watch-companion-layout",
@@ -5304,7 +5304,7 @@
       "summary": "Wizard form component",
       "copy_snippet": "{% from \"chirpui/wizard_form.html\" import wizard_form %}\n\n    {% call wizard_form(\"checkout\", steps=steps, current=step) %}\n        <form hx-post=\"/wizard/step2\" hx-target=\"#checkout\" hx-swap=\"outerHTML\">\n            ...fields...\n        </form>\n    {% end %}\n\nBackend: return the full wizard_form wrapper for fragment requests.",
       "preview_html": null,
-      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_wizard_form() missing 2 required positional arguments: 'id' and 'steps'\n  Location: \u001b[36mblocks-gallery-preview:2\u001b[0m\n\u001b[2m   |\u001b[0m\n\u001b[33m   1\u001b[0m | \u001b[2m{% from \"chirpui/layout.html\" import stack %}\u001b[0m\n\u001b[33m>  2\u001b[0m | \u001b[91m{% call stack() %}\u001b[0m\n\u001b[33m   3\u001b[0m | \u001b[2m{% from \"chirpui/wizard_form.html\" import wizard_form %}\u001b[0m\n\u001b[33m   4\u001b[0m | \u001b[2m\u001b[0m\n\u001b[2m   |\u001b[0m"
+      "preview_error": "Runtime Error: TypeError: _globals_setup.<locals>._def_wizard_form() missing 2 required positional arguments: 'id' and 'steps'\n  Location: blocks-gallery-preview:2\n   |\n   1 | {% from \"chirpui/layout.html\" import stack %}\n>  2 | {% call stack() %}\n   3 | {% from \"chirpui/wizard_form.html\" import wizard_form %}\n   4 | \n   |"
     },
     {
       "name": "wobble",

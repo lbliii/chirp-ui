@@ -1,1 +1,0 @@
-Bump minimum stack dependencies to Kida 0.11, Chirp 0.10, and Pounce 0.8.2; add `poe template-check` strict Kida verification (wired into `poe ci` / `poe check`) and `app.check()` contract proofs for the upgraded Chirp integration (#373, #380–#390).

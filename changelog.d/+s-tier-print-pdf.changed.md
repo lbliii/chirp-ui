@@ -1,1 +1,0 @@
-Make Bengal chirp-theme print/PDF output a fully verified reading surface: clean printed URLs and source provenance, adaptive pagination for long authored blocks, tagged PDF structure and outlines, grayscale and background-off scenarios, Poppler semantic/raster checks, and downloadable CI proof artifacts.

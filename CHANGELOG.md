@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.11.3] - 2026-07-13
+
+### Changed
+
+- Bump minimum stack dependencies to Kida 0.11, Chirp 0.10, and Pounce 0.8.2; add `poe template-check` strict Kida verification (wired into `poe ci` / `poe check`) and `app.check()` contract proofs for the upgraded Chirp integration (#373, #380–#390).
+- Document combobox typeahead anatomy, dropdown-select boundary, and disabled-option gauntlet proof (#341).
+- Document navigation menu flyout anatomy and browser gauntlet proof (#336).
+- Make Bengal chirp-theme print/PDF output a fully verified reading surface: clean printed URLs and source provenance, adaptive pagination for long authored blocks, tagged PDF structure and outlines, grayscale and background-off scenarios, Poppler semantic/raster checks, and downloadable CI proof artifacts.
+- Promote hover-card to stable with anatomy doc and browser gauntlet proof (#338).
+- Promoted `context-menu`, `menubar`, and `input-otp` to stable after shipped anatomy docs, browser gauntlets, and stabilization Current Slice proof for Wave 1 contract hardening (#335, #337, #339).
+
+### Fixed
+
+- Include `itsdangerous` in the component-showcase extra so Chirp can import its session middleware during application startup.
+
+
+## [0.11.2] - 2026-07-13
+
+### Fixed
+
+- Make dark-mode Bengal pages print with a white paper palette, high-contrast body and syntax text, readable table and code sizes, compact lists, and no single-item list tails stranded on a final page.
+
+
+## [0.11.1] - 2026-07-13
+
+### Fixed
+
+- Make Bengal chirp-theme PDF exports preserve every tab and disclosure body, label non-printable interactive embeds, restore interactive state after printing, use wide paper sizes effectively, and keep related content together across page breaks.
+
+
 ## [0.11.0] - 2026-06-23
 
 ### Added

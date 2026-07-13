@@ -1594,6 +1594,9 @@ release_titles = [
     )
     if item.startswith("chirp-ui ")
 ]
+release_patch_titles = re.findall(
+    r'class="chirp-theme-release-patch__title"[^>]*>([^<]+)<', releases_html
+)
 result_path.write_text(
     json.dumps(
         {
@@ -1626,6 +1629,7 @@ result_path.write_text(
             "has_legacy_card": 'class="card"' in docs_html,
             "releases_has_timeline": "chirp-theme-release-timeline" in releases_html,
             "release_titles": release_titles,
+            "release_patch_titles": release_patch_titles,
             "release_has_custom_entries": "chirp-theme-release-entry" in releases_html,
             "releases_has_install_snippet": "uv add chirp-ui==" in releases_html,
             "releases_no_dead_filter": "chirpui-resource-index" not in releases_html,
@@ -1691,6 +1695,7 @@ result_path.write_text(
     assert result["release_has_custom_entries"]
     assert result["releases_has_install_snippet"]
     assert result["releases_no_dead_filter"]
+    assert result["release_patch_titles"][:3] == ["0.11.3", "0.11.2", "0.11.1"]
     assert result["release_titles"][:5] == [
         "chirp-ui 0.11.0",
         "chirp-ui 0.10.0",
