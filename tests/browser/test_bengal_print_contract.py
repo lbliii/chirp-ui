@@ -172,6 +172,37 @@ async def test_dark_mode_print_forces_legible_light_paper_palette(page, static_r
     assert styles["penultimateBreakAfter"] == "avoid-page"
 
 
+async def test_print_lifecycle_sanitizes_links_and_marks_only_long_blocks(page, static_repo_url):
+    await open_print_fixture(page, static_repo_url)
+    await page.emulate_media(media="print")
+    await dispatch_print_event(page, "beforeprint")
+
+    assert await page.locator("#named-external-link").get_attribute("data-print-href") == (
+        "https://example.com/reference?mode=full"
+    )
+    assert await page.locator("#url-external-link").get_attribute("data-print-href") is None
+    await expect(page.locator(".print-document-meta")).to_have_count(1)
+    await expect(page.locator(".print-document-meta__title")).to_have_text("Bengal print contract")
+    await expect(page.locator(".print-document-meta__source a")).to_have_text(
+        "https://docs.example.com/print-contract/"
+    )
+
+    assert await page.locator("#long-code").get_attribute("data-print-breakable") == "true"
+    assert await page.locator("#long-callout").get_attribute("data-print-breakable") == "true"
+    assert await page.locator(".tabs pre").first.get_attribute("data-print-breakable") is None
+    assert (
+        await page.locator("#long-code").evaluate(
+            "element => getComputedStyle(element).breakInside"
+        )
+        == "auto"
+    )
+
+    await dispatch_print_event(page, "afterprint")
+    await expect(page.locator(".print-document-meta")).to_have_count(0)
+    assert await page.locator("#named-external-link").get_attribute("data-print-href") is None
+    assert await page.locator("#long-code").get_attribute("data-print-breakable") is None
+
+
 @pytest.mark.parametrize(("width", "paper"), PRINT_WIDTHS)
 async def test_print_layout_uses_available_paper_width(
     page, static_repo_url, width: int, paper: str
@@ -214,9 +245,15 @@ async def test_pdf_runs_print_lifecycle_and_restores_disclosures(page, static_re
         format="A4",
         print_background=True,
         display_header_footer=False,
+        tagged=True,
+        outline=True,
     )
 
-    assert output.read_bytes().startswith(b"%PDF-")
+    pdf_bytes = output.read_bytes()
+    assert pdf_bytes.startswith(b"%PDF-")
     assert output.stat().st_size > 10_000
+    for marker in (b"/StructTreeRoot", b"/MarkInfo", b"/Outlines", b"/Lang (en)"):
+        assert marker in pdf_bytes
     assert await page.evaluate("window.__printEvents") == ["beforeprint", "afterprint"]
     assert not await page.locator("details.dropdown").evaluate("element => element.open")
+    await expect(page.locator(".print-document-meta")).to_have_count(0)

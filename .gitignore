@@ -41,6 +41,8 @@ examples/integrations/django/db.sqlite3
 .pytest_cache/
 # Browser gauntlet screenshot artifacts (transient; regenerated on failing runs)
 tests/browser/artifacts/
+# Generated print/PDF proof pack (uploaded by CI, not committed)
+output/pdf/
 .coverage
 .coverage.*
 htmlcov/

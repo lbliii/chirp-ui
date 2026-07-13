@@ -176,6 +176,15 @@
     page-break-inside: avoid;
   }
 
+  h1 + *,
+  h2 + *,
+  h3 + *,
+  h4 + *,
+  h5 + *,
+  h6 + * {
+    break-before: avoid-page;
+  }
+
   h1 {
     font-size: 24pt;
     margin-top: 0;
@@ -216,15 +225,23 @@
   a {
     color: black !important;
     text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.12em;
+    overflow-wrap: anywhere;
   }
 
-  /* Show URLs after links in content */
-  .prose a[href^="http"]:after,
-  .content a[href^="http"]:after,
-  article a[href^="http"]:after {
-    content: " (" attr(href) ")";
+  /* main.js supplies a tracking-free URL only when link text is not already a URL. */
+  .prose a[data-print-href]::after,
+  .content a[data-print-href]::after,
+  article a[data-print-href]::after {
+    content: none;
+  }
+
+  .print-link-url {
+    display: inline !important;
     font-size: 0.9em;
-    color: #666 !important;
+    color: #333 !important;
+    overflow-wrap: anywhere;
   }
 
   /* Don't show URLs for anchor links */
@@ -251,6 +268,12 @@
     padding: 10pt !important;
     font-size: 9pt !important;
     line-height: 1.4 !important;
+  }
+
+  /* Tall authored blocks must paginate instead of being pushed or clipped. */
+  :where(pre, .chirpui-callout, .callout, figure, .card, .feature-card, .callout-card)[data-print-breakable="true"] {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
   }
 
   code {
@@ -324,6 +347,8 @@
     border: 1pt solid #ccc !important;
     margin-block: 8pt !important;
     width: 100% !important;
+    table-layout: auto !important;
+    overflow-wrap: anywhere;
   }
 
   tr {
@@ -349,7 +374,8 @@
   }
 
   th {
-    font-weight: bold;
+    font-weight: 700;
+    border-bottom-color: #555 !important;
   }
 
   /* ============================================
@@ -368,7 +394,7 @@
   figcaption {
     font-size: 10pt;
     font-style: italic;
-    color: #666 !important;
+    color: #333 !important;
   }
 
   /* ============================================
@@ -434,6 +460,29 @@
       color: #111;
       content: counter(page);
     }
+  }
+
+  .print-document-meta {
+    border-block-start: 1pt solid #777;
+    break-inside: avoid-page;
+    color: #111 !important;
+    font-size: 9pt !important;
+    line-height: 1.4 !important;
+    margin-block-start: 18pt !important;
+    padding-block-start: 8pt !important;
+  }
+
+  .print-document-meta__title,
+  .print-document-meta__source {
+    display: block;
+  }
+
+  .print-document-meta__title {
+    font-weight: 700;
+  }
+
+  .print-document-meta__source a::after {
+    content: none !important;
   }
 
   /* ============================================

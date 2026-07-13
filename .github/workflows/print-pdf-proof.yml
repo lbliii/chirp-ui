@@ -1,0 +1,76 @@
+name: Print PDF Proof (non-required)
+
+# Reproducible visual and semantic evidence for the Bengal print contract.
+# The uploaded artifact contains three tagged PDFs, per-page PNG rasters, and
+# an HTML contact sheet. It is intentionally standalone/non-required while the
+# contract matures; failures remain visible on every print-affecting PR.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/bengal_themes/chirp_theme/assets/css/base/print.css"
+      - "src/bengal_themes/chirp_theme/assets/js/main.js"
+      - "tests/browser/templates/bengal_print_contract.html"
+      - "tests/browser/test_bengal_print_contract.py"
+      - "scripts/build_print_pdf_proof.py"
+      - "scripts/verify_print_pdf_proof.py"
+      - "docs/theming/print-pdf.md"
+      - "site/content/docs/theming/print-pdf.md"
+      - "pyproject.toml"
+      - ".github/workflows/print-pdf-proof.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/bengal_themes/chirp_theme/assets/css/base/print.css"
+      - "src/bengal_themes/chirp_theme/assets/js/main.js"
+      - "tests/browser/templates/bengal_print_contract.html"
+      - "tests/browser/test_bengal_print_contract.py"
+      - "scripts/build_print_pdf_proof.py"
+      - "scripts/verify_print_pdf_proof.py"
+      - "docs/theming/print-pdf.md"
+      - "site/content/docs/theming/print-pdf.md"
+      - "pyproject.toml"
+      - ".github/workflows/print-pdf-proof.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: print-pdf-proof-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  print-pdf-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.14t"
+
+      - name: Install browser dependencies
+        run: uv sync --group browser
+        env:
+          PYTHON_GIL: "0"
+
+      - name: Install Chromium and Poppler
+        run: |
+          uv run playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install --yes poppler-utils
+
+      - name: Build and verify print PDF proof
+        run: uv run poe print-pdf-proof
+        env:
+          PYTHON_GIL: "0"
+
+      - name: Upload PDF and raster proof
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: bengal-print-pdf-proof
+          path: output/pdf/
+          if-no-files-found: error
+          retention-days: 14

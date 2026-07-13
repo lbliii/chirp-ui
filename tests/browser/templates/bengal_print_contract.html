@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bengal print contract</title>
+    <link rel="canonical" href="https://docs.example.com/print-contract/?utm_source=fixture#top">
     <link rel="stylesheet" href="/src/chirp_ui/templates/chirpui.css">
     <!-- Bengal resolves style.css imports while building a site. The static
          fixture links the affected sources directly so tests exercise current
@@ -108,7 +109,7 @@
             <li>Fifth related item</li>
           </ul>
 
-          <aside class="chirpui-callout">
+          <aside class="chirpui-callout" role="note">
             <p class="print-callout-copy">
               Dark-mode callout copy must remain readable on white paper.
             </p>
@@ -131,6 +132,131 @@
             remaining short enough that a print engine should not strand a single line on a new
             page when nearby content can move with it.
           </p>
+
+          <h2>Printed links</h2>
+          <p>
+            Read the <a id="named-external-link" href="https://example.com/reference?utm_source=fixture&amp;mode=full#details">external reference</a>
+            or visit <a id="url-external-link" href="https://example.com/already-visible/">https://example.com/already-visible/</a>.
+          </p>
+
+          <h2>Long-block pagination</h2>
+          <aside class="chirpui-callout" id="long-callout" role="note">
+            <h3>LONG_CALLOUT_SENTINEL</h3>
+            <p>A long callout remains a callout, but it may cross a page boundary when keeping the whole block together would create an empty page or clipped content.</p>
+            <p>Each paragraph keeps normal widows and orphans while the enclosing border remains visible in monochrome output.</p>
+            <p>Meaning is never carried by background color alone; the heading, border, and document order survive grayscale conversion.</p>
+            <p>This content intentionally repeats enough prose to exceed the short-block threshold used by the print lifecycle.</p>
+            <p>The fifth paragraph checks that a tall advisory surface does not disappear when a PDF engine paginates it.</p>
+            <p>The sixth paragraph makes the fixture realistic enough to cover a substantial documentation warning or migration note.</p>
+            <p>The seventh paragraph provides more authored content and protects against a regression to unconditional break-inside avoidance.</p>
+            <p>The eighth paragraph should remain searchable and selectable in the generated tagged PDF.</p>
+            <p>The ninth paragraph ensures the fixture represents a genuinely tall authored aside rather than a synthetic CSS-only state.</p>
+            <p>The tenth paragraph preserves meaningful prose while increasing the pagination pressure on A4 and Letter paper.</p>
+            <p>The eleventh paragraph confirms that a continued advisory can flow onto the next page without losing its reading order.</p>
+            <p>The twelfth paragraph makes room for semantic extraction checks across a real page boundary.</p>
+            <p>The thirteenth paragraph remains intentionally plain so color is never the only carrier of meaning.</p>
+            <p>The fourteenth paragraph protects the final portion of a long note from clipping at the printable edge.</p>
+            <p>The fifteenth paragraph gives the browser enough content to exercise its fragmentation algorithm.</p>
+            <p>The sixteenth paragraph closes the advisory with text that must remain present in both raster and semantic proof.</p>
+          </aside>
+
+          <pre class="rosettes" id="long-code"><code><span class="syntax-comment"># LONG_CODE_START_SENTINEL</span>
+line_01 = "printable"
+line_02 = "printable"
+line_03 = "printable"
+line_04 = "printable"
+line_05 = "printable"
+line_06 = "printable"
+line_07 = "printable"
+line_08 = "printable"
+line_09 = "printable"
+line_10 = "printable"
+line_11 = "printable"
+line_12 = "printable"
+line_13 = "printable"
+line_14 = "printable"
+line_15 = "printable"
+line_16 = "printable"
+line_17 = "printable"
+line_18 = "printable"
+line_19 = "printable"
+line_20 = "printable"
+line_21 = "printable"
+line_22 = "printable"
+line_23 = "printable"
+line_24 = "printable"
+line_25 = "printable"
+line_26 = "printable"
+line_27 = "printable"
+line_28 = "printable"
+line_29 = "printable"
+line_30 = "printable"
+line_31 = "printable"
+line_32 = "printable"
+line_33 = "printable"
+line_34 = "printable"
+line_35 = "printable"
+line_36 = "printable"
+line_37 = "printable"
+line_38 = "printable"
+line_39 = "printable"
+line_40 = "printable"
+line_41 = "printable"
+line_42 = "printable"
+line_43 = "printable"
+line_44 = "printable"
+line_45 = "printable"
+line_46 = "printable"
+line_47 = "printable"
+line_48 = "printable"
+line_49 = "printable"
+line_50 = "printable"
+<span class="syntax-comment"># LONG_CODE_END_SENTINEL</span></code></pre>
+
+          <h2>Multi-page table</h2>
+          <table id="long-table">
+            <thead><tr><th scope="col">Row</th><th scope="col">Printable contract</th></tr></thead>
+            <tbody>
+              <tr><td>01</td><td>TABLE_ROW_01</td></tr>
+              <tr><td>02</td><td>TABLE_ROW_02</td></tr>
+              <tr><td>03</td><td>TABLE_ROW_03</td></tr>
+              <tr><td>04</td><td>TABLE_ROW_04</td></tr>
+              <tr><td>05</td><td>TABLE_ROW_05</td></tr>
+              <tr><td>06</td><td>TABLE_ROW_06</td></tr>
+              <tr><td>07</td><td>TABLE_ROW_07</td></tr>
+              <tr><td>08</td><td>TABLE_ROW_08</td></tr>
+              <tr><td>09</td><td>TABLE_ROW_09</td></tr>
+              <tr><td>10</td><td>TABLE_ROW_10</td></tr>
+              <tr><td>11</td><td>TABLE_ROW_11</td></tr>
+              <tr><td>12</td><td>TABLE_ROW_12</td></tr>
+              <tr><td>13</td><td>TABLE_ROW_13</td></tr>
+              <tr><td>14</td><td>TABLE_ROW_14</td></tr>
+              <tr><td>15</td><td>TABLE_ROW_15</td></tr>
+              <tr><td>16</td><td>TABLE_ROW_16</td></tr>
+              <tr><td>17</td><td>TABLE_ROW_17</td></tr>
+              <tr><td>18</td><td>TABLE_ROW_18</td></tr>
+              <tr><td>19</td><td>TABLE_ROW_19</td></tr>
+              <tr><td>20</td><td>TABLE_ROW_20</td></tr>
+              <tr><td>21</td><td>TABLE_ROW_21</td></tr>
+              <tr><td>22</td><td>TABLE_ROW_22</td></tr>
+              <tr><td>23</td><td>TABLE_ROW_23</td></tr>
+              <tr><td>24</td><td>TABLE_ROW_24</td></tr>
+              <tr><td>25</td><td>TABLE_ROW_25</td></tr>
+              <tr><td>26</td><td>TABLE_ROW_26</td></tr>
+              <tr><td>27</td><td>TABLE_ROW_27</td></tr>
+              <tr><td>28</td><td>TABLE_ROW_28</td></tr>
+              <tr><td>29</td><td>TABLE_ROW_29</td></tr>
+              <tr><td>30</td><td>TABLE_ROW_30</td></tr>
+            </tbody>
+          </table>
+
+          <figure>
+            <svg role="img" aria-label="Print contrast sample" viewBox="0 0 600 120" width="600" height="120">
+              <rect width="600" height="120" fill="#ffffff" stroke="#111111" stroke-width="4"></rect>
+              <text x="24" y="70" font-size="28" fill="#111111">FIGURE_SENTINEL</text>
+            </svg>
+            <figcaption>Figure captions stay attached to their evidence and remain legible without color.</figcaption>
+          </figure>
 
           <h2>Interactive embeds</h2>
           <div class="video-embed"><iframe title="Video example" src="about:blank"></iframe></div>

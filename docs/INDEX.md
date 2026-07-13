@@ -106,6 +106,7 @@ They are not public macros.
 
 - [APP-THEME.md](theming/app-theme.md) — Token-only app theme starter and fresh-project ownership contract
 - [CHIRP-THEME.md](theming/chirp-theme.md) — Theme package architecture and token system
+- [PRINT-PDF.md](theming/print-pdf.md) — Print reading-surface contract and tagged PDF proof
 - [CHIRP-THEME-PARITY-MATRIX.md](theming/chirp-theme-parity-matrix.md) — Theme token coverage across components
 - [BENGAL-THEME-ANATOMY.md](theming/bengal-theme-anatomy.md) — Packaged Bengal theme controls, search, mobile nav, TOC, and docs tab hooks
 
