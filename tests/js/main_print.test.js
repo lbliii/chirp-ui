@@ -37,9 +37,11 @@ beforeEach(() => {
       <details id="open" open><summary>Open</summary><p>Open body</p></details>
       <p><a id="named-link" href="https://user:secret@example.com/reference?UTM_Source=test&mode=full#part">Reference</a></p>
       <p><a id="url-link" href="https://example.com/path/">https://example.com/path/</a></p>
+      <p><strong id="strong-copy">Strong copy</strong> and <em id="em-copy" role="emphasis">emphasized copy</em></p>
       <pre id="long-code"><code>Long code</code></pre>
     </main>
     <details id="outside"><summary>Outside main</summary><p>Outside body</p></details>
+    <strong id="outside-strong">Outside strong copy</strong>
   `;
   Object.defineProperty(document.getElementById("long-code"), "scrollHeight", {
     configurable: true,
@@ -65,6 +67,9 @@ describe("main.js print lifecycle", () => {
     expect(document.getElementById("outside").open).toBe(false);
     expect(document.querySelectorAll("[data-print-generated]")).toHaveLength(1);
     expect(document.getElementById("long-code").dataset.printBreakable).toBe("true");
+    expect(document.getElementById("strong-copy").getAttribute("role")).toBe("presentation");
+    expect(document.getElementById("em-copy").getAttribute("role")).toBe("presentation");
+    expect(document.getElementById("outside-strong").hasAttribute("role")).toBe(false);
 
     window.dispatchEvent(new Event("afterprint"));
 
@@ -73,6 +78,9 @@ describe("main.js print lifecycle", () => {
     expect(document.getElementById("outside").open).toBe(false);
     expect(document.querySelector("[data-print-generated]")).toBeNull();
     expect(document.getElementById("long-code").dataset.printBreakable).toBeUndefined();
+    expect(document.getElementById("strong-copy").hasAttribute("role")).toBe(false);
+    expect(document.getElementById("em-copy").getAttribute("role")).toBe("emphasis");
+    expect(document.getElementById("outside-strong").hasAttribute("role")).toBe(false);
   });
 
   it("prints useful external URLs without tracking noise or duplicate URL labels", () => {

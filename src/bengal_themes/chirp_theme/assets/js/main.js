@@ -10,6 +10,7 @@
   let printDecoratedLinks = [];
   let printLinkUrlElements = [];
   let printBreakableElements = [];
+  let printNormalizedEmphasisElements = [];
   let printMetadataElement = null;
   let printPrepared = false;
 
@@ -167,6 +168,20 @@
       }
       element.setAttribute('data-print-breakable', 'true');
       printBreakableElements.push(element);
+    });
+  }
+
+  function preparePrintSemantics() {
+    printNormalizedEmphasisElements = [];
+    document.querySelectorAll('main strong, main em').forEach((element) => {
+      printNormalizedEmphasisElements.push({
+        element,
+        role: element.getAttribute('role'),
+      });
+      // Chromium's PDF 1.x structure tree emits non-standard Strong and Em
+      // tags that Poppler cannot validate. Presentation keeps the emphasized
+      // text in its semantic parent while CSS preserves the visual emphasis.
+      element.setAttribute('role', 'presentation');
     });
   }
 
@@ -344,6 +359,7 @@
     });
     preparePrintLinks();
     preparePrintBreaks();
+    preparePrintSemantics();
     preparePrintMetadata();
   }
 
@@ -368,6 +384,17 @@
       }
     });
     printBreakableElements = [];
+    printNormalizedEmphasisElements.forEach(({ element, role }) => {
+      if (!element.isConnected) {
+        return;
+      }
+      if (role === null) {
+        element.removeAttribute('role');
+      } else {
+        element.setAttribute('role', role);
+      }
+    });
+    printNormalizedEmphasisElements = [];
     printMetadataElement?.remove();
     printMetadataElement = null;
     printPrepared = false;
