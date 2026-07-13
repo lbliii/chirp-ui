@@ -1,1 +1,0 @@
-Normalize printed strong and emphasis elements to standards-compatible tagged-PDF text during the print lifecycle, eliminating Poppler structure warnings while restoring authored roles afterward (#415).

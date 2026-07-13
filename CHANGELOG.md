@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- towncrier release notes start -->
 
+## [0.11.4] - 2026-07-13
+
+### Changed
+
+- Added a focused Playwright smoke to the required `poe ci` gate for composer sending, context-menu dismissal with focus restoration, and menubar roving focus. ([#349](https://github.com/lbliii/chirp-ui/issues/349))
+
+### Fixed
+
+- Normalize printed strong and emphasis elements to standards-compatible tagged-PDF text during the print lifecycle, eliminating Poppler structure warnings while restoring authored roles afterward (#415).
+
+
 ## [0.11.3] - 2026-07-13
 
 ### Changed
