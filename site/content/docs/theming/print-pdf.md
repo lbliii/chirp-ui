@@ -26,6 +26,8 @@ When a reader prints a page or uses a browser's PDF destination, the theme:
 - repeats table headers and keeps headings with the content they introduce
 - underlines links and prints cleaned external URLs without tracking parameters
 - appends the document title and canonical source URL
+- normalizes visual emphasis into standards-compatible tagged-PDF text and
+  restores the authored roles after printing
 - remains legible with backgrounds disabled and in grayscale
 
 Browser print dialogs control their own PDF feature set, so not every browser's

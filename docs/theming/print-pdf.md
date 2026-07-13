@@ -23,6 +23,8 @@ When a reader prints a page or uses the browser's PDF destination, the theme:
 - underlines links and prints a tracking-free external URL only when the visible
   label is not already that URL
 - appends the document title and canonical source URL as print-only provenance
+- normalizes visual emphasis into standards-compatible tagged-PDF text during
+  printing, then restores the exact authored roles
 - preserves legibility when backgrounds are disabled or output is grayscale
 
 The lifecycle-created URL and provenance nodes use DOM text properties rather
@@ -48,7 +50,8 @@ The proof task writes to `output/pdf/` and covers three scenarios:
 2. A4 paper with print backgrounds disabled
 3. Letter paper rendered in grayscale
 
-Each PDF must contain a structure tree, language metadata, document outline,
+Each PDF must emit no Poppler structure warnings and contain a structure tree,
+language metadata, document outline,
 headings, links, table roles, figure semantics, every stress-fixture sentinel,
 the sanitized external URL, and the canonical source URL. Poppler then renders
 every page to PNG and checks page count, nonblank content, white paper edges,
