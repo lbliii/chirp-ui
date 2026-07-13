@@ -11,6 +11,37 @@
      GLOBAL PRINT SETTINGS
      ============================================ */
 
+  :root,
+  :root[data-theme] {
+    color-scheme: light !important;
+    --chirpui-bg: #fff !important;
+    --chirpui-bg-subtle: #f7f7f7 !important;
+    --chirpui-surface: #fff !important;
+    --chirpui-text: #111 !important;
+    --chirpui-text-muted: #333 !important;
+    --chirpui-border: #aaa !important;
+    --chirpui-border-subtle: #ccc !important;
+    --color-bg-primary: #fff !important;
+    --color-bg-secondary: #f7f7f7 !important;
+    --color-bg-tertiary: #eee !important;
+    --color-bg-elevated: #fff !important;
+    --color-bg-code: #f5f5f5 !important;
+    --color-surface: #fff !important;
+    --color-text-primary: #111 !important;
+    --color-text-secondary: #222 !important;
+    --color-text-tertiary: #333 !important;
+    --color-text-muted: #444 !important;
+    --color-text-link: #111 !important;
+    --color-border: #aaa !important;
+    --color-border-light: #ccc !important;
+    --color-border-strong: #777 !important;
+    --color-code-text: #111 !important;
+    --color-code-keyword: #5b21b6 !important;
+    --color-code-string: #166534 !important;
+    --color-code-number: #9f1239 !important;
+    --color-code-type: #1d4ed8 !important;
+  }
+
   *,
   *::before,
   *::after {
@@ -21,12 +52,33 @@
     animation: none !important;
   }
 
+  html,
   body {
     /* Use black text on white background */
     background: white !important;
-    color: black !important;
+    color: #111 !important;
     font-size: 12pt;
     line-height: 1.5;
+    min-block-size: 100% !important;
+  }
+
+  main :where(p, li, dt, dd, blockquote, figcaption, small),
+  article :where(p, li, dt, dd, blockquote, figcaption, small) {
+    color: #111 !important;
+    opacity: 1 !important;
+  }
+
+  main :where(p, li, dt, dd, blockquote),
+  article :where(p, li, dt, dd, blockquote) {
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+  }
+
+  main :where(.chirpui-badge, .chirpui-badge *),
+  article :where(.chirpui-badge, .chirpui-badge *) {
+    background: #eee !important;
+    color: #111 !important;
+    opacity: 1 !important;
   }
 
   /* ============================================
@@ -118,6 +170,8 @@
   h5,
   h6 {
     color: black !important;
+    margin-block-start: 12pt !important;
+    margin-block-end: 6pt !important;
     page-break-after: avoid;
     page-break-inside: avoid;
   }
@@ -144,6 +198,7 @@
   }
 
   p {
+    margin-block: 6pt !important;
     orphans: 3;
     widows: 3;
     break-inside: avoid-page;
@@ -190,17 +245,51 @@
 
   pre {
     break-inside: avoid-page;
+    margin-block: 8pt !important;
     white-space: pre-wrap !important;
     word-wrap: break-word !important;
     padding: 10pt !important;
-    font-size: 10pt;
-    line-height: 1.4;
+    font-size: 9pt !important;
+    line-height: 1.4 !important;
   }
 
   code {
     font-family: 'Courier New', Courier, monospace;
-    font-size: 10pt;
+    color: #111 !important;
+    font-size: 9pt !important;
     padding: 2pt 4pt;
+  }
+
+  pre code,
+  pre code * {
+    font-size: 9pt !important;
+    line-height: 1.4 !important;
+  }
+
+  .rosettes {
+    --syntax-bg: #f5f5f5 !important;
+    --syntax-bg-highlight: #e8e8e8 !important;
+    --syntax-control: #5b21b6 !important;
+    --syntax-declaration: #5b21b6 !important;
+    --syntax-import: #5b21b6 !important;
+    --syntax-string: #166534 !important;
+    --syntax-number: #9f1239 !important;
+    --syntax-boolean: #9f1239 !important;
+    --syntax-type: #1d4ed8 !important;
+    --syntax-function: #174f43 !important;
+    --syntax-variable: #111 !important;
+    --syntax-constant: #9f1239 !important;
+    --syntax-comment: #444 !important;
+    --syntax-docstring: #444 !important;
+    --syntax-text: #111 !important;
+    --syntax-muted: #444 !important;
+    --syntax-punctuation: #222 !important;
+    --syntax-operator: #5b21b6 !important;
+    --syntax-attribute: #1d4ed8 !important;
+    --syntax-namespace: #1d4ed8 !important;
+    --syntax-tag: #5b21b6 !important;
+    --syntax-regex: #166534 !important;
+    --syntax-escape: #9f1239 !important;
   }
 
   .code-header {
@@ -215,6 +304,7 @@
   .callout {
     background: white !important;
     border: 1pt solid #ccc !important;
+    margin-block: 8pt !important;
     padding: 10pt !important;
     page-break-inside: avoid;
   }
@@ -232,6 +322,7 @@
   table {
     border-collapse: collapse !important;
     border: 1pt solid #ccc !important;
+    margin-block: 8pt !important;
     width: 100% !important;
   }
 
@@ -252,7 +343,9 @@
     border: 1pt solid #ccc !important;
     padding: 6pt !important;
     background: white !important;
-    color: black !important;
+    color: #111 !important;
+    font-size: 9pt !important;
+    line-height: 1.35 !important;
   }
 
   th {
@@ -282,8 +375,19 @@
      LISTS
      ============================================ */
 
-  li {
+  .prose ul,
+  .prose ol {
+    margin-block: 6pt !important;
+  }
+
+  .prose li {
+    margin-block: 2pt !important;
     break-inside: avoid-page;
+  }
+
+  /* Never strand one final list item by itself on a new page. */
+  .prose li:nth-last-child(2) {
+    break-after: avoid-page;
   }
 
   /* ============================================
@@ -322,9 +426,12 @@
 
   /* Add page header with document title */
   @page {
+    background: white;
+    color: #111;
     margin: 2cm;
 
     @top-right {
+      color: #111;
       content: counter(page);
     }
   }
@@ -346,6 +453,6 @@
 
   /* Optimize spacing */
   .prose>*+* {
-    margin-top: 12pt;
+    margin-top: 8pt !important;
   }
 }
