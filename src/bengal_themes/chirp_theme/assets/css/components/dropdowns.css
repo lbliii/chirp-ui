@@ -366,6 +366,7 @@ details.dropdown.info[open] {
 @media print {
   details.dropdown {
     border: 1px solid #ccc;
+    break-inside: avoid-page;
   }
 
   details.dropdown summary::after {
@@ -374,6 +375,7 @@ details.dropdown.info[open] {
 
   details.dropdown summary {
     cursor: default;
+    break-after: avoid-page;
   }
 
   details.dropdown:not([open]) {
@@ -381,7 +383,11 @@ details.dropdown.info[open] {
   }
 
   details.dropdown:not([open]) .dropdown-content {
-    display: block;
+    display: block !important;
+  }
+
+  details.dropdown[open] .dropdown-content {
+    display: block !important;
   }
 }
 

@@ -199,14 +199,24 @@
   .code-embed,
   .gist-embed {
     page-break-inside: avoid;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible;
+    border: 0;
+    background: transparent;
   }
 
   .code-embed iframe {
     display: none;
   }
 
-  .code-embed noscript {
-    display: block !important;
+  .code-embed::after {
+    content: "Interactive code example — see the online version.";
+    display: block;
+    padding: var(--spacing-4, 1rem);
+    border: 1px solid var(--color-border, #ccc);
+    color: #444;
+    font-style: italic;
   }
 }
 
