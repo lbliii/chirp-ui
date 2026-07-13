@@ -86,6 +86,27 @@
     }
   }
 
+  /**
+   * Copy each interactive tab label onto its pane for non-interactive print
+   * output. CSS consumes data-print-label after hiding the tab navigation.
+   */
+  function labelPrintPanes(container) {
+    const links = Array.from(container.querySelectorAll(SELECTOR_NAV_LINK)).filter(link =>
+      link.closest(SELECTOR_TABS) === container
+    );
+
+    links.forEach(link => {
+      const targetId = link.getAttribute('data-tab-target');
+      const label = (link.textContent || '').trim();
+      if (!targetId || !label) return;
+
+      const pane = document.getElementById(targetId);
+      if (pane && pane.closest(SELECTOR_TABS) === container) {
+        pane.setAttribute('data-print-label', label);
+      }
+    });
+  }
+
   // ============================================================
   // Tab Sync (RFC: Enhanced Code Tabs)
   // ============================================================
@@ -326,6 +347,7 @@
   function initTabs() {
     const containers = document.querySelectorAll(SELECTOR_TABS);
     containers.forEach(container => {
+      labelPrintPanes(container);
       const navItems = Array.from(container.querySelectorAll(SELECTOR_NAV_ITEM)).filter(item =>
         item.closest(SELECTOR_TABS) === container
       );
@@ -367,6 +389,7 @@
   // Register with progressive enhancement system if available
   if (window.Bengal && window.Bengal.enhance) {
     Bengal.enhance.register('tabs', function(container, options) {
+      labelPrintPanes(container);
       const navItems = Array.from(container.querySelectorAll(SELECTOR_NAV_ITEM)).filter(item =>
         item.closest(SELECTOR_TABS) === container || item.closest('[data-bengal="tabs"]') === container
       );

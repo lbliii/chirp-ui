@@ -220,14 +220,24 @@
 @media print {
   .video-embed {
     page-break-inside: avoid;
+    min-height: 0 !important;
+    aspect-ratio: auto;
+    overflow: visible;
+    border: 0;
+    background: transparent;
   }
 
   .video-embed iframe {
     display: none;
   }
 
-  .video-embed noscript {
-    display: block !important;
+  .video-embed::after {
+    content: "Video content — see the online version.";
+    display: block;
+    padding: var(--spacing-4, 1rem);
+    border: 1px solid var(--color-border, #ccc);
+    color: #444;
+    font-style: italic;
   }
 }
 

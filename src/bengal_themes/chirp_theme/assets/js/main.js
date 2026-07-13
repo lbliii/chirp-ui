@@ -6,6 +6,8 @@
 (function () {
   'use strict';
 
+  let printOpenedDetails = [];
+
   const log = window.BengalUtils?.log || (() => {});
   const copyToClipboard = window.BengalUtils?.copyToClipboard || (async () => {});
   const ready = window.BengalUtils?.ready || ((fn) => {
@@ -208,6 +210,35 @@
       document.body.classList.remove('user-is-tabbing');
     });
   }
+
+  /**
+   * Native closed <details> descendants are omitted from Chromium PDF layout
+   * even when print CSS computes the content as display:block. Open authored
+   * main-content disclosures for the print lifecycle, then restore their
+   * original state after the browser finishes printing.
+   */
+  function preparePrint() {
+    if (printOpenedDetails.length > 0) {
+      return;
+    }
+
+    printOpenedDetails = Array.from(document.querySelectorAll('main details:not([open])'));
+    printOpenedDetails.forEach((details) => {
+      details.open = true;
+    });
+  }
+
+  function restorePrint() {
+    printOpenedDetails.forEach((details) => {
+      if (details.isConnected) {
+        details.open = false;
+      }
+    });
+    printOpenedDetails = [];
+  }
+
+  window.addEventListener('beforeprint', preparePrint);
+  window.addEventListener('afterprint', restorePrint);
 
   function init() {
     setupSmoothScroll();

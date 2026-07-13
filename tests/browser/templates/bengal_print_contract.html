@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bengal print contract</title>
+    <link rel="stylesheet" href="/src/chirp_ui/templates/chirpui.css">
+    <!-- Bengal resolves style.css imports while building a site. The static
+         fixture links the affected sources directly so tests exercise current
+         working-tree CSS without requiring a generated site build. -->
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/tokens/foundation.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/tokens/typography.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/tokens/semantic.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/base/reset.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/base/typography.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/base/print.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/components/tabs.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/components/tabs-native.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/components/dropdowns.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/components/_video-embed.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/components/_audio-embed.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/components/_code-embed.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/components/_figure.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/components/_terminal-embed.css">
+    <link rel="stylesheet" href="/src/bengal_themes/chirp_theme/assets/css/chirp-theme.css">
+    <style>
+      /* Bengal's directive stylesheet owns this functional screen state in a
+         built site. Keep the fixture self-contained while exercising the
+         packaged chirp-theme print overrides. */
+      @media screen {
+        .tab-pane:not(.active) {
+          display: none;
+        }
+      }
+    </style>
+    <script defer src="/src/bengal_themes/chirp_theme/assets/js/utils.js"></script>
+    <script defer src="/src/bengal_themes/chirp_theme/assets/js/main.js"></script>
+    <script defer src="/src/bengal_themes/chirp_theme/assets/js/enhancements/tabs.js"></script>
+  </head>
+  <body>
+    <header class="site-header" role="banner">Screen header</header>
+    <nav aria-label="Primary">Screen navigation</nav>
+
+    <div class="chirp-theme-docs-layout chirp-theme-docs-layout--with-toc">
+      <aside class="docs-nav chirp-theme-docs-layout__sidebar">Screen docs navigation</aside>
+      <main class="chirp-theme-docs-layout__main">
+        <div class="docs-content chirp-theme-docs-layout__content">
+          <article class="prose chirp-theme-docs-layout__article">
+          <h1>Printable fragments</h1>
+          <p>
+            This fixture protects authored content and printable-width behavior across
+            common paper sizes without depending on a deployed site.
+          </p>
+
+          <h2>Legacy tabs</h2>
+          <div class="tabs" data-bengal="tabs" id="legacy-tabs">
+            <ul class="tab-nav">
+              <li class="active">
+                <a href="#" data-tab-target="legacy-python">Python</a>
+              </li>
+              <li>
+                <a href="#" data-tab-target="legacy-template">Template</a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="legacy-python">
+                <pre><code>LEGACY_PYTHON_SENTINEL = "printed"</code></pre>
+              </div>
+              <div class="tab-pane" id="legacy-template">
+                <pre><code>LEGACY_TEMPLATE_SENTINEL = "printed"</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <h2>Native tabs</h2>
+          <div class="tabs--native" id="native-tabs">
+            <div class="tab-nav">
+              <a href="#native-first">First</a>
+              <a href="#native-second">Second</a>
+            </div>
+            <div class="tab-content">
+              <section class="tab-pane" id="native-first" aria-label="First">
+                NATIVE_FIRST_SENTINEL
+              </section>
+              <section class="tab-pane" id="native-second" aria-label="Second">
+                NATIVE_SECOND_SENTINEL
+              </section>
+            </div>
+          </div>
+
+          <h2>Disclosure content</h2>
+          <details class="dropdown">
+            <summary>Closed author note</summary>
+            <div class="dropdown-content">
+              <p>DISCLOSURE_SENTINEL must be present in printed output.</p>
+              <pre><code>DISCLOSURE_CODE_SENTINEL = "printed"</code></pre>
+            </div>
+          </details>
+
+          <h2>Relationship and width proof</h2>
+          <p class="print-lead-in">The following list belongs with this introduction:</p>
+          <ul class="print-related-list">
+            <li>First related item</li>
+            <li>Second related item</li>
+            <li>Third related item</li>
+          </ul>
+
+          <table>
+            <thead>
+              <tr><th>Contract</th><th>Expected result</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Content</td><td>Complete</td></tr>
+              <tr><td>Width</td><td>Responsive to paper</td></tr>
+            </tbody>
+          </table>
+
+          <p>
+            The final paragraph is intentionally long enough to exercise normal wrapping while
+            remaining short enough that a print engine should not strand a single line on a new
+            page when nearby content can move with it.
+          </p>
+
+          <h2>Interactive embeds</h2>
+          <div class="video-embed"><iframe title="Video example" src="about:blank"></iframe></div>
+          <div class="audio-embed"><audio controls></audio></div>
+          <div class="code-embed"><iframe title="Code example" src="about:blank"></iframe></div>
+          <div class="terminal-embed asciinema"><script type="text/plain">terminal</script></div>
+          </article>
+        </div>
+      </main>
+      <aside class="toc-sidebar">Screen table of contents</aside>
+    </div>
+
+    <button type="button">Screen action</button>
+    <footer class="site-footer" role="contentinfo">Screen footer</footer>
+  </body>
+</html>

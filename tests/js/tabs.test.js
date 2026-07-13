@@ -101,6 +101,8 @@ describe("tabs.js public API", () => {
     expect(document.getElementById("t1-py").classList.contains("active")).toBe(
       true
     );
+    expect(document.getElementById("t1-py").dataset.printLabel).toBe("Python");
+    expect(document.getElementById("t1-rs").dataset.printLabel).toBe("Rust");
   });
 
   it("switch() moves the active class onto the target pane and nav item", () => {

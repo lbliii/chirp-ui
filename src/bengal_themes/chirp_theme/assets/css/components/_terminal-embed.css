@@ -149,17 +149,24 @@
 @media print {
   .terminal-embed {
     page-break-inside: avoid;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible;
+    border: 0;
+    background: transparent !important;
   }
 
   .terminal-embed.asciinema script {
     display: none;
   }
 
-  .terminal-embed noscript {
-    display: block !important;
+  .terminal-embed::after {
+    content: "Terminal recording — see the online version.";
+    display: block;
     padding: var(--spacing-4, 1rem);
     border: 1px solid var(--color-border, #ccc);
-    background-color: var(--color-surface-secondary, #f5f5f5);
+    color: #444;
+    font-style: italic;
   }
 }
 

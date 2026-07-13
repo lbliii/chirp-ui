@@ -38,6 +38,8 @@
   nav,
   .site-header,
   .docs-nav,
+  .chirp-theme-docs-layout__sidebar,
+  .chirp-theme-docs-layout__toc,
   .toc-sidebar,
   .mobile-nav,
   .breadcrumbs,
@@ -60,6 +62,7 @@
   /* Overlays and modals */
   .lightbox-overlay,
   .search-overlay,
+  .search-modal__backdrop,
   .modal,
   .overlay,
 
@@ -72,20 +75,36 @@
      LAYOUT & STRUCTURE
      ============================================ */
 
-  .docs-layout {
+  .docs-layout,
+  .chirp-theme-docs-layout,
+  .chirp-theme-docs-layout--with-toc {
     display: block !important;
     grid-template-columns: none !important;
+    inline-size: 100% !important;
+    max-inline-size: none !important;
+    min-inline-size: 0 !important;
   }
 
-  .docs-content {
-    max-width: 100% !important;
+  .chirp-theme-docs-layout__main,
+  .docs-content,
+  .chirp-theme-docs-layout__content {
+    display: block !important;
+    inline-size: 100% !important;
+    max-inline-size: none !important;
+    min-inline-size: 0 !important;
+    margin-inline: 0 !important;
     padding: 0 !important;
   }
 
   .prose,
   .content,
-  article {
-    max-width: 100% !important;
+  article,
+  .chirp-theme-docs-layout__article {
+    inline-size: 100% !important;
+    max-inline-size: none !important;
+    min-inline-size: 0 !important;
+    margin-inline: 0 !important;
+    padding-inline: 0 !important;
   }
 
   /* ============================================
@@ -127,6 +146,12 @@
   p {
     orphans: 3;
     widows: 3;
+    break-inside: avoid-page;
+  }
+
+  /* Keep short introductions with the list or example they introduce. */
+  .prose > p:has(+ :is(ul, ol, pre, .code-block-wrapper, table)) {
+    break-after: avoid-page;
   }
 
   /* ============================================
@@ -161,10 +186,10 @@
     background: #f5f5f5 !important;
     color: black !important;
     border: 1pt solid #ccc !important;
-    page-break-inside: avoid;
   }
 
   pre {
+    break-inside: avoid-page;
     white-space: pre-wrap !important;
     word-wrap: break-word !important;
     padding: 10pt !important;
@@ -207,8 +232,11 @@
   table {
     border-collapse: collapse !important;
     border: 1pt solid #ccc !important;
-    page-break-inside: avoid;
     width: 100% !important;
+  }
+
+  tr {
+    break-inside: avoid-page;
   }
 
   thead {
@@ -254,13 +282,8 @@
      LISTS
      ============================================ */
 
-  ul,
-  ol {
-    page-break-inside: avoid;
-  }
-
   li {
-    page-break-inside: avoid;
+    break-inside: avoid-page;
   }
 
   /* ============================================

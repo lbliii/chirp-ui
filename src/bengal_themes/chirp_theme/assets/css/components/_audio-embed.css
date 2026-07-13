@@ -133,13 +133,14 @@
 @media print {
   .audio-embed {
     page-break-inside: avoid;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible;
+    border: 0;
+    background: transparent;
   }
 
   .audio-embed iframe {
     display: none;
-  }
-
-  .audio-embed noscript {
-    display: block !important;
   }
 }
