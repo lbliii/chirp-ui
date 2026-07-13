@@ -48,6 +48,15 @@ uv run poe test-js
 dependencies installed first. These tests cover browser-adjacent state helpers
 that Python render tests cannot exercise.
 
+The default gate also runs a three-contract Playwright smoke covering composer
+Enter-to-send, context-menu dismiss/focus restoration, and menubar roving focus.
+Install its dependencies once before running the full gate locally:
+
+```text
+uv sync --group dev --group browser
+uv run playwright install chromium
+```
+
 If one is stale, regenerate the exact artifact:
 
 ```text
@@ -60,7 +69,8 @@ uv run poe build-docs
 
 `uv run poe ci` is the trusted default gate for normal PRs. It runs lint,
 format, generated-artifact freshness, focused CSS/template checks, type checks,
-the full non-browser pytest suite, and Vitest island-helper tests.
+the full non-browser pytest suite, Vitest island-helper tests, and the blocking
+three-contract browser smoke (`test-browser-ci`).
 
 Coverage and browser proof are explicit gates, not hidden defaults:
 
@@ -73,9 +83,9 @@ uv run poe test-browser-chrome
 `test-cov` enforces the configured coverage floor (`fail_under = 80`) when a PR
 claims coverage movement or before a release hardening sweep. `ci-browser` is
 required for changes whose failure mode depends on Playwright, actual layout,
-dialog APIs, htmx lifecycle, or Alpine lifecycle. Browser tests stay outside
-`poe ci` because they require the browser dependency group and installed browser
-binaries.
+dialog APIs, htmx lifecycle, or Alpine lifecycle beyond the three contracts in
+the default smoke. The remaining browser suite stays outside `poe ci` to keep
+the trusted default gate bounded.
 
 For application chrome slices, use `uv run poe test-browser-chrome` as the
 focused proof loop. It builds the published docs output first, then runs the

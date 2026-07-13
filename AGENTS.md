@@ -255,6 +255,10 @@ docs changes, or CI/workflow edits.
 
 - Prefer `uv run poe ci`; when narrower checks run, state exactly which checks
   ran and why full CI did not.
+- `poe ci` includes the blocking three-contract Playwright smoke. Local full-CI
+  setup therefore needs `uv sync --group dev --group browser` and
+  `uv run playwright install chromium`; broader browser proof remains in
+  `poe ci-browser` and `poe test-browser-chrome`.
 - **Template verification:** `uv run poe template-check` runs strict Kida
   verification over `src/chirp_ui/templates/chirpui` with production filter/global
   stubs (`scripts/template_check.py`). It is wired into `poe ci` and `poe check`

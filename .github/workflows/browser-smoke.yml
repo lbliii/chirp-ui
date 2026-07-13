@@ -2,15 +2,13 @@ name: Browser Smoke (non-required)
 
 # Non-required docs-chrome browser/a11y smoke gate.
 #
-# `poe ci` (the required `test` job in tests.yml) intentionally does NOT run the
-# Playwright browser suite (tests/browser/): it needs `--group browser` + a
-# chromium install and is too slow for the fast unit gate. That gap let a
-# nested-interactive a11y defect and a code-block double-wrap ship and surface
-# only on manual review. This standalone job arms the smoke:
+# `poe ci` (the required `test` job in tests.yml) runs a three-contract
+# Playwright smoke. The broader application/docs-chrome suite is too slow for
+# that default gate. This standalone job arms the broader smoke:
 # `poe test-browser-chrome` = docs-build-all + the focused chrome + docs-nav
 # folder-toggle + landmark/axe a11y proof.
 #
-# This job is deliberately STANDALONE and NON-REQUIRED — it is not added to any
+# This job is deliberately standalone and non-required — it is not added to any
 # required-status list / branch protection. It surfaces regressions on PRs that
 # touch the theme, browser tests, or the docs site without blocking merges that
 # are unrelated to docs chrome.

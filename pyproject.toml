@@ -243,6 +243,7 @@ test-fast = { cmd = "pytest tests/ -x -q --timeout=10", help = "Fast feedback lo
 test-cov = { cmd = "pytest tests/ --cov=chirp_ui --cov=bengal_themes --cov-report=term-missing", help = "Run tests with coverage" }
 test-js = { cmd = "npm test", help = "Run JavaScript island helper tests with Vitest" }
 test-browser = { cmd = "pytest tests/browser/ -q --timeout=30 --override-ini='addopts='", help = "Run browser integration tests (requires: uv sync --group browser && playwright install chromium)" }
+test-browser-ci = { cmd = "pytest tests/browser/test_composer_gauntlet.py::test_composer_enter_to_send_appends_message_bubble tests/browser/test_context_menu_gauntlet.py::test_escape_closes_and_returns_focus_to_region tests/browser/test_menubar_gauntlet.py::test_arrow_right_moves_between_top_level_triggers -q --timeout=30 --override-ini='addopts='", help = "Run the blocking three-contract browser smoke (composer send, context-menu dismiss, menubar roving focus)" }
 test-browser-chrome-check = { cmd = "pytest tests/browser/test_alpine_lifecycle.py tests/browser/test_context_rail_gauntlet.py tests/browser/test_shell_nav_drawer_gauntlet.py tests/browser/test_data_grid_gauntlet.py tests/browser/test_context_menu_gauntlet.py tests/browser/test_menubar_gauntlet.py tests/browser/test_navigation_menu_gauntlet.py tests/browser/test_hover_card_gauntlet.py tests/browser/test_input_otp.py tests/browser/test_combobox_gauntlet.py tests/browser/test_command_palette.py tests/browser/test_date_picker_gauntlet.py tests/browser/test_composer_gauntlet.py tests/browser/test_rail_to_tray_chrome.py tests/browser/test_application_chrome_gauntlet.py tests/browser/test_bengal_docs_chrome.py tests/browser/test_bengal_print_contract.py tests/browser/test_docs_nav_labels.py tests/browser/test_docs_landmarks_a11y.py -m 'not swap_lifecycle' -q --timeout=30 --override-ini='addopts='", help = "Run Alpine-liveness proof + route-context rail gauntlet + mobile nav-drawer gauntlet + component a11y gauntlets + focused application/docs chrome + Bengal print/PDF + docs landmark proof (deselects timing-sensitive swap_lifecycle tests)" }
 test-browser-chrome = { sequence = ["docs-build-all", "test-browser-chrome-check"], help = "Build docs output, then run focused application chrome + docs-chrome a11y browser proof" }
 ci-browser = { sequence = ["test-browser"], help = "Browser integration tests (release gate)" }
@@ -315,6 +316,7 @@ ci = { sequence = [
     "ty",
     "test",
     "test-js",
+    "test-browser-ci",
 ], help = "Full CI check" }
 check = { sequence = [
     "lint",
@@ -327,13 +329,14 @@ check = { sequence = [
     "ty",
 ], help = "Quick check (no tests)" }
 # Pre-PR gate a contributor runs before opening a PR. Runs the full blocking
-# `ci` gate (lint/format/generated-freshness/css/ty/unit/js) AND the docs-chrome
+# `ci` gate (lint/format/generated-freshness/css/ty/unit/js/blocking browser
+# smoke) AND the broader docs-chrome
 # browser/a11y smoke (`test-browser-chrome` = docs-build-all + the focused
 # chrome + docs-nav/landmark a11y Playwright proof). The browser suite is
-# intentionally NOT part of `ci` (it must stay fast + green for unit gating and
-# needs `--group browser` + a chromium install), so this task layers it on top.
-# CI runs the same browser smoke in a separate, NON-REQUIRED job.
-pre-pr = { sequence = ["ci", "test-browser-chrome"], help = "Pre-PR gate: full ci + docs-chrome browser/a11y smoke (browser suite is not in ci)" }
+# intentionally broader than the three-contract smoke in `ci`, so this task
+# layers it on top. CI runs the same broader smoke in a separate, non-required
+# job.
+pre-pr = { sequence = ["ci", "test-browser-chrome"], help = "Pre-PR gate: full ci + broader docs-chrome browser/a11y smoke" }
 
 # Changelog
 changelog = { cmd = "towncrier build --yes", help = "Build changelog from fragments" }

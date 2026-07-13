@@ -14,10 +14,11 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    # Backstop: the unit gate normally finishes in ~3 min. A generous ceiling
+    # Backstop: the unit gate plus focused browser smoke normally finishes well
+    # below this ceiling. A generous bound
     # bounds any hung step (e.g. a stalled `setup-uv` interpreter download) at
-    # 20 min instead of GitHub's 6-hour default.
-    timeout-minutes: 20
+    # 25 min instead of GitHub's 6-hour default.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7
 
@@ -45,7 +46,18 @@ jobs:
             uv-${{ runner.os }}-
 
       - name: Install dependencies
-        run: uv sync --group dev
+        run: uv sync --group dev --group browser
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+          restore-keys: |
+            playwright-${{ runner.os }}-
+
+      - name: Install Playwright Chromium
+        run: uv run playwright install --with-deps chromium
 
       - name: Install JavaScript dependencies
         run: npm ci
