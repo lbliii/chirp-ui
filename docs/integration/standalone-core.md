@@ -312,10 +312,10 @@ per route.
 |---|---|
 | [Flask Integration](https://lbliii.github.io/kida/docs/tutorials/flask-integration/) | `init_kida`, `render_template`, `render_block` in Flask |
 | [Django Integration](https://lbliii.github.io/kida/docs/tutorials/django-integration/) | `KidaTemplates` backend, `using="kida"` |
-| [Starlette & FastAPI Integration](https://lbliii.github.io/kida/docs/tutorials/starlette-integration/) | `KidaStarlette`, `TemplateResponse` |
+| [Starlette & FastAPI Integration](https://lbliii.github.io/kida/docs/tutorials/starlette-integration/) | `KidaTemplates`, `TemplateResponse` |
 | [Framework Integration API](https://lbliii.github.io/kida/docs/usage/framework-integration/) | Block rendering, introspection, composition |
 | [`kida check` CLI](https://lbliii.github.io/kida/docs/reference/cli/#kida-check) | Template verification (`--strict`, `--format json\|sarif`) |
 
-When the standalone seams feel heavy, [Chirp's `use_chirp_ui`](https://lbliii.github.io/chirp/docs/guides/chirp-ui/)
+When the standalone seams feel heavy, [Chirp's `use_chirp_ui`](https://lbliii.github.io/chirp/docs/build-apps/ui-extensions/chirp-ui/)
 and the [capability-matrix upgrade pitch](capability-matrix.md#upgrade-pitch-why-chirp)
 describe what gets deleted — Chirp is the destination, not the requirement.

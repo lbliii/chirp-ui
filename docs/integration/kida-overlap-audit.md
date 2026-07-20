@@ -11,7 +11,7 @@ Chirp. The two doc sets are complementary, not competing.
 
 | Doc set | Audience | Owns |
 |---|---|---|
-| [Kida framework tutorials](https://lbliii.github.io/kida/docs/tutorials/flask-integration/) | Any Kida user | `init_kida`, `KidaTemplates`, `KidaStarlette`, `render_block`, typed `{% def %}`, `kida check` |
+| [Kida framework tutorials](https://lbliii.github.io/kida/docs/tutorials/flask-integration/) | Any Kida user | `init_kida`, `KidaTemplates`, `render_block`, typed `{% def %}`, `kida check` |
 | [chirp-ui integration guides](standalone-core.md) | chirp-ui adopters without Chirp | `get_loader()`, `register_filters()`, Alpine shim, static mount, CSRF bridge, capability matrix |
 
 ---
@@ -54,9 +54,11 @@ render the same kida templates.
 **Tension resolution:** Kida's backend path is the native Django integration.
 chirp-ui recommends **render-in-view (option b)** because mixed Django-template +
 kida files are the highest-friction seam — a thin `{{ content|safe }}` wrapper
-avoids two engines in one file. Teams that fully commit to Kida as their only
-template backend can follow Kida's tutorial and add chirp-ui loader/filters to
-that environment.
+avoids two engines in one file. That `safe` boundary accepts only autoescaped
+HTML returned by the server-side Kida renderer, never request data or
+user-authored HTML. Teams that fully commit to Kida as their only template
+backend can follow Kida's tutorial and add chirp-ui loader/filters to that
+environment.
 
 ### FastAPI / Starlette
 
@@ -69,8 +71,9 @@ that environment.
 | htmx script | Not covered | `page_shell(..., include_htmx=True)` | **chirp-ui-only** |
 | Alpine / assets | Not covered | [standalone-core.md](standalone-core.md) | **chirp-ui-only** |
 
-**Tension resolution:** Same as Flask — use `KidaStarlette` and layer chirp-ui
-registration on its environment, or copy the reference app's explicit renderer.
+**Tension resolution:** Same as Flask — use
+`kida.contrib.starlette.KidaTemplates` and layer chirp-ui registration on its
+environment, or copy the reference app's explicit renderer.
 
 ### Cross-cutting (all frameworks)
 

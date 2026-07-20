@@ -66,6 +66,12 @@ Django shell template (`templates/pages/shell.html`):
 {{ content|safe }}
 ```
 
+These are narrow trust boundaries: `Markup` wraps only the hidden input built
+from Django's `get_token()` value, and `content|safe` accepts only the
+server-rendered, autoescaped Kida output returned by `_render_kida`. Never pass
+request data, user-authored HTML, or raw database content directly through
+either boundary.
+
 ---
 
 ## Static files

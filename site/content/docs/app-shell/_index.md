@@ -244,7 +244,7 @@ For the full tabbed layout structure, prefer extending `chirpui/tabbed_page_layo
 
 Pass `tab_items` and `current_path` in page context. ChirpUI also keeps the older `tabbed_page_layout(...)` macro for compatibility, but extending the template is the recommended path for apps that use Chirp fragment targets.
 
-See [Chirp's chirp-ui guide](https://lbliii.github.io/chirp/docs/guides/chirp-ui/) for full app-shell patterns and htmx integration.
+See [Chirp's chirp-ui guide](https://lbliii.github.io/chirp/docs/build-apps/ui-extensions/chirp-ui/) for full app-shell patterns and htmx integration.
 
 ### HTMX fragment targets
 
